@@ -101,7 +101,7 @@ BOOL DlgdbEditField::OnInitDialog()
 			{
 				m_p_index_table->GetFieldValue(0, var_value0);
 				m_p_index_table->GetFieldValue(1, var_value1);
-				CString cs_dummy = var_value0.bstrVal;
+				CString cs_dummy = CString(var_value0.bstrVal);
 				const auto i = m_co_dictionary.AddString(cs_dummy);
 				m_co_dictionary.SetItemData(i, var_value1.lVal);
 				m_p_index_table->MoveNext();

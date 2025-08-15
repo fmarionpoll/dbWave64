@@ -33,7 +33,7 @@ BOOL DlgFindFiles::OnInitDialog()
 	m_path = static_cast<CdbWaveApp*>(AfxGetApp())->options_import.path;
 	if (m_pdbDoc)
 		m_path = m_pdbDoc->proposed_data_path_name;
-	m_mfc_browse_control.SetWindowTextW(m_path);
+	m_mfc_browse_control.SetWindowText(m_path);
 
 	// hide yet undefined infos
 	static_cast<CButton*>(GetDlgItem(IDC_CHECK1))->SetCheck(1);
@@ -67,7 +67,7 @@ void DlgFindFiles::OnOK()
 	if (m_p_file_names->GetSize() == 0)
 		on_search();
 
-	m_mfc_browse_control.GetWindowTextW(m_path);
+	m_mfc_browse_control.GetWindowText(m_path);
 	auto p_app = static_cast<CdbWaveApp*>(AfxGetApp());
 	p_app->options_import.path = m_path;
 	p_app->options_import.discard_duplicate_files = static_cast<CButton*>(GetDlgItem(IDC_CHECKDISCARD))->GetCheck();
@@ -87,7 +87,7 @@ void DlgFindFiles::on_search()
 	m_b_subtree_search_ = static_cast<CButton*>(GetDlgItem(IDC_CHECK1))->GetCheck();
 	GetDlgItem(IDC_STATIC3)->ShowWindow(SW_SHOW);
 	GetDlgItem(IDC_STATIC1)->ShowWindow(SW_HIDE);
-	m_mfc_browse_control.GetWindowTextW(m_path);
+	m_mfc_browse_control.GetWindowText(m_path);
 	m_p_path_.Add(m_path); // add at least one path (root)
 
 	// scan subdirectories

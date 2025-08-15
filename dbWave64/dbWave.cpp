@@ -7,7 +7,7 @@
 #include "ViewData.h"
 #include "ViewSpikes.h"
 #include "ViewdbWave.h"
-#include "ViewADcontinuous.h"
+#include "data_acquisition/ViewADcontinuous.h"
 #include "ViewNotedoc.h"
 #include "dbWaveDoc.h"
 #include "NoteDoc.h"

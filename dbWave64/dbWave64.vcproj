@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="dbWave"
+	Name="dbwave64"
 	ProjectGUID="{7BC96351-C033-4F7B-B77C-93054AA5D31A}"
-	RootNamespace="dbWave"
+	RootNamespace="dbWave64"
 	Keyword="MFCProj"
 	TargetFrameworkVersion="131072"
 	>
@@ -43,7 +43,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/dbWave.tlb"
+				TypeLibraryName=".\Debug/dbwave64.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -55,7 +55,7 @@
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\Debug/dbWave.pch"
+				PrecompiledHeaderFile=".\Debug/dbWave64.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
@@ -78,12 +78,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="olmem32.lib oldaapi32.lib"
-				OutputFile=".\Debug/dbWave.exe"
+				OutputFile=".\Debug/dbWave64.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;C:\Program Files\Data Translation\Win32\DTx-EZ\Lib&quot;;&quot;C:\Program Files (x86)\Data Translation\Win32\DTx-EZ\Lib&quot;"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Debug/dbWave.pdb"
+				ProgramDatabaseFile=".\Debug/dbWave64.pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -139,7 +139,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Release/dbWave.tlb"
+				TypeLibraryName=".\Release/dbWave64.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -153,7 +153,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\Release/dbWave.pch"
+				PrecompiledHeaderFile=".\Release/dbWave64.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
@@ -174,11 +174,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="olmem32.lib oldaapi32.lib"
-				OutputFile=".\Release/dbWave.exe"
+				OutputFile=".\Release/dbwave64.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;C:\Program Files\Data Translation\Win32\DTx-EZ\Lib&quot;"
-				ProgramDatabaseFile=".\Release/dbWave.pdb"
+				ProgramDatabaseFile=".\Release/dbwave64.pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -545,7 +545,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\dbWave.cpp"
+				RelativePath=".\dbwave64.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -568,7 +568,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="dbWave.rc"
+				RelativePath="dbwave.rc"
 				>
 			</File>
 			<File

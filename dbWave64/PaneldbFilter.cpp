@@ -425,7 +425,7 @@ void PaneldbFilter::populate_item_from_linked_table(DB_ITEMDESC* p_desc) const
 				const auto flag = p_set->FindFirst(cs);
 				if (flag != 0)
 				{
-					insert_alphabetic(var_value0.bstrVal, p_desc->cs_elements_array);
+					insert_alphabetic(CString(var_value0.bstrVal), p_desc->cs_elements_array);
 					p_desc->li_array.Add(i_id);
 				}
 				p_linked_set->MoveNext();

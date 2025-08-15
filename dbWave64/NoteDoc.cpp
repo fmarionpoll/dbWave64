@@ -157,7 +157,7 @@ int CNoteDoc::extract_list(CRichEditCtrl& p_edit, CStringArray& cs_array_file_na
 	int cur_pos = 0;
 	int row_index = 0;
 	int count_columns = 0;
-	const auto separator = L"\r\n";
+	const auto separator = _T("\r\n");
 	CString cs_row = text_from_rich_edit_view.Tokenize(separator, cur_pos);
 	while (!cs_row.IsEmpty())
 	{

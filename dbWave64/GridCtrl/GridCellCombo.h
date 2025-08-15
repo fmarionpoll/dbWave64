@@ -33,7 +33,7 @@
 #include "GridCell.h"
 
 
-class CGridCellCombo : public CGridCell
+class CGridCellCombo : public GridCell
 {
 	friend class CGridCtrl;
 	DECLARE_DYNCREATE(CGridCellCombo)

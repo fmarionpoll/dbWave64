@@ -1,6 +1,6 @@
 #pragma once
 #include "dbWave_constants.h"
-#include "Ruler.h"
+#include "Controls/Ruler.h"
 #include "Taglist.h"
 
 // display parameters: m_range_mode
@@ -24,7 +24,7 @@ constexpr auto RED_COLOR = 4;
 
 constexpr auto NB_CURSORS = 6;
 
-#include "RulerBar.h"
+#include "Controls/RulerBar.h"
 #include "options_scope_struct.h"
 
 // CChartWnd window

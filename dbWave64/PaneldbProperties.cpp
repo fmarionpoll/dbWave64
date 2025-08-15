@@ -212,7 +212,7 @@ void PaneldbProperties::update_group_prop_from_table(CMFCPropertyGridProperty* p
 					while (!p2_linked_set->IsEOF())
 					{
 						p2_linked_set->GetFieldValue(0, var_value0);
-						CString cs = var_value0.bstrVal;
+						CString cs = CString(var_value0.bstrVal);
 						if (!cs.IsEmpty())
 							p_prop->AddOption(cs, TRUE);
 						p2_linked_set->MoveNext();

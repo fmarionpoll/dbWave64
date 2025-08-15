@@ -6,7 +6,7 @@
 #include "SpikeClassGrid.h"
 #include "ViewDbTable.h"
 #include "Editctrl.h"
-#include "ScrollBarEx.h"
+#include "Controls/ScrollBarEx.h"
 #include "options_spk_classification.h"
 #include "SpikeClassGridList.h"
 #include "SpikeClassGridToolBar.h"

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SpikeClassListBox.h"
-#include "ScrollBarEx.h"
+#include "Controls/ScrollBarEx.h"
 #include "ViewDbTable.h"
 #include "ChartData.h"
 #include "Editctrl.h"

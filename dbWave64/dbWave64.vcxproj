@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug32|Win32">
+      <Configuration>Debug32</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -10,11 +14,445 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="StdAfx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug32|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="AcqDataDoc.cpp" />
+    <ClCompile Include="AcqWaveChan.cpp" />
+    <ClCompile Include="AcqWaveChanArray.cpp" />
+    <ClCompile Include="AcqWaveFormat.cpp" />
+    <ClCompile Include="ADAcqDataDoc.cpp" />
+    <ClCompile Include="ChartData.cpp" />
+    <ClCompile Include="ChartDataAD.cpp" />
+    <ClCompile Include="ChartSpike.cpp" />
+    <ClCompile Include="ChartSpikeBar.cpp" />
+    <ClCompile Include="ChartSpikeHist.cpp" />
+    <ClCompile Include="ChartSpikeHistVert.cpp" />
+    <ClCompile Include="ChartSpikeShape.cpp" />
+    <ClCompile Include="ChartSpikeXY.cpp" />
+    <ClCompile Include="ChartWnd.cpp" />
+    <ClCompile Include="ChildFrm.cpp" />
+    <ClCompile Include="Controls\cdxCRot90DC.cpp" />
+    <ClCompile Include="Controls\cdxCRotBevelLine.cpp" />
+    <ClCompile Include="GridCtrl\GridComboEdit.cpp" />
+    <ClCompile Include="GridCtrl\InPlaceEdit.cpp" />
+    <ClCompile Include="datafile_ASD.cpp" />
+    <ClCompile Include="datafile_Atlab.cpp" />
+    <ClCompile Include="datafile_Awave.cpp" />
+    <ClCompile Include="datafile_CEDSpike2.cpp" />
+    <ClCompile Include="datafile_mcid.cpp" />
+    <ClCompile Include="datafile_X.cpp" />
+    <ClCompile Include="DataListCtrl_Row.cpp" />
+    <ClCompile Include="dbMultiDocTemplate.cpp" />
+    <ClCompile Include="dbTable.cpp" />
+    <ClCompile Include="dbTableAssociated.cpp" />
+    <ClCompile Include="dbTableColumnDescriptor.cpp" />
+    <ClCompile Include="dbTableMain.cpp" />
+    <ClCompile Include="dbWave.cpp" />
+    <ClCompile Include="DlgAbout.cpp" />
+    <ClCompile Include="DlgBrowseFile.cpp" />
+    <ClCompile Include="DlgChartProps.cpp" />
+    <ClCompile Include="DlgConfirmSave.cpp" />
+    <ClCompile Include="DlgCopyAs.cpp" />
+    <ClCompile Include="data_acquisition\DlgDAChannels.cpp" />
+    <ClCompile Include="data_acquisition\DlgDAOutputsParms.cpp" />
+    <ClCompile Include="DlgDataComments.cpp" />
+    <ClCompile Include="DlgDataSeries.cpp" />
+    <ClCompile Include="DlgDataSeriesFormat.cpp" />
+    <ClCompile Include="DlgDataViewAbscissa.cpp" />
+    <ClCompile Include="DlgDataViewOrdinates.cpp" />
+    <ClCompile Include="DlgdbEditField.cpp" />
+    <ClCompile Include="DlgdbEditRecord.cpp" />
+    <ClCompile Include="DlgdbNewFileDuplicate.cpp" />
+    <ClCompile Include="DlgDeleteRecordOptions.cpp" />
+    <ClCompile Include="DlgEditList.cpp" />
+    <ClCompile Include="DlgEditSpikeClass.cpp" />
+    <ClCompile Include="DlgEditStimArray.cpp" />
+    <ClCompile Include="DlgExportData.cpp" />
+    <ClCompile Include="DlgExportSpikeInfos.cpp" />
+    <ClCompile Include="DlgFileNew1.cpp" />
+    <ClCompile Include="DlgFindFiles.cpp" />
+    <ClCompile Include="DlgFormatHistogram.cpp" />
+    <ClCompile Include="DlgGotoRecord.cpp" />
+    <ClCompile Include="DlgImportFiles.cpp" />
+    <ClCompile Include="DlgImportGenericData.cpp" />
+    <ClCompile Include="DlgImportOptions.cpp" />
+    <ClCompile Include="DlgListBClaSize.cpp" />
+    <ClCompile Include="DlgLoadSaveOptions.cpp" />
+    <ClCompile Include="DlgOverwriteFileOptions.cpp" />
+    <ClCompile Include="DlgPivot.cpp" />
+    <ClCompile Include="DlgPrintDataComments.cpp" />
+    <ClCompile Include="DlgPrintDataOptions.cpp" />
+    <ClCompile Include="DlgPrintDrawArea.cpp" />
+    <ClCompile Include="DlgPrintMargins.cpp" />
+    <ClCompile Include="DlgPrintPageMargins.cpp" />
+    <ClCompile Include="DlgProgress.cpp" />
+    <ClCompile Include="DlgRejectRecord.cpp" />
+    <ClCompile Include="DlgSpikeDetect.cpp" />
+    <ClCompile Include="DlgSpikeEdit.cpp" />
+    <ClCompile Include="DlgTransferFiles.cpp" />
+    <ClCompile Include="DlgXYParameters.cpp" />
+    <ClCompile Include="data_acquisition\CyberAmp.cpp" />
+    <ClCompile Include="data_acquisition\DataTranslation_AD.cpp" />
+    <ClCompile Include="data_acquisition\DataTranslation_DA.cpp" />
+    <ClCompile Include="data_acquisition\DlgADExperiment.cpp" />
+    <ClCompile Include="data_acquisition\DlgADInputParms.cpp" />
+    <ClCompile Include="data_acquisition\DlgADIntervals.cpp" />
+    <ClCompile Include="data_acquisition\DlgDataTranslationBoard.cpp" />
+    <ClCompile Include="data_acquisition\DlgEditDAMseq.cpp" />
+    <ClCompile Include="data_acquisition\dtacq32.cpp" />
+    <ClCompile Include="data_acquisition\dtplot32.cpp" />
+    <ClCompile Include="data_acquisition\DTdigitalinput.cpp" />
+    <ClCompile Include="data_acquisition\USBPxxPARAMETERS.cpp" />
+    <ClCompile Include="data_acquisition\USBPxxS1.cpp" />
+    <ClCompile Include="data_acquisition\USBPxxS1Ctl.cpp" />
+    <ClCompile Include="data_acquisition\ViewADcontinuous.cpp" />
+    <ClCompile Include="Editctrl.cpp" />
+    <ClCompile Include="Excel\excel9.cpp" />
+    <ClCompile Include="FilenameCleanupUtils.cpp" />
+    <ClCompile Include="Fileversion.cpp" />
+    <ClCompile Include="GridCtrl\GridCell.cpp" />
+    <ClCompile Include="GridCtrl\GridCellBase.cpp" />
+    <ClCompile Include="GridCtrl\GridCellCheck.cpp" />
+    <ClCompile Include="GridCtrl\GridCellCombo.cpp" />
+    <ClCompile Include="GridCtrl\GridCellCombo_FMP.cpp" />
+    <ClCompile Include="GridCtrl\GridCellDateTime.cpp" />
+    <ClCompile Include="GridCtrl\GridCellNumeric.cpp" />
+    <ClCompile Include="GridCtrl\GridCtrl.cpp" />
+    <ClCompile Include="GridCtrl\GridDefaultCell.cpp" />
+    <ClCompile Include="GridCtrl\GridDropTarget.cpp" />
+    <ClCompile Include="GridCtrl\GridInPlaceEdit.cpp" />
+    <ClCompile Include="GridCtrl\GridInPlaceList.cpp" />
+    <ClCompile Include="GridCtrl\GridTitleTip.cpp" />
+    <ClCompile Include="GridCtrl\GridURLCell.cpp" />
+    <ClCompile Include="IntervalPoints.cpp" />
+    <ClCompile Include="Intervals.cpp" />
+    <ClCompile Include="IntervalsListCtrl.cpp" />
+    <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="MeasureHZtagsPage.cpp" />
+    <ClCompile Include="MeasureOptionsPage.cpp" />
+    <ClCompile Include="MeasureProperties.cpp" />
+    <ClCompile Include="MeasureResultsPage.cpp" />
+    <ClCompile Include="MeasureVTtagsPage.cpp" />
+    <ClCompile Include="NiceUnit.cpp" />
+    <ClCompile Include="NoteDoc.cpp" />
+    <ClCompile Include="NotedocCntrItem.cpp" />
+    <ClCompile Include="options_detect_spikes.cpp" />
+    <ClCompile Include="options_detect_stimulus.cpp" />
+    <ClCompile Include="OPTIONS_IMPORT.cpp" />
+    <ClCompile Include="options_input.cpp" />
+    <ClCompile Include="OPTIONS_MEASURE.cpp" />
+    <ClCompile Include="options_output.cpp" />
+    <ClCompile Include="options_scope_channel.cpp" />
+    <ClCompile Include="options_scope_struct.cpp" />
+    <ClCompile Include="options_spk_classification.cpp" />
+    <ClCompile Include="OPTIONS_VIEW_DATA.cpp" />
+    <ClCompile Include="options_view_spikes.cpp" />
+    <ClCompile Include="output_parameters.cpp" />
+    <ClCompile Include="PaneldbFilter.cpp" />
+    <ClCompile Include="PaneldbFilterToolBar.cpp" />
+    <ClCompile Include="PaneldbProperties.cpp" />
+    <ClCompile Include="PaneldbPropertiesToolBar.cpp" />
+    <ClCompile Include="Controls\QuadStateTree.cpp" />
+    <ClCompile Include="Controls\Ruler.cpp" />
+    <ClCompile Include="Controls\RulerBar.cpp" />
+    <ClCompile Include="Controls\Scale.cpp" />
+    <ClCompile Include="Controls\ScrollBarEx.cpp" />
+    <ClCompile Include="Spike.cpp" />
+    <ClCompile Include="SpikeClassGrid.cpp" />
+    <ClCompile Include="SpikeClassGridList.cpp" />
+    <ClCompile Include="SpikeClassGridProperty.cpp" />
+    <ClCompile Include="SpikeClassGridToolBar.cpp" />
+    <ClCompile Include="SpikeClassListBox.cpp" />
+    <ClCompile Include="SpikeClassListBoxContext.cpp" />
+    <ClCompile Include="SpikeClassProperties.cpp" />
+    <ClCompile Include="SpikeClassRowItem.cpp" />
+    <ClCompile Include="SpikeDetectArray.cpp" />
+    <ClCompile Include="Spikedoc.cpp" />
+    <ClCompile Include="SpikeFromChan.cpp" />
+    <ClCompile Include="Spikelist.cpp" />
+    <ClCompile Include="SpikeListTabCtrl.cpp" />
+    <ClCompile Include="spike_detection_array.cpp" />
+    <ClCompile Include="Splash.cpp" />
+    <!-- <ClCompile Include="Stage.cpp" /> -->
+    <ClCompile Include="StretchControls.cpp" />
+    <ClCompile Include="subfileitem.cpp" />
+    <ClCompile Include="Tag.cpp" />
+    <ClCompile Include="Taglist.cpp" />
+    <ClCompile Include="ViewData.cpp" />
+    <ClCompile Include="ViewDbTable.cpp" />
+    <ClCompile Include="ViewdbWave.cpp" />
+    <ClCompile Include="ViewNotedoc.cpp" />
+    <ClCompile Include="ViewSpikeDetect.cpp" />
+    <ClCompile Include="ViewSpikeHist.cpp" />
+    <ClCompile Include="ViewSpikes.cpp" />
+    <ClCompile Include="ViewSpikeSort.cpp" />
+    <ClCompile Include="ViewSpikeTemplate.cpp" />
+    <ClCompile Include="WaveBuf.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AcqDataDoc.h" />
+    <ClInclude Include="AcqWaveChan.h" />
+    <ClInclude Include="AcqWaveChanArray.h" />
+    <ClInclude Include="AcqWaveFormat.h" />
+    <ClInclude Include="ADAcqDataDoc.h" />
+    <ClInclude Include="CApplication.h" />
+    <ClInclude Include="CDTBoardParameters.h" />
+    <ClInclude Include="chanlistitem.h" />
+    <ClInclude Include="ChartData.h" />
+    <ClInclude Include="ChartDataAD.h" />
+    <ClInclude Include="ChartSpike.h" />
+    <ClInclude Include="ChartSpikeBar.h" />
+    <ClInclude Include="ChartSpikeHist.h" />
+    <ClInclude Include="ChartSpikeHistVert.h" />
+    <ClInclude Include="ChartSpikeShape.h" />
+    <ClInclude Include="ChartSpikeXY.h" />
+    <ClInclude Include="ChartWnd.h" />
+    <ClInclude Include="ChildFrm.h" />
+    <ClInclude Include="ColorNames.h" />
+    <ClInclude Include="Controls\cdxCRot90DC.h" />
+    <ClInclude Include="Controls\cdxCRotBevelLine.h" />
+    <ClInclude Include="GridCtrl\GridComboEdit.h" />
+    <ClInclude Include="GridCtrl\InPlaceEdit.h" />
+    <ClInclude Include="CPivotCache.h" />
+    <ClInclude Include="CPivotCaches.h" />
+    <ClInclude Include="CPivotCell.h" />
+    <ClInclude Include="CPivotField.h" />
+    <ClInclude Include="CPivotFields.h" />
+    <ClInclude Include="CPivotFilter.h" />
+    <ClInclude Include="CPivotFilters.h" />
+    <ClInclude Include="CPivotFormula.h" />
+    <ClInclude Include="CPivotFormulas.h" />
+    <ClInclude Include="CPivotItem.h" />
+    <ClInclude Include="CPivotItemList.h" />
+    <ClInclude Include="CPivotItems.h" />
+    <ClInclude Include="CPivotLayout.h" />
+    <ClInclude Include="CPivotTable.h" />
+    <ClInclude Include="CPivotTableChangeList.h" />
+    <ClInclude Include="CPivotTables.h" />
+    <ClInclude Include="CRange.h" />
+    <ClInclude Include="CRanges.h" />
+    <ClInclude Include="CSpkListCtrlTab.h" />
+    <ClInclude Include="CWorkbook.h" />
+    <ClInclude Include="CWorkbooks.h" />
+    <ClInclude Include="CWorksheet.h" />
+    <ClInclude Include="CWorksheetFunction.h" />
+    <ClInclude Include="CWorksheets.h" />
+    <ClInclude Include="datafile_ASD.h" />
+    <ClInclude Include="datafile_Atlab.h" />
+    <ClInclude Include="datafile_Awave.h" />
+    <ClInclude Include="datafile_CEDSpike2.h" />
+    <ClInclude Include="datafile_mcid.h" />
+    <ClInclude Include="datafile_X.h" />
+    <ClInclude Include="dataheader_Asyst.H" />
+    <ClInclude Include="dataheader_Atlab.H" />
+    <ClInclude Include="DataListCtrl.h" />
+    <ClInclude Include="DataListCtrl_Infos.h" />
+    <ClInclude Include="DataListCtrl_Row.h" />
+    <ClInclude Include="dbMultiDocTemplate.h" />
+    <ClInclude Include="dbTable.h" />
+    <ClInclude Include="dbTableAssociated.h" />
+    <ClInclude Include="dbTableColumnDescriptor.h" />
+    <ClInclude Include="dbTableMain.h" />
+    <ClInclude Include="dbWave.h" />
+    <ClInclude Include="dbWaveDoc.h" />
+    <ClInclude Include="dbWave_constants.h" />
+    <ClInclude Include="dbWave_structures.h" />
+    <ClInclude Include="db_spike.h" />
+    <ClInclude Include="DlgAbout.h" />
+    <ClInclude Include="DlgBrowseFile.h" />
+    <ClInclude Include="DlgChartProps.h" />
+    <ClInclude Include="DlgConfirmSave.h" />
+    <ClInclude Include="DlgCopyAs.h" />
+    <ClInclude Include="data_acquisition\DlgDAChannels.h" />
+    <ClInclude Include="data_acquisition\DlgDAOutputsParms.h" />
+    <ClInclude Include="DlgDataComments.h" />
+    <ClInclude Include="DlgDataSeries.h" />
+    <ClInclude Include="DlgDataSeriesFormat.h" />
+    <ClInclude Include="DlgDataViewAbscissa.h" />
+    <ClInclude Include="DlgDataViewOrdinates.h" />
+    <ClInclude Include="DlgdbEditField.h" />
+    <ClInclude Include="DlgdbEditRecord.h" />
+    <ClInclude Include="DlgdbNewFileDuplicate.h" />
+    <ClInclude Include="DlgDeleteRecordOptions.h" />
+    <ClInclude Include="DlgEditList.h" />
+    <ClInclude Include="DlgEditSpikeClass.h" />
+    <ClInclude Include="DlgEditStimArray.h" />
+    <ClInclude Include="DlgExportData.h" />
+    <ClInclude Include="DlgExportSpikeInfos.h" />
+    <ClInclude Include="DlgFileNew1.h" />
+    <ClInclude Include="DlgFindFiles.h" />
+    <ClInclude Include="DlgFormatHistogram.h" />
+    <ClInclude Include="DlgGotoRecord.h" />
+    <ClInclude Include="DlgImportFiles.h" />
+    <ClInclude Include="DlgImportGenericData.h" />
+    <ClInclude Include="DlgImportOptions.h" />
+    <ClInclude Include="DlgListBClaSize.h" />
+    <ClInclude Include="DlgLoadSaveOptions.h" />
+    <ClInclude Include="DlgOverwriteFileOptions.h" />
+    <ClInclude Include="DlgPivot.h" />
+    <ClInclude Include="DlgPrintDataComments.h" />
+    <ClInclude Include="DlgPrintDataOptions.h" />
+    <ClInclude Include="DlgPrintDrawArea.h" />
+    <ClInclude Include="DlgPrintMargins.h" />
+    <ClInclude Include="DlgPrintPageMargins.h" />
+    <ClInclude Include="DlgProgress.h" />
+    <ClInclude Include="DlgRejectRecord.h" />
+    <ClInclude Include="DlgSpikeDetect.h" />
+    <ClInclude Include="DlgSpikeEdit.h" />
+    <ClInclude Include="DlgTransferFiles.h" />
+    <ClInclude Include="DlgXYParameters.h" />
+    <ClInclude Include="data_acquisition\CyberAmp.h" />
+    <ClInclude Include="data_acquisition\DataTranslation_AD.h" />
+    <ClInclude Include="data_acquisition\DataTranslation_DA.h" />
+    <ClInclude Include="data_acquisition\DlgADExperiment.h" />
+    <ClInclude Include="data_acquisition\DlgADInputParms.h" />
+    <ClInclude Include="data_acquisition\DlgADIntervals.h" />
+    <ClInclude Include="data_acquisition\DlgDataTranslationBoard.h" />
+    <ClInclude Include="data_acquisition\DlgEditDAMseq.h" />
+    <ClInclude Include="data_acquisition\dtacq32.h" />
+    <ClInclude Include="data_acquisition\dtplot32.h" />
+    <ClInclude Include="data_acquisition\USBPxxPARAMETERS.h" />
+    <ClInclude Include="data_acquisition\USBPxxS1.h" />
+    <ClInclude Include="data_acquisition\USBPxxS1Ctl.h" />
+    <ClInclude Include="data_acquisition\ViewADcontinuous.h" />
+    <ClInclude Include="Editctrl.h" />
+    <ClInclude Include="Envelope.h" />
+    <ClInclude Include="Excel\excel9.h" />
+    <ClInclude Include="FilenameCleanupUtils.h" />
+    <ClInclude Include="Fileversion.h" />
+    <ClInclude Include="GridCtrl\GridCell.h" />
+    <ClInclude Include="GridCtrl\GridCellBase.h" />
+    <ClInclude Include="GridCtrl\GridCellCheck.h" />
+    <ClInclude Include="GridCtrl\GridCellCombo.h" />
+    <ClInclude Include="GridCtrl\GridCellCombo_FMP.h" />
+    <ClInclude Include="GridCtrl\GridCellDateTime.h" />
+    <ClInclude Include="GridCtrl\GridCellNumeric.h" />
+    <ClInclude Include="GridCtrl\GridCellRange.h" />
+    <ClInclude Include="GridCtrl\GridCtrl.h" />
+    <ClInclude Include="GridCtrl\GridDefaultCell.h" />
+    <ClInclude Include="GridCtrl\GridDefines.h" />
+    <ClInclude Include="GridCtrl\GridDropTarget.h" />
+    <ClInclude Include="GridCtrl\GridInPlaceEdit.h" />
+    <ClInclude Include="GridCtrl\GridInPlaceList.h" />
+    <ClInclude Include="GridCtrl\GridTitleTip.h" />
+    <ClInclude Include="GridCtrl\GridURLCell.h" />
+    <ClInclude Include="GridCtrl\MemDC.h" />
+    <ClInclude Include="ImportAlligatorDefinitions.h" />
+    <ClInclude Include="ImportExcelDefinitions.h" />
+    <ClInclude Include="IntervalPoints.h" />
+    <ClInclude Include="Intervals.h" />
+    <ClInclude Include="IntervalsListCtrl.h" />
+    <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="MeasureHZtagsPage.h" />
+    <ClInclude Include="MeasureOptionsPage.h" />
+    <ClInclude Include="MeasureProperties.h" />
+    <ClInclude Include="MeasureResultsPage.h" />
+    <ClInclude Include="MeasureVTtagsPage.h" />
+    <ClInclude Include="NiceUnit.h" />
+    <ClInclude Include="NoteDoc.h" />
+    <ClInclude Include="NotedocCntrItem.h" />
+    <ClInclude Include="options_detect_spikes.h" />
+    <ClInclude Include="options_detect_stimulus.h" />
+    <ClInclude Include="OPTIONS_IMPORT.h" />
+    <ClInclude Include="options_input.h" />
+    <ClInclude Include="OPTIONS_MEASURE.h" />
+    <ClInclude Include="options_output.h" />
+    <ClInclude Include="options_scope_channel.h" />
+    <ClInclude Include="options_scope_struct.h" />
+    <ClInclude Include="options_spk_classification.h" />
+    <ClInclude Include="OPTIONS_VIEW_DATA.h" />
+    <ClInclude Include="options_view_spikes.h" />
+    <ClInclude Include="OutlookBar.h" />
+    <ClInclude Include="output_parameters.h" />
+    <ClInclude Include="PaneldbFilter.h" />
+    <ClInclude Include="PaneldbFilterToolBar.h" />
+    <ClInclude Include="PaneldbProperties.h" />
+    <ClInclude Include="PaneldbPropertiesToolBar.h" />
+    <ClInclude Include="Controls\QuadStateTree.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Controls\Ruler.h" />
+    <ClInclude Include="Controls\RulerBar.h" />
+    <ClInclude Include="Controls\Scale.h" />
+    <ClInclude Include="Controls\ScrollBarEx.h" />
+    <ClInclude Include="Spike.h" />
+    <ClInclude Include="SpikeClassGrid.h" />
+    <ClInclude Include="SpikeClassGridList.h" />
+    <ClInclude Include="SpikeClassGridProperty.h" />
+    <ClInclude Include="SpikeClassGridToolBar.h" />
+    <ClInclude Include="SpikeClassListBox.h" />
+    <ClInclude Include="SpikeClassListBoxContext.h" />
+    <ClInclude Include="SpikeClassProperties.h" />
+    <ClInclude Include="SpikeClassRowItem.h" />
+    <ClInclude Include="SpikeDetectArray.h" />
+    <ClInclude Include="Spikedoc.h" />
+    <ClInclude Include="SpikeFromChan.h" />
+    <ClInclude Include="Spikelist.h" />
+    <ClInclude Include="SpikeListTabCtrl.h" />
+    <ClInclude Include="spike_detection_array.h" />
+    <ClInclude Include="Splash.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="StretchControls.h" />
+    <ClInclude Include="subfileitem.h" />
+    <ClInclude Include="Tag.h" />
+    <ClInclude Include="Taglist.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="TemplateListWnd.h" />
+    <ClInclude Include="TemplateWnd.h" />
+    <ClInclude Include="ViewData.h" />
+    <ClInclude Include="ViewDbTable.h" />
+    <ClInclude Include="ViewdbWave.h" />
+    <ClInclude Include="ViewNotedoc.h" />
+    <ClInclude Include="ViewSpikeDetect.h" />
+    <ClInclude Include="ViewSpikeHist.h" />
+    <ClInclude Include="ViewSpikes.h" />
+    <ClInclude Include="ViewSpikeSort.h" />
+    <ClInclude Include="ViewSpikeTemplate.h" />
+    <ClInclude Include="WaveBuf.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="dbWave.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dbWave64.ruleset" />
+    <None Include="packages.config" />
+    <None Include="resource.hm" />
+    <None Include="res\CMEASURE.CUR" />
+    <None Include="res\cur00001.cur" />
+    <None Include="res\cursor1.cur" />
+    <None Include="res\CZOOM.CUR" />
+    <None Include="res\dbwave.cpt" />
+    <None Include="runsdvui.cmd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\BIAS.ICO" />
+    <Image Include="res\bmp00001.bmp" />
+    <Image Include="res\buttons.bmp" />
+    <Image Include="res\check.bmp" />
+    <Image Include="res\check1.bmp" />
+    <Image Include="res\check32.bmp" />
+    <Image Include="res\checkno.bmp" />
+    <Image Include="res\checkno32.bmp" />
+    <Image Include="res\classview.bmp" />
+    <Image Include="res\classview_hc.bmp" />
+    <Image Include="res\class_view.ico" />
+    <Image Include="res\class_view_hc.ico" />
+    <Image Include="res\Databaselarge.bmp" />
+    <Image Include="res\Databasesmall.bmp" />
+    <Image Include="res\Datalarge.bmp" />
+    <Image Include="res\Datasmall.bmp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <ProjectName>dbWave64</ProjectName>
     <ProjectGuid>{7BC96351-C033-4F7B-B77C-93054AA5D31A}</ProjectGuid>
-    <RootNamespace>dbWave</RootNamespace>
+    <RootNamespace>dbWave64</RootNamespace>
     <Keyword>MFCProj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -25,6 +463,14 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PreferredToolArchitecture>x86</PreferredToolArchitecture>
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug32|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <UseOfMfc>Dynamic</UseOfMfc>
@@ -40,6 +486,9 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug32|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>17.0.36327.8</_ProjectFileVersion>
@@ -48,11 +497,19 @@
     <OutDir>.\Debug\</OutDir>
     <IntDir>.\Debug\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\fred\source\repos\dbwave64\dbWave64\include\office;C:\Users\fred\source\repos\dbwave64\dbWave64\include\CED\win32;C:\Users\fred\source\repos\dbwave64\dbWave64\include\Alligator\win32;C:\Users\fred\source\repos\dbwave64\dbWave64\include\DataTranslation;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug32|Win32'">
+    <OutDir>.\Debug\</OutDir>
+    <IntDir>.\Debug\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\fred\source\repos\dbwave64\dbWave64\include\office;C:\Users\fred\source\repos\dbwave64\dbWave64\include\CED\win32;C:\Users\fred\source\repos\dbwave64\dbWave64\include\Alligator\win32;C:\Users\fred\source\repos\dbwave64\dbWave64\include\DataTranslation;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>.\Release\</OutDir>
     <IntDir>.\Release\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\fred\source\repos\dbwave64\dbWave64\include\office;C:\Users\fred\source\repos\dbwave64\dbWave64\include\CED\win32;C:\Users\fred\source\repos\dbwave64\dbWave64\include\Alligator\win32;C:\Users\fred\source\repos\dbwave64\dbWave64\include\DataTranslation;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
@@ -60,18 +517,18 @@
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetEnvironment>Win32</TargetEnvironment>
-      <TypeLibraryName>.\Debug/dbWave.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Debug/dbWave64.tlb</TypeLibraryName>
       <HeaderFileName />
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\Program Files\Data Translation\Win32\DTx-EZ\Include;C:\Program Files (x86)\Data Translation\Win32\DTx-EZ\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\data_acquisition;$(ProjectDir)\Controls;$(ProjectDir)\GridCtrl;$(ProjectDir)\Excel;$(ProjectDir)\include\DataTranslation;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>.\Debug/dbWave.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Debug/dbWave64.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
       <ObjectFileName>.\Debug/</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
@@ -85,14 +542,58 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>olmem32.lib;oldaapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>.\Debug/dbWave.exe</OutputFile>
+      <OutputFile>.\Debug/dbWave64.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>C:\Program Files\Data Translation\Win32\DTx-EZ\Lib;C:\Program Files (x86)\Data Translation\Win32\DTx-EZ\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug/dbWave.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\Debug/dbWave64.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug32|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\Debug/dbWave64.tlb</TypeLibraryName>
+      <HeaderFileName>
+      </HeaderFileName>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\data_acquisition;$(ProjectDir)\Controls;$(ProjectDir)\GridCtrl;$(ProjectDir)\Excel;$(ProjectDir)\include\DataTranslation;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>.\Debug/dbWave64.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
+      <ObjectFileName>.\Debug/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0000</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>olmem32.lib;oldaapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\Debug/dbWave64.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>C:\Program Files\Data Translation\Win32\DTx-EZ\Lib;C:\Program Files (x86)\Data Translation\Win32\DTx-EZ\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\Debug/dbWave64.pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
@@ -102,20 +603,20 @@
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetEnvironment>Win32</TargetEnvironment>
-      <TypeLibraryName>.\Release/dbWave.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Release/dbWave64.tlb</TypeLibraryName>
       <HeaderFileName />
     </Midl>
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>C:\Program Files\Data Translation\Win32\DTx-EZ\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\data_acquisition;$(ProjectDir)\Controls;$(ProjectDir)\GridCtrl;$(ProjectDir)\Excel;$(ProjectDir)\include\DataTranslation;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>.\Release/dbWave.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Release/dbWave64.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
       <ObjectFileName>.\Release/</ObjectFileName>
       <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
@@ -128,696 +629,16 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>olmem32.lib;oldaapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>.\Release/dbWave.exe</OutputFile>
+      <OutputFile>.\Release/dbWave64.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>C:\Program Files\Data Translation\Win32\DTx-EZ\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <ProgramDatabaseFile>.\Release/dbWave.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\Release/dbWave64.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Acqdatad.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Acqparam.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Adexperi.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="ADInputParmsDlg.cpp" />
-    <ClCompile Include="Adinterv.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Awavepar.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Browsefi.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="chanlistitem.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="ChildFrm.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="CntrItem.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Concentration.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="ConfirmSaveDlg.cpp" />
-    <ClCompile Include="Controls\Custcomb.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Controls\CustomTabCtrl.cpp" />
-    <ClCompile Include="Controls\StretchControls.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Controls\ST_SplitterWnd.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Controls\ThemeUtil.cpp" />
-    <ClCompile Include="Copyasdl.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Cscale.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="CyberAmp.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Datacomm.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="datafile_ASD.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="datafile_Atlab.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="datafile_Awave.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="datafile_mcid.cpp" />
-    <ClCompile Include="datafile_X.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="DataListCtrl.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Dataseri.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="dbEditRecordDlg.cpp" />
-    <ClCompile Include="dbMultiDocTemplate.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="dbNewFileDuplicateDlg.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="dbSetTable.cpp" />
-    <ClCompile Include="dbUpdateLinkedListDlg.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="dbWave.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="dbWaveDoc.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="DeleteRecordOptionsDlg.cpp" />
-    <ClCompile Include="dtacq32.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="dtplot32.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Editctrl.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="EditListDlg.cpp" />
-    <ClCompile Include="Editspik.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="EditSpikeClassDlg.cpp" />
-    <ClCompile Include="EditStimArrayDlg.cpp" />
-    <ClCompile Include="Envelope.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="excel9.cpp" />
-    <ClCompile Include="ExportDataDlg.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Exportsp.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Fileversion.cpp" />
-    <ClCompile Include="FindFilesDlg.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="FormatHistogram.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="GotoRecordDlg.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="GridCtrl\GridCell.cpp" />
-    <ClCompile Include="GridCtrl\GridCellBase.cpp" />
-    <ClCompile Include="GridCtrl\GridCellCheck.cpp" />
-    <ClCompile Include="GridCtrl\GridCellCombo_FMP.cpp" />
-    <ClCompile Include="GridCtrl\GridCellDateTime.cpp" />
-    <ClCompile Include="GridCtrl\GridCellNumeric.cpp" />
-    <ClCompile Include="GridCtrl\GridCtrl.cpp" />
-    <ClCompile Include="GridCtrl\GridDropTarget.cpp" />
-    <ClCompile Include="GridCtrl\GridInPlaceEdit.cpp" />
-    <ClCompile Include="GridCtrl\GridTitleTip.cpp" />
-    <ClCompile Include="GridCtrl\GridURLCell.cpp" />
-    <ClCompile Include="ImportGenericDataDlg.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="ImportGertSpkDlg.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="InsectName.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Lineview.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Listbcla.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Lsoption.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="MainFrm.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="MeasureOptions.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="MeasureProperties.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="NoteDoc.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="NotedocCntrItem.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Operator.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Printdat.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Printdra.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Printmar.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Printpag.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="ProgDlg.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="RejectRecordDlg.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="RulerBar.cpp" />
-    <ClCompile Include="Scalebar.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="scopescr.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="ScopeScreenPropsDlg.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="ScrollBarEx.cpp" />
-    <ClCompile Include="SetPath.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Spikebar.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Spikeclas.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="SpikeClassListBox.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Spikedetec.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Spikedoc.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Spikehistp.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Spikelist.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="spikepar.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="spikeshape.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="spikexyp.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Splash.cpp" />
-    <ClCompile Include="Stage.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="StdAfx.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="StimLevelArray.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Stimulus.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="subfileitem.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Taglines.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="TemplateListWnd.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="TemplateWnd.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Type.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Vdabciss.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Vdordina.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Vdseries.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="ViewAdcontinuous.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="ViewData.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="ViewdbBrowse.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="ViewdbLeftPane.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="ViewdbWave.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="ViewNotedoc.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="ViewSpikeDetect.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="ViewSpikeHist.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="ViewSpikes.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="ViewSpikeSort.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="ViewSpikeTemplate.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="WaveBuf.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-    <ClCompile Include="Xyparame.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="dbWave.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Acqdatad.h" />
-    <ClInclude Include="Acqparam.h" />
-    <ClInclude Include="Adexperi.h" />
-    <ClInclude Include="ADInputParmsDlg.h" />
-    <ClInclude Include="Adinterv.h" />
-    <ClInclude Include="Awavepar.h" />
-    <ClInclude Include="Browsefi.h" />
-    <ClInclude Include="chanlistitem.h" />
-    <ClInclude Include="ChildFrm.h" />
-    <ClInclude Include="CntrItem.h" />
-    <ClInclude Include="Concentration.h" />
-    <ClInclude Include="ConfirmSaveDlg.h" />
-    <ClInclude Include="Controls\Custcomb.h" />
-    <ClInclude Include="Controls\CustomTabCtrl.h" />
-    <ClInclude Include="Controls\Schemadef.h" />
-    <ClInclude Include="Controls\StretchControls.h" />
-    <ClInclude Include="Controls\ST_SplitterWnd.h" />
-    <ClInclude Include="Controls\ThemeUtil.h" />
-    <ClInclude Include="Controls\Tmschema.h" />
-    <ClInclude Include="Copyasdl.h" />
-    <ClInclude Include="Cscale.h" />
-    <ClInclude Include="CyberAmp.h" />
-    <ClInclude Include="Datacomm.h" />
-    <ClInclude Include="datafile_ASD.h" />
-    <ClInclude Include="datafile_Atlab.h" />
-    <ClInclude Include="datafile_Awave.h" />
-    <ClInclude Include="datafile_mcid.h" />
-    <ClInclude Include="datafile_X.h" />
-    <ClInclude Include="dataheader_Asyst.H" />
-    <ClInclude Include="dataheader_Atlab.H" />
-    <ClInclude Include="DataListCtrl.h" />
-    <ClInclude Include="Dataseri.h" />
-    <ClInclude Include="dbEditRecordDlg.h" />
-    <ClInclude Include="dbMultiDocTemplate.h" />
-    <ClInclude Include="dbNewFileDuplicateDlg.h" />
-    <ClInclude Include="dbSetTable.h" />
-    <ClInclude Include="dbUpdateLinkedListDlg.h" />
-    <ClInclude Include="dbWave.h" />
-    <ClInclude Include="dbWaveDoc.h" />
-    <ClInclude Include="dbWave_constants.h" />
-    <ClInclude Include="DeleteRecordOptionsDlg.h" />
-    <ClInclude Include="dtacq32.h" />
-    <ClInclude Include="dtplot32.h" />
-    <ClInclude Include="Editctrl.h" />
-    <ClInclude Include="EditListDlg.h" />
-    <ClInclude Include="Editspik.h" />
-    <ClInclude Include="EditSpikeClassDlg.h" />
-    <ClInclude Include="EditStimArrayDlg.h" />
-    <ClInclude Include="Envelope.h" />
-    <ClInclude Include="excel9.h" />
-    <ClInclude Include="ExportDataDlg.h" />
-    <ClInclude Include="Exportsp.h" />
-    <ClInclude Include="Fileversion.h" />
-    <ClInclude Include="FindFilesDlg.h" />
-    <ClInclude Include="FormatHistogram.h" />
-    <ClInclude Include="GotoRecordDlg.h" />
-    <ClInclude Include="GridCtrl\GridCell.h" />
-    <ClInclude Include="GridCtrl\GridCellBase.h" />
-    <ClInclude Include="GridCtrl\GridCellCheck.h" />
-    <ClInclude Include="GridCtrl\GridCellCombo_FMP.h" />
-    <ClInclude Include="GridCtrl\GridCellDateTime.h" />
-    <ClInclude Include="GridCtrl\GridCellNumeric.h" />
-    <ClInclude Include="GridCtrl\GridCellRange.h" />
-    <ClInclude Include="GridCtrl\GridCtrl.h" />
-    <ClInclude Include="GridCtrl\GridDropTarget.h" />
-    <ClInclude Include="GridCtrl\GridInPlaceEdit.h" />
-    <ClInclude Include="GridCtrl\GridMemDC.h" />
-    <ClInclude Include="GridCtrl\GridTitleTip.h" />
-    <ClInclude Include="GridCtrl\GridURLCell.h" />
-    <ClInclude Include="importgenericdatadlg.h" />
-    <ClInclude Include="ImportGertSpkDlg.h" />
-    <ClInclude Include="InsectName.h" />
-    <ClInclude Include="Lineview.h" />
-    <ClInclude Include="Listbcla.h" />
-    <ClInclude Include="Lsoption.h" />
-    <ClInclude Include="MainFrm.h" />
-    <ClInclude Include="measureoptions.h" />
-    <ClInclude Include="MeasureProperties.h" />
-    <ClInclude Include="NoteDoc.h" />
-    <ClInclude Include="NotedocCntrItem.h" />
-    <ClInclude Include="Operator.h" />
-    <ClInclude Include="Printdat.h" />
-    <ClInclude Include="Printdra.h" />
-    <ClInclude Include="Printmar.h" />
-    <ClInclude Include="Printpag.h" />
-    <ClInclude Include="ProgDlg.h" />
-    <ClInclude Include="RejectRecordDlg.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="RulerBar.h" />
-    <ClInclude Include="Scalebar.h" />
-    <ClInclude Include="scopescr.h" />
-    <ClInclude Include="ScopeScreenPropsDlg.h" />
-    <ClInclude Include="ScrollBarEx.h" />
-    <ClInclude Include="SetPath.h" />
-    <ClInclude Include="Spikebar.h" />
-    <ClInclude Include="Spikeclas.h" />
-    <ClInclude Include="SpikeClassListBox.h" />
-    <ClInclude Include="Spikedetec.h" />
-    <ClInclude Include="Spikedoc.h" />
-    <ClInclude Include="spikehistp.h" />
-    <ClInclude Include="Spikelist.h" />
-    <ClInclude Include="spikepar.h" />
-    <ClInclude Include="spikeshape.h" />
-    <ClInclude Include="spikexyp.h" />
-    <ClInclude Include="Splash.h" />
-    <ClInclude Include="Stage.h" />
-    <ClInclude Include="StdAfx.h" />
-    <ClInclude Include="StimLevelArray.h" />
-    <ClInclude Include="Stimulus.h" />
-    <ClInclude Include="subfileitem.h" />
-    <ClInclude Include="Taglines.h" />
-    <ClInclude Include="TemplateListWnd.h" />
-    <ClInclude Include="TemplateWnd.h" />
-    <ClInclude Include="Type.h" />
-    <ClInclude Include="Vdabciss.h" />
-    <ClInclude Include="Vdordina.h" />
-    <ClInclude Include="Vdseries.h" />
-    <ClInclude Include="ViewADcontinuous.h" />
-    <ClInclude Include="ViewData.h" />
-    <ClInclude Include="ViewdbBrowse.h" />
-    <ClInclude Include="ViewdbLeftPane.h" />
-    <ClInclude Include="ViewdbWave.h" />
-    <ClInclude Include="ViewNotedoc.h" />
-    <ClInclude Include="ViewSpikeDetect.h" />
-    <ClInclude Include="ViewSpikeHist.h" />
-    <ClInclude Include="ViewSpikes.h" />
-    <ClInclude Include="ViewSpikeSort.h" />
-    <ClInclude Include="ViewSpikeTemplate.h" />
-    <ClInclude Include="WaveBuf.h" />
-    <ClInclude Include="Xyparame.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="res\bias.ico" />
-    <Image Include="res\bitmap1.bmp" />
-    <Image Include="res\bitmap2.bmp" />
-    <Image Include="res\bmp00001.bmp" />
-    <Image Include="res\bmp00002.bmp" />
-    <Image Include="res\bmp00003.bmp" />
-    <Image Include="res\bmp00004.bmp" />
-    <Image Include="res\bmp00005.bmp" />
-    <Image Include="res\bmp00006.bmp" />
-    <Image Include="res\dbWave.ico" />
-    <Image Include="res\dbWaveDoc.ico" />
-    <Image Include="res\fruit_fly.bmp" />
-    <Image Include="res\icon3.ico" />
-    <Image Include="res\IDR_DATA.ICO" />
-    <Image Include="res\IDR_SPIK.ICO" />
-    <Image Include="res\projectt.bmp" />
-    <Image Include="res\spikesty.bmp" />
-    <Image Include="res\stimOFF.bmp" />
-    <Image Include="res\stimON.bmp" />
-    <Image Include="res\tabcontr.bmp" />
-    <Image Include="res\Toolbar.bmp" />
-    <Image Include="res\zoom.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram_files.cd" />
-    <None Include="dbWave.reg" />
-    <None Include="res\CMEASURE.CUR" />
-    <None Include="res\copycontinuous.avi" />
-    <None Include="res\cur00001.cur" />
-    <None Include="res\cursor1.cur" />
-    <None Include="res\CZOOM.CUR" />
-    <None Include="res\dbWave.rc2" />
-    <None Include="res\splith.cur" />
-    <None Include="res\splitv.cur" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Headers\ReadMe.txt" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -287,7 +287,7 @@ BOOL CMainFrame::create_outlook_bar()
 		CString str;
 		if (!str.LoadString(buttons[i].string_id))
 			str = _T("??");
-		outlook_pane_.AddButton(img1.ExtractIconW(i), str, buttons[i].id);
+		outlook_pane_.AddButton(img1.ExtractIcon(i), str, buttons[i].id);
 		outlook_pane_.SetButtonInfo(i,
 		                               buttons[i].id, // command id
 		                               buttons[i].style, // buttons style

@@ -5,7 +5,7 @@
 #endif
 
 #include "ADAcqDataDoc.h"
-#include "RulerBar.h"
+#include "Controls/RulerBar.h"
 #include "afxwin.h"
 #include "ChartDataAD.h"
 #include "StretchControls.h"

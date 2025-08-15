@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "ChartData.h"
 #include "Ruler.h"
-#include "RulerBar.h"
+#include "Controls/RulerBar.h"
 #include <cmath>
 #include "resource.h"
 
@@ -196,7 +196,7 @@ BOOL RulerBar::Create(LPCTSTR lpsz_class_name, LPCTSTR lpsz_window_name, const D
 {
 	if ((rect.right - rect.left) < (rect.bottom - rect.top))
 		b_horizontal_ = FALSE;
-	return CWnd::Create(nullptr, _T("RulerBarWnd"), dw_style, rect, p_parent_wnd, n_id);
+	return CWnd::Create(nullptr, _T("Controls/RulerBarWnd"), dw_style, rect, p_parent_wnd, n_id);
 }
 
 BOOL RulerBar::Create(CWnd* p_parent_wnd, ChartData* p_data_chart_wnd, const BOOL b_as_x_axis, const int d_size, const UINT n_id)
@@ -217,7 +217,7 @@ BOOL RulerBar::Create(CWnd* p_parent_wnd, ChartData* p_data_chart_wnd, const BOO
 		rect_this.left = rect_this.right - d_size;
 		b_horizontal_ = FALSE;
 	}
-	return CWnd::Create(_T("RulerBarWnd"), nullptr, WS_CHILD, rect_this, p_parent_wnd, n_id);
+	return CWnd::Create(_T("Controls/RulerBarWnd"), nullptr, WS_CHILD, rect_this, p_parent_wnd, n_id);
 }
 
 #define MODE_ZOOM	0

@@ -4,7 +4,7 @@
 #include "chanlistitem.h"
 #include "ChartWnd.h"
 #include "AcqDataDoc.h"
-#include "Scale.h"
+#include "Controls/Scale.h"
 
 class ChartData : public ChartWnd
 {

@@ -275,7 +275,7 @@ int CdbTableAssociated::remove_strings_not_in_combo(const CComboBox* p_combo)
 	while (!IsEOF())
 	{
 		GetFieldValue(0, var_value0);
-		CString cs = var_value0.bstrVal;
+		CString cs = CString(var_value0.bstrVal);
 		const auto i = p_combo->FindStringExact(0, cs);
 		if (CB_ERR == i)
 		{

@@ -164,7 +164,7 @@ void DlgdbEditRecord::populate_combo_with_text(CDaoRecordset& linked_table_set, 
 			linked_table_set.GetFieldValue(0, var_value0);
 			linked_table_set.GetFieldValue(1, var_value1);
 			const auto id = var_value1.lVal;
-			CString cs = var_value0.bstrVal;
+			CString cs = CString(var_value0.bstrVal);
 			if (!cs.IsEmpty())
 			{
 				const auto i = combo.AddString(cs);
@@ -256,7 +256,7 @@ void DlgdbEditRecord::update_set_from_combo(CDaoRecordset& linked_table_set, CCo
 			COleVariant var_value0, var_value1;
 			linked_table_set.GetFieldValue(0, var_value0);
 			linked_table_set.GetFieldValue(1, var_value1);
-			const CString cs = var_value0.bstrVal;
+			const CString cs = CString(var_value0.bstrVal);
 			ASSERT(cs_combo == cs);
 			id_set = var_value1.lVal;
 		}

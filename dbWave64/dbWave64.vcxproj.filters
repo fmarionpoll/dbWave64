@@ -19,36 +19,60 @@
     <Filter Include="displayctrls">
       <UniqueIdentifier>{49e81a0a-caf5-4f23-913c-5dc6cded6820}</UniqueIdentifier>
     </Filter>
-    <Filter Include="customctrl">
-      <UniqueIdentifier>{caaa5830-8837-406f-a8ee-5db580987832}</UniqueIdentifier>
-    </Filter>
     <Filter Include="dlgs">
       <UniqueIdentifier>{dc05ecd4-803c-42a8-87cc-130eb002707b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="customctrl">
+      <UniqueIdentifier>{caaa5830-8837-406f-a8ee-5db580987832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Grid">
+      <UniqueIdentifier>{80c132e6-268c-4d2d-a16e-e4e119719b0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Acqdatad.cpp">
+    <ClCompile Include="AcqDataDoc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Acqparam.cpp">
+    <ClCompile Include="AcqWaveChan.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Awavepar.cpp">
+    <ClCompile Include="AcqWaveChanArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Browsefi.cpp">
+    <ClCompile Include="AcqWaveFormat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ADAcqDataDoc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartDataAD.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartSpike.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartSpikeBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartSpikeHist.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartSpikeHistVert.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartSpikeShape.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartSpikeXY.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChartWnd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ChildFrm.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Concentration.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CyberAmp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Datacomm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="datafile_ASD.cpp">
@@ -60,79 +84,202 @@
     <ClCompile Include="datafile_Awave.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="datafile_CEDSpike2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="datafile_mcid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="datafile_X.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Dataseri.cpp">
+    <ClCompile Include="DataListCtrl_Row.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dbMultiDocTemplate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dbSetTable.cpp">
+    <ClCompile Include="dbTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbTableAssociated.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbTableColumnDescriptor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbTableMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dbWave.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dbWaveDoc.cpp">
+    <ClCompile Include="DlgAbout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DeleteRecordOptionsDlg.cpp">
+    <ClCompile Include="DlgBrowseFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EditListDlg.cpp">
+    <ClCompile Include="DlgChartProps.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EditSpikeClassDlg.cpp">
+    <ClCompile Include="DlgConfirmSave.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgCopyAs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgDAChannels.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgDAOutputsParms.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgDataComments.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgDataSeries.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgDataSeriesFormat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgDataViewAbscissa.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgDataViewOrdinates.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgdbEditField.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgdbEditRecord.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgdbNewFileDuplicate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgDeleteRecordOptions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgEditList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgEditSpikeClass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgEditStimArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgExportData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgExportSpikeInfos.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgFileNew1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgFindFiles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgFormatHistogram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgGotoRecord.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgImportFiles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgImportGenericData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgImportOptions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgListBClaSize.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgLoadSaveOptions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgOverwriteFileOptions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgPivot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgPrintDataComments.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgPrintDataOptions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgPrintDrawArea.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgPrintMargins.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgPrintPageMargins.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgProgress.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgRejectRecord.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgSpikeDetect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgSpikeEdit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgTransferFiles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgXYParameters.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Editctrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FilenameCleanupUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Fileversion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FormatHistogram.cpp">
+    <ClCompile Include="IntervalPoints.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GridCtrl\GridCellDateTime.cpp">
+    <ClCompile Include="Intervals.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GridCtrl\GridCellNumeric.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GridCtrl\GridCtrl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GridCtrl\GridDropTarget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GridCtrl\GridInPlaceEdit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GridCtrl\GridTitleTip.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GridCtrl\GridURLCell.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InsectName.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Listbcla.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Lsoption.cpp">
+    <ClCompile Include="IntervalsListCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MainFrm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MeasureOptions.cpp">
+    <ClCompile Include="MeasureHZtagsPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MeasureOptionsPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MeasureProperties.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MeasureResultsPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MeasureVTtagsPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NiceUnit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NoteDoc.cpp">
@@ -141,37 +288,103 @@
     <ClCompile Include="NotedocCntrItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Operator.cpp">
+    <ClCompile Include="options_detect_spikes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Printdra.cpp">
+    <ClCompile Include="options_detect_stimulus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Printmar.cpp">
+    <ClCompile Include="OPTIONS_IMPORT.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Printpag.cpp">
+    <ClCompile Include="options_input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScrollBarEx.cpp">
+    <ClCompile Include="OPTIONS_MEASURE.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SetPath.cpp">
+    <ClCompile Include="options_output.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Spikeclas.cpp">
+    <ClCompile Include="options_scope_channel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="options_scope_struct.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="options_spk_classification.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OPTIONS_VIEW_DATA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="options_view_spikes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="output_parameters.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PaneldbFilter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PaneldbFilterToolBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PaneldbProperties.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PaneldbPropertiesToolBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scale.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Spike.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="spike_detection_array.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpikeClassGrid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpikeClassGridList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpikeClassGridProperty.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpikeClassGridToolBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SpikeClassListBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SpikeClassListBoxContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpikeClassProperties.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpikeClassRowItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpikeDetectArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Spikedoc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpikeFromChan.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Spikelist.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="spikepar.cpp">
+    <ClCompile Include="SpikeListTabCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Splash.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Stage.cpp">
@@ -180,269 +393,183 @@
     <ClCompile Include="StdAfx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StimLevelArray.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Stimulus.cpp">
+    <ClCompile Include="StretchControls.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="subfileitem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Taglines.cpp">
+    <ClCompile Include="Tag.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Type.cpp">
+    <ClCompile Include="Taglist.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Vdabciss.cpp">
+    <ClCompile Include="ViewData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Vdordina.cpp">
+    <ClCompile Include="ViewDbTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Vdseries.cpp">
+    <ClCompile Include="ViewdbWave.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewNotedoc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewSpikeDetect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewSpikeHist.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewSpikes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewSpikeSort.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewSpikeTemplate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WaveBuf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Xyparame.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Controls\cdxCRot90DC.cpp">
+      <Filter>customctrl</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\cdxCRotBevelLine.cpp">
+      <Filter>customctrl</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\InPlaceEdit.cpp">
+      <Filter>customctrl</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl\GridCell.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl\GridCellBase.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl\GridCellCheck.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl\GridCellCombo.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl\GridCellCombo_FMP.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl\GridCellDateTime.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl\GridCellNumeric.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\GridComboEdit.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl\GridCtrl.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl\GridDefaultCell.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl\GridDropTarget.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl\GridInPlaceEdit.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl\GridInPlaceList.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl\GridTitleTip.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCtrl\GridURLCell.cpp">
+      <Filter>Grid</Filter>
     </ClCompile>
     <ClCompile Include="excel9.cpp">
       <Filter>excel</Filter>
     </ClCompile>
-    <ClCompile Include="chanlistitem.cpp">
-      <Filter>displayctrls</Filter>
-    </ClCompile>
-    <ClCompile Include="Cscale.cpp">
-      <Filter>displayctrls</Filter>
-    </ClCompile>
-    <ClCompile Include="DataListCtrl.cpp">
-      <Filter>displayctrls</Filter>
-    </ClCompile>
-    <ClCompile Include="dtacq32.cpp">
-      <Filter>displayctrls</Filter>
-    </ClCompile>
-    <ClCompile Include="dtplot32.cpp">
-      <Filter>displayctrls</Filter>
-    </ClCompile>
-    <ClCompile Include="Envelope.cpp">
-      <Filter>displayctrls</Filter>
-    </ClCompile>
-    <ClCompile Include="Lineview.cpp">
-      <Filter>displayctrls</Filter>
-    </ClCompile>
-    <ClCompile Include="Printdat.cpp">
-      <Filter>displayctrls</Filter>
-    </ClCompile>
-    <ClCompile Include="Scalebar.cpp">
-      <Filter>displayctrls</Filter>
-    </ClCompile>
-    <ClCompile Include="scopescr.cpp">
-      <Filter>displayctrls</Filter>
-    </ClCompile>
-    <ClCompile Include="Spikebar.cpp">
-      <Filter>displayctrls</Filter>
-    </ClCompile>
-    <ClCompile Include="Spikehistp.cpp">
-      <Filter>displayctrls</Filter>
-    </ClCompile>
-    <ClCompile Include="spikeshape.cpp">
-      <Filter>displayctrls</Filter>
-    </ClCompile>
-    <ClCompile Include="spikexyp.cpp">
-      <Filter>displayctrls</Filter>
-    </ClCompile>
-    <ClCompile Include="TemplateListWnd.cpp">
-      <Filter>displayctrls</Filter>
-    </ClCompile>
-    <ClCompile Include="TemplateWnd.cpp">
-      <Filter>displayctrls</Filter>
-    </ClCompile>
-    <ClCompile Include="CntrItem.cpp">
-      <Filter>customctrl</Filter>
-    </ClCompile>
-    <ClCompile Include="Controls\Custcomb.cpp">
-      <Filter>customctrl</Filter>
-    </ClCompile>
-    <ClCompile Include="Controls\CustomTabCtrl.cpp">
-      <Filter>customctrl</Filter>
-    </ClCompile>
-    <ClCompile Include="Editctrl.cpp">
-      <Filter>customctrl</Filter>
-    </ClCompile>
-    <ClCompile Include="GridCtrl\GridCell.cpp">
-      <Filter>customctrl</Filter>
-    </ClCompile>
-    <ClCompile Include="GridCtrl\GridCellBase.cpp">
-      <Filter>customctrl</Filter>
-    </ClCompile>
-    <ClCompile Include="GridCtrl\GridCellCheck.cpp">
-      <Filter>customctrl</Filter>
-    </ClCompile>
-    <ClCompile Include="GridCtrl\GridCellCombo_FMP.cpp">
+    <ClCompile Include="QuadStateTree.cpp">
       <Filter>customctrl</Filter>
     </ClCompile>
     <ClCompile Include="RulerBar.cpp">
       <Filter>customctrl</Filter>
     </ClCompile>
-    <ClCompile Include="Controls\ST_SplitterWnd.cpp">
+    <ClCompile Include="Ruler.cpp">
       <Filter>customctrl</Filter>
     </ClCompile>
-    <ClCompile Include="Controls\StretchControls.cpp">
+    <ClCompile Include="ScrollBarEx.cpp">
       <Filter>customctrl</Filter>
-    </ClCompile>
-    <ClCompile Include="Controls\ThemeUtil.cpp">
-      <Filter>customctrl</Filter>
-    </ClCompile>
-    <ClCompile Include="Adexperi.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="ADInputParmsDlg.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="Adinterv.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="ConfirmSaveDlg.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="Copyasdl.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="dbEditRecordDlg.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="dbNewFileDuplicateDlg.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="dbUpdateLinkedListDlg.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="Editspik.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="EditStimArrayDlg.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="ExportDataDlg.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="Exportsp.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="FindFilesDlg.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="GotoRecordDlg.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="ImportGenericDataDlg.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="ImportGertSpkDlg.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="ProgDlg.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="RejectRecordDlg.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="ScopeScreenPropsDlg.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="Spikedetec.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="Splash.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewAdcontinuous.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewData.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewdbBrowse.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewdbLeftPane.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewdbWave.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewNotedoc.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewSpikeDetect.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewSpikeHist.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewSpikes.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewSpikeSort.cpp">
-      <Filter>dlgs</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewSpikeTemplate.cpp">
-      <Filter>dlgs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="dbWave.rc">
-      <Filter>Source Files</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Acqdatad.h">
+    <ClInclude Include="AcqDataDoc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Acqparam.h">
+    <ClInclude Include="AcqWaveChan.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Adexperi.h">
+    <ClInclude Include="AcqWaveChanArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ADInputParmsDlg.h">
+    <ClInclude Include="AcqWaveFormat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Adinterv.h">
+    <ClInclude Include="ADAcqDataDoc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Awavepar.h">
+    <ClInclude Include="CApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Browsefi.h">
+    <ClInclude Include="CDTBoardParameters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="chanlistitem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ChartData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartDataAD.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartSpike.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartSpikeBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartSpikeHist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartSpikeHistVert.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartSpikeShape.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartSpikeXY.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChartWnd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="ChildFrm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Concentration.h">
+    <ClInclude Include="ColorNames.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ConfirmSaveDlg.h">
+    <ClInclude Include="CRange.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Copyasdl.h">
+    <ClInclude Include="CRanges.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Cscale.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CyberAmp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Datacomm.h">
+    <ClInclude Include="CSpkListCtrlTab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="datafile_ASD.h">
@@ -452,6 +579,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="datafile_Awave.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="datafile_CEDSpike2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="datafile_mcid.h">
@@ -469,22 +599,28 @@
     <ClInclude Include="DataListCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Dataseri.h">
+    <ClInclude Include="DataListCtrl_Infos.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dbEditRecordDlg.h">
+    <ClInclude Include="DataListCtrl_Row.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="db_spike.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dbMultiDocTemplate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dbNewFileDuplicateDlg.h">
+    <ClInclude Include="dbTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dbSetTable.h">
+    <ClInclude Include="dbTableAssociated.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dbUpdateLinkedListDlg.h">
+    <ClInclude Include="dbTableColumnDescriptor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dbTableMain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dbWave.h">
@@ -493,103 +629,190 @@
     <ClInclude Include="dbWave_constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="dbWave_structures.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="dbWaveDoc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DeleteRecordOptionsDlg.h">
+    <ClInclude Include="DlgAbout.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dtacq32.h">
+    <ClInclude Include="DlgBrowseFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dtplot32.h">
+    <ClInclude Include="DlgChartProps.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EditListDlg.h">
+    <ClInclude Include="DlgConfirmSave.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Editspik.h">
+    <ClInclude Include="DlgCopyAs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EditSpikeClassDlg.h">
+    <ClInclude Include="DlgDAChannels.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EditStimArrayDlg.h">
+    <ClInclude Include="DlgDAOutputsParms.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgDataComments.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgDataSeries.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgDataSeriesFormat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgDataViewAbscissa.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgDataViewOrdinates.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgdbEditField.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgdbEditRecord.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgdbNewFileDuplicate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgDeleteRecordOptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgEditList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgEditSpikeClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgEditStimArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgExportData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgExportSpikeInfos.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgFileNew1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgFindFiles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgFormatHistogram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgGotoRecord.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgImportFiles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgImportGenericData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgImportOptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgListBClaSize.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgLoadSaveOptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgOverwriteFileOptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgPivot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgPrintDataComments.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgPrintDataOptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgPrintDrawArea.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgPrintMargins.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgPrintPageMargins.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgProgress.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgRejectRecord.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgSpikeDetect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgSpikeEdit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgTransferFiles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgXYParameters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Editctrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Envelope.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ExportDataDlg.h">
+    <ClInclude Include="excel9.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Exportsp.h">
+    <ClInclude Include="FilenameCleanupUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Fileversion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FindFilesDlg.h">
+    <ClInclude Include="ImportAlligatorDefinitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FormatHistogram.h">
+    <ClInclude Include="ImportExcelDefinitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GotoRecordDlg.h">
+    <ClInclude Include="IntervalPoints.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GridCtrl\GridCellDateTime.h">
+    <ClInclude Include="Intervals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GridCtrl\GridCellNumeric.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GridCtrl\GridCellRange.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GridCtrl\GridCtrl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GridCtrl\GridDropTarget.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GridCtrl\GridInPlaceEdit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GridCtrl\GridMemDC.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GridCtrl\GridTitleTip.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GridCtrl\GridURLCell.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="importgenericdatadlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ImportGertSpkDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InsectName.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Lineview.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Listbcla.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Lsoption.h">
+    <ClInclude Include="IntervalsListCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MainFrm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="measureoptions.h">
+    <ClInclude Include="MeasureHZtagsPage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MeasureOptionsPage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MeasureProperties.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MeasureResultsPage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MeasureVTtagsPage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NiceUnit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NoteDoc.h">
@@ -598,100 +821,124 @@
     <ClInclude Include="NotedocCntrItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Operator.h">
+    <ClInclude Include="options_detect_spikes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Printdat.h">
+    <ClInclude Include="options_detect_stimulus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Printdra.h">
+    <ClInclude Include="OPTIONS_IMPORT.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Printmar.h">
+    <ClInclude Include="options_input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Printpag.h">
+    <ClInclude Include="OPTIONS_MEASURE.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ProgDlg.h">
+    <ClInclude Include="options_output.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RejectRecordDlg.h">
+    <ClInclude Include="options_scope_channel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
+    <ClInclude Include="options_scope_struct.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RulerBar.h">
+    <ClInclude Include="options_spk_classification.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scalebar.h">
+    <ClInclude Include="OPTIONS_VIEW_DATA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Controls\Schemadef.h">
+    <ClInclude Include="options_view_spikes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scopescr.h">
+    <ClInclude Include="OutlookBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ScopeScreenPropsDlg.h">
+    <ClInclude Include="output_parameters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ScrollBarEx.h">
+    <ClInclude Include="PaneldbFilter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SetPath.h">
+    <ClInclude Include="PaneldbFilterToolBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Spikebar.h">
+    <ClInclude Include="PaneldbProperties.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Spikeclas.h">
+    <ClInclude Include="PaneldbPropertiesToolBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Spike.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="spike_detection_array.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpikeClassGrid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpikeClassGridList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpikeClassGridProperty.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpikeClassGridToolBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SpikeClassListBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Spikedetec.h">
+    <ClInclude Include="SpikeClassListBoxContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpikeClassProperties.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpikeClassRowItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpikeDetectArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Spikedoc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="spikehistp.h">
+    <ClInclude Include="SpikeFromChan.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Spikelist.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="spikepar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="spikeshape.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="spikexyp.h">
+    <ClInclude Include="SpikeListTabCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Splash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Stage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="StdAfx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StimLevelArray.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Stimulus.h">
+    <ClInclude Include="StretchControls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="subfileitem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Taglines.h">
+    <ClInclude Include="Tag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Taglist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TemplateListWnd.h">
@@ -700,28 +947,10 @@
     <ClInclude Include="TemplateWnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Type.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vdabciss.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vdordina.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vdseries.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewADcontinuous.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ViewData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ViewdbBrowse.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewdbLeftPane.h">
+    <ClInclude Include="ViewDbTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ViewdbWave.h">
@@ -748,118 +977,160 @@
     <ClInclude Include="WaveBuf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Xyparame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="excel9.h">
-      <Filter>excel</Filter>
-    </ClInclude>
-    <ClInclude Include="CntrItem.h">
+    <ClInclude Include="GridCtrl\MemDC.h">
       <Filter>customctrl</Filter>
     </ClInclude>
-    <ClInclude Include="Controls\Custcomb.h">
+    <ClInclude Include="Controls\cdxCRot90DC.h">
       <Filter>customctrl</Filter>
     </ClInclude>
-    <ClInclude Include="Controls\CustomTabCtrl.h">
+    <ClInclude Include="Controls\cdxCRotBevelLine.h">
       <Filter>customctrl</Filter>
     </ClInclude>
-    <ClInclude Include="Editctrl.h">
+    <ClInclude Include="Controls\InPlaceEdit.h">
       <Filter>customctrl</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl\GridURLCell.h">
+      <Filter>Grid</Filter>
     </ClInclude>
     <ClInclude Include="GridCtrl\GridCell.h">
-      <Filter>customctrl</Filter>
+      <Filter>Grid</Filter>
     </ClInclude>
     <ClInclude Include="GridCtrl\GridCellBase.h">
-      <Filter>customctrl</Filter>
+      <Filter>Grid</Filter>
     </ClInclude>
     <ClInclude Include="GridCtrl\GridCellCheck.h">
-      <Filter>customctrl</Filter>
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl\GridCellCombo.h">
+      <Filter>Grid</Filter>
     </ClInclude>
     <ClInclude Include="GridCtrl\GridCellCombo_FMP.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl\GridCellDateTime.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl\GridCellNumeric.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl\GridCellRange.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls\GridComboEdit.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl\GridCtrl.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl\GridDefaultCell.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl\GridDefines.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl\GridDropTarget.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl\GridInPlaceEdit.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl\GridInPlaceList.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCtrl\GridTitleTip.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="CPivotCache.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="CPivotCaches.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="CPivotCell.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="CPivotField.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="CPivotFields.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="CPivotFilter.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="CPivotFilters.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="CPivotFormula.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="CPivotFormulas.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="CPivotItem.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="CPivotItemList.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="CPivotItems.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="CPivotLayout.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="CPivotTable.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="CPivotTableChangeList.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="CPivotTables.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="CWorkbook.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="CWorkbooks.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="CWorksheet.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="CWorksheetFunction.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="CWorksheets.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadStateTree.h">
       <Filter>customctrl</Filter>
     </ClInclude>
-    <ClInclude Include="Controls\ST_SplitterWnd.h">
+    <ClInclude Include="Ruler.h">
       <Filter>customctrl</Filter>
     </ClInclude>
-    <ClInclude Include="Controls\StretchControls.h">
+    <ClInclude Include="RulerBar.h">
       <Filter>customctrl</Filter>
     </ClInclude>
-    <ClInclude Include="Controls\ThemeUtil.h">
+    <ClInclude Include="Scale.h">
       <Filter>customctrl</Filter>
     </ClInclude>
-    <ClInclude Include="Controls\Tmschema.h">
+    <ClInclude Include="ScrollBarEx.h">
       <Filter>customctrl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\bias.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bitmap1.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bitmap2.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bmp00001.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bmp00002.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bmp00003.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bmp00004.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bmp00005.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bmp00006.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\dbWave.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\dbWaveDoc.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\fruit_fly.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\icon3.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\IDR_DATA.ICO">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\IDR_SPIK.ICO">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\projectt.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\spikesty.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\stimOFF.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\stimON.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\tabcontr.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\Toolbar.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\zoom.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
+    <ResourceCompile Include="dbWave.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="dbWave64.ruleset" />
+    <None Include="packages.config" />
+    <None Include="resource.hm">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="runsdvui.cmd" />
     <None Include="res\CMEASURE.CUR">
       <Filter>Resource Files</Filter>
     </None>
@@ -872,20 +1143,59 @@
     <None Include="res\CZOOM.CUR">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="res\dbWave.rc2">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\splith.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\splitv.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="ClassDiagram_files.cd" />
-    <None Include="res\copycontinuous.avi" />
-    <None Include="dbWave.reg" />
+    <None Include="res\dbwave.cpt" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Headers\ReadMe.txt" />
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\BIAS.ICO">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bmp00001.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\buttons.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\check.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\check1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\check32.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\checkno.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\checkno32.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\class_view.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\class_view_hc.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\classview.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\classview_hc.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Databaselarge.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Databasesmall.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Datalarge.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Datasmall.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

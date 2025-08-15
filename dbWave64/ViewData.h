@@ -1,7 +1,7 @@
 #pragma once
 
-#include "RulerBar.h"
-#include "ScrollBarEx.h"
+#include "Controls/RulerBar.h"
+#include "Controls/ScrollBarEx.h"
 #include "afxwin.h"
 #include "ChartData.h"
 #include "Editctrl.h"

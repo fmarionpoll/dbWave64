@@ -4,7 +4,7 @@
 
 #include "StdAfx.h"
 #include "resource.h"
-#include "ScrollBarEx.h"
+#include "Controls/ScrollBarEx.h"
 
 #include "dbWave_constants.h"
 

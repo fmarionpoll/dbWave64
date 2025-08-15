@@ -54,7 +54,6 @@
 #include <cstdio>
 #include <cerrno>
 #include <process.h>
-#include <afxdisp.h>
 
 #include "resource.h"
 

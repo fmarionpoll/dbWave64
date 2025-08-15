@@ -391,9 +391,9 @@ HBRUSH CInPlaceList::CtlColor(CDC* /*pDC*/, UINT /*nCtlColor*/)
 /////////////////////////////////////////////////////////////////////////////
 
 
-IMPLEMENT_DYNCREATE(CGridCellCombo, CGridCell)
+IMPLEMENT_DYNCREATE(CGridCellCombo, GridCell)
 
-CGridCellCombo::CGridCellCombo() : CGridCell()
+CGridCellCombo::CGridCellCombo() : GridCell()
 {
 	SetStyle(CBS_DROPDOWN);  // CBS_DROPDOWN, CBS_DROPDOWNLIST, CBS_SIMPLE, CBS_SORT
 }
@@ -422,7 +422,7 @@ CWnd* CGridCellCombo::GetEditWnd() const
 CSize CGridCellCombo::GetCellExtent(CDC* pDC)
 {    
 	CSize sizeScroll (GetSystemMetrics(SM_CXVSCROLL), GetSystemMetrics(SM_CYHSCROLL));    
-	CSize sizeCell (CGridCell::GetCellExtent(pDC));    
+	CSize sizeCell (GridCell::GetCellExtent(pDC));    
 	sizeCell.cx += sizeScroll.cx;    
 	sizeCell.cy = max(sizeCell.cy,sizeScroll.cy);    
 	return sizeCell;
@@ -469,7 +469,7 @@ BOOL CGridCellCombo::Draw(CDC* pDC, int nRow, int nCol, CRect rect,  BOOL bErase
 		SetText(_T(""));
 
 	// drop through and complete the cell drawing using the base class' method
-	BOOL bResult = CGridCell::Draw(pDC, nRow, nCol, rect,  bEraseBkgnd);
+	BOOL bResult = GridCell::Draw(pDC, nRow, nCol, rect,  bEraseBkgnd);
 
 	if (IsEditing())
 		SetText(strTempText);

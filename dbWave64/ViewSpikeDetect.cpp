@@ -1983,12 +1983,12 @@ void ViewSpikeDetection::update_combo_box()
 void ViewSpikeDetection::update_legend_detection_wnd()
 {
 	CString text;
-	GetDlgItem(IDC_TRANSFORM)->GetWindowTextW(text);
+	GetDlgItem(IDC_TRANSFORM)->GetWindowText(text);
 	CString text0;
-	m_bevel2.GetWindowTextW(text0);
+	m_bevel2.GetWindowText(text0);
 	if (text0 != text)
 	{
-		m_bevel2.SetWindowTextW(text);
+		m_bevel2.SetWindowText(text);
 		m_bevel2.Invalidate();
 	}
 }

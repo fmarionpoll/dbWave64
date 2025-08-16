@@ -413,7 +413,7 @@ void ViewADcontinuous::transfer_files_to_database()
 	cs_name_array_.RemoveAll(); // clear file names
 
 	CdbTableMain* p_set = &(pdb_doc->db_table->m_main_table_set);
-	p_set->build_and_sort_id_arrays();
+	p_set->build_and_sort_key_arrays();
 	p_set->refresh_query();
 	pdb_doc->db_set_current_record_position(pdb_doc->db_table->get_records_count() - 1);
 	pdb_doc->update_all_views_db_wave(nullptr, HINT_DOC_MOVE_RECORD, nullptr);
@@ -1300,7 +1300,7 @@ void ViewADcontinuous::on_bn_clicked_start_stop2()
 		cs = _T("Stop");
 		start_output();
 	}
-	m_button_start_stop_da.SetWindowTextW(cs);
+	m_button_start_stop_da.SetWindowText(cs);
 }
 
 BOOL ViewADcontinuous::start_output()

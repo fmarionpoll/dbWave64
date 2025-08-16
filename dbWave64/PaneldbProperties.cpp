@@ -20,27 +20,27 @@ int PaneldbProperties::m_no_col_[] = {
 	CH_ACQDATE_DAY,
 	CH_ACQDATE_TIME,
 	CH_DATALEN,
-	CH_PATH_ID,
+	CH_PATH1_KEY,
 	CH_FILENAME,
-	CH_PATH2_ID,
+	CH_PATH2_KEY,
 	CH_FILESPK,
 	CH_ACQ_COMMENTS,
 	-1, // 0-6 acquisition: acq_date, data_len, path_ID, filename, path2_ID, file_spk, acq_comment
 	// ------2
 	CH_IDINSECT,
 	CH_IDSENSILLUM,
-	CH_INSECT_ID,
-	CH_SENSILLUM_ID,
-	CH_LOCATION_ID,
-	CH_STRAIN_ID,
-	CH_SEX_ID,
-	CH_OPERATOR_ID,
+	CH_INSECT_KEY,
+	CH_SENSILLUM_KEY,
+	CH_LOCATION_KEY,
+	CH_STRAIN_KEY,
+	CH_SEX_KEY,
+	CH_OPERATOR_KEY,
 	-1,
 	// 7-14 experiment: insectID, sensillumID, insect_name_ID, sensillum_name_ID, location_ID, strain_ID, sex_ID, operator_ID
 	// ------3
-	CH_EXPT_ID,
-	CH_STIM_ID, CH_CONC_ID, CH_REPEAT,
-	CH_STIM2_ID, CH_CONC2_ID, CH_REPEAT2,
+	CH_EXPERIMENT_KEY,
+	CH_STIM1_KEY, CH_CONC1_KEY, CH_REPEAT,
+	CH_STIM2_KEY, CH_CONC2_KEY, CH_REPEAT2,
 	-1, // 15-21 stimulus: experiment_ID, stimulus_ID, concentration_ID, repeat, stimulus2_ID, concentration2_ID, repeat2
 	// ------4
 	CH_NSPIKES,

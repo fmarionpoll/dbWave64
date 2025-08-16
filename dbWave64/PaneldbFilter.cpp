@@ -15,20 +15,20 @@
 
 // the numbers here are those of m_pszTableCol - they define the order of appearance of the different parameters
 int PaneldbFilter::m_no_col_[] = {
-	CH_EXPT_ID,
+	CH_EXPERIMENT_KEY,
 	CH_IDINSECT,
 	CH_IDSENSILLUM,
-	CH_INSECT_ID,
-	CH_SENSILLUM_ID,
-	CH_LOCATION_ID,
-	CH_STRAIN_ID,
-	CH_SEX_ID,
-	CH_OPERATOR_ID,
-	CH_STIM_ID,
-	CH_CONC_ID,
+	CH_INSECT_KEY,
+	CH_SENSILLUM_KEY,
+	CH_LOCATION_KEY,
+	CH_STRAIN_KEY,
+	CH_SEX_KEY,
+	CH_OPERATOR_KEY,
+	CH_STIM1_KEY,
+	CH_CONC1_KEY,
 	CH_REPEAT,
-	CH_STIM2_ID,
-	CH_CONC2_ID,
+	CH_STIM2_KEY,
+	CH_CONC2_KEY,
 	CH_REPEAT2,
 	CH_FLAG,
 	CH_ACQDATE_DAY,
@@ -343,7 +343,7 @@ void PaneldbFilter::init_filter_list()
 	m_wnd_filter_view_.LockWindowUpdate();
 	m_wnd_filter_view_.DeleteAllItems();
 
-	p_db->m_main_table_set.build_and_sort_id_arrays();
+	p_db->m_main_table_set.build_and_sort_key_arrays();
 	auto i = 0;
 	while (m_no_col_[i] > 0)
 	{
@@ -403,7 +403,7 @@ void PaneldbFilter::populate_item_from_linked_table(DB_ITEMDESC* p_desc) const
 
 	if (p_desc->b_single_filter)
 	{
-		p_desc->cs_param_single_filter = p_linked_set->get_string_from_id(p_desc->l_param_single_filter);
+		p_desc->cs_param_single_filter = p_linked_set->get_string_from_key(p_desc->l_param_single_filter);
 	}
 	else
 	{
@@ -494,7 +494,7 @@ void PaneldbFilter::build_filter_item_indirection_from_tree(DB_ITEMDESC* p_desc,
 			for (auto j = 0; j < p_desc->li_array.GetSize(); j++)
 			{
 				const auto li = p_desc->li_array.GetAt(j);
-				auto str = p_desc->p_linked_set->get_string_from_id(li);
+				auto str = p_desc->p_linked_set->get_string_from_key(li);
 				if (str == cs)
 				{
 					p_desc->l_param_filter_array.Add(li);

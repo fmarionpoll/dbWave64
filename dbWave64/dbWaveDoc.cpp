@@ -327,7 +327,7 @@ CString CdbWaveDoc::db_set_current_spike_file_name()
 		db_table->m_main_table_set.Edit();
 		db_table->m_main_table_set.SetFieldNull(&(db_table->m_main_table_set.m_file_spk), TRUE);
 		db_table->m_main_table_set.m_file_spk = cs_name;
-		db_table->m_main_table_set.m_path2_id = db_table->m_main_table_set.m_path_id;
+		db_table->m_main_table_set.m_path2_key = db_table->m_main_table_set.m_path1_key;
 		db_table->m_main_table_set.Update();
 	}
 	catch (CDaoException* e)
@@ -901,7 +901,7 @@ BOOL CdbWaveDoc::copy_files_to_directory(const CString & path)
 			{
 				old_names_array.Add(current_data_file_name_);
 
-				const UINT uid = db_table->m_main_table_set.m_path_id;
+				const UINT uid = db_table->m_main_table_set.m_path1_key;
 				auto j = 0;
 				for (auto i = 0; i < ui_id_array.GetSize(); i++, j++)
 					if (ui_id_array.GetAt(i) == uid)
@@ -913,7 +913,7 @@ BOOL CdbWaveDoc::copy_files_to_directory(const CString & path)
 			if (!current_spike_file_name_.IsEmpty())
 			{
 				old_names_array.Add(current_spike_file_name_);
-				const UINT uid = db_table->m_main_table_set.m_path2_id;
+				const UINT uid = db_table->m_main_table_set.m_path2_key;
 				auto j = 0;
 				for (auto i = 0; i < ui_id_array.GetSize(); i++, j++)
 					if (ui_id_array.GetAt(i) == uid)
@@ -1248,7 +1248,7 @@ void CdbWaveDoc::set_record_file_names(const source_data * record) const
 	// save file names
 	if (record->data_file_present)
 	{
-		db_table->m_main_table_set.m_path_id = db_table->m_path_set.get_string_in_linked_table(record->cs_path);
+		db_table->m_main_table_set.m_path1_key = db_table->m_path_set.get_string_in_linked_table(record->cs_path);
 		db_table->m_main_table_set.SetFieldNull(&(db_table->m_main_table_set.m_file_dat), FALSE);
 		db_table->m_main_table_set.m_file_dat = record->cs_dat_file.Right(
 			record->cs_dat_file.GetLength() - record->i_last_backslash_position - 1);
@@ -1257,7 +1257,7 @@ void CdbWaveDoc::set_record_file_names(const source_data * record) const
 
 	if (record->spike_file_present)
 	{
-		db_table->m_main_table_set.m_path2_id = db_table->m_path_set.get_string_in_linked_table(record->cs_path);
+		db_table->m_main_table_set.m_path2_key = db_table->m_path_set.get_string_in_linked_table(record->cs_path);
 		db_table->m_main_table_set.SetFieldNull(&(db_table->m_main_table_set.m_file_spk), FALSE);
 		db_table->m_main_table_set.m_file_spk = record->cs_spk_file.Right(
 			record->cs_spk_file.GetLength() - record->i_last_backslash_position - 1);
@@ -1305,8 +1305,8 @@ void CdbWaveDoc::import_file_list(CStringArray& cs_descriptors_array, const int 
 	}
 
 	// browse existing database array - collect data file acquisition time and IDs already used
-	db_table->m_main_table_set.get_max_id();
-	long m_id = db_table->m_main_table_set.max_id;
+	db_table->m_main_table_set.get_max_key();
+	long m_id = db_table->m_main_table_set.max_key;
 	const auto n_files_ok = check_files_can_be_opened(cs_descriptors_array, shared_file, n_columns, b_header);
 
 	// ---------------------------------------------file loop: read infos --------------------------------
@@ -1339,7 +1339,7 @@ void CdbWaveDoc::import_file_list(CStringArray& cs_descriptors_array, const int 
 	if (db_table->m_main_table_set.open_table(dbOpenDynaset, nullptr, 0))
 	{
 		db_table->m_main_table_set.Requery();
-		db_table->m_main_table_set.build_and_sort_id_arrays();
+		db_table->m_main_table_set.build_and_sort_key_arrays();
 		db_table->m_main_table_set.MoveLast();
 	}
 
@@ -1461,7 +1461,7 @@ BOOL CdbWaveDoc::import_database(const CString & filename) const
 		return FALSE;
 
 	db_table->m_main_table_set.Requery();
-	db_table->m_main_table_set.build_and_sort_id_arrays();
+	db_table->m_main_table_set.build_and_sort_key_arrays();
 
 	return TRUE;
 }
@@ -1534,7 +1534,7 @@ BOOL CdbWaveDoc::import_data_files_from_another_data_base(const CString& other_d
 		return FALSE;
 
 	db_table->m_main_table_set.Requery();
-	db_table->m_main_table_set.build_and_sort_id_arrays();
+	db_table->m_main_table_set.build_and_sort_key_arrays();
 
 	return TRUE;
 }
@@ -1689,18 +1689,18 @@ BOOL CdbWaveDoc::update_waveformat_from_database(CWaveFormat * p_wave_format) co
 {
 	auto b_changed = FALSE;
 
-	b_changed = db_table->get_record_value_string(CH_EXPT_ID, p_wave_format->cs_comment);
+	b_changed = db_table->get_record_value_string(CH_EXPERIMENT_KEY, p_wave_format->cs_comment);
 	b_changed |= db_table->get_record_value_string(CH_MORE, p_wave_format->cs_more_comment);
-	b_changed |= db_table->get_record_value_string(CH_OPERATOR_ID, p_wave_format->cs_operator);
-	b_changed |= db_table->get_record_value_string(CH_INSECT_ID, p_wave_format->cs_insect_name);
-	b_changed |= db_table->get_record_value_string(CH_STRAIN_ID, p_wave_format->cs_strain);
-	b_changed |= db_table->get_record_value_string(CH_SEX_ID, p_wave_format->cs_sex);
-	b_changed |= db_table->get_record_value_string(CH_LOCATION_ID, p_wave_format->cs_location);
-	b_changed |= db_table->get_record_value_string(CH_SENSILLUM_ID, p_wave_format->cs_sensillum);
-	b_changed |= db_table->get_record_value_string(CH_STIM_ID, p_wave_format->cs_stimulus);
-	b_changed |= db_table->get_record_value_string(CH_CONC_ID, p_wave_format->cs_concentration);
-	b_changed |= db_table->get_record_value_string(CH_STIM2_ID, p_wave_format->cs_stimulus2);
-	b_changed |= db_table->get_record_value_string(CH_CONC2_ID, p_wave_format->cs_concentration2);
+	b_changed |= db_table->get_record_value_string(CH_OPERATOR_KEY, p_wave_format->cs_operator);
+	b_changed |= db_table->get_record_value_string(CH_INSECT_KEY, p_wave_format->cs_insect_name);
+	b_changed |= db_table->get_record_value_string(CH_STRAIN_KEY, p_wave_format->cs_strain);
+	b_changed |= db_table->get_record_value_string(CH_SEX_KEY, p_wave_format->cs_sex);
+	b_changed |= db_table->get_record_value_string(CH_LOCATION_KEY, p_wave_format->cs_location);
+	b_changed |= db_table->get_record_value_string(CH_SENSILLUM_KEY, p_wave_format->cs_sensillum);
+	b_changed |= db_table->get_record_value_string(CH_STIM1_KEY, p_wave_format->cs_stimulus);
+	b_changed |= db_table->get_record_value_string(CH_CONC1_KEY, p_wave_format->cs_concentration);
+	b_changed |= db_table->get_record_value_string(CH_STIM2_KEY, p_wave_format->cs_stimulus2);
+	b_changed |= db_table->get_record_value_string(CH_CONC2_KEY, p_wave_format->cs_concentration2);
 	b_changed |= db_table->get_record_value_long(CH_IDINSECT, p_wave_format->insect_id);
 	b_changed |= db_table->get_record_value_long(CH_IDSENSILLUM, p_wave_format->sensillum_id);
 	b_changed |= db_table->get_record_value_long(CH_REPEAT, p_wave_format->repeat);
@@ -1779,7 +1779,7 @@ CString CdbWaveDoc::export_database_data(const int option) const
 	CString cs_dummy;
 
 	DB_ITEMDESC desc;
-	db_table->get_record_item_value(CH_PATH2_ID, &desc);
+	db_table->get_record_item_value(CH_PATH2_KEY, &desc);
 	auto filename = desc.cs_val;
 	db_table->get_record_item_value(CH_FILESPK, &desc);
 	filename = filename + _T('\\') + desc.cs_val;
@@ -1796,7 +1796,7 @@ CString CdbWaveDoc::export_database_data(const int option) const
 	// source data comments
 	if (options_view_spikes->b_acq_comments)
 	{
-		db_table->get_record_item_value(CH_EXPT_ID, &desc);
+		db_table->get_record_item_value(CH_EXPERIMENT_KEY, &desc);
 		cs_file_comment += separator + desc.cs_val;
 
 		db_table->get_record_item_value(CH_IDINSECT, &desc);
@@ -1806,37 +1806,37 @@ CString CdbWaveDoc::export_database_data(const int option) const
 		cs_dummy.Format(_T("%i"), desc.l_val);
 		cs_file_comment += separator + cs_dummy;
 
-		db_table->get_record_item_value(CH_INSECT_ID, &desc);
+		db_table->get_record_item_value(CH_INSECT_KEY, &desc);
 		cs_file_comment += separator + desc.cs_val;
-		db_table->get_record_item_value(CH_STRAIN_ID, &desc);
+		db_table->get_record_item_value(CH_STRAIN_KEY, &desc);
 		cs_file_comment += separator + desc.cs_val;
-		db_table->get_record_item_value(CH_SEX_ID, &desc);
+		db_table->get_record_item_value(CH_SEX_KEY, &desc);
 		cs_file_comment += separator + desc.cs_val;
-		db_table->get_record_item_value(CH_LOCATION_ID, &desc);
+		db_table->get_record_item_value(CH_LOCATION_KEY, &desc);
 		cs_file_comment += separator + desc.cs_val;
 
-		db_table->get_record_item_value(CH_OPERATOR_ID, &desc);
+		db_table->get_record_item_value(CH_OPERATOR_KEY, &desc);
 		cs_file_comment += separator + desc.cs_val;
 		db_table->get_record_item_value(CH_MORE, &desc);
 		cs_file_comment += separator + desc.cs_val;
 
-		db_table->get_record_item_value(CH_STIM_ID, &desc);
+		db_table->get_record_item_value(CH_STIM1_KEY, &desc);
 		cs_file_comment += separator + desc.cs_val;
-		db_table->get_record_item_value(CH_CONC_ID, &desc);
+		db_table->get_record_item_value(CH_CONC1_KEY, &desc);
 		cs_file_comment += separator + desc.cs_val;
 		db_table->get_record_item_value(CH_REPEAT, &desc);
 		cs_dummy.Format(_T("%i"), desc.l_val);
 		cs_file_comment += separator + cs_dummy;
 
-		db_table->get_record_item_value(CH_STIM2_ID, &desc);
+		db_table->get_record_item_value(CH_STIM2_KEY, &desc);
 		cs_file_comment += separator + desc.cs_val;
-		db_table->get_record_item_value(CH_CONC2_ID, &desc);
+		db_table->get_record_item_value(CH_CONC2_KEY, &desc);
 		cs_file_comment += separator + desc.cs_val;
 		db_table->get_record_item_value(CH_REPEAT2, &desc);
 		cs_dummy.Format(_T("%i"), desc.l_val);
 		cs_file_comment += separator + cs_dummy;
 
-		db_table->get_record_item_value(CH_SENSILLUM_ID, &desc);
+		db_table->get_record_item_value(CH_SENSILLUM_KEY, &desc);
 		cs_file_comment += separator + desc.cs_val;
 		db_table->get_record_item_value(CH_FLAG, &desc);
 		cs_dummy.Format(_T("%i"), desc.l_val);
@@ -2379,7 +2379,7 @@ void CdbWaveDoc::delete_erased_files()
 void CdbWaveDoc::db_delete_current_record()
 {
 	// save data & spike file names, together with their full access path
-	db_table->m_path_set.seek_id(db_table->m_main_table_set.m_path_id);
+	db_table->m_path_set.seek_key(db_table->m_main_table_set.m_path1_key);
 	CString cs;
 	if (!db_table->m_main_table_set.m_file_dat.IsEmpty())
 	{

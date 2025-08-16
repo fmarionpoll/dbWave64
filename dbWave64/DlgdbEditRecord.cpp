@@ -100,19 +100,19 @@ void DlgdbEditRecord::populate_controls()
 {
 	auto p_db = m_pdb_doc->db_table;
 	// fill combo boxes associated with a secondary table
-	populate_combo_with_text(p_db->m_stimulus_set, m_ctl_stimulus, m_p_set->m_stimulus_id);
-	populate_combo_with_text(p_db->m_concentration_set, m_ctl_concentration, m_p_set->m_concentration_id);
-	populate_combo_with_text(p_db->m_stimulus_set, m_ctl_stimulus2, m_p_set->m_stimulus2_id);
-	populate_combo_with_text(p_db->m_concentration_set, m_ctl_concentration2, m_p_set->m_concentration2_id);
-	populate_combo_with_text(p_db->m_insect_set, m_ctl_insect, m_p_set->m_insect_id);
-	populate_combo_with_text(p_db->m_strain_set, m_ctl_strain, m_p_set->m_strain_id);
-	populate_combo_with_text(p_db->m_sex_set, m_ctl_sex, m_p_set->m_sex_id);
-	populate_combo_with_text(p_db->m_sensillum_set, m_ctl_sensillum, m_p_set->m_sensillum_id);
-	populate_combo_with_text(p_db->m_location_set, m_ctl_location, m_p_set->m_location_id);
-	populate_combo_with_text(p_db->m_operator_set, m_ctl_operator, m_p_set->m_operator_id);
-	populate_combo_with_text(p_db->m_path_set, m_ctl_path_dat, m_p_set->m_path_id);
-	populate_combo_with_text(p_db->m_path_set, m_ctl_path_spk, m_p_set->m_path2_id);
-	populate_combo_with_text(p_db->m_experiment_set, m_ctl_experiment, m_p_set->m_experiment_id);
+	populate_combo_with_text(p_db->m_stimulus_set, m_ctl_stimulus, m_p_set->m_stimulus1_key);
+	populate_combo_with_text(p_db->m_concentration_set, m_ctl_concentration, m_p_set->m_concentration1_key);
+	populate_combo_with_text(p_db->m_stimulus_set, m_ctl_stimulus2, m_p_set->m_stimulus2_key);
+	populate_combo_with_text(p_db->m_concentration_set, m_ctl_concentration2, m_p_set->m_concentration2_key);
+	populate_combo_with_text(p_db->m_insect_set, m_ctl_insect, m_p_set->m_insect_key);
+	populate_combo_with_text(p_db->m_strain_set, m_ctl_strain, m_p_set->m_strain_key);
+	populate_combo_with_text(p_db->m_sex_set, m_ctl_sex, m_p_set->m_sex_key);
+	populate_combo_with_text(p_db->m_sensillum_set, m_ctl_sensillum, m_p_set->m_sensillum_key);
+	populate_combo_with_text(p_db->m_location_set, m_ctl_location, m_p_set->m_location_key);
+	populate_combo_with_text(p_db->m_operator_set, m_ctl_operator, m_p_set->m_operator_key);
+	populate_combo_with_text(p_db->m_path_set, m_ctl_path_dat, m_p_set->m_path1_key);
+	populate_combo_with_text(p_db->m_path_set, m_ctl_path_spk, m_p_set->m_path2_key);
+	populate_combo_with_text(p_db->m_experiment_set, m_ctl_experiment, m_p_set->m_experiment_key);
 	// ID combos
 	populate_combo_with_numbers(m_ctl_insect_id, &m_p_set->m_desc[CH_IDINSECT].li_array, m_p_set->m_id_insect);
 	populate_combo_with_numbers(m_ctl_sensillum_id, &m_p_set->m_desc[CH_IDSENSILLUM].li_array, m_p_set->m_id_sensillum);
@@ -195,19 +195,19 @@ void DlgdbEditRecord::update_database_from_dialog()
 	m_p_set->Edit();
 
 	CdbTable* p_database = m_pdb_doc->db_table;
-	update_set_from_combo(p_database->m_stimulus_set, m_ctl_stimulus, m_p_set->m_stimulus_id);
-	update_set_from_combo(p_database->m_concentration_set, m_ctl_concentration, m_p_set->m_concentration_id);
-	update_set_from_combo(p_database->m_stimulus_set, m_ctl_stimulus2, m_p_set->m_stimulus2_id);
-	update_set_from_combo(p_database->m_concentration_set, m_ctl_concentration2, m_p_set->m_concentration2_id);
-	update_set_from_combo(p_database->m_insect_set, m_ctl_insect, m_p_set->m_insect_id);
-	update_set_from_combo(p_database->m_strain_set, m_ctl_strain, m_p_set->m_strain_id);
-	update_set_from_combo(p_database->m_sex_set, m_ctl_sex, m_p_set->m_sex_id);
-	update_set_from_combo(p_database->m_sensillum_set, m_ctl_sensillum, m_p_set->m_sensillum_id);
-	update_set_from_combo(p_database->m_location_set, m_ctl_location, m_p_set->m_location_id);
-	update_set_from_combo(p_database->m_operator_set, m_ctl_operator, m_p_set->m_operator_id);
-	update_set_from_combo(p_database->m_experiment_set, m_ctl_experiment, m_p_set->m_experiment_id);
+	update_set_from_combo(p_database->m_stimulus_set, m_ctl_stimulus, m_p_set->m_stimulus1_key);
+	update_set_from_combo(p_database->m_concentration_set, m_ctl_concentration, m_p_set->m_concentration1_key);
+	update_set_from_combo(p_database->m_stimulus_set, m_ctl_stimulus2, m_p_set->m_stimulus2_key);
+	update_set_from_combo(p_database->m_concentration_set, m_ctl_concentration2, m_p_set->m_concentration2_key);
+	update_set_from_combo(p_database->m_insect_set, m_ctl_insect, m_p_set->m_insect_key);
+	update_set_from_combo(p_database->m_strain_set, m_ctl_strain, m_p_set->m_strain_key);
+	update_set_from_combo(p_database->m_sex_set, m_ctl_sex, m_p_set->m_sex_key);
+	update_set_from_combo(p_database->m_sensillum_set, m_ctl_sensillum, m_p_set->m_sensillum_key);
+	update_set_from_combo(p_database->m_location_set, m_ctl_location, m_p_set->m_location_key);
+	update_set_from_combo(p_database->m_operator_set, m_ctl_operator, m_p_set->m_operator_key);
+	update_set_from_combo(p_database->m_experiment_set, m_ctl_experiment, m_p_set->m_experiment_key);
 
-	//// save fixed parameters
+	// save fixed parameters
 	CString cs;
 	m_ctl_insect_id.GetWindowText(cs);
 	m_p_set->m_id_insect = _ttoi(cs);
@@ -334,7 +334,7 @@ void DlgdbEditRecord::edit_change_item_main_field(const int idc)
 	if (dlg.DoModal() == IDOK)
 	{
 		// update array
-		m_p_set->build_and_sort_id_arrays();
+		m_p_set->build_and_sort_key_arrays();
 		populate_combo_with_numbers(*p_desc->p_combo_box, &p_desc->li_array, *p_desc->pdata_item);
 
 		// find current selection and set combo to this position
@@ -364,55 +364,55 @@ DB_ITEMDESC* DlgdbEditRecord::get_item_descriptors(const int idc)
 	switch (idc)
 	{
 	case IDC_COMBO_EXPT2:
-		ich = CH_EXPT_ID;
+		ich = CH_EXPERIMENT_KEY;
 		m_p_set->m_desc[ich].p_combo_box = &m_ctl_experiment;
 		break;
 	case IDC_COMBO_INSECTNAME:
-		ich = CH_INSECT_ID;
+		ich = CH_INSECT_KEY;
 		m_p_set->m_desc[ich].p_combo_box = &m_ctl_insect;
 		break;
 	case IDC_COMBO_LOCATION:
-		ich = CH_LOCATION_ID;
+		ich = CH_LOCATION_KEY;
 		m_p_set->m_desc[ich].p_combo_box = &m_ctl_location;
 		break;
 	case IDC_COMBO_SENSILLUMNAME:
-		ich = CH_SENSILLUM_ID;
+		ich = CH_SENSILLUM_KEY;
 		m_p_set->m_desc[ich].p_combo_box = &m_ctl_sensillum;
 		break;
 	case IDC_COMBO_STIMULUS:
-		ich = CH_STIM_ID;
+		ich = CH_STIM1_KEY;
 		m_p_set->m_desc[ich].p_combo_box = &m_ctl_stimulus;
 		break;
 	case IDC_COMBO_CONCENTRATION:
-		ich = CH_CONC_ID;
+		ich = CH_CONC1_KEY;
 		m_p_set->m_desc[ich].p_combo_box = &m_ctl_concentration;
 		break;
 	case IDC_COMBO_OPERATOR:
-		ich = CH_OPERATOR_ID;
+		ich = CH_OPERATOR_KEY;
 		m_p_set->m_desc[ich].p_combo_box = &m_ctl_operator;
 		break;
 	case IDC_COMBO_STRAIN:
-		ich = CH_STRAIN_ID;
+		ich = CH_STRAIN_KEY;
 		m_p_set->m_desc[ich].p_combo_box = &m_ctl_strain;
 		break;
 	case IDC_COMBO_SEX:
-		ich = CH_SEX_ID;
+		ich = CH_SEX_KEY;
 		m_p_set->m_desc[ich].p_combo_box = &m_ctl_sex;
 		break;
 	case IDC_COMBO_STIMULUS2:
-		ich = CH_STIM2_ID;
+		ich = CH_STIM2_KEY;
 		m_p_set->m_desc[ich].p_combo_box = &m_ctl_stimulus2;
 		break;
 	case IDC_COMBO_CONCENTRATION2:
-		ich = CH_CONC2_ID;
+		ich = CH_CONC2_KEY;
 		m_p_set->m_desc[ich].p_combo_box = &m_ctl_concentration2;
 		break;
 	case IDC_COMBO_PATHDAT:
-		ich = CH_PATH_ID;
+		ich = CH_PATH1_KEY;
 		m_p_set->m_desc[ich].p_combo_box = &m_ctl_path_dat;
 		break;
 	case IDC_COMBO_PATHSPK:
-		ich = CH_PATH2_ID;
+		ich = CH_PATH2_KEY;
 		m_p_set->m_desc[ich].p_combo_box = &m_ctl_path_spk;
 		break;
 

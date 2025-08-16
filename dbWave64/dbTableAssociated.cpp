@@ -75,8 +75,8 @@ long CdbTableAssociated::get_string_in_linked_table(const CString& cs)
 		return -1;
 
 	// record not found: add a new record - none found or empty
-	long i_id = -1;
-	if (!get_id_from_string(cs, i_id))
+	long i_key = -1;
+	if (!get_key_from_string(cs, i_key))
 	{
 		try
 		{
@@ -88,8 +88,8 @@ long CdbTableAssociated::get_string_in_linked_table(const CString& cs)
 
 			COleVariant var_value;
 			GetFieldValue(1, var_value);
-			i_id = var_value.lVal;
-			ASSERT(get_id_from_string(cs, i_id));
+			i_key = var_value.lVal;
+			ASSERT(get_key_from_string(cs, i_key));
 		}
 		catch (CDaoException* e)
 		{
@@ -97,7 +97,7 @@ long CdbTableAssociated::get_string_in_linked_table(const CString& cs)
 			e->Delete();
 		}
 	}
-	return i_id;
+	return i_key;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -109,7 +109,7 @@ long CdbTableAssociated::get_string_in_linked_table(const CString& cs)
 //		BOOL	record found (TRUE) or not (FALSE)
 //		iID		record ID (if found in the table) or unchanged (if not found)
 
-BOOL CdbTableAssociated::get_id_from_string(const CString& cs, long& i_id)
+BOOL CdbTableAssociated::get_key_from_string(const CString& cs, long& i_key)
 {
 	if (IsEOF() && IsBOF())
 		return FALSE;
@@ -127,7 +127,7 @@ BOOL CdbTableAssociated::get_id_from_string(const CString& cs, long& i_id)
 		{
 			COleVariant var_value1;
 			GetFieldValue(1, var_value1);
-			i_id = var_value1.lVal;
+			i_key = var_value1.lVal;
 		}
 	}
 	catch (CDaoException* e)
@@ -140,14 +140,14 @@ BOOL CdbTableAssociated::get_id_from_string(const CString& cs, long& i_id)
 
 /////////////////////////////////////////////////////////////////////////////
 
-BOOL CdbTableAssociated::seek_id(const long i_id)
+BOOL CdbTableAssociated::seek_key(const long i_key)
 {
 	auto is_found = FALSE;
-	COleVariant id = i_id;
+	COleVariant key = i_key;
 	try
 	{
 		SetCurrentIndex(_T("Primary Key"));
-		is_found = Seek(_T("="), &id);
+		is_found = Seek(_T("="), &key);
 	}
 	catch (CDaoException* e)
 	{
@@ -159,15 +159,15 @@ BOOL CdbTableAssociated::seek_id(const long i_id)
 
 /////////////////////////////////////////////////////////////////////////////
 
-CString CdbTableAssociated::get_string_from_id(const long i_id)
+CString CdbTableAssociated::get_string_from_key(const long i_key)
 {
-	const auto found = seek_id(i_id);
+	const auto found = seek_key(i_key);
 	CString cs;
 	if (found)
 	{
-		COleVariant var_value1;
-		GetFieldValue(0, var_value1);
-		cs = var_value1.bstrVal;
+		// Use the bound field directly instead of GetFieldValue
+		// This should work better with the DFX_Text binding
+		cs = m_cs;
 	}
 	return cs;
 }
@@ -249,7 +249,7 @@ int CdbTableAssociated::add_strings_from_combo(const CComboBox* p_combo)
 		for (auto i = 0; i < n_items; i++)
 		{
 			p_combo->GetLBText(i, cs);
-			if (!get_id_from_string(cs, i_id))
+			if (!get_key_from_string(cs, i_id))
 			{
 				i_id = get_string_in_linked_table(cs);
 				n_added++;
@@ -274,8 +274,9 @@ int CdbTableAssociated::remove_strings_not_in_combo(const CComboBox* p_combo)
 	MoveFirst();
 	while (!IsEOF())
 	{
-		GetFieldValue(0, var_value0);
-		CString cs = CString(var_value0.bstrVal);
+		// Use the bound field directly instead of GetFieldValue
+		// This should work better with the DFX_Text binding
+		CString cs = m_cs;
 		const auto i = p_combo->FindStringExact(0, cs);
 		if (CB_ERR == i)
 		{

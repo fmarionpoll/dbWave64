@@ -1,4 +1,4 @@
-#include "../StdAfx.h"
+#include "StdAfx.h"
 #include "GridComboEdit.h"
 #include "GridInPlaceList.h"
 

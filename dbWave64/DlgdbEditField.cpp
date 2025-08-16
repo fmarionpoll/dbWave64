@@ -82,7 +82,7 @@ BOOL DlgdbEditField::OnInitDialog()
 	{
 		m_initial_id_ = var_value.lVal;
 		if (m_b_index_table)
-			m_cs_field_value = m_p_index_table->get_string_from_id(var_value.lVal);
+			m_cs_field_value = m_p_index_table->get_string_from_key(var_value.lVal);
 		else
 			m_cs_field_value.Format(_T("%i"), var_value.lVal);
 	}
@@ -228,7 +228,7 @@ void DlgdbEditField::on_bn_clicked_ok()
 			CString cs;
 			m_co_dictionary.GetLBText(m_co_dictionary.GetCurSel(), cs);
 			m_p_index_table->add_strings_from_combo(&m_co_dictionary);
-			ASSERT(m_p_index_table->get_id_from_string(cs, m_dest_id_));
+			ASSERT(m_p_index_table->get_key_from_string(cs, m_dest_id_));
 		}
 		if (m_source_condition == COND_SEARCH && !m_b_case_sensitive)
 			m_cs_text_search.MakeLower(); // change case of search string if case-sensitive is not checked
@@ -314,7 +314,7 @@ void DlgdbEditField::modify_current()
 			break;
 		if (b_valid)
 		{
-			cs_value = m_p_index_table->get_string_from_id(id_current);
+			cs_value = m_p_index_table->get_string_from_key(id_current);
 			if (!m_b_case_sensitive)
 				cs_value.MakeLower();
 			i_found = cs_value.Find(m_cs_text_search, 0);

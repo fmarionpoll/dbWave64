@@ -26,23 +26,23 @@ column_properties CdbTable::m_column_properties[N_TABLE_COLUMNS] =
 	{COL_NSPIKES, _T("nspikes"), _T("n spikes detected"), FIELD_LONG, _T("")}, // 9
 	{COL_NSPIKECLASSES, _T("nspikeclasses"),_T("n spike classes"), FIELD_LONG, _T("")}, // 10
 	{COL_FLAG, _T("flag"), _T("flag"), FIELD_LONG, _T("")}, // 11
-	{COL_INSECT_ID, _T("insectname_ID"),_T("insect"), FIELD_IND_TEXT, _T("insectname")}, // 12
-	{COL_SENSILLUM_ID, _T("sensillumname_ID"),_T("sensillum"), FIELD_IND_TEXT, _T("sensillumname")}, // 13
-	{COL_OPERATOR_ID, _T("operator_ID"), _T("operator"), FIELD_IND_TEXT, _T("operator")}, // 14
-	{COL_STIM_ID, _T("stim_ID"), _T("compound(1)"), FIELD_IND_TEXT, _T("stim")}, // 15
-	{COL_CONC_ID, _T("conc_ID"), _T("concentration(1)"), FIELD_IND_TEXT, _T("conc")}, // 16
-	{COL_LOCATION_ID, _T("location_ID"), _T("location"), FIELD_IND_TEXT, _T("location")}, // 17
-	{COL_PATH_ID, _T("path_ID"), _T("path (*.dat)"), FIELD_IND_FILEPATH, _T("path")}, // 18
-	{COL_PATH2_ID, _T("path2_ID"), _T("path (*.spk)"), FIELD_IND_FILEPATH, _T("path")}, // 19
-	{COL_STIM2_ID, _T("stim2_ID"), _T("compound(2)"), FIELD_IND_TEXT, _T("stim")}, // 20
-	{COL_CONC2_ID, _T("conc2_ID"), _T("concentration(2)"), FIELD_IND_TEXT, _T("conc")}, // 21
-	{COL_STRAIN_ID, _T("strain_ID"), _T("insect strain"), FIELD_IND_TEXT, _T("strain")}, // 22
-	{COL_SEX_ID, _T("sex_ID"), _T("insect sex"), FIELD_IND_TEXT, _T("sex")}, // 23
+	{COL_INSECT_KEY, _T("insectname_ID"),_T("insect"), FIELD_IND_TEXT, _T("insectname")}, // 12
+	{COL_SENSILLUM_KEY, _T("sensillumname_ID"),_T("sensillum"), FIELD_IND_TEXT, _T("sensillumname")}, // 13
+	{COL_OPERATOR_KEY, _T("operator_ID"), _T("operator"), FIELD_IND_TEXT, _T("operator")}, // 14
+	{COL_STIM1_KEY, _T("stim_ID"), _T("compound(1)"), FIELD_IND_TEXT, _T("stim")}, // 15
+	{COL_CONC1_KEY, _T("conc_ID"), _T("concentration(1)"), FIELD_IND_TEXT, _T("conc")}, // 16
+	{COL_LOCATION_KEY, _T("location_ID"), _T("location"), FIELD_IND_TEXT, _T("location")}, // 17
+	{COL_PATH1_KEY, _T("path_ID"), _T("path (*.dat)"), FIELD_IND_FILEPATH, _T("path")}, // 18
+	{COL_PATH2_KEY, _T("path2_ID"), _T("path (*.spk)"), FIELD_IND_FILEPATH, _T("path")}, // 19
+	{COL_STIM2_KEY, _T("stim2_ID"), _T("compound(2)"), FIELD_IND_TEXT, _T("stim")}, // 20
+	{COL_CONC2_KEY, _T("conc2_ID"), _T("concentration(2)"), FIELD_IND_TEXT, _T("conc")}, // 21
+	{COL_STRAIN_KEY, _T("strain_ID"), _T("insect strain"), FIELD_IND_TEXT, _T("strain")}, // 22
+	{COL_SEX_KEY, _T("sex_ID"), _T("insect sex"), FIELD_IND_TEXT, _T("sex")}, // 23
 	{COL_REPEAT, _T("repeat"), _T("repeat(1)"), FIELD_LONG, _T("")}, // 24
 	{COL_REPEAT2, _T("repeat2"), _T("repeat(2)"), FIELD_LONG, _T("")}, // 25
 	{COL_ACQDATE_DAY, _T("acqdate_day"), _T("date"), FIELD_DATE_YMD, _T("")}, // 26
 	{COL_ACQDATE_TIME, _T("acqdate_time"), _T("time"), FIELD_DATE_HMS, _T("")}, // 27
-	{COL_EXPT_ID, _T("expt_ID"), _T("Experiment"), FIELD_IND_TEXT, _T("expt")} // 28
+	{COL_EXPERIMENT_KEY, _T("expt_ID"), _T("Experiment"), FIELD_IND_TEXT, _T("expt")} // 28
 };
 
 CdbTable::CdbTable()
@@ -65,16 +65,16 @@ CdbTable::CdbTable()
 void CdbTable::set_attached_tables_names()
 {
 	// Set_DFX_SQL_Names(CString defaultSQL /* or table name*/, CString DFX_cs, CString DFX_ID)
-	m_stimulus_set.set_dfx_sql_names(m_column_properties[CH_STIM_ID].attached_table, _T("stim"), _T("stimID"));
-	m_concentration_set.set_dfx_sql_names(m_column_properties[CH_CONC_ID].attached_table, _T("conc"), _T("concID"));
-	m_operator_set.set_dfx_sql_names(m_column_properties[CH_OPERATOR_ID].attached_table, _T("operator"), _T("operatorID"));
-	m_insect_set.set_dfx_sql_names(m_column_properties[CH_INSECT_ID].attached_table, _T("insect"), _T("insectID"));
-	m_location_set.set_dfx_sql_names(m_column_properties[CH_LOCATION_ID].attached_table, _T("type"), _T("typeID"));
-	m_path_set.set_dfx_sql_names(m_column_properties[CH_PATH_ID].attached_table, _T("path"), _T("pathID"));
-	m_sensillum_set.set_dfx_sql_names(m_column_properties[CH_SENSILLUM_ID].attached_table, _T("stage"), _T("stageID"));
-	m_sex_set.set_dfx_sql_names(m_column_properties[CH_SEX_ID].attached_table, _T("sex"), _T("sexID"));
-	m_strain_set.set_dfx_sql_names(m_column_properties[CH_STRAIN_ID].attached_table, _T("strain"), _T("strainID"));
-	m_experiment_set.set_dfx_sql_names(m_column_properties[CH_EXPT_ID].attached_table, _T("expt"), _T("exptID"));
+	m_stimulus_set.set_dfx_sql_names(m_column_properties[CH_STIM1_KEY].attached_table, _T("stim"), _T("stimID"));
+	m_concentration_set.set_dfx_sql_names(m_column_properties[CH_CONC1_KEY].attached_table, _T("conc"), _T("concID"));
+	m_operator_set.set_dfx_sql_names(m_column_properties[CH_OPERATOR_KEY].attached_table, _T("operator"), _T("operatorID"));
+	m_insect_set.set_dfx_sql_names(m_column_properties[CH_INSECT_KEY].attached_table, _T("insect"), _T("insectID"));
+	m_location_set.set_dfx_sql_names(m_column_properties[CH_LOCATION_KEY].attached_table, _T("type"), _T("typeID"));
+	m_path_set.set_dfx_sql_names(m_column_properties[CH_PATH1_KEY].attached_table, _T("path"), _T("pathID"));
+	m_sensillum_set.set_dfx_sql_names(m_column_properties[CH_SENSILLUM_KEY].attached_table, _T("stage"), _T("stageID"));
+	m_sex_set.set_dfx_sql_names(m_column_properties[CH_SEX_KEY].attached_table, _T("sex"), _T("sexID"));
+	m_strain_set.set_dfx_sql_names(m_column_properties[CH_STRAIN_KEY].attached_table, _T("strain"), _T("strainID"));
+	m_experiment_set.set_dfx_sql_names(m_column_properties[CH_EXPERIMENT_KEY].attached_table, _T("expt"), _T("exptID"));
 
 }
 
@@ -82,17 +82,17 @@ boolean CdbTable::create_relations_with_attached_tables(const CString& cs_table)
 {
 	// create relations
 	constexpr long l_attr = dbRelationDontEnforce; //dbRelationUpdateCascade;
-	if (!create_relation_between_associated_table_and_1_column(cs_table, CH_INSECT_ID, l_attr, &m_insect_set)) return FALSE;
-	if (!create_relation_between_associated_table_and_1_column(cs_table, CH_SENSILLUM_ID, l_attr, &m_sensillum_set)) return FALSE;
-	if (!create_relation_between_associated_table_and_1_column(cs_table, CH_OPERATOR_ID, l_attr, &m_operator_set)) return FALSE;
-	if (!create_relation_between_associated_table_and_1_column(cs_table, CH_LOCATION_ID, l_attr, &m_location_set)) return FALSE;
-	if (!create_relation_between_associated_table_and_1_column(cs_table, CH_STRAIN_ID, l_attr, &m_strain_set)) return FALSE;
-	if (!create_relation_between_associated_table_and_1_column(cs_table, CH_SEX_ID, l_attr, &m_sex_set)) return FALSE;
-	if (!create_relation_between_associated_table_and_1_column(cs_table, CH_EXPT_ID, l_attr, &m_experiment_set)) return FALSE;
+	if (!create_relation_between_associated_table_and_1_column(cs_table, CH_INSECT_KEY, l_attr, &m_insect_set)) return FALSE;
+	if (!create_relation_between_associated_table_and_1_column(cs_table, CH_SENSILLUM_KEY, l_attr, &m_sensillum_set)) return FALSE;
+	if (!create_relation_between_associated_table_and_1_column(cs_table, CH_OPERATOR_KEY, l_attr, &m_operator_set)) return FALSE;
+	if (!create_relation_between_associated_table_and_1_column(cs_table, CH_LOCATION_KEY, l_attr, &m_location_set)) return FALSE;
+	if (!create_relation_between_associated_table_and_1_column(cs_table, CH_STRAIN_KEY, l_attr, &m_strain_set)) return FALSE;
+	if (!create_relation_between_associated_table_and_1_column(cs_table, CH_SEX_KEY, l_attr, &m_sex_set)) return FALSE;
+	if (!create_relation_between_associated_table_and_1_column(cs_table, CH_EXPERIMENT_KEY, l_attr, &m_experiment_set)) return FALSE;
 
-	if (!create_relation_between_associated_table_and_2_columns(cs_table, CH_PATH_ID, CH_PATH2_ID)) return FALSE;
-	if (!create_relation_between_associated_table_and_2_columns(cs_table, CH_STIM_ID, CH_STIM2_ID)) return FALSE;
-	if (!create_relation_between_associated_table_and_2_columns(cs_table, CH_CONC_ID, CH_CONC2_ID)) return FALSE;
+	if (!create_relation_between_associated_table_and_2_columns(cs_table, CH_PATH1_KEY, CH_PATH2_KEY)) return FALSE;
+	if (!create_relation_between_associated_table_and_2_columns(cs_table, CH_STIM1_KEY, CH_STIM2_KEY)) return FALSE;
+	if (!create_relation_between_associated_table_and_2_columns(cs_table, CH_CONC1_KEY, CH_CONC2_KEY)) return FALSE;
 
 	return true;
 }
@@ -383,10 +383,10 @@ BOOL CdbTable::open_tables()
 void CdbTable::add_column_28(CDaoTableDef& table_def, const CString& cs_table, const long l_attr)
 {
 	table_def.Open(cs_table);
-	table_def.CreateField(m_main_table_set.m_desc[CH_EXPT_ID].header_name, dbLong, 4, 0);
+	table_def.CreateField(m_main_table_set.m_desc[CH_EXPERIMENT_KEY].header_name, dbLong, 4, 0);
 	m_experiment_set.create_index_table(_T("expt"), _T("expt"), _T("exptID"), 100, this);
 	CreateRelation(_T("table_expt"), _T("expt"), cs_table, l_attr, _T("exptID"),
-		m_main_table_set.m_desc[CH_EXPT_ID].header_name);
+		m_main_table_set.m_desc[CH_EXPERIMENT_KEY].header_name);
 	table_def.Close();
 }
 
@@ -411,23 +411,23 @@ void CdbTable::add_column_22_23(CDaoTableDef& table_def, const CString& cs_table
 	table_def.Open(cs_table);
 
 	// add fields in the main table, add the corresponding tables and the relations between the main table and the new index tables
-	table_def.CreateField(m_main_table_set.m_desc[CH_STRAIN_ID].header_name, dbLong, 4, 0); // strain_ID
-	table_def.CreateField(m_main_table_set.m_desc[CH_SEX_ID].header_name, dbLong, 4, 0); // sex_ID
+	table_def.CreateField(m_main_table_set.m_desc[CH_STRAIN_KEY].header_name, dbLong, 4, 0); // strain_ID
+	table_def.CreateField(m_main_table_set.m_desc[CH_SEX_KEY].header_name, dbLong, 4, 0); // sex_ID
 	m_strain_set.create_index_table(_T("strain"), _T("strain"), _T("strainID"), 100, this);
 	m_sex_set.create_index_table(_T("sex"), _T("sex"), _T("sexID"), 10, this);
 	CreateRelation(_T("table_strain"), _T("strain"), cs_table, l_attr, _T("strainID"),
-		m_main_table_set.m_desc[CH_STRAIN_ID].header_name); // strain_ID
+		m_main_table_set.m_desc[CH_STRAIN_KEY].header_name); // strain_ID
 	CreateRelation(_T("table_sex"), _T("sex"), cs_table, l_attr, _T("sexID"),
-		m_main_table_set.m_desc[CH_SEX_ID].header_name); // sex_ID
+		m_main_table_set.m_desc[CH_SEX_KEY].header_name); // sex_ID
 // type -> location
 	DeleteRelation(_T("table_type")); // delete relationship
-	table_def.DeleteField(CH_LOCATION_ID);
+	table_def.DeleteField(CH_LOCATION_KEY);
 	// delete the field (index is different because we deleted one field)
-	table_def.CreateField(m_main_table_set.m_desc[CH_LOCATION_ID].header_name, dbLong, 4, 0); // locationID
+	table_def.CreateField(m_main_table_set.m_desc[CH_LOCATION_KEY].header_name, dbLong, 4, 0); // locationID
 	// stage -> sensillum name
 	DeleteRelation(_T("table_stage")); // delete relationship
-	table_def.DeleteField(CH_SENSILLUM_ID); // delete field
-	table_def.CreateField(m_main_table_set.m_desc[CH_SENSILLUM_ID].header_name, dbLong, 4, 0);
+	table_def.DeleteField(CH_SENSILLUM_KEY); // delete field
+	table_def.CreateField(m_main_table_set.m_desc[CH_SENSILLUM_KEY].header_name, dbLong, 4, 0);
 	// sensillumID
 	table_def.Close();
 
@@ -447,10 +447,10 @@ void CdbTable::add_column_22_23(CDaoTableDef& table_def, const CString& cs_table
 	table_def.Open(cs_table);
 	CString cs_rel = _T("table_sensillumname");
 	CreateRelation(cs_rel, _T("sensillumname"), cs_table, l_attr, _T("stageID"),
-		m_main_table_set.m_desc[CH_SENSILLUM_ID].header_name); // sensillum name_ID
+		m_main_table_set.m_desc[CH_SENSILLUM_KEY].header_name); // sensillum name_ID
 	cs_rel = _T("table_location");
 	CreateRelation(cs_rel, _T("location"), cs_table, l_attr, _T("typeID"),
-		m_main_table_set.m_desc[CH_LOCATION_ID].header_name); //location_ID
+		m_main_table_set.m_desc[CH_LOCATION_KEY].header_name); //location_ID
 	table_def.Close();
 }
 
@@ -466,14 +466,14 @@ void CdbTable::add_column_19_20(CDaoTableDef& table_def, const CString& cs_table
 	table_def.Open(cs_table);
 	CString cs_rel = _T("table_Rel1");
 	const auto i_pos = cs_rel.GetLength() - 1;
-	table_def.CreateField(m_main_table_set.m_desc[CH_STIM2_ID].header_name, dbLong, 4, 0);
-	table_def.CreateField(m_main_table_set.m_desc[CH_CONC2_ID].header_name, dbLong, 4, 0);
+	table_def.CreateField(m_main_table_set.m_desc[CH_STIM2_KEY].header_name, dbLong, 4, 0);
+	table_def.CreateField(m_main_table_set.m_desc[CH_CONC2_KEY].header_name, dbLong, 4, 0);
 	cs_rel.SetAt(i_pos, '9');
 	CreateRelation(cs_rel, _T("stim"), cs_table, l_attr, _T("stimID"),
-		m_main_table_set.m_desc[CH_STIM2_ID].header_name);
+		m_main_table_set.m_desc[CH_STIM2_KEY].header_name);
 	cs_rel.SetAt(i_pos, 'A');
 	CreateRelation(cs_rel, _T("conc"), cs_table, l_attr, _T("concID"),
-		m_main_table_set.m_desc[CH_CONC2_ID].header_name);
+		m_main_table_set.m_desc[CH_CONC2_KEY].header_name);
 	table_def.Close();
 }
 
@@ -534,7 +534,7 @@ void CdbTable::update_all_database_tables()
 
 CString CdbTable::get_file_path(const int i_id)
 {
-	auto cs_path = m_path_set.get_string_from_id(i_id);
+	auto cs_path = m_path_set.get_string_from_key(i_id);
 	if (is_relative_path(cs_path))
 		cs_path = m_database_path + cs_path.Right(cs_path.GetLength()-2);
 	return cs_path;
@@ -565,7 +565,7 @@ CString CdbTable::get_relative_path_from_string(const CString& cs_path) const
 long CdbTable::get_relative_path_from_id(const long i_id)
 {
 	long new_id = -1;
-	const auto cs_path = m_path_set.get_string_from_id(i_id);
+	const auto cs_path = m_path_set.get_string_from_key(i_id);
 
 	if (!is_relative_path(cs_path))
 	{
@@ -641,7 +641,7 @@ CString CdbTable::get_absolute_path_from_string(const CString& cs_path) const
 long CdbTable::get_absolute_path_from_id(const long i_id)
 {
 	long new_id = -1;
-	const auto cs_path = m_path_set.get_string_from_id(i_id);
+	const auto cs_path = m_path_set.get_string_from_key(i_id);
 	if (is_relative_path(cs_path))
 	{
 		const auto cs_absolute_path = get_absolute_path_from_string(cs_path);
@@ -711,7 +711,7 @@ CString CdbTable::get_current_record_data_file_name()
 	filename.Empty();
 	if (!m_main_table_set.IsFieldNull(&m_main_table_set.m_file_dat) && !m_main_table_set.m_file_dat.IsEmpty())
 	{
-		filename = get_file_path(m_main_table_set.m_path_id) + '\\' + m_main_table_set.m_file_dat;
+		filename = get_file_path(m_main_table_set.m_path1_key) + '\\' + m_main_table_set.m_file_dat;
 	}
 	return filename;
 }
@@ -724,13 +724,13 @@ CString CdbTable::get_current_record_spike_file_name()
 	// set current spk document
 	if (!m_main_table_set.IsFieldNull(&m_main_table_set.m_file_spk) && !m_main_table_set.m_file_spk.IsEmpty())
 	{
-		if (m_main_table_set.IsFieldNull(&m_main_table_set.m_path2_id))
+		if (m_main_table_set.IsFieldNull(&m_main_table_set.m_path2_key))
 		{
 			m_main_table_set.Edit();
-			m_main_table_set.m_path2_id = m_main_table_set.m_path_id;
+			m_main_table_set.m_path2_key = m_main_table_set.m_path1_key;
 			m_main_table_set.Update();
 		}
-		filename = get_file_path(m_main_table_set.m_path2_id) + '\\' + m_main_table_set.m_file_spk;
+		filename = get_file_path(m_main_table_set.m_path2_key) + '\\' + m_main_table_set.m_file_spk;
 	}
 	return filename;
 }
@@ -870,63 +870,63 @@ DB_ITEMDESC* CdbTable::get_record_item_descriptor(const int column_index)
 		p_desc->pdata_item = &m_main_table_set.m_flag;
 		ASSERT(p_desc->data_code_number == FIELD_LONG);
 		break;
-	case CH_INSECT_ID:
-		p_desc->pdata_item = &m_main_table_set.m_insect_id;
+	case CH_INSECT_KEY:
+		p_desc->pdata_item = &m_main_table_set.m_insect_key;
 		p_desc->p_linked_set = &m_insect_set;
 		ASSERT(p_desc->data_code_number == FIELD_IND_TEXT);
 		break;
-	case CH_SENSILLUM_ID:
-		p_desc->pdata_item = &m_main_table_set.m_sensillum_id;
+	case CH_SENSILLUM_KEY:
+		p_desc->pdata_item = &m_main_table_set.m_sensillum_key;
 		p_desc->p_linked_set = &m_sensillum_set;
 		ASSERT(p_desc->data_code_number == FIELD_IND_TEXT);
 		break;
-	case CH_OPERATOR_ID:
-		p_desc->pdata_item = &m_main_table_set.m_operator_id;
+	case CH_OPERATOR_KEY:
+		p_desc->pdata_item = &m_main_table_set.m_operator_key;
 		p_desc->p_linked_set = &m_operator_set;
 		ASSERT(p_desc->data_code_number == FIELD_IND_TEXT);
 		break;
-	case CH_STIM_ID:
-		p_desc->pdata_item = &m_main_table_set.m_stimulus_id;
+	case CH_STIM1_KEY:
+		p_desc->pdata_item = &m_main_table_set.m_stimulus1_key;
 		p_desc->p_linked_set = &m_stimulus_set;
 		ASSERT(p_desc->data_code_number == FIELD_IND_TEXT);
 		break;
-	case CH_CONC_ID:
-		p_desc->pdata_item = &m_main_table_set.m_concentration_id;
+	case CH_CONC1_KEY:
+		p_desc->pdata_item = &m_main_table_set.m_concentration1_key;
 		p_desc->p_linked_set = &m_concentration_set;
 		ASSERT(p_desc->data_code_number == FIELD_IND_TEXT);
 		break;
-	case CH_LOCATION_ID:
-		p_desc->pdata_item = &m_main_table_set.m_location_id;
+	case CH_LOCATION_KEY:
+		p_desc->pdata_item = &m_main_table_set.m_location_key;
 		p_desc->p_linked_set = &m_location_set;
 		ASSERT(p_desc->data_code_number == FIELD_IND_TEXT);
 		break;
-	case CH_PATH_ID:
-		p_desc->pdata_item = &m_main_table_set.m_path_id;
+	case CH_PATH1_KEY:
+		p_desc->pdata_item = &m_main_table_set.m_path1_key;
 		p_desc->p_linked_set = &m_path_set;
 		ASSERT(p_desc->data_code_number == FIELD_IND_FILEPATH);
 		break;
-	case CH_PATH2_ID:
-		p_desc->pdata_item = &m_main_table_set.m_path2_id;
+	case CH_PATH2_KEY:
+		p_desc->pdata_item = &m_main_table_set.m_path2_key;
 		p_desc->p_linked_set = &m_path_set;
 		ASSERT(p_desc->data_code_number == FIELD_IND_FILEPATH);
 		break;
-	case CH_STIM2_ID:
-		p_desc->pdata_item = &m_main_table_set.m_stimulus2_id;
+	case CH_STIM2_KEY:
+		p_desc->pdata_item = &m_main_table_set.m_stimulus2_key;
 		p_desc->p_linked_set = &m_stimulus_set;
 		ASSERT(p_desc->data_code_number == FIELD_IND_TEXT);
 		break;
-	case CH_CONC2_ID:
-		p_desc->pdata_item = &m_main_table_set.m_concentration2_id;
+	case CH_CONC2_KEY:
+		p_desc->pdata_item = &m_main_table_set.m_concentration2_key;
 		p_desc->p_linked_set = &m_concentration_set;
 		ASSERT(p_desc->data_code_number == FIELD_IND_TEXT);
 		break;
-	case CH_STRAIN_ID:
-		p_desc->pdata_item = &m_main_table_set.m_strain_id;
+	case CH_STRAIN_KEY:
+		p_desc->pdata_item = &m_main_table_set.m_strain_key;
 		p_desc->p_linked_set = &m_strain_set;
 		ASSERT(p_desc->data_code_number == FIELD_IND_TEXT);
 		break;
-	case CH_SEX_ID:
-		p_desc->pdata_item = &m_main_table_set.m_sex_id;
+	case CH_SEX_KEY:
+		p_desc->pdata_item = &m_main_table_set.m_sex_key;
 		p_desc->p_linked_set = &m_sex_set;
 		ASSERT(p_desc->data_code_number == FIELD_IND_TEXT);
 		break;
@@ -946,8 +946,8 @@ DB_ITEMDESC* CdbTable::get_record_item_descriptor(const int column_index)
 		p_desc->pdata_item = nullptr;
 		ASSERT(p_desc->data_code_number == FIELD_DATE_HMS);
 		break;
-	case CH_EXPT_ID:
-		p_desc->pdata_item = &m_main_table_set.m_experiment_id;
+	case CH_EXPERIMENT_KEY:
+		p_desc->pdata_item = &m_main_table_set.m_experiment_key;
 		p_desc->p_linked_set = &m_experiment_set;
 		ASSERT(p_desc->data_code_number == FIELD_IND_TEXT);
 		break;
@@ -980,8 +980,8 @@ BOOL CdbTable::get_record_item_value(const int i_column, DB_ITEMDESC* db_item_de
 	case FIELD_IND_TEXT:
 	case FIELD_IND_FILEPATH:
 		db_item_descriptor->l_val = var_value.lVal;
-		db_item_descriptor->cs_val = m_main_table_set.m_desc[i_column].p_linked_set->get_string_from_id(var_value.lVal);
-		if (i_column == CH_EXPT_ID && db_item_descriptor->cs_val.IsEmpty())
+		db_item_descriptor->cs_val = m_main_table_set.m_desc[i_column].p_linked_set->get_string_from_key(var_value.lVal);
+		if (i_column == CH_EXPERIMENT_KEY && db_item_descriptor->cs_val.IsEmpty())
 		{
 			const auto cs = db_item_descriptor->cs_val = GetName();
 			const auto left = cs.ReverseFind(_T('\\'));
@@ -1093,33 +1093,33 @@ void CdbTable::transfer_wave_format_data_to_record(const CWaveFormat* p_wave_for
 	m_main_table_set.m_more = p_wave_format->cs_more_comment;
 
 	// set type, stimulus and concentrations
-	m_main_table_set.m_operator_id = m_operator_set.get_string_in_linked_table(p_wave_format->cs_operator);
-	m_main_table_set.m_insect_id = m_insect_set.get_string_in_linked_table(p_wave_format->cs_insect_name);
-	m_main_table_set.m_location_id = m_location_set.get_string_in_linked_table(p_wave_format->cs_location);
-	m_main_table_set.m_experiment_id = m_experiment_set.get_string_in_linked_table(p_wave_format->cs_comment);
-	m_main_table_set.m_sensillum_id = m_sensillum_set.get_string_in_linked_table(p_wave_format->cs_sensillum);
-	m_main_table_set.m_stimulus_id = m_stimulus_set.get_string_in_linked_table(p_wave_format->cs_stimulus);
-	m_main_table_set.m_concentration_id = m_concentration_set.get_string_in_linked_table(p_wave_format->cs_concentration);
-	m_main_table_set.m_stimulus2_id = m_stimulus_set.get_string_in_linked_table(p_wave_format->cs_stimulus2);
-	m_main_table_set.m_concentration2_id = m_concentration_set.get_string_in_linked_table(p_wave_format->cs_concentration2);
-	m_main_table_set.m_sex_id = m_sex_set.get_string_in_linked_table(p_wave_format->cs_sex);
-	m_main_table_set.m_strain_id = m_strain_set.get_string_in_linked_table(p_wave_format->cs_strain);
-	m_main_table_set.m_experiment_id = m_experiment_set.get_string_in_linked_table(p_wave_format->cs_comment);
+	m_main_table_set.m_operator_key = m_operator_set.get_string_in_linked_table(p_wave_format->cs_operator);
+	m_main_table_set.m_insect_key = m_insect_set.get_string_in_linked_table(p_wave_format->cs_insect_name);
+	m_main_table_set.m_location_key = m_location_set.get_string_in_linked_table(p_wave_format->cs_location);
+	m_main_table_set.m_experiment_key = m_experiment_set.get_string_in_linked_table(p_wave_format->cs_comment);
+	m_main_table_set.m_sensillum_key = m_sensillum_set.get_string_in_linked_table(p_wave_format->cs_sensillum);
+	m_main_table_set.m_stimulus1_key = m_stimulus_set.get_string_in_linked_table(p_wave_format->cs_stimulus);
+	m_main_table_set.m_concentration1_key = m_concentration_set.get_string_in_linked_table(p_wave_format->cs_concentration);
+	m_main_table_set.m_stimulus2_key = m_stimulus_set.get_string_in_linked_table(p_wave_format->cs_stimulus2);
+	m_main_table_set.m_concentration2_key = m_concentration_set.get_string_in_linked_table(p_wave_format->cs_concentration2);
+	m_main_table_set.m_sex_key = m_sex_set.get_string_in_linked_table(p_wave_format->cs_sex);
+	m_main_table_set.m_strain_key = m_strain_set.get_string_in_linked_table(p_wave_format->cs_strain);
+	m_main_table_set.m_experiment_key = m_experiment_set.get_string_in_linked_table(p_wave_format->cs_comment);
 	m_main_table_set.m_flag = p_wave_format->flag;
 }
 
 void CdbTable::delete_unused_entries_in_accessory_tables()
 {
-	delete_unused_entries_in_attached_table(&m_operator_set, CH_OPERATOR_ID, -1);
-	delete_unused_entries_in_attached_table(&m_insect_set, CH_INSECT_ID, -1);
-	delete_unused_entries_in_attached_table(&m_location_set, CH_LOCATION_ID, -1);
-	delete_unused_entries_in_attached_table(&m_sensillum_set, CH_SENSILLUM_ID, -1);
-	delete_unused_entries_in_attached_table(&m_stimulus_set, CH_STIM_ID, CH_STIM2_ID);
-	delete_unused_entries_in_attached_table(&m_concentration_set, CH_CONC_ID, CH_CONC2_ID);
-	delete_unused_entries_in_attached_table(&m_sex_set, CH_SEX_ID, -1);
-	delete_unused_entries_in_attached_table(&m_strain_set, CH_STRAIN_ID, -1);
-	delete_unused_entries_in_attached_table(&m_experiment_set, CH_EXPT_ID, -1);
-	delete_unused_entries_in_attached_table(&m_path_set, CH_PATH_ID, CH_PATH2_ID);
+	delete_unused_entries_in_attached_table(&m_operator_set, CH_OPERATOR_KEY, -1);
+	delete_unused_entries_in_attached_table(&m_insect_set, CH_INSECT_KEY, -1);
+	delete_unused_entries_in_attached_table(&m_location_set, CH_LOCATION_KEY, -1);
+	delete_unused_entries_in_attached_table(&m_sensillum_set, CH_SENSILLUM_KEY, -1);
+	delete_unused_entries_in_attached_table(&m_stimulus_set, CH_STIM1_KEY, CH_STIM2_KEY);
+	delete_unused_entries_in_attached_table(&m_concentration_set, CH_CONC1_KEY, CH_CONC2_KEY);
+	delete_unused_entries_in_attached_table(&m_sex_set, CH_SEX_KEY, -1);
+	delete_unused_entries_in_attached_table(&m_strain_set, CH_STRAIN_KEY, -1);
+	delete_unused_entries_in_attached_table(&m_experiment_set, CH_EXPERIMENT_KEY, -1);
+	delete_unused_entries_in_attached_table(&m_path_set, CH_PATH1_KEY, CH_PATH2_KEY);
 }
 
 void CdbTable::delete_unused_entries_in_attached_table(CdbTableAssociated* p_index_table, const int index_column1, const int index_column2)
@@ -1133,10 +1133,10 @@ void CdbTable::delete_unused_entries_in_attached_table(CdbTableAssociated* p_ind
 		COleVariant var_value1;
 		p_index_table->GetFieldValue(1, var_value1);
 		const auto id_current = var_value1.lVal;
-		const auto flag1 = m_main_table_set.find_id_in_column(id_current, index_column1);
+		const auto flag1 = m_main_table_set.find_key_in_column(id_current, index_column1);
 		auto flag2 = FALSE;
 		if (index_column2 >= 0)
-			flag2 = m_main_table_set.find_id_in_column(id_current, index_column2);
+			flag2 = m_main_table_set.find_key_in_column(id_current, index_column2);
 		if (flag1 == FALSE && flag2 == FALSE)
 		{
 			p_index_table->Delete();

@@ -49,8 +49,8 @@ HRESULT CUSBPxxS1::Initialize()
 
 int CUSBPxxS1::GetAlligatorNumberConnected(CString& message)
 {
-	VARIANT in_val;
-	VARIANT out_val;
+	VARIANT in_val ;
+	VARIANT out_val ;
 	m_pIUSBP->USBPxxS1Command(0, ID_INITIALIZE, nullptr, nullptr);
 	m_pIUSBP->USBPxxS1Command(NULL, DCID_GET_TOTAL_CONNECTED_CHANNELS, &in_val, &out_val);
 	iDevicesConnected = static_cast<int>(out_val.lVal);
@@ -62,8 +62,8 @@ int CUSBPxxS1::GetAlligatorNumberConnected(CString& message)
 
 long CUSBPxxS1::GetAlligatorFirstAvailableHandle(CString& message)
 {
-	VARIANT in_val;
-	VARIANT out_val;
+	VARIANT in_val ;
+	VARIANT out_val ;
 	long handle = 0;
 	for (int ic = 0; ic < 10; ic++)
 	{
@@ -114,8 +114,8 @@ bool CUSBPxxS1::IsValidHandle()
 //**************************************************************************************
 void CUSBPxxS1::readLPFC(USBPxxPARAMETERS* pUSBP)
 {
-	VARIANT in_val;
-	VARIANT out_val;
+	VARIANT in_val ;
+	VARIANT out_val ;
 
 	m_pIUSBP->USBPxxS1Command(pUSBP->DeviceHandle, ID_READ_LPFC, &in_val, &out_val);
 	pUSBP->LPFc = out_val.fltVal;
@@ -132,8 +132,8 @@ void CUSBPxxS1::readLPFC(USBPxxPARAMETERS* pUSBP)
 //**************************************************************************************
 void CUSBPxxS1::readHPFC(USBPxxPARAMETERS* pUSBP)
 {
-	VARIANT in_val;
-	VARIANT out_val;
+	VARIANT in_val ;
+	VARIANT out_val ;
 
 	m_pIUSBP->USBPxxS1Command(pUSBP->DeviceHandle, ID_READ_HPFC, &in_val, &out_val);
 	pUSBP->HPFc = out_val.fltVal;
@@ -163,8 +163,8 @@ void CUSBPxxS1::readHPFC(USBPxxPARAMETERS* pUSBP)
 //**************************************************************************************
 void CUSBPxxS1::readGain(USBPxxPARAMETERS* pUSBP)
 {
-	VARIANT in_val;
-	VARIANT out_val;
+	VARIANT in_val ;
+	VARIANT out_val ;
 
 	m_pIUSBP->USBPxxS1Command(pUSBP->DeviceHandle, ID_READ_GAIN, &in_val, &out_val);
 	pUSBP->indexgain = out_val.lVal;
@@ -188,8 +188,8 @@ void CUSBPxxS1::readGain(USBPxxPARAMETERS* pUSBP)
 //**************************************************************************************
 void CUSBPxxS1::readCoupling(USBPxxPARAMETERS* pUSBP)
 {
-	VARIANT in_val;
-	VARIANT out_val;
+	VARIANT in_val ;
+	VARIANT out_val ;
 
 	m_pIUSBP->USBPxxS1Command(pUSBP->DeviceHandle, ID_READ_COUPLING, &in_val, &out_val);
 	pUSBP->indexCoupling = out_val.lVal;
@@ -215,8 +215,8 @@ void CUSBPxxS1::readCoupling(USBPxxPARAMETERS* pUSBP)
 //**************************************************************************************
 void CUSBPxxS1::readClocksource(USBPxxPARAMETERS* pUSBP)
 {
-	VARIANT in_val;
-	VARIANT out_val;
+	VARIANT in_val ;
+	VARIANT out_val ;
 
 	m_pIUSBP->USBPxxS1Command(pUSBP->DeviceHandle, ID_READ_CLOCKSOURCE, &in_val, &out_val);
 	pUSBP->indexClockSource = out_val.lVal;
@@ -248,8 +248,8 @@ void CUSBPxxS1::readClocksource(USBPxxPARAMETERS* pUSBP)
 //**************************************************************************************
 void CUSBPxxS1::readPClock(USBPxxPARAMETERS* pUSBP)
 {
-	VARIANT in_val;
-	VARIANT out_val;
+	VARIANT in_val ;
+	VARIANT out_val ;
 
 	m_pIUSBP->USBPxxS1Command(pUSBP->DeviceHandle, ID_READ_PCLOCK, &in_val, &out_val);
 	pUSBP->indexPClock = out_val.lVal;
@@ -272,8 +272,8 @@ void CUSBPxxS1::readPClock(USBPxxPARAMETERS* pUSBP)
 //**************************************************************************************
 void CUSBPxxS1::readChannelNumber(USBPxxPARAMETERS* pUSBP)
 {
-	VARIANT in_val;
-	VARIANT out_val;
+	VARIANT in_val ;
+	VARIANT out_val ;
 
 	m_pIUSBP->USBPxxS1Command(pUSBP->DeviceHandle, ID_READ_CHANNELNUMBER, &in_val, &out_val);
 	pUSBP->ChannelNumber = out_val.lVal;
@@ -303,8 +303,8 @@ void CUSBPxxS1::readDescription(USBPxxPARAMETERS* pUSBP)
 {
 	auto x = 30;
 	auto index = 0;
-	VARIANT in_val;
-	VARIANT out_val;
+	VARIANT in_val ;
+	VARIANT out_val ;
 
 	pUSBP->Description.Empty();
 	while (x--)
@@ -312,7 +312,7 @@ void CUSBPxxS1::readDescription(USBPxxPARAMETERS* pUSBP)
 		in_val.lVal = index++ << 16;
 		m_pIUSBP->USBPxxS1Command(pUSBP->DeviceHandle, ID_READ_DESCRIPTION, &in_val, &out_val);
 		const auto packed_character = out_val.lVal;
-		const TCHAR tc = packed_character & 0x0000ffff;
+		const TCHAR tc = TCHAR(packed_character & 0x0000ffff);
 		if (tc > static_cast<TCHAR>(0))
 			pUSBP->Description += tc;
 		else

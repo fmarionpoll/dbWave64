@@ -66,7 +66,7 @@ void DlgADExperiment::OnOK()
 {
 	UpdateData(TRUE);
 
-	m_mfc_browse_path.GetWindowTextW(m_cs_pathname);
+	m_mfc_browse_path.GetWindowText(m_cs_pathname);
 	if (m_cs_pathname.GetLength() > 2
 		&& m_cs_pathname.Right(1) != _T("\\"))
 		m_cs_pathname += _T("\\");
@@ -189,7 +189,7 @@ BOOL DlgADExperiment::OnInitDialog()
 	if (m_cs_basename.IsEmpty())
 		m_cs_basename = _T("data");
 	m_cs_pathname = p_db_doc->proposed_data_path_name;
-	m_mfc_browse_path.SetWindowTextW(m_cs_pathname);
+	m_mfc_browse_path.SetWindowText(m_cs_pathname);
 
 	m_cs_more_comment = p_wave_format->cs_more_comment;
 	load_list(&m_co_concentration, &(options_input->cs_a_concentration), options_input->ics_a_concentration,
@@ -313,7 +313,7 @@ void DlgADExperiment::load_list(CComboBox* p_co, const CStringArray* p_spike_ele
 		while (!pm_set->IsEOF())
 		{
 			pm_set->GetFieldValue(0, var_value1);
-			CString cs_field = var_value1.bstrVal;
+			CString cs_field = CString(var_value1.bstrVal);
 			if (!cs_field.IsEmpty() && p_co->FindStringExact(0, cs_field) == CB_ERR)
 			{
 				p_co->AddString(cs_field);
@@ -410,7 +410,7 @@ void DlgADExperiment::on_bn_clicked_button_experiment()
 void DlgADExperiment::on_en_kill_focus_mfc_edit_browse1()
 {
 	UpdateData(TRUE);
-	m_mfc_browse_path.GetWindowTextW(m_cs_pathname);
+	m_mfc_browse_path.GetWindowText(m_cs_pathname);
 	if (m_cs_pathname.GetLength() > 2
 		&& m_cs_pathname.Right(1) != _T("\\"))
 		m_cs_pathname += _T("\\");
@@ -430,7 +430,7 @@ void DlgADExperiment::on_en_kill_focus_mfc_edit_browse1()
 void DlgADExperiment::on_bn_clicked_button_next_id()
 {
 	const auto p_database = p_db_doc->db_table;
-	p_database->m_main_table_set.get_max_id();
-	m_insect_number = p_database->m_main_table_set.max_insect_id + 1;
+	p_database->m_main_table_set.get_max_key();
+	m_insect_number = p_database->m_main_table_set.max_insect_key + 1;
 	UpdateData(FALSE);
 }

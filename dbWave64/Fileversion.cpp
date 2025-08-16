@@ -67,7 +67,7 @@ CString CFileVersion::query_value(const LPCTSTR lpsz_value_name, DWORD dw_lang_c
 	// Must call Open() first
 	ASSERT(m_lp_version_data_ != NULL);
 	if (m_lp_version_data_ == nullptr)
-		return L"";
+		return "";
 
 	// If no lang-charset specified use default
 	if (dw_lang_charset == 0)

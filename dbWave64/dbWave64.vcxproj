@@ -15,6 +15,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="chanlistitem.cpp" />
+    <ClCompile Include="DataListCtrl.cpp" />
+    <ClCompile Include="dbWaveDoc.cpp" />
+    <ClCompile Include="Envelope.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -83,7 +87,6 @@
     <ClCompile Include="DlgListBClaSize.cpp" />
     <ClCompile Include="DlgLoadSaveOptions.cpp" />
     <ClCompile Include="DlgOverwriteFileOptions.cpp" />
-    <ClCompile Include="DlgPivot.cpp" />
     <ClCompile Include="DlgPrintDataComments.cpp" />
     <ClCompile Include="DlgPrintDataOptions.cpp" />
     <ClCompile Include="DlgPrintDrawArea.cpp" />
@@ -105,10 +108,8 @@
     <ClCompile Include="data_acquisition\DlgEditDAMseq.cpp" />
     <ClCompile Include="data_acquisition\dtacq32.cpp" />
     <ClCompile Include="data_acquisition\dtplot32.cpp" />
-    <ClCompile Include="data_acquisition\DTdigitalinput.cpp" />
     <ClCompile Include="data_acquisition\USBPxxPARAMETERS.cpp" />
     <ClCompile Include="data_acquisition\USBPxxS1.cpp" />
-    <ClCompile Include="data_acquisition\USBPxxS1Ctl.cpp" />
     <ClCompile Include="data_acquisition\ViewADcontinuous.cpp" />
     <ClCompile Include="Editctrl.cpp" />
     <ClCompile Include="Excel\excel9.cpp" />
@@ -182,6 +183,8 @@
     <ClCompile Include="subfileitem.cpp" />
     <ClCompile Include="Tag.cpp" />
     <ClCompile Include="Taglist.cpp" />
+    <ClCompile Include="TemplateListWnd.cpp" />
+    <ClCompile Include="TemplateWnd.cpp" />
     <ClCompile Include="ViewData.cpp" />
     <ClCompile Include="ViewDbTable.cpp" />
     <ClCompile Include="ViewdbWave.cpp" />
@@ -293,7 +296,6 @@
     <ClInclude Include="DlgListBClaSize.h" />
     <ClInclude Include="DlgLoadSaveOptions.h" />
     <ClInclude Include="DlgOverwriteFileOptions.h" />
-    <ClInclude Include="DlgPivot.h" />
     <ClInclude Include="DlgPrintDataComments.h" />
     <ClInclude Include="DlgPrintDataOptions.h" />
     <ClInclude Include="DlgPrintDrawArea.h" />
@@ -317,7 +319,6 @@
     <ClInclude Include="data_acquisition\dtplot32.h" />
     <ClInclude Include="data_acquisition\USBPxxPARAMETERS.h" />
     <ClInclude Include="data_acquisition\USBPxxS1.h" />
-    <ClInclude Include="data_acquisition\USBPxxS1Ctl.h" />
     <ClInclude Include="data_acquisition\ViewADcontinuous.h" />
     <ClInclude Include="Editctrl.h" />
     <ClInclude Include="Envelope.h" />
@@ -541,10 +542,10 @@
       <Culture>0x0000</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>olmem32.lib;oldaapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>olmem32.lib;oldaapi32.lib;ceds64int.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>.\Debug/dbWave64.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>C:\Program Files\Data Translation\Win32\DTx-EZ\Lib;C:\Program Files (x86)\Data Translation\Win32\DTx-EZ\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)include\DataTranslation;$(ProjectDir)include\CED\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>.\Debug/dbWave64.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -552,6 +553,10 @@
       <DataExecutionPrevention />
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(ProjectDir)include\toAdd\*.dll" "$(OutDir)"</Command>
+      <Message>Copying runtime DLLs to output directory</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug32|Win32'">
     <Midl>
@@ -584,10 +589,10 @@
       <Culture>0x0000</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>olmem32.lib;oldaapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>olmem32.lib;oldaapi32.lib;ceds64int.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>.\Debug/dbWave64.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>C:\Program Files\Data Translation\Win32\DTx-EZ\Lib;C:\Program Files (x86)\Data Translation\Win32\DTx-EZ\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)include\DataTranslation;$(ProjectDir)include\CED\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>.\Debug/dbWave64.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -596,6 +601,10 @@
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(ProjectDir)include\toAdd\*.dll" "$(OutDir)"</Command>
+      <Message>Copying runtime DLLs to output directory</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -628,16 +637,20 @@
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>olmem32.lib;oldaapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>olmem32.lib;oldaapi32.lib;ceds64int.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>.\Release/dbWave64.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>C:\Program Files\Data Translation\Win32\DTx-EZ\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)include\DataTranslation;$(ProjectDir)include\CED\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ProgramDatabaseFile>.\Release/dbWave64.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(ProjectDir)include\toAdd\*.dll" "$(OutDir)"</Command>
+      <Message>Copying runtime DLLs to output directory</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

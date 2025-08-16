@@ -24,9 +24,9 @@ public:
 	// operations
 	void set_dfx_sql_names(const CString& cs_default_sql, const CString& dfx_cs, const CString& dfx_id);
 	long get_string_in_linked_table(const CString& cs);
-	BOOL get_id_from_string(const CString& cs, long& i_id);
-	BOOL seek_id(long i_id);
-	CString get_string_from_id(long i_id);
+	BOOL get_key_from_string(const CString& cs, long& i_id);
+	BOOL seek_key(long i_id);
+	CString get_string_from_key(long i_id);
 	void create_index_table(const CString& cs_table, const CString& cs_column1, const CString& cs_id_column2, int text_size,
 	                      CDaoDatabase* p_database);
 	int add_strings_from_combo(const CComboBox* p_combo);

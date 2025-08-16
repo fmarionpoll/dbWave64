@@ -129,12 +129,6 @@
     <ClCompile Include="DlgCopyAs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DlgDAChannels.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DlgDAOutputsParms.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DlgDataComments.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -205,9 +199,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DlgOverwriteFileOptions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DlgPivot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DlgPrintDataComments.cpp">
@@ -336,9 +327,6 @@
     <ClCompile Include="PaneldbPropertiesToolBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Scale.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Spike.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -385,9 +373,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Splash.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Stage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StdAfx.cpp">
@@ -441,9 +426,6 @@
     <ClCompile Include="Controls\cdxCRotBevelLine.cpp">
       <Filter>customctrl</Filter>
     </ClCompile>
-    <ClCompile Include="Controls\InPlaceEdit.cpp">
-      <Filter>customctrl</Filter>
-    </ClCompile>
     <ClCompile Include="GridCtrl\GridCell.cpp">
       <Filter>Grid</Filter>
     </ClCompile>
@@ -463,9 +445,6 @@
       <Filter>Grid</Filter>
     </ClCompile>
     <ClCompile Include="GridCtrl\GridCellNumeric.cpp">
-      <Filter>Grid</Filter>
-    </ClCompile>
-    <ClCompile Include="Controls\GridComboEdit.cpp">
       <Filter>Grid</Filter>
     </ClCompile>
     <ClCompile Include="GridCtrl\GridCtrl.cpp">
@@ -489,20 +468,92 @@
     <ClCompile Include="GridCtrl\GridURLCell.cpp">
       <Filter>Grid</Filter>
     </ClCompile>
-    <ClCompile Include="excel9.cpp">
-      <Filter>excel</Filter>
+    <ClCompile Include="GridCtrl\GridComboEdit.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QuadStateTree.cpp">
-      <Filter>customctrl</Filter>
+    <ClCompile Include="GridCtrl\InPlaceEdit.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RulerBar.cpp">
-      <Filter>customctrl</Filter>
+    <ClCompile Include="data_acquisition\DlgDAChannels.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Ruler.cpp">
-      <Filter>customctrl</Filter>
+    <ClCompile Include="data_acquisition\DlgDAOutputsParms.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScrollBarEx.cpp">
-      <Filter>customctrl</Filter>
+    <ClCompile Include="data_acquisition\CyberAmp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\DataTranslation_AD.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\DataTranslation_DA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\DlgADExperiment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\DlgADInputParms.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\DlgADIntervals.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\DlgDataTranslationBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\DlgEditDAMseq.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\dtacq32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\dtplot32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\USBPxxPARAMETERS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\USBPxxS1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\ViewADcontinuous.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Excel\excel9.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\QuadStateTree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\Ruler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\RulerBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\Scale.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\ScrollBarEx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Envelope.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="chanlistitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbWaveDoc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TemplateListWnd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TemplateWnd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataListCtrl.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -650,12 +701,6 @@
     <ClInclude Include="DlgCopyAs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DlgDAChannels.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DlgDAOutputsParms.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DlgDataComments.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -728,9 +773,6 @@
     <ClInclude Include="DlgOverwriteFileOptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DlgPivot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DlgPrintDataComments.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -768,9 +810,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Envelope.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="excel9.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FilenameCleanupUtils.h">
@@ -986,9 +1025,6 @@
     <ClInclude Include="Controls\cdxCRotBevelLine.h">
       <Filter>customctrl</Filter>
     </ClInclude>
-    <ClInclude Include="Controls\InPlaceEdit.h">
-      <Filter>customctrl</Filter>
-    </ClInclude>
     <ClInclude Include="GridCtrl\GridURLCell.h">
       <Filter>Grid</Filter>
     </ClInclude>
@@ -1014,9 +1050,6 @@
       <Filter>Grid</Filter>
     </ClInclude>
     <ClInclude Include="GridCtrl\GridCellRange.h">
-      <Filter>Grid</Filter>
-    </ClInclude>
-    <ClInclude Include="Controls\GridComboEdit.h">
       <Filter>Grid</Filter>
     </ClInclude>
     <ClInclude Include="GridCtrl\GridCtrl.h">
@@ -1103,20 +1136,74 @@
     <ClInclude Include="CWorksheets.h">
       <Filter>excel</Filter>
     </ClInclude>
-    <ClInclude Include="QuadStateTree.h">
-      <Filter>customctrl</Filter>
+    <ClInclude Include="GridCtrl\GridComboEdit.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Ruler.h">
-      <Filter>customctrl</Filter>
+    <ClInclude Include="GridCtrl\InPlaceEdit.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RulerBar.h">
-      <Filter>customctrl</Filter>
+    <ClInclude Include="data_acquisition\DlgDAChannels.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scale.h">
-      <Filter>customctrl</Filter>
+    <ClInclude Include="data_acquisition\DlgDAOutputsParms.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ScrollBarEx.h">
-      <Filter>customctrl</Filter>
+    <ClInclude Include="data_acquisition\CyberAmp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\DataTranslation_AD.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\DataTranslation_DA.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\DlgADExperiment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\DlgADInputParms.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\DlgADIntervals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\DlgDataTranslationBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\DlgEditDAMseq.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\dtacq32.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\dtplot32.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\USBPxxPARAMETERS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\USBPxxS1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\ViewADcontinuous.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Excel\excel9.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls\QuadStateTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls\Ruler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls\RulerBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls\Scale.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls\ScrollBarEx.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

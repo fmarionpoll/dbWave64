@@ -12,7 +12,7 @@ IMPLEMENT_DYNAMIC(CdbTableMain, CDaoRecordset)
 CdbTableMain::CdbTableMain(CDaoDatabase* pdb)
 	: CDaoRecordset(pdb)
 {
-	m_desc[CH_ID].pdata_item					= &m_id;
+	m_desc[CH_ID].pdata_item				= &m_id;
 	m_desc[CH_IDINSECT].pdata_item			= &m_id_insect;
 	m_desc[CH_IDSENSILLUM].pdata_item		= &m_id_sensillum;
 	m_desc[CH_DATALEN].pdata_item			= &m_data_len;
@@ -20,24 +20,24 @@ CdbTableMain::CdbTableMain(CDaoDatabase* pdb)
 
 	m_desc[CH_NSPIKECLASSES].pdata_item		= &m_n_spike_classes;
 	m_desc[CH_FLAG].pdata_item				= &m_flag;
-	m_desc[CH_INSECT_ID].pdata_item			= &m_insect_id;
-	m_desc[CH_SENSILLUM_ID].pdata_item		= &m_sensillum_id;
-	m_desc[CH_OPERATOR_ID].pdata_item		= &m_operator_id;
+	m_desc[CH_INSECT_KEY].pdata_item			= &m_insect_key;
+	m_desc[CH_SENSILLUM_KEY].pdata_item		= &m_sensillum_key;
+	m_desc[CH_OPERATOR_KEY].pdata_item		= &m_operator_key;
 
-	m_desc[CH_STIM_ID].pdata_item			= &m_stimulus_id;
-	m_desc[CH_CONC_ID].pdata_item			= &m_concentration_id;
-	m_desc[CH_LOCATION_ID].pdata_item		= &m_location_id;
-	m_desc[CH_PATH_ID].pdata_item			= &m_path_id;
-	m_desc[CH_PATH2_ID].pdata_item			= &m_path2_id;
+	m_desc[CH_STIM1_KEY].pdata_item			= &m_stimulus1_key;
+	m_desc[CH_CONC1_KEY].pdata_item			= &m_concentration1_key;
+	m_desc[CH_LOCATION_KEY].pdata_item		= &m_location_key;
+	m_desc[CH_PATH1_KEY].pdata_item			= &m_path1_key;
+	m_desc[CH_PATH2_KEY].pdata_item			= &m_path2_key;
 
-	m_desc[CH_STIM2_ID].pdata_item			= &m_stimulus2_id;
-	m_desc[CH_CONC2_ID].pdata_item			= &m_concentration2_id;
-	m_desc[CH_STRAIN_ID].pdata_item			= &m_strain_id;
-	m_desc[CH_SEX_ID].pdata_item				= &m_sex_id;
-	m_desc[CH_REPEAT].pdata_item				= &m_repeat;
+	m_desc[CH_STIM2_KEY].pdata_item			= &m_stimulus2_key;
+	m_desc[CH_CONC2_KEY].pdata_item			= &m_concentration2_key;
+	m_desc[CH_STRAIN_KEY].pdata_item			= &m_strain_key;
+	m_desc[CH_SEX_KEY].pdata_item			= &m_sex_key;
+	m_desc[CH_REPEAT].pdata_item			= &m_repeat;
 
 	m_desc[CH_REPEAT2].pdata_item			= &m_repeat2;
-	m_desc[CH_EXPT_ID].pdata_item			= &m_experiment_id;
+	m_desc[CH_EXPERIMENT_KEY].pdata_item			= &m_experiment_key;
 
 	m_desc[CH_ACQDATE].pdata_item			= nullptr; 
 	m_desc[CH_FILENAME].pdata_item			= nullptr; 
@@ -119,34 +119,34 @@ void CdbTableMain::DoFieldExchange(CDaoFieldExchange* p_fx)
 	DFX_Long(p_fx, m_desc[CH_DATALEN].dfx_name_with_brackets, m_data_len);
 	DFX_Long(p_fx, m_desc[CH_NSPIKES].dfx_name_with_brackets, m_n_spikes);
 	DFX_Long(p_fx, m_desc[CH_NSPIKECLASSES].dfx_name_with_brackets, m_n_spike_classes);
-	DFX_Long(p_fx, m_desc[CH_PATH_ID].dfx_name_with_brackets, m_path_id);
-	DFX_Long(p_fx, m_desc[CH_PATH2_ID].dfx_name_with_brackets, m_path2_id);
+	DFX_Long(p_fx, m_desc[CH_PATH1_KEY].dfx_name_with_brackets, m_path1_key);
+	DFX_Long(p_fx, m_desc[CH_PATH2_KEY].dfx_name_with_brackets, m_path2_key);
 	DFX_DateTime(p_fx, m_desc[CH_ACQDATE].dfx_name_with_brackets, m_table_acq_date);
 
 	int i = CH_IDINSECT;
 	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_id_insect);
 	i = CH_IDSENSILLUM;
 	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_id_sensillum);
-	i = CH_LOCATION_ID;
-	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_location_id);
-	i = CH_STIM_ID;
-	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_stimulus_id);
-	i = CH_CONC_ID;
-	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_concentration_id);
-	i = CH_STIM2_ID;
-	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_stimulus2_id);
-	i = CH_CONC2_ID;
-	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_concentration2_id);
-	i = CH_OPERATOR_ID;
-	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_operator_id);
-	i = CH_INSECT_ID;
-	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_insect_id);
-	i = CH_SENSILLUM_ID;
-	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_sensillum_id);
-	i = CH_STRAIN_ID;
-	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_strain_id);
-	i = CH_SEX_ID;
-	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_sex_id);
+	i = CH_LOCATION_KEY;
+	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_location_key);
+	i = CH_STIM1_KEY;
+	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_stimulus1_key);
+	i = CH_CONC1_KEY;
+	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_concentration1_key);
+	i = CH_STIM2_KEY;
+	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_stimulus2_key);
+	i = CH_CONC2_KEY;
+	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_concentration2_key);
+	i = CH_OPERATOR_KEY;
+	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_operator_key);
+	i = CH_INSECT_KEY;
+	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_insect_key);
+	i = CH_SENSILLUM_KEY;
+	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_sensillum_key);
+	i = CH_STRAIN_KEY;
+	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_strain_key);
+	i = CH_SEX_KEY;
+	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_sex_key);
 	i = CH_FLAG;
 	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_flag);
 	i = CH_REPEAT;
@@ -157,33 +157,33 @@ void CdbTableMain::DoFieldExchange(CDaoFieldExchange* p_fx)
 	DFX_DateTime(p_fx, m_desc[i].dfx_name_with_brackets, m_acq_date_day);
 	i = CH_ACQDATE_TIME;
 	DFX_DateTime(p_fx, m_desc[i].dfx_name_with_brackets, m_acq_date_time);
-	i = CH_EXPT_ID;
-	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_experiment_id);
+	i = CH_EXPERIMENT_KEY;
+	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_experiment_key);
 	
 	p_fx->SetFieldType(CDaoFieldExchange::param);
 	i = CH_IDINSECT;
 	DFX_Long(p_fx, m_desc[i].cs_col_param, m_desc[i].l_param_single_filter); // 1
 	i = CH_IDSENSILLUM;
 	DFX_Long(p_fx, m_desc[i].cs_col_param, m_desc[i].l_param_single_filter); //
-	i = CH_LOCATION_ID;
+	i = CH_LOCATION_KEY;
 	DFX_Long(p_fx, m_desc[i].cs_col_param, m_desc[i].l_param_single_filter); //
-	i = CH_STIM_ID;
+	i = CH_STIM1_KEY;
 	DFX_Long(p_fx, m_desc[i].cs_col_param, m_desc[i].l_param_single_filter); //
-	i = CH_CONC_ID;
+	i = CH_CONC1_KEY;
 	DFX_Long(p_fx, m_desc[i].cs_col_param, m_desc[i].l_param_single_filter); // 5
-	i = CH_STIM2_ID;
+	i = CH_STIM2_KEY;
 	DFX_Long(p_fx, m_desc[i].cs_col_param, m_desc[i].l_param_single_filter); //
-	i = CH_CONC2_ID;
+	i = CH_CONC2_KEY;
 	DFX_Long(p_fx, m_desc[i].cs_col_param, m_desc[i].l_param_single_filter); //
-	i = CH_OPERATOR_ID;
+	i = CH_OPERATOR_KEY;
 	DFX_Long(p_fx, m_desc[i].cs_col_param, m_desc[i].l_param_single_filter); //
-	i = CH_INSECT_ID;
+	i = CH_INSECT_KEY;
 	DFX_Long(p_fx, m_desc[i].cs_col_param, m_desc[i].l_param_single_filter); //
-	i = CH_SENSILLUM_ID;
+	i = CH_SENSILLUM_KEY;
 	DFX_Long(p_fx, m_desc[i].cs_col_param, m_desc[i].l_param_single_filter); // 10
-	i = CH_STRAIN_ID;
+	i = CH_STRAIN_KEY;
 	DFX_Long(p_fx, m_desc[i].cs_col_param, m_desc[i].l_param_single_filter); //
-	i = CH_SEX_ID;
+	i = CH_SEX_KEY;
 	DFX_Long(p_fx, m_desc[i].cs_col_param, m_desc[i].l_param_single_filter); //
 	i = CH_FLAG;
 	DFX_Long(p_fx, m_desc[i].cs_col_param, m_desc[i].l_param_single_filter); //
@@ -195,7 +195,7 @@ void CdbTableMain::DoFieldExchange(CDaoFieldExchange* p_fx)
 	DFX_DateTime(p_fx, m_desc[i].cs_col_param, m_desc[i].date_time_param_single_filter); // 16
 	i = CH_ACQDATE_TIME;
 	DFX_DateTime(p_fx, m_desc[i].cs_col_param, m_desc[i].date_time_param_single_filter); // 17
-	i = CH_EXPT_ID;
+	i = CH_EXPERIMENT_KEY;
 	DFX_Long(p_fx, m_desc[i].cs_col_param, m_desc[i].l_param_single_filter); // 18
 }
 
@@ -281,11 +281,11 @@ BOOL CdbTableMain::check_if_acq_date_time_is_unique(const COleDateTime* p_time)
 	return TRUE;
 }
 
-void CdbTableMain::get_max_id()
+void CdbTableMain::get_max_key()
 {
-	max_insect_id = -1;
-	max_sensillum_id = -1;
-	max_id = -1;
+	max_insect_key = -1;
+	max_sensillum_key = -1;
+	max_key = -1;
 	const auto n_records = get_records_count();
 	if (0 == n_records)
 		return;
@@ -293,20 +293,20 @@ void CdbTableMain::get_max_id()
 	MoveFirst();
 	while (!IsEOF())
 	{
-		if (m_id_insect > max_insect_id)
-			max_insect_id = m_id_insect;
+		if (m_id_insect > max_insect_key)
+			max_insect_key = m_id_insect;
 
-		if (m_id > max_id)
-			max_id = m_id;
+		if (m_id > max_key)
+			max_key = m_id;
 
-		if (m_id_sensillum > max_sensillum_id)
-			max_sensillum_id = m_id_sensillum;
+		if (m_id_sensillum > max_sensillum_key)
+			max_sensillum_key = m_id_sensillum;
 
 		MoveNext();
 	}
 }
 
-BOOL CdbTableMain::find_id_in_column(const long i_id, const int i_column)
+BOOL CdbTableMain::find_key_in_column(const long i_id, const int i_column)
 {
 	CString cs; // to construct insect and sensillum number (for example)
 	CString str; // to store FindFirst filter
@@ -525,7 +525,7 @@ void CdbTableMain::add_to_li_array(const int i_col)
 		pli_array->Add(l_val);
 }
 
-void CdbTableMain::add_to_id_array(CUIntArray* p_ui_id_array, const long i_id)
+void CdbTableMain::add_to_key_array(CUIntArray* p_ui_id_array, const long i_id)
 {
 	auto b_flag = FALSE;
 	// value is greater than current value -> loop forwards
@@ -599,7 +599,7 @@ void CdbTableMain::delete_date_array()
 }
 
 // loop over the entire database and save descriptors
-void CdbTableMain::build_and_sort_id_arrays()
+void CdbTableMain::build_and_sort_key_arrays()
 {
 	if (IsBOF())
 		return;
@@ -657,7 +657,7 @@ void CdbTableMain::copy_path_to_path2()
 	while (!IsEOF())
 	{
 		Edit();
-		m_path2_id = m_path_id;
+		m_path2_key = m_path1_key;
 		Update();
 		MoveNext();
 		i++;

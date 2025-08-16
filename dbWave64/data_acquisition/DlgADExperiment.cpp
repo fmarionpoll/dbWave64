@@ -3,6 +3,7 @@
 #include "StdAfx.h"
 #include "DlgADExperiment.h"
 #include "DlgEditList.h"
+#include "DatabaseUtils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -312,8 +313,8 @@ void DlgADExperiment::load_list(CComboBox* p_co, const CStringArray* p_spike_ele
 		pm_set->MoveFirst();
 		while (!pm_set->IsEOF())
 		{
-			pm_set->GetFieldValue(0, var_value1);
-			CString cs_field = CString(var_value1.bstrVal);
+					pm_set->GetFieldValue(0, var_value1);
+		CString cs_field = CDatabaseUtils::safe_get_string_from_variant(var_value1);
 			if (!cs_field.IsEmpty() && p_co->FindStringExact(0, cs_field) == CB_ERR)
 			{
 				p_co->AddString(cs_field);

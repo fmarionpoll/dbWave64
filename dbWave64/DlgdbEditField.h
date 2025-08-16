@@ -78,12 +78,12 @@ public:
 	BOOL OnInitDialog() override;
 	afx_msg void OnSize(UINT n_type, int cx, int cy);
 
-	afx_msg void on_bn_clicked_radio1();
-	afx_msg void on_bn_clicked_radio2();
-	afx_msg void on_bn_clicked_radio3();
-	afx_msg void on_bn_clicked_radio4();
-	afx_msg void on_bn_clicked_radio5();
-	afx_msg void on_bn_clicked_radio6();
+	afx_msg void on_bn_clicked_cond_equ();
+	afx_msg void on_bn_clicked_cond_search();
+	afx_msg void on_bn_clicked_cond_none();
+	afx_msg void on_bn_clicked_change_ID();
+	afx_msg void on_bn_clicked_change_text();
+	afx_msg void on_bn_clicked_change_clear();
 	afx_msg void on_bn_clicked_button1();
 	afx_msg void on_bn_clicked_ok();
 	afx_msg void on_cbn_sel_change_combo3();

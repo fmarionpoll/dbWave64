@@ -50,7 +50,7 @@ public:
 	long doc_channel_length = 0;
 
 	CWaveBuf* p_w_buf = nullptr;
-	long buf_max_size = MAX_BUFFER_LENGTH_AS_BYTES; // constant (?) size of the buffer
+	long buf_bytes_length = MAX_BUFFER_LENGTH_AS_BYTES; // constant (?) size of the buffer
 	long buf_size = 0; // buffer size (n channels * sizeof(word) * lRWSize
 	long buf_channel_size = 0; // n words in buffer / channel
 	long buf_channel_first = 0; // file index of first word in RW buffer

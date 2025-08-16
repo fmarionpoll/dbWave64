@@ -649,6 +649,7 @@
 #define IDC_STATICFILENAME              1228
 #define IDC_CHECKCASESENSITIV           1229
 #define IDC_RADIO6                      1230
+#define IDC_CLEAR_CONTENT               1230
 #define IDC_XSCALE                      1231
 #define IDC_YSCALE                      1232
 #define IDC_DESTCLASS                   1235
@@ -860,6 +861,11 @@
 #define IDC_MFCPROPERTYGRID1            1535
 #define IDC_CLASS_DESCRIPTOR            1536
 #define IDC_MFCTOOLBAR1                 1539
+#define IDC_EQUAL_TO                    1542
+#define IDC_FIND                        1543
+#define IDC_NONE                        1544
+#define IDC_REPLACE_WITH                1545
+#define IDC_CHANGE_INTO                 1546
 #define IDC_VSPLIT                      30980
 #define IDC_HSPLIT                      30981
 #define ID_CANCEL_EDIT_CNTR             32768
@@ -994,7 +1000,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        580
 #define _APS_NEXT_COMMAND_VALUE         33072
-#define _APS_NEXT_CONTROL_VALUE         1542
+#define _APS_NEXT_CONTROL_VALUE         1547
 #define _APS_NEXT_SYMED_VALUE           555
 #endif
 #endif

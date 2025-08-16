@@ -56,3 +56,4 @@ echo 2. Check that post-build events ran successfully
 echo 3. Verify DLLs were copied to output directory
 echo.
 pause
+

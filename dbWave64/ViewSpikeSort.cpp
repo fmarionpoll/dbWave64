@@ -6,6 +6,7 @@
 #include "DlgSpikeEdit.h"
 #include "MainFrm.h"
 #include "ViewSpikeDetect.h"
+#include "DatabaseUtils.h"
 
 
 #ifdef _DEBUG
@@ -1853,7 +1854,7 @@ LRESULT ViewSpikeSort::OnPropertyChanged(WPARAM w_param, LPARAM l_param)
 	const auto str_variant = prop->GetValue();
 	CString str;
 	if (str_variant.vt == VT_BSTR)
-		str = CString(str_variant.bstrVal);
+		str = CDatabaseUtils::safe_get_string_from_variant(str_variant);
 
 	SpikeClassProperties* p_desc = p_spk_list->get_class_descriptor_from_id(class_id);
 	p_desc->set_class_text(str);

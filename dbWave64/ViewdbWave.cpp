@@ -149,6 +149,11 @@ void ViewdbWave::OnInitialUpdate()
 void ViewdbWave::subclass_dialog_controls()
 {
 	VERIFY(m_data_list_ctrl.SubclassDlgItem(IDC_LISTCTRL, this));
+	
+	// Note: GetView() and SetView() require UNICODE builds, so we can't use them in ANSI/MBCS builds
+	// The CListCtrl should default to LVS_REPORT mode which is correct for displaying images in columns
+	TRACE("DEBUG: ViewdbWave::subclass_dialog_controls() - Using default view mode (LVS_REPORT) for ANSI/MBCS build\n");
+	
 	VERIFY(mm_time_first_.SubclassDlgItem(IDC_TIMEFIRST, this));
 	VERIFY(mm_time_last_.SubclassDlgItem(IDC_TIMELAST, this));
 	VERIFY(mm_amplitude_span_.SubclassDlgItem(IDC_AMPLITUDESPAN, this));

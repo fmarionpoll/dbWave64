@@ -4,6 +4,7 @@
 #include "resource.h"
 //#include "MainFrm.h"
 #include "dbWave.h"
+#include "DatabaseUtils.h"
 #include "dbWave_constants.h"
 #include "DlgdbEditRecord.h"
 
@@ -212,7 +213,7 @@ void PaneldbProperties::update_group_prop_from_table(CMFCPropertyGridProperty* p
 					while (!p2_linked_set->IsEOF())
 					{
 						p2_linked_set->GetFieldValue(0, var_value0);
-						CString cs = CString(var_value0.bstrVal);
+						CString cs = CDatabaseUtils::safe_get_string_from_variant(var_value0);
 						if (!cs.IsEmpty())
 							p_prop->AddOption(cs, TRUE);
 						p2_linked_set->MoveNext();
@@ -281,13 +282,13 @@ void PaneldbProperties::update_table_from_group_prop(const CMFCPropertyGridPrope
 		{
 		case FIELD_IND_TEXT:
 		case FIELD_IND_FILEPATH:
-			record_item_descriptor->cs_val = prop_val.bstrVal;
+			record_item_descriptor->cs_val = CDatabaseUtils::safe_get_string_from_variant(prop_val);
 			p_prop->ResetOriginalValue();
 			p_prop->SetOriginalValue(record_item_descriptor->cs_val);
 			p_prop->SetValue(record_item_descriptor->cs_val);
 			break;
 		case FIELD_TEXT:
-			record_item_descriptor->cs_val = prop_val.bstrVal;
+			record_item_descriptor->cs_val = CDatabaseUtils::safe_get_string_from_variant(prop_val);
 			p_prop->ResetOriginalValue();
 			p_prop->SetOriginalValue(record_item_descriptor->cs_val);
 			p_prop->SetValue(record_item_descriptor->cs_val);

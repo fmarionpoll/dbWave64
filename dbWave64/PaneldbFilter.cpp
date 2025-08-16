@@ -6,7 +6,8 @@
 
 #include "dbWave.h"
 #include "dbWave_constants.h"
-#include "DlgProgress.h"
+#include "DatabaseUtils.h"
+#include "dbTableAssociated.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -417,17 +418,36 @@ void PaneldbFilter::populate_item_from_linked_table(DB_ITEMDESC* p_desc) const
 			p_linked_set->MoveFirst();
 			while (!p_linked_set->IsEOF())
 			{
+			// Use bound fields directly instead of GetFieldValue to avoid 32/64-bit BSTR interpretation issues
+			// The bound field approach works correctly in both 32-bit and 64-bit applications
+			CString string_value;
+			long id_value = 0;
+			
+			// Cast to the specific recordset type to access bound fields
+			CdbTableAssociated* p_linked_table = dynamic_cast<CdbTableAssociated*>(p_linked_set);
+			if (p_linked_table)
+			{
+				// Use bound fields directly - this is the same approach used in get_string_from_key
+				string_value = p_linked_table->m_cs;
+				id_value = p_linked_table->m_id;
+			}
+			else
+			{
+				// Fallback to GetFieldValue if dynamic cast fails
 				p_linked_set->GetFieldValue(0, var_value0);
 				p_linked_set->GetFieldValue(1, var_value1);
-				const auto i_id = var_value1.lVal;
-				// add string only if found into p_main_table_set...
-				cs.Format(_T("%s=%li"), (LPCTSTR)p_desc->header_name, i_id);
-				const auto flag = p_set->FindFirst(cs);
-				if (flag != 0)
-				{
-					insert_alphabetic(CString(var_value0.bstrVal), p_desc->cs_elements_array);
-					p_desc->li_array.Add(i_id);
-				}
+				string_value = CDatabaseUtils::safe_get_string_from_variant(var_value0);
+				id_value = var_value1.lVal;
+			}
+			
+			// add string only if found into p_main_table_set...
+			cs.Format(_T("%s=%li"), (LPCTSTR)p_desc->header_name, id_value);
+			const auto flag = p_set->FindFirst(cs);
+			if (flag != 0)
+			{
+				insert_alphabetic(string_value, p_desc->cs_elements_array);
+				p_desc->li_array.Add(id_value);
+			}
 				p_linked_set->MoveNext();
 			}
 		}
@@ -456,7 +476,7 @@ void PaneldbFilter::populate_item_from_table_with_date(DB_ITEMDESC* p_desc) cons
 		p_desc->cs_elements_array.RemoveAll();
 		for (auto i = 0; i < array_size; i++)
 		{
-			auto o_time = p_main_table_set->m_desc[CH_ACQDATE_DAY].ti_array.GetAt(i);
+			auto &o_time = p_main_table_set->m_desc[CH_ACQDATE_DAY].ti_array.GetAt(i);
 			cs = o_time.Format(_T("%m/%d/%y")); // filter needs to be constructed as month-day-year
 			str.Format(_T("%s=#%s#"), (LPCTSTR)cs_column_head, (LPCTSTR)cs);
 			const auto flag = p_main_table_set->FindFirst(str);
@@ -611,7 +631,6 @@ void PaneldbFilter::on_apply_filter()
 
 void PaneldbFilter::on_tvn_sel_changed_filter_tree(NMHDR* p_nmhdr, LRESULT* p_result)
 {
-	
 	NM_TREEVIEW* p_nm_tree_view = (NM_TREEVIEW*) p_nmhdr;
 	auto* p_new_item = &p_nm_tree_view->itemNew;
 	TRACE("changed filter \n");

@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "dbWave.h"
 #include "dbTableAssociated.h"
+#include "DatabaseUtils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -81,8 +82,9 @@ long CdbTableAssociated::get_string_in_linked_table(const CString& cs)
 		try
 		{
 			// add new record: pass the text, ID will be updated automatically
+			// Use bound field instead of SetFieldValue to avoid 32/64-bit BSTR interpretation issues
 			AddNew();
-			SetFieldValue(0, COleVariant(cs, VT_BSTRT));
+			m_cs = CDatabaseUtils::validate_string_for_writing(cs);  // Validate string before writing
 			Update();
 			SetBookmark(GetLastModifiedBookmark());
 

@@ -2,6 +2,8 @@
 
 #include "dbWaveDoc.h"
 #include "DlgdbEditField.h"
+#include "DatabaseUtils.h"
+#include "dbTableAssociated.h"
 #include "afxdialogex.h"
 #include "DlgEditList.h"
 
@@ -34,12 +36,12 @@ void DlgdbEditField::DoDataExchange(CDataExchange* p_dx)
 }
 
 BEGIN_MESSAGE_MAP(DlgdbEditField, CDialogEx)
-	ON_BN_CLICKED(IDC_RADIO1, &DlgdbEditField::on_bn_clicked_radio1)
-	ON_BN_CLICKED(IDC_RADIO2, &DlgdbEditField::on_bn_clicked_radio2)
-	ON_BN_CLICKED(IDC_RADIO3, &DlgdbEditField::on_bn_clicked_radio3)
-	ON_BN_CLICKED(IDC_RADIO4, &DlgdbEditField::on_bn_clicked_radio4)
-	ON_BN_CLICKED(IDC_RADIO5, &DlgdbEditField::on_bn_clicked_radio5)
-	ON_BN_CLICKED(IDC_RADIO6, &DlgdbEditField::on_bn_clicked_radio6)
+	ON_BN_CLICKED(IDC_EQUAL_TO, &DlgdbEditField::on_bn_clicked_cond_equ)
+	ON_BN_CLICKED(IDC_FIND, &DlgdbEditField::on_bn_clicked_cond_search)
+	ON_BN_CLICKED(IDC_NONE, &DlgdbEditField::on_bn_clicked_cond_none)
+	ON_BN_CLICKED(IDC_REPLACE_WITH, &DlgdbEditField::on_bn_clicked_change_ID)
+	ON_BN_CLICKED(IDC_CHANGE_INTO, &DlgdbEditField::on_bn_clicked_change_text)
+	ON_BN_CLICKED(IDC_CLEAR_CONTENT, &DlgdbEditField::on_bn_clicked_change_clear)
 	ON_BN_CLICKED(IDC_BUTTON1, &DlgdbEditField::on_bn_clicked_button1)
 	ON_WM_SIZE()
 	ON_BN_CLICKED(IDOK, &DlgdbEditField::on_bn_clicked_ok)
@@ -62,14 +64,14 @@ BOOL DlgdbEditField::OnInitDialog()
 		GetDlgItem(IDC_EDIT3)->ModifyStyle(NULL, ES_NUMBER);
 		GetDlgItem(IDC_CHECKCASESENSITIV)->EnableWindow(FALSE);
 		GetDlgItem(IDC_BUTTON1)->EnableWindow(FALSE);
-		GetDlgItem(IDC_RADIO2)->EnableWindow(FALSE);
+		GetDlgItem(IDC_FIND)->EnableWindow(FALSE);
 		GetDlgItem(IDC_EDIT2)->EnableWindow(FALSE);
 		m_co_dictionary.ModifyStyle(LBS_SORT, NULL);
 	}
 
 	// Add extra initialization here
-	static_cast<CButton*>(GetDlgItem(IDC_RADIO1))->SetCheck(BST_CHECKED);
-	static_cast<CButton*>(GetDlgItem(IDC_RADIO4))->SetCheck(BST_CHECKED);
+	static_cast<CButton*>(GetDlgItem(IDC_EQUAL_TO))->SetCheck(BST_CHECKED);
+	static_cast<CButton*>(GetDlgItem(IDC_REPLACE_WITH))->SetCheck(BST_CHECKED);
 	display_elements();
 
 	// fill source type
@@ -95,16 +97,34 @@ BOOL DlgdbEditField::OnInitDialog()
 	{
 		if (m_p_index_table->IsOpen() && !m_p_index_table->IsBOF())
 		{
-			COleVariant var_value0, var_value1;
-			m_p_index_table->MoveFirst();
-			while (!m_p_index_table->IsEOF())
+			// Use bound fields instead of GetFieldValue to avoid 32/64-bit BSTR interpretation issues
+			CdbTableAssociated* p_index_table = dynamic_cast<CdbTableAssociated*>(m_p_index_table);
+			if (p_index_table)
 			{
-				m_p_index_table->GetFieldValue(0, var_value0);
-				m_p_index_table->GetFieldValue(1, var_value1);
-				CString cs_dummy = CString(var_value0.bstrVal);
-				const auto i = m_co_dictionary.AddString(cs_dummy);
-				m_co_dictionary.SetItemData(i, var_value1.lVal);
-				m_p_index_table->MoveNext();
+				// Use bound fields directly for better performance and reliability
+				m_p_index_table->MoveFirst();
+				while (!m_p_index_table->IsEOF())
+				{
+					const CString cs_dummy = p_index_table->m_cs;
+					const auto i = m_co_dictionary.AddString(cs_dummy);
+					m_co_dictionary.SetItemData(i, p_index_table->m_id);
+					m_p_index_table->MoveNext();
+				}
+			}
+			else
+			{
+				// Fallback to GetFieldValue with safe extraction if cast fails
+				COleVariant var_value0, var_value1;
+				m_p_index_table->MoveFirst();
+				while (!m_p_index_table->IsEOF())
+				{
+					m_p_index_table->GetFieldValue(0, var_value0);
+					m_p_index_table->GetFieldValue(1, var_value1);
+					CString cs_dummy = CDatabaseUtils::safe_get_string_from_variant(var_value0);
+					const auto i = m_co_dictionary.AddString(cs_dummy);
+					m_co_dictionary.SetItemData(i, var_value1.lVal);
+					m_p_index_table->MoveNext();
+				}
 			}
 		}
 	}
@@ -155,37 +175,37 @@ void DlgdbEditField::on_cbn_sel_change_combo3()
 	display_elements();
 }
 
-void DlgdbEditField::on_bn_clicked_radio1()
+void DlgdbEditField::on_bn_clicked_cond_equ()
 {
 	m_source_condition = COND_EQU;
 	display_elements();
 }
 
-void DlgdbEditField::on_bn_clicked_radio2()
+void DlgdbEditField::on_bn_clicked_cond_search()
 {
 	m_source_condition = COND_SEARCH;
 	display_elements();
 }
 
-void DlgdbEditField::on_bn_clicked_radio3()
+void DlgdbEditField::on_bn_clicked_cond_none()
 {
 	m_source_condition = COND_NONE;
 	display_elements();
 }
 
-void DlgdbEditField::on_bn_clicked_radio4()
+void DlgdbEditField::on_bn_clicked_change_ID()
 {
 	m_dest_action = CHGE_ID;
 	display_elements();
 }
 
-void DlgdbEditField::on_bn_clicked_radio5()
+void DlgdbEditField::on_bn_clicked_change_text()
 {
 	m_dest_action = CHGE_TXT;
 	display_elements();
 }
 
-void DlgdbEditField::on_bn_clicked_radio6()
+void DlgdbEditField::on_bn_clicked_change_clear()
 {
 	m_dest_action = CHGE_CLEAR;
 	display_elements();

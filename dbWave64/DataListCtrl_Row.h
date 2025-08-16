@@ -17,6 +17,8 @@ class DataListCtrl_Row : public CObject
 	BOOL b_changed {false};
 	WORD w_version {0};
 	BOOL b_init {false};
+	BOOL display_processed {false};
+	int last_display_mode {-1};
 
 	int record_id{ 0 };
 	int index {0};
@@ -44,6 +46,7 @@ class DataListCtrl_Row : public CObject
 
 	void attach_database_record(CdbWaveDoc* db_wave_doc);
 	void set_display_parameters(DataListCtrlInfos* infos, int i_image);
+	void reset_display_processed();
 
 protected:
 	void display_data_wnd(DataListCtrlInfos* infos, int i_image);

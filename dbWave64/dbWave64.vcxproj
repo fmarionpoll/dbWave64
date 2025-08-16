@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="chanlistitem.cpp" />
+    <ClCompile Include="DatabaseUtils.cpp" />
     <ClCompile Include="DataListCtrl.cpp" />
     <ClCompile Include="dbWaveDoc.cpp" />
     <ClCompile Include="Envelope.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="ColorNames.h" />
     <ClInclude Include="Controls\cdxCRot90DC.h" />
     <ClInclude Include="Controls\cdxCRotBevelLine.h" />
+    <ClInclude Include="DatabaseUtils.h" />
     <ClInclude Include="GridCtrl\GridComboEdit.h" />
     <ClInclude Include="GridCtrl\InPlaceEdit.h" />
     <ClInclude Include="CPivotCache.h" />
@@ -426,6 +428,9 @@
     <None Include="res\cursor1.cur" />
     <None Include="res\CZOOM.CUR" />
     <None Include="res\dbwave.cpt" />
+    <None Include="res\ribbon1.mfcribbon-ms" />
+    <None Include="res\splith.cur" />
+    <None Include="res\splitv.cur" />
     <None Include="runsdvui.cmd" />
   </ItemGroup>
   <ItemGroup>
@@ -448,6 +453,55 @@
     <Image Include="res\Databasesmall.bmp" />
     <Image Include="res\Datalarge.bmp" />
     <Image Include="res\Datasmall.bmp" />
+    <Image Include="res\dbWave.ico" />
+    <Image Include="res\dbWaveDoc.ico" />
+    <Image Include="res\dbwave_07dec2012.bmp" />
+    <Image Include="res\Displaylarge.bmp" />
+    <Image Include="res\Displaysmall.bmp" />
+    <Image Include="res\explorer.bmp" />
+    <Image Include="res\explorer_hc.bmp" />
+    <Image Include="res\filelarge.bmp" />
+    <Image Include="res\filesmall.bmp" />
+    <Image Include="res\fileview.bmp" />
+    <Image Include="res\fileview_hc.bmp" />
+    <Image Include="res\file_view.ico" />
+    <Image Include="res\file_view_hc.ico" />
+    <Image Include="RES\IDR_DATA.ICO" />
+    <Image Include="RES\IDR_SPIK.ICO" />
+    <Image Include="res\main.bmp" />
+    <Image Include="res\menuimages.bmp" />
+    <Image Include="res\menuimages_hc.bmp" />
+    <Image Include="res\NavigationLarge.bmp" />
+    <Image Include="res\NavigationSmall.bmp" />
+    <Image Include="res\optionslarge.bmp" />
+    <Image Include="res\optionssmall.bmp" />
+    <Image Include="res\properti.bmp" />
+    <Image Include="res\properties.bmp" />
+    <Image Include="res\properties_hc.bmp" />
+    <Image Include="res\properties_wnd.ico" />
+    <Image Include="res\properties_wnd_hc.ico" />
+    <Image Include="res\sort.bmp" />
+    <Image Include="res\Spikeslarge.bmp" />
+    <Image Include="res\Spikessmall.bmp" />
+    <Image Include="res\start.ico" />
+    <Image Include="res\stimOFF.bmp" />
+    <Image Include="res\stimON.bmp" />
+    <Image Include="res\stop.ico" />
+    <Image Include="res\tabcontrol.bmp" />
+    <Image Include="res\tabcontrol_dim.bmp" />
+    <Image Include="res\Toolbar256.bmp" />
+    <Image Include="res\toolbar_dat.bmp" />
+    <Image Include="res\toolbar_dat256.bmp" />
+    <Image Include="res\Toolbar_main.bmp" />
+    <Image Include="res\toolbar_proj.bmp" />
+    <Image Include="res\toolbar_spk.bmp" />
+    <Image Include="res\toolbar_spk256.bmp" />
+    <Image Include="res\writelarge.bmp" />
+    <Image Include="res\writesmall.bmp" />
+    <Image Include="res\zoom.ico" />
+    <Image Include="res\zoom1.ico" />
+    <Image Include="res\zoomin.bmp" />
+    <Image Include="res\zoomout.bmp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

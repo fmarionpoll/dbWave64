@@ -561,6 +561,9 @@
     <ClCompile Include="ChartDataAD.cpp">
       <Filter>data_acquisition</Filter>
     </ClCompile>
+    <ClCompile Include="DatabaseUtils.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AcqDataDoc.h">
@@ -1211,6 +1214,9 @@
     <ClInclude Include="data_acquisition\ViewADcontinuous.h">
       <Filter>data_acquisition</Filter>
     </ClInclude>
+    <ClInclude Include="DatabaseUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="dbWave.rc">
@@ -1237,6 +1243,13 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="res\dbwave.cpt" />
+    <None Include="res\splith.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\splitv.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\ribbon1.mfcribbon-ms" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -1288,6 +1301,153 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\Datasmall.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\tabcontrol.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\tabcontrol_dim.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\stimON.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\stimOFF.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\zoomin.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\zoomout.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\dbwave_07dec2012.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Toolbar_main.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\toolbar_proj.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\toolbar_dat.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\toolbar_spk.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\sort.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\properties.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\menuimages.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Toolbar256.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\explorer.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\menuimages_hc.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\fileview.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\fileview_hc.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\explorer_hc.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\properties_hc.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Displaylarge.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Displaysmall.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\filelarge.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\filesmall.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\main.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\NavigationLarge.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\NavigationSmall.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\optionslarge.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\optionssmall.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Spikeslarge.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Spikessmall.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\writelarge.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\writesmall.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\toolbar_spk256.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\toolbar_dat256.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\properti.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\dbWave.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\start.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\stop.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\IDR_SPIK.ICO">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RES\IDR_DATA.ICO">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\dbWaveDoc.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\zoom.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\file_view.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\file_view_hc.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\properties_wnd.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\properties_wnd_hc.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\zoom1.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

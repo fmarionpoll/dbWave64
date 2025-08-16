@@ -4,6 +4,8 @@
 #include "dbTableMain.h"
 #include "dbWaveDoc.h"
 #include "DlgdbEditField.h"
+#include "DatabaseUtils.h"
+#include "dbTableAssociated.h"
 
 
 #include "DlgdbEditRecord.h"
@@ -157,20 +159,42 @@ void DlgdbEditRecord::populate_combo_with_text(CDaoRecordset& linked_table_set, 
 	// fill combo box
 	if (linked_table_set.IsOpen() && !linked_table_set.IsBOF())
 	{
-		COleVariant var_value0, var_value1;
-		linked_table_set.MoveFirst();
-		while (!linked_table_set.IsEOF())
+		// Use bound fields instead of GetFieldValue to avoid 32/64-bit BSTR interpretation issues
+		CdbTableAssociated* p_linked_table = dynamic_cast<CdbTableAssociated*>(&linked_table_set);
+		if (p_linked_table)
 		{
-			linked_table_set.GetFieldValue(0, var_value0);
-			linked_table_set.GetFieldValue(1, var_value1);
-			const auto id = var_value1.lVal;
-			CString cs = CString(var_value0.bstrVal);
-			if (!cs.IsEmpty())
+			// Use bound fields directly for better performance and reliability
+			linked_table_set.MoveFirst();
+			while (!linked_table_set.IsEOF())
 			{
-				const auto i = combo.AddString(cs);
-				combo.SetItemData(i, id);
+				const auto id = p_linked_table->m_id;
+				const CString cs = p_linked_table->m_cs;
+				if (!cs.IsEmpty())
+				{
+					const auto i = combo.AddString(cs);
+					combo.SetItemData(i, id);
+				}
+				linked_table_set.MoveNext();
 			}
-			linked_table_set.MoveNext();
+		}
+		else
+		{
+			// Fallback to GetFieldValue with safe extraction if cast fails
+			COleVariant var_value0, var_value1;
+			linked_table_set.MoveFirst();
+			while (!linked_table_set.IsEOF())
+			{
+				linked_table_set.GetFieldValue(0, var_value0);
+				linked_table_set.GetFieldValue(1, var_value1);
+				const auto id = var_value1.lVal;
+				CString cs = CDatabaseUtils::safe_get_string_from_variant(var_value0);
+				if (!cs.IsEmpty())
+				{
+					const auto i = combo.AddString(cs);
+					combo.SetItemData(i, id);
+				}
+				linked_table_set.MoveNext();
+			}
 		}
 	}
 
@@ -243,7 +267,18 @@ void DlgdbEditRecord::update_set_from_combo(CDaoRecordset& linked_table_set, CCo
 		if (!cs_combo.IsEmpty())
 		{
 			linked_table_set.AddNew();
-			linked_table_set.SetFieldValue(0, COleVariant(cs_combo, VT_BSTRT));
+			// Use bound field instead of SetFieldValue to avoid 32/64-bit BSTR interpretation issues
+			// Cast to CdbTableAssociated to access the bound field m_cs
+			CdbTableAssociated* p_linked_table = dynamic_cast<CdbTableAssociated*>(&linked_table_set);
+			if (p_linked_table)
+			{
+				p_linked_table->m_cs = CDatabaseUtils::validate_string_for_writing(cs_combo);  // Validate string before writing
+			}
+			else
+			{
+				// Fallback to SetFieldValue if cast fails
+				linked_table_set.SetFieldValue(0, COleVariant(CDatabaseUtils::validate_string_for_writing(cs_combo), VT_BSTRT));
+			}
 			try { linked_table_set.Update(); }
 			catch (CDaoException* e)
 			{
@@ -253,12 +288,25 @@ void DlgdbEditRecord::update_set_from_combo(CDaoRecordset& linked_table_set, CCo
 
 			// get value and set the ID number in the main table
 			linked_table_set.MoveLast();
-			COleVariant var_value0, var_value1;
-			linked_table_set.GetFieldValue(0, var_value0);
-			linked_table_set.GetFieldValue(1, var_value1);
-			const CString cs = CString(var_value0.bstrVal);
-			ASSERT(cs_combo == cs);
-			id_set = var_value1.lVal;
+			
+			// Use bound fields instead of GetFieldValue to avoid 32/64-bit BSTR interpretation issues
+			if (p_linked_table)
+			{
+				// Use bound fields directly for verification
+				const CString cs = p_linked_table->m_cs;
+				ASSERT(cs_combo == cs);
+				id_set = p_linked_table->m_id;
+			}
+			else
+			{
+				// Fallback to GetFieldValue with safe extraction if cast failed earlier
+				COleVariant var_value0, var_value1;
+				linked_table_set.GetFieldValue(0, var_value0);
+				linked_table_set.GetFieldValue(1, var_value1);
+				const CString cs = CDatabaseUtils::safe_get_string_from_variant(var_value0);
+				ASSERT(cs_combo == cs);
+				id_set = var_value1.lVal;
+			}
 		}
 		// if empty string, set field to null in the main table
 		else

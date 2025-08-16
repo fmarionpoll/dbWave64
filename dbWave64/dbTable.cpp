@@ -5,6 +5,7 @@
 
 #include "dbTableColumnDescriptor.h"
 #include "dbWave.h"
+#include "DatabaseUtils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

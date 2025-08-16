@@ -1536,15 +1536,15 @@ BEGIN
     GROUPBOX        "Scope",IDC_STATIC1,6,2,241,64
     LTEXT           "Records",IDC_STATIC,12,12,28,8
     COMBOBOX        IDC_COMBO3,10,22,43,43,CBS_SIMPLE | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "equal to",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,76,20,41,10
-    CONTROL         "find",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,76,35,27,10
-    CONTROL         "none (all records)",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,76,50,70,10
+    CONTROL         "equal to",IDC_EQUAL_TO,"Button",BS_AUTORADIOBUTTON | WS_GROUP,76,20,41,10
+    CONTROL         "find",IDC_FIND,"Button",BS_AUTORADIOBUTTON,76,35,27,10
+    CONTROL         "none (all records)",IDC_NONE,"Button",BS_AUTORADIOBUTTON,76,50,70,10
     EDITTEXT        IDC_EDIT1,124,17,114,14,ES_AUTOHSCROLL | ES_READONLY
     EDITTEXT        IDC_EDIT2,124,33,114,14,ES_AUTOHSCROLL
     GROUPBOX        "Action",IDC_STATIC2,6,68,242,58
-    CONTROL         "replace with",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON | WS_GROUP,47,80,54,10
-    CONTROL         "change into",IDC_RADIO5,"Button",BS_AUTORADIOBUTTON,47,96,53,10
-    CONTROL         "clear content",IDC_RADIO6,"Button",BS_AUTORADIOBUTTON,47,111,57,10
+    CONTROL         "replace with",IDC_REPLACE_WITH,"Button",BS_AUTORADIOBUTTON | WS_GROUP,47,80,54,10
+    CONTROL         "change into",IDC_CHANGE_INTO,"Button",BS_AUTORADIOBUTTON,47,96,53,10
+    CONTROL         "clear content",IDC_CLEAR_CONTENT,"Button",BS_AUTORADIOBUTTON,47,111,57,10
     EDITTEXT        IDC_EDIT3,106,93,114,14,ES_AUTOHSCROLL
     COMBOBOX        IDC_COMBO1,106,77,114,104,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Condition",IDC_STATIC,70,8,30,8
@@ -2361,8 +2361,8 @@ IDR_SPIKE_CLASS_PROPERTIES BITMAP                  "res\\properti.bmp"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,2025,8,15
- PRODUCTVERSION 4,2025,8,15
+ FILEVERSION 4,2025,8,17
+ PRODUCTVERSION 4,2025,8,17
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -2379,12 +2379,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "AgroParisTech -IDEEV- EGCE UMR 9191 (CNRS-Paris Saclay-IRD)"
             VALUE "FileDescription", "Database-oriented  data acquisition and analysis for extracellular electrophysiology"
-            VALUE "FileVersion", "4.2025.8.15"
-            VALUE "InternalName", "dbWave2"
+            VALUE "FileVersion", "4.2025.8.17"
+            VALUE "InternalName", "dbWave64"
             VALUE "LegalCopyright", "Copyright (C) 2022-2028"
-            VALUE "OriginalFilename", "dbWave2.exe"
+            VALUE "OriginalFilename", "dbWave64.exe"
             VALUE "ProductName", " dbWave Application"
-            VALUE "ProductVersion", "4.2025.8.15"
+            VALUE "ProductVersion", "4.2025.8.17"
         END
     END
     BLOCK "VarFileInfo"

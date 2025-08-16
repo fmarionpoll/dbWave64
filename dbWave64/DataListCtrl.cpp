@@ -51,7 +51,10 @@ BEGIN_MESSAGE_MAP(DataListCtrl, CListCtrl)
 END_MESSAGE_MAP()
 
 DataListCtrl::DataListCtrl()
-= default;
+{
+	// Set the view mode to LVS_REPORT in the constructor
+	TRACE("DEBUG: DataListCtrl constructor called\n");
+}
 
 DataListCtrl::~DataListCtrl()
 {
@@ -95,7 +98,6 @@ boolean DataListCtrl::rows_array_set_size(const int rows_count)
 		return b_forced_update;
 
 	// if cache size decreases, just delete extra rows
-	infos.image_list.SetImageCount(rows_count);
 	if (rows_.GetSize() > rows_count)
 	{
 		for (auto i = rows_.GetSize() - 1; i >= rows_count; i--)
@@ -110,7 +112,7 @@ boolean DataListCtrl::rows_array_set_size(const int rows_count)
 		rows_.SetSize(rows_count);
 		auto index = 0;
 		if (size_before_change > 0)
-			index = rows_.GetAt(size_before_change - 1)->index +1;
+			index = rows_.GetAt(size_before_change - 1)->index + 1;
 		for (auto i = size_before_change; i < rows_count; i++)
 		{
 			auto* row = new DataListCtrl_Row;
@@ -136,6 +138,24 @@ void DataListCtrl::init_columns(CUIntArray* width_columns)
 			m_column_width_[i] = static_cast<int>(width_columns->GetAt(i));
 	}
 
+	// Remove LVS_OWNERDRAWFIXED style to allow standard image list display
+	DWORD current_style = GetStyle();
+	TRACE("DEBUG: DataListCtrl current style: 0x%08X\n", current_style);
+	TRACE("DEBUG: LVS_OWNERDRAWFIXED flag: 0x%08X\n", LVS_OWNERDRAWFIXED);
+	
+	if (current_style & LVS_OWNERDRAWFIXED)
+	{
+		TRACE("DEBUG: LVS_OWNERDRAWFIXED style detected, removing it...\n");
+		ModifyStyle(LVS_OWNERDRAWFIXED, 0);
+		DWORD new_style = GetStyle();
+		TRACE("DEBUG: DataListCtrl new style after removal: 0x%08X\n", new_style);
+		TRACE("DEBUG: Removed LVS_OWNERDRAWFIXED style from DataListCtrl\n");
+	}
+	else
+	{
+		TRACE("DEBUG: LVS_OWNERDRAWFIXED style not detected\n");
+	}
+
 	for (auto i = 0; i < N_COLUMNS; i++)
 	{
 		InsertColumn(i, m_column_headers_[i], m_column_format_[i], m_column_width_[i], -1);
@@ -144,10 +164,18 @@ void DataListCtrl::init_columns(CUIntArray* width_columns)
 	infos.image_width = m_column_width_[CTRL_COL_CURVE];
 	infos.image_list.Create(infos.image_width, infos.image_height, ILC_COLOR4, 10, 10);
 	SetImageList(&infos.image_list, LVSIL_SMALL);
+	
+	// Note: GetView() and SetView() require UNICODE builds, so we can't use them in ANSI/MBCS builds
+	// The CListCtrl should default to LVS_REPORT mode which is correct for displaying images in columns
+	TRACE("DEBUG: DataListCtrl - Using default view mode (LVS_REPORT) for ANSI/MBCS build\n");
 }
 
 void DataListCtrl::on_get_display_info(NMHDR* p_nmhdr, LRESULT* p_result)
 {
+	static int display_info_count = 0;
+	display_info_count++;
+	TRACE("DEBUG: on_get_display_info() called (count: %d)\n", display_info_count);
+
 	auto first_array = 0;
 	auto last_array = 0;
 	if (rows_.GetSize() > 0)
@@ -177,8 +205,9 @@ void DataListCtrl::on_get_display_info(NMHDR* p_nmhdr, LRESULT* p_result)
 		first_array = last_array - GetCountPerPage() + 1;
 		update_cache(first_array, last_array);
 	}
-	else if (rows_.GetSize() == 0)
+	else if (rows_.GetSize() == 0) {
 		update_cache(first_array, last_array);
+	}
 
 	// now, the requested item is in the cache
 	// get data from database
@@ -227,8 +256,20 @@ void DataListCtrl::on_get_display_info(NMHDR* p_nmhdr, LRESULT* p_result)
 	}
 
 	// display images
+	TRACE("DEBUG: on_get_display_info() - Item mask: 0x%08X, LVIF_IMAGE: 0x%08X, LVIF_TEXT: 0x%08X\n", 
+		item->mask, LVIF_IMAGE, LVIF_TEXT);
+	
 	if (item->mask & LVIF_IMAGE && item->iSubItem == CTRL_COL_CURVE)
+	{
 		item->iImage = i_cache_index;
+		TRACE("DEBUG: on_get_display_info() - Setting image index %d for item %d, subitem %d\n", 
+			i_cache_index, item->iItem, item->iSubItem);
+	}
+	else if (item->iSubItem == CTRL_COL_CURVE)
+	{
+		TRACE("DEBUG: on_get_display_info() - LVIF_IMAGE not requested for curve column (item %d, subitem %d)\n", 
+			item->iItem, item->iSubItem);
+	}
 }
 
 void DataListCtrl::set_current_selection(const int record_position)
@@ -257,18 +298,22 @@ void DataListCtrl::set_current_selection(const int record_position)
 int DataListCtrl::cache_adjust_boundaries(int& index_first, int& index_last) const
 {
 	const int inb_visible = index_last - index_first + 1;
+
+	// Fix negative index_first
 	if (index_first < 0)
 	{
 		index_first = 0;
 		index_last = inb_visible - 1;
 	}
 
+	// Fix out-of-bounds index_last
 	if (index_last < 0 || index_last >= GetItemCount())
 	{
 		index_last = GetItemCount() - 1;
-		index_first = index_last - inb_visible + 1;
+		index_first = max(0, index_last - inb_visible + 1); // Ensure index_first doesn't go negative again
 	}
-	return inb_visible;
+
+	return index_last - index_first + 1;
 }
 
 void DataListCtrl::cache_shift_rows_positions(const int source1, const int dest1, int rows_count_to_exchange, const int delta)
@@ -293,32 +338,68 @@ void DataListCtrl::cache_shift_rows_positions(const int source1, const int dest1
 
 void DataListCtrl::cache_build_rows(const int new1, const int index_first, int n_rows_to_build, CdbWaveDoc* db_wave_doc)
 {
+	// Reset display processed flags for all rows
+	for (int i = 0; i < rows_.GetSize(); i++)
+	{
+		if (rows_.GetAt(i) != nullptr)
+		{
+			rows_.GetAt(i)->reset_display_processed();
+		}
+	}
+
+	// Validate and correct invalid inputs
+	int corrected_index_first = max(0, index_first);
+	int corrected_n_rows = n_rows_to_build;
+
+	if (index_first < 0)
+	{
+		corrected_n_rows = min(n_rows_to_build, db_wave_doc->db_get_records_count());
+	}
 	build_empty_bitmap();
 
 	infos.parent = this;
 	int image_index = new1;
-	while (n_rows_to_build > 0)
+	while (corrected_n_rows > 0)
 	{
 		const auto row = rows_.GetAt(image_index);
-		row->index = image_index + index_first;
+		row->index = image_index + corrected_index_first;
+
 		row->attach_database_record(db_wave_doc);
 		row->set_display_parameters(&infos, image_index);
 
 		image_index++;
-		n_rows_to_build--;
+		corrected_n_rows--;
 	}
 }
 
 void DataListCtrl::update_cache(int index_first, int index_last)
 {
+	static int update_count = 0;
+	update_count++;
+
 	const auto rows_count = cache_adjust_boundaries(index_first, index_last);
-	const auto b_forced_update = rows_array_set_size(rows_count);
+
+	// Get database record count first
 	const auto db_wave_doc = static_cast<ViewdbWave*>(GetParent())->GetDocument();
-	if (db_wave_doc == nullptr)
-		return;
+	const int db_record_count = (db_wave_doc != nullptr) ? db_wave_doc->db_get_records_count() : 0;
+
+	// Set image list size to database record count BEFORE building cache
+	if (infos.image_list.GetImageCount() != db_record_count)
+	{
+		infos.image_list.SetImageCount(db_record_count);
+	}
+
+	const auto b_forced_update = rows_array_set_size(rows_count);
+	
+	// Reset image list if it's too large
+	if (infos.image_list.GetImageCount() > rows_.GetSize())
+	{
+		infos.image_list.DeleteImageList();
+		infos.image_list.Create(infos.image_width, infos.image_height, ILC_COLOR4, rows_.GetSize(), 1);
+	}
 
 	// which update is necessary?
-	const int index_current_file = db_wave_doc->db_get_current_record_position();
+	const int index_current_file = (db_wave_doc != nullptr) ? db_wave_doc->db_get_current_record_position() : -1;
 
 	// set conditions for out of range (renew all items)
 	auto n_rows_to_build = rows_.GetSize(); 
@@ -364,11 +445,12 @@ void DataListCtrl::update_cache(int index_first, int index_last)
 	// restore document conditions
 	if (index_current_file >= 0) 
 	{
-		BOOL b_success = db_wave_doc->db_set_current_record_position(index_current_file);
-		{
+		db_wave_doc->db_set_current_record_position(index_current_file);
+		//BOOL b_success = db_wave_doc->db_set_current_record_position(index_current_file);
+		//{
 			//db_wave_doc->open_current_data_file();
 			//db_wave_doc->open_current_spike_file();
-		}
+		//}
 	}
 }
 
@@ -386,7 +468,7 @@ void DataListCtrl::build_empty_bitmap(const boolean b_forced_update)
 
 	infos.p_empty_bitmap->CreateBitmap(infos.image_width, infos.image_height,
 		dc.GetDeviceCaps(PLANES), 
-		dc.GetDeviceCaps(BITSPIXEL), nullptr);
+		4, nullptr);
 	mem_dc.SelectObject(infos.p_empty_bitmap);
 	mem_dc.SetMapMode(dc.GetMapMode());
 
@@ -464,12 +546,12 @@ void DataListCtrl::OnKeyUp(UINT n_char, UINT n_rep_cnt, UINT n_flags)
 ChartData* DataListCtrl::get_chart_data_of_current_record()
 {
 	const UINT n_selected_items = GetSelectedCount();
-	int n_item = -1;
 	ChartData* ptr = nullptr;
 
 	// get ptr of first item selected
 	if (n_selected_items > 0)
 	{
+		int n_item = -1;
 		n_item = GetNextItem(n_item, LVNI_SELECTED);
 		ASSERT(n_item != -1);
 		n_item -= GetTopIndex();

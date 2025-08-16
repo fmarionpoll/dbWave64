@@ -370,7 +370,7 @@ BOOL AcqDataDoc::adjust_buffer(const int elements_count)
 	buf_channel_first = 0;
 	buf_channel_last = buf_channel_size - 1;
 	buf_size = buf_channel_size * p_wf->scan_count;
-	buf_max_size = buf_size * static_cast<long>(sizeof(short));
+	buf_bytes_length = buf_size * static_cast<long>(sizeof(short));
 
 	// alloc RW buffer
 	return p_w_buf->create_w_buffer(buf_channel_size, p_wf->scan_count);
@@ -401,7 +401,7 @@ BOOL AcqDataDoc::allocate_buffer()
 	buf_channel_first = 0;
 	buf_channel_last = buf_channel_size - 1;
 	buf_size = buf_channel_size * pwF->scan_count;
-	buf_max_size = buf_size * static_cast<long>(sizeof(short));
+	buf_bytes_length = buf_size * static_cast<long>(sizeof(short));
 
 	// alloc RW buffer
 	return p_w_buf->create_w_buffer(buf_channel_size, pwF->scan_count);

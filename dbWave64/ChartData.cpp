@@ -500,9 +500,9 @@ BOOL ChartData::attach_data_file(AcqDataDoc* p_data_file)
 
 BOOL ChartData::get_data_from_doc()
 {
-	// get document parameters: exit if empty document
 	if (m_b_ad_buffers_ || m_p_data_file_ == nullptr)
 		return FALSE;
+
 	if (m_p_data_file_->get_doc_channel_length() <= 0)
 		return FALSE;
 

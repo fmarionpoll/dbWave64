@@ -1315,7 +1315,7 @@ CString ViewData::print_bars(CDC* p_dc, const CRect* rect) const
 	ASSERT(vert_bar > 0);
 
 	auto cs_comment = convert_file_index(chart_data.get_data_first_index(), chart_data.get_data_last_index());
-	if (options_view_data_->b_time_scale_bar)
+	if (options_view_data_->b_timescale_bar)
 	{
 		// print horizontal bar
 		x_bar_end.x += horizontal_bar;

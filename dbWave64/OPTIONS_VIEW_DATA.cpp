@@ -23,7 +23,7 @@ options_view_data& options_view_data::operator =(const options_view_data& arg)
 		b_doc_name = arg.b_doc_name;
 		b_frame_rect = arg.b_frame_rect;
 		b_clip_rect = arg.b_clip_rect;
-		b_time_scale_bar = arg.b_time_scale_bar;
+		b_timescale_bar = arg.b_timescale_bar;
 		b_voltage_scale_bar = arg.b_voltage_scale_bar;
 		height_doc = arg.height_doc;
 		width_doc = arg.width_doc;
@@ -122,7 +122,7 @@ void options_view_data::Serialize(CArchive& ar)
 		w_2_power += w_2_power;
 		w_print_flags += b_clip_rect * w_2_power; //64
 		w_2_power += w_2_power;
-		w_print_flags += b_time_scale_bar * w_2_power; //128
+		w_print_flags += b_timescale_bar * w_2_power; //128
 		w_2_power += w_2_power;
 		w_print_flags += b_voltage_scale_bar * w_2_power; //256
 		w_2_power += w_2_power;
@@ -273,7 +273,7 @@ void options_view_data::Serialize(CArchive& ar)
 		wMult += wMult;
 		b_clip_rect = ((wPrintFlags & wMult) > 0);
 		wMult += wMult;
-		b_time_scale_bar = ((wPrintFlags & wMult) > 0);
+		b_timescale_bar = ((wPrintFlags & wMult) > 0);
 		wMult += wMult;
 		b_voltage_scale_bar = ((wPrintFlags & wMult) > 0);
 		wMult += wMult;

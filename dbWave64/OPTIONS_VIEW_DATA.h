@@ -22,7 +22,7 @@ class options_view_data final : public CObject
 	BOOL b_doc_name{true}; // file name
 	BOOL b_frame_rect{false}; // draw a rectangle frame around the data
 	BOOL b_clip_rect{true}; // clip data to the rectangle
-	BOOL b_time_scale_bar{true}; // display time scale bar
+	BOOL b_timescale_bar{true}; // display timescale bar
 	BOOL b_voltage_scale_bar{true}; // display voltage scale bar
 	BOOL b_print_selection{true}; // print only selection or whole series
 	BOOL b_print_spk_bars{true}; // for spike view, print bars or not

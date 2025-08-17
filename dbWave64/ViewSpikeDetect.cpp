@@ -2164,7 +2164,7 @@ CString ViewSpikeDetection::print_data_bars(CDC* p_dc, const ChartData* p_data_c
 	auto str_comment = print_convert_file_index(p_data_chart_wnd->get_data_first_index(), p_data_chart_wnd->get_data_last_index());
 
 	///// horizontal time bar ///////////////////////////
-	if (options_view_data_->b_time_scale_bar)
+	if (options_view_data_->b_timescale_bar)
 	{
 		// convert bar size into time units and back into pixels
 		cs_unit = _T(" s"); 

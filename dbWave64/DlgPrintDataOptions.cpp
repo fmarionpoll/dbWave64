@@ -34,7 +34,7 @@ BOOL DlgPrintDataOptions::OnInitDialog()
 
 	m_b_frame_rect = options_view_data->b_frame_rect;
 	m_b_clip_rect = options_view_data->b_clip_rect;
-	m_b_time_scale_bar = options_view_data->b_time_scale_bar;
+	m_b_time_scale_bar = options_view_data->b_timescale_bar;
 	m_b_voltage_scale_bar = options_view_data->b_voltage_scale_bar;
 	m_b_print_selection = options_view_data->b_print_selection;
 	m_b_print_spk_bars = options_view_data->b_print_spk_bars;
@@ -49,7 +49,7 @@ void DlgPrintDataOptions::OnOK()
 
 	options_view_data->b_frame_rect = m_b_frame_rect;
 	options_view_data->b_clip_rect = m_b_clip_rect;
-	options_view_data->b_time_scale_bar = m_b_time_scale_bar;
+	options_view_data->b_timescale_bar = m_b_time_scale_bar;
 	options_view_data->b_voltage_scale_bar = m_b_voltage_scale_bar;
 	options_view_data->b_print_selection = m_b_print_selection;
 	options_view_data->b_print_spk_bars = m_b_print_spk_bars;

@@ -233,29 +233,23 @@ void DataListCtrl_Row::display_data_wnd(DataListCtrlInfos* infos, const int i_im
 	// create objects if necessary : CLineView and AcqDataDoc
 	if (p_chart_data_wnd == nullptr)
 	{
-		TRACE("DEBUG: Creating new ChartData window for image %d\n", i_image);
 		p_chart_data_wnd = new ChartData;
 		ASSERT(p_chart_data_wnd != NULL);
 		
 		// Use the parent's parent (the main view) as the parent window instead of the ListCtrl
-		CWnd* parent_wnd = infos->parent->GetParent();
-		TRACE("DEBUG: Using parent window: %p for ChartData creation\n", parent_wnd);
-		
-		BOOL create_result = p_chart_data_wnd->Create(_T("DATAWND"), 
+		const BOOL create_result = p_chart_data_wnd->Create(_T("DATAWND"), 
 			WS_CHILD, // Remove WS_VISIBLE - these windows should be invisible
 			CRect(0, 0, infos->image_width, infos->image_height), 
-			parent_wnd, i_image * 100);
+			infos->parent, i_image * 100);
 			
 		if (!create_result)
 		{
-			TRACE("DEBUG: Failed to create ChartData window for image %d\n", i_image);
 			delete p_chart_data_wnd;
 			p_chart_data_wnd = nullptr;
 			return;
 		}
 		
 		p_chart_data_wnd->set_b_use_dib(FALSE);
-		TRACE("DEBUG: ChartData window created successfully for image %d\n", i_image);
 	}
 	p_chart_data_wnd->set_string(cs_comment);
 
@@ -303,11 +297,6 @@ void DataListCtrl_Row::plot_data(DataListCtrlInfos* infos, const int i_image) co
 	p_chart_data_wnd->set_bottom_comment(infos->b_display_file_name, cs_datafile_name);
 	CRect client_rect;
 	p_chart_data_wnd->GetClientRect(&client_rect);
-
-	TRACE("DEBUG: plot_data() - Image %d, Client rect: (%d,%d,%d,%d), Size: %dx%d\n", 
-		i_image, client_rect.left, client_rect.top, client_rect.right, client_rect.bottom,
-		client_rect.Width(), client_rect.Height());
-
 	const auto p_dc = p_chart_data_wnd->GetDC();
 	if (!p_dc)
 	{
@@ -327,54 +316,22 @@ void DataListCtrl_Row::plot_data(DataListCtrlInfos* infos, const int i_image) co
 		p_dc->GetDeviceCaps(PLANES),
 		4, nullptr))
 	{
-		TRACE("DEBUG: plot_data() - Failed to create bitmap for image %d\n", i_image);
 		p_chart_data_wnd->ReleaseDC(p_dc);
 		return;
 	}
-	TRACE("DEBUG: plot_data() - Successfully created bitmap (%dx%d) for image %d\n", 
-		client_rect.right, client_rect.bottom, i_image);
 
 	mem_dc.SelectObject(&bitmap_plot);
 	mem_dc.SetMapMode(p_dc->GetMapMode());
 
-	TRACE("DEBUG: plot_data() - About to call plot_data_to_dc for image %d\n", i_image);
 	// Ensure window is properly initialized before plotting
 	if (!p_chart_data_wnd->GetSafeHwnd())
 	{
 		TRACE("DEBUG: plot_data() - Window handle is invalid for image %d\n", i_image);
 		return;
 	}
-	
-	// Check if the chart has data loaded
-	TRACE("DEBUG: plot_data() - Chart window handle: %p for image %d\n", p_chart_data_wnd->GetSafeHwnd(), i_image);
-	
-	// Force a window update to ensure proper initialization
-	p_chart_data_wnd->Invalidate();
-	p_chart_data_wnd->UpdateWindow();
-	
-	// Check if the memory DC is valid before plotting
-	TRACE("DEBUG: plot_data() - Memory DC handle: %p for image %d\n", mem_dc.GetSafeHdc(), i_image);
-	
-	p_chart_data_wnd->plot_data_to_dc(&mem_dc);
-	TRACE("DEBUG: plot_data() - plot_data_to_dc completed for image %d\n", i_image);
-	
 
-	
-	// Check if bitmap has content by getting its dimensions
-	BITMAP bm;
-	if (bitmap_plot.GetBitmap(&bm))
-	{
-		TRACE("DEBUG: plot_data() - Bitmap info: %dx%d, %d planes, %d bits per pixel\n", 
-			bm.bmWidth, bm.bmHeight, bm.bmPlanes, bm.bmBitsPixel);
-	}
-	else
-	{
-		TRACE("DEBUG: plot_data() - Failed to get bitmap info for image %d\n", i_image);
-	}
-	
-	TRACE("DEBUG: plot_data() - About to replace image %d in image list (list size: %d)\n", 
-		i_image, infos->image_list.GetImageCount());
-	
+	p_chart_data_wnd->plot_data_to_dc(&mem_dc);
+
 	if (!infos->image_list.Replace(i_image, &bitmap_plot, nullptr))
 	{
 		TRACE("DEBUG: plot_data() - Failed to replace image %d in image list\n", i_image);
@@ -382,9 +339,6 @@ void DataListCtrl_Row::plot_data(DataListCtrlInfos* infos, const int i_image) co
 	else
 	{
 		TRACE("DEBUG: plot_data() - Successfully replaced image %d in image list\n", i_image);
-		
-		// Force the ListCtrl to redraw this item
-		static_cast<CListCtrl*>(infos->parent)->RedrawItems(i_image, i_image);
 	}
 	
 	p_chart_data_wnd->ReleaseDC(p_dc);
@@ -397,15 +351,11 @@ void DataListCtrl_Row::display_spike_wnd(DataListCtrlInfos* infos, const int i_i
 	{
 		p_chart_spike_wnd = new ChartSpikeBar;
 		ASSERT(p_chart_spike_wnd != NULL);
-		
-		// Use the parent's parent (the main view) as the parent window instead of the ListCtrl
-		CWnd* parent_wnd = infos->parent->GetParent();
-		TRACE("DEBUG: Using parent window: %p for ChartSpikeBar creation\n", parent_wnd);
-		
-		BOOL create_result = p_chart_spike_wnd->Create(_T("SPKWND"), 
+
+		const BOOL create_result = p_chart_spike_wnd->Create(_T("SPKWND"), 
 			WS_CHILD, // Remove WS_VISIBLE - these windows should be invisible
 			CRect(0, 0, infos->image_width, infos->image_height), 
-			parent_wnd, index * 1000);
+			infos->parent, index * 1000);
 			
 		if (!create_result)
 		{
@@ -417,7 +367,6 @@ void DataListCtrl_Row::display_spike_wnd(DataListCtrlInfos* infos, const int i_i
 		
 		p_chart_spike_wnd->set_b_use_dib(FALSE);
 		p_chart_spike_wnd->set_display_all_files(false);
-		TRACE("DEBUG: ChartSpikeBar window created successfully for image %d\n", i_image);
 	}
 
 	// open spike document
@@ -427,26 +376,19 @@ void DataListCtrl_Row::display_spike_wnd(DataListCtrlInfos* infos, const int i_i
 		ASSERT(p_spike_doc != NULL);
 	}
 
-	TRACE("DEBUG: display_spike_wnd() - Spike file name: '%s' for image %d\n", cs_spike_file_name, i_image);
-	
 	if (cs_spike_file_name.IsEmpty())
 	{
-		TRACE("DEBUG: display_spike_wnd() - Spike file name is empty for image %d\n", i_image);
 		infos->image_list.Replace(i_image, infos->p_empty_bitmap, nullptr);
 	}
 	else if (!p_spike_doc->OnOpenDocument(cs_spike_file_name))
 	{
-		TRACE("DEBUG: display_spike_wnd() - Failed to open spike file '%s' for image %d\n", cs_spike_file_name, i_image);
 		infos->image_list.Replace(i_image, infos->p_empty_bitmap, nullptr);
 	}
 	else
 	{
-		TRACE("DEBUG: display_spike_wnd() - Successfully opened spike file for image %d, calling plot_spikes\n", i_image);
-	
 		const auto p_parent0 = static_cast<ViewdbWave*>(infos->parent->GetParent());
-		int i_tab = p_parent0->spk_list_tab_ctrl.GetCurSel();
-		if (i_tab < 0)
-			i_tab = 0;
+		const int i = p_parent0->spk_list_tab_ctrl.GetCurSel();
+		const int i_tab = i < 0 ? 0 : i;
 		const auto p_spk_list = p_spike_doc->set_index_current_spike_list(i_tab);
 
 		p_chart_spike_wnd->set_source_data(p_spk_list, p_parent0->GetDocument());
@@ -477,7 +419,6 @@ void DataListCtrl_Row::display_spike_wnd(DataListCtrlInfos* infos, const int i_i
 
 void DataListCtrl_Row::plot_spikes(DataListCtrlInfos* infos, const int i_image) const
 {
-	TRACE("DEBUG: plot_spikes() - Starting for image %d\n", i_image);
 	p_chart_spike_wnd->set_bottom_comment(infos->b_display_file_name, cs_spike_file_name);
 
 	CRect client_rect;
@@ -501,18 +442,11 @@ void DataListCtrl_Row::plot_spikes(DataListCtrlInfos* infos, const int i_image) 
 	mem_dc.SelectObject(&bitmap_plot);
 	mem_dc.SetMapMode(p_dc->GetMapMode());
 
-	TRACE("DEBUG: plot_spikes() - About to call plot_data_to_dc for image %d\n", i_image);
 	p_chart_spike_wnd->plot_data_to_dc(&mem_dc);
-	TRACE("DEBUG: plot_spikes() - plot_data_to_dc completed for image %d\n", i_image);
-	
-	TRACE("DEBUG: plot_spikes() - About to replace image %d in image list (list size: %d)\n", 
-		i_image, infos->image_list.GetImageCount());
 	
 	if (infos->image_list.Replace(i_image, &bitmap_plot, nullptr))
 	{
 		TRACE("DEBUG: plot_spikes() - Successfully replaced image %d in image list\n", i_image);
-		// Force the ListCtrl to redraw this item
-		static_cast<CListCtrl*>(infos->parent)->RedrawItems(i_image, i_image);
 	}
 	else
 	{
@@ -522,7 +456,10 @@ void DataListCtrl_Row::plot_spikes(DataListCtrlInfos* infos, const int i_image) 
 
 void DataListCtrl_Row::display_empty_wnd(DataListCtrlInfos* infos, const int i_image)
 {
-	infos->image_list.Replace(i_image, infos->p_empty_bitmap, nullptr);
+	if (infos->image_list.Replace(i_image, infos->p_empty_bitmap, nullptr))
+		TRACE("DEBUG: display_empty_wnd() - Successfully replaced image %d in image list\n", i_image);
+	else
+		TRACE("DEBUG: display_empty_wnd() - Failed to replace image %d in image list\n", i_image);
 }
 
 void DataListCtrl_Row::reset_display_processed()

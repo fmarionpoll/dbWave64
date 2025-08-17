@@ -52,8 +52,6 @@ END_MESSAGE_MAP()
 
 DataListCtrl::DataListCtrl()
 {
-	// Set the view mode to LVS_REPORT in the constructor
-	TRACE("DEBUG: DataListCtrl constructor called\n");
 }
 
 DataListCtrl::~DataListCtrl()
@@ -138,24 +136,6 @@ void DataListCtrl::init_columns(CUIntArray* width_columns)
 			m_column_width_[i] = static_cast<int>(width_columns->GetAt(i));
 	}
 
-	// Remove LVS_OWNERDRAWFIXED style to allow standard image list display
-	DWORD current_style = GetStyle();
-	TRACE("DEBUG: DataListCtrl current style: 0x%08X\n", current_style);
-	TRACE("DEBUG: LVS_OWNERDRAWFIXED flag: 0x%08X\n", LVS_OWNERDRAWFIXED);
-	
-	if (current_style & LVS_OWNERDRAWFIXED)
-	{
-		TRACE("DEBUG: LVS_OWNERDRAWFIXED style detected, removing it...\n");
-		ModifyStyle(LVS_OWNERDRAWFIXED, 0);
-		DWORD new_style = GetStyle();
-		TRACE("DEBUG: DataListCtrl new style after removal: 0x%08X\n", new_style);
-		TRACE("DEBUG: Removed LVS_OWNERDRAWFIXED style from DataListCtrl\n");
-	}
-	else
-	{
-		TRACE("DEBUG: LVS_OWNERDRAWFIXED style not detected\n");
-	}
-
 	for (auto i = 0; i < N_COLUMNS; i++)
 	{
 		InsertColumn(i, m_column_headers_[i], m_column_format_[i], m_column_width_[i], -1);
@@ -164,17 +144,12 @@ void DataListCtrl::init_columns(CUIntArray* width_columns)
 	infos.image_width = m_column_width_[CTRL_COL_CURVE];
 	infos.image_list.Create(infos.image_width, infos.image_height, ILC_COLOR4, 10, 10);
 	SetImageList(&infos.image_list, LVSIL_SMALL);
-	
-	// Note: GetView() and SetView() require UNICODE builds, so we can't use them in ANSI/MBCS builds
-	// The CListCtrl should default to LVS_REPORT mode which is correct for displaying images in columns
-	TRACE("DEBUG: DataListCtrl - Using default view mode (LVS_REPORT) for ANSI/MBCS build\n");
 }
 
 void DataListCtrl::on_get_display_info(NMHDR* p_nmhdr, LRESULT* p_result)
 {
 	static int display_info_count = 0;
 	display_info_count++;
-	TRACE("DEBUG: on_get_display_info() called (count: %d)\n", display_info_count);
 
 	auto first_array = 0;
 	auto last_array = 0;
@@ -216,10 +191,8 @@ void DataListCtrl::on_get_display_info(NMHDR* p_nmhdr, LRESULT* p_result)
 		return;
 
 	const int i_first_visible = rows_.GetAt(0)->index;
-	auto i_cache_index = item_index - i_first_visible;
-	if (i_cache_index > (rows_.GetSize() - 1))
-		i_cache_index = rows_.GetSize() - 1;
-
+	const int i = item_index - i_first_visible;
+	const auto i_cache_index = i > (rows_.GetSize() - 1) ? rows_.GetSize() - 1 : i;
 	const auto* row = rows_.GetAt(i_cache_index);
 
 	if (item->mask & LVIF_TEXT) //valid text buffer?
@@ -256,19 +229,9 @@ void DataListCtrl::on_get_display_info(NMHDR* p_nmhdr, LRESULT* p_result)
 	}
 
 	// display images
-	TRACE("DEBUG: on_get_display_info() - Item mask: 0x%08X, LVIF_IMAGE: 0x%08X, LVIF_TEXT: 0x%08X\n", 
-		item->mask, LVIF_IMAGE, LVIF_TEXT);
-	
 	if (item->mask & LVIF_IMAGE && item->iSubItem == CTRL_COL_CURVE)
 	{
 		item->iImage = i_cache_index;
-		TRACE("DEBUG: on_get_display_info() - Setting image index %d for item %d, subitem %d\n", 
-			i_cache_index, item->iItem, item->iSubItem);
-	}
-	else if (item->iSubItem == CTRL_COL_CURVE)
-	{
-		TRACE("DEBUG: on_get_display_info() - LVIF_IMAGE not requested for curve column (item %d, subitem %d)\n", 
-			item->iItem, item->iSubItem);
 	}
 }
 
@@ -310,7 +273,7 @@ int DataListCtrl::cache_adjust_boundaries(int& index_first, int& index_last) con
 	if (index_last < 0 || index_last >= GetItemCount())
 	{
 		index_last = GetItemCount() - 1;
-		index_first = max(0, index_last - inb_visible + 1); // Ensure index_first doesn't go negative again
+		index_first = max(0, index_last - inb_visible + 1); 
 	}
 
 	return index_last - index_first + 1;
@@ -348,7 +311,7 @@ void DataListCtrl::cache_build_rows(const int new1, const int index_first, int n
 	}
 
 	// Validate and correct invalid inputs
-	int corrected_index_first = max(0, index_first);
+	const int corrected_index_first = max(0, index_first);
 	int corrected_n_rows = n_rows_to_build;
 
 	if (index_first < 0)
@@ -472,7 +435,7 @@ void DataListCtrl::build_empty_bitmap(const boolean b_forced_update)
 	mem_dc.SelectObject(infos.p_empty_bitmap);
 	mem_dc.SetMapMode(dc.GetMapMode());
 
-	CBrush brush(col_silver); 
+	CBrush brush(col_red);
 	mem_dc.SelectObject(&brush);
 	CPen pen;
 	pen.CreatePen(PS_SOLID, 1, col_black);

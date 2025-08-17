@@ -930,7 +930,7 @@ CString ViewSpikes::print_bars(CDC* p_dc, const CRect* rect) const
 	auto cs_comment = print_convert_file_index(ii_first, ii_last);
 
 	///// horizontal time bar ///////////////////////////
-	if (options_view_data_->b_time_scale_bar)
+	if (options_view_data_->b_timescale_bar)
 	{
 		constexpr auto horizontal_bar = 100;
 		// print horizontal bar

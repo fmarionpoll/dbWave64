@@ -169,7 +169,7 @@ public:
 	BOOL get_b_draw_frame() const { return scope_structure_.b_draw_frame; }
 	void set_b_draw_frame(const BOOL flag) { scope_structure_.b_draw_frame = flag; }
 	CRect get_defined_rect() const { return {pt_first_.x, pt_first_.y, pt_last_.x, pt_last_.y}; }
-	void set_bottom_comment(const BOOL flag, const CString& cs)
+	void set_values_for_bottom_comment(const BOOL flag, const CString& cs)
 	{
 		cs_bottom_comment = cs;
 		b_bottom_comment = flag;

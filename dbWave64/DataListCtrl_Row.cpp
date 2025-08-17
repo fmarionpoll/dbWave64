@@ -288,7 +288,7 @@ void DataListCtrl_Row::display_data_wnd(DataListCtrlInfos* infos, const int i_im
 
 void DataListCtrl_Row::plot_data(DataListCtrlInfos* infos, const int i_image) const
 {
-	p_chart_data_wnd->set_bottom_comment(infos->b_display_file_name, cs_datafile_name);
+	p_chart_data_wnd->set_values_for_bottom_comment(infos->b_display_file_name, cs_datafile_name);
 	CRect client_rect;
 	p_chart_data_wnd->GetClientRect(&client_rect);
 	const auto p_dc = p_chart_data_wnd->GetDC();
@@ -414,7 +414,7 @@ void DataListCtrl_Row::display_spike_wnd(DataListCtrlInfos* infos, const int i_i
 
 void DataListCtrl_Row::plot_spikes(DataListCtrlInfos* infos, const int i_image) const
 {
-	p_chart_spike_wnd->set_bottom_comment(infos->b_display_file_name, cs_spike_file_name);
+	p_chart_spike_wnd->set_values_for_bottom_comment(infos->b_display_file_name, cs_spike_file_name);
 
 	CRect client_rect;
 	p_chart_spike_wnd->GetClientRect(&client_rect);

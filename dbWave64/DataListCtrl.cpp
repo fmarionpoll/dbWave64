@@ -7,7 +7,6 @@
 #include "DataListCtrl_Row.h"
 #include "ViewdbWave.h"
 
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -142,8 +141,18 @@ void DataListCtrl::init_columns(CUIntArray* width_columns)
 	}
 
 	infos.image_width = m_column_width_[CTRL_COL_CURVE];
-	infos.image_list.Create(infos.image_width, infos.image_height, ILC_COLOR4, 10, 10);
+	
+	// Create image list with proper parameters
+	if (!infos.image_list.Create(infos.image_width, infos.image_height, ILC_COLOR4, 10, 10))
+	{
+		TRACE("DEBUG: init_columns() - Failed to create image list\n");
+		return;
+	}
+	
 	SetImageList(&infos.image_list, LVSIL_SMALL);
+	
+	// Initialize empty bitmap
+	build_empty_bitmap(true);
 }
 
 void DataListCtrl::on_get_display_info(NMHDR* p_nmhdr, LRESULT* p_result)
@@ -346,6 +355,9 @@ void DataListCtrl::update_cache(int index_first, int index_last)
 	const auto db_wave_doc = static_cast<ViewdbWave*>(GetParent())->GetDocument();
 	const int db_record_count = (db_wave_doc != nullptr) ? db_wave_doc->db_get_records_count() : 0;
 
+	// Ensure empty bitmap is created
+	build_empty_bitmap(true);
+
 	// Set image list size to database record count BEFORE building cache
 	if (infos.image_list.GetImageCount() != db_record_count)
 	{
@@ -354,11 +366,12 @@ void DataListCtrl::update_cache(int index_first, int index_last)
 
 	const auto b_forced_update = rows_array_set_size(rows_count);
 	
-	// Reset image list if it's too large
-	if (infos.image_list.GetImageCount() > rows_.GetSize())
+	// Reset image list if it's too large or invalid
+	if (infos.image_list.GetImageCount() > db_record_count || infos.image_list.GetImageCount() <= 0)
 	{
 		infos.image_list.DeleteImageList();
-		infos.image_list.Create(infos.image_width, infos.image_height, ILC_COLOR4, rows_.GetSize(), 1);
+		infos.image_list.Create(infos.image_width, infos.image_height, ILC_COLOR4, db_record_count, 1);
+		infos.image_list.SetImageCount(db_record_count);
 	}
 
 	// which update is necessary?
@@ -427,44 +440,73 @@ void DataListCtrl::build_empty_bitmap(const boolean b_forced_update)
 	infos.p_empty_bitmap = new CBitmap;
 	CWindowDC dc(this);
 	CDC mem_dc;
-	VERIFY(mem_dc.CreateCompatibleDC(&dc));
+	if (!mem_dc.CreateCompatibleDC(&dc))
+	{
+		TRACE("DEBUG: build_empty_bitmap() - Failed to create compatible DC\n");
+		return;
+	}
 
-	infos.p_empty_bitmap->CreateBitmap(infos.image_width, infos.image_height,
+	if (!infos.p_empty_bitmap->CreateBitmap(infos.image_width, infos.image_height,
 		dc.GetDeviceCaps(PLANES), 
-		4, nullptr);
+		dc.GetDeviceCaps(BITSPIXEL), nullptr))
+	{
+		TRACE("DEBUG: build_empty_bitmap() - Failed to create bitmap\n");
+		return;
+	}
+	
 	mem_dc.SelectObject(infos.p_empty_bitmap);
 	mem_dc.SetMapMode(dc.GetMapMode());
 
-	CBrush brush(col_red);
+	// Fill with red color
+	CBrush brush(RGB(255, 0, 0)); // Pure red
 	mem_dc.SelectObject(&brush);
 	CPen pen;
-	pen.CreatePen(PS_SOLID, 1, col_black);
+	pen.CreatePen(PS_SOLID, 1, col_black); 
 	mem_dc.SelectObject(&pen);
-	const auto rect_data = CRect(1, 0, infos.image_width, infos.image_height);
+	
+	const auto rect_data = CRect(0, 0, infos.image_width, infos.image_height);
 	mem_dc.Rectangle(&rect_data);
+
 }
 
 void DataListCtrl::refresh_display()
 {
 	if (rows_.GetSize() == NULL)
+	{
+		TRACE("DEBUG: refresh_display() - No rows to refresh\n");
 		return;
+	}
 
 	const int first_row = rows_.GetAt(0)->index;
 	const int last_row = rows_.GetAt(rows_.GetUpperBound())->index;
+	
+	TRACE("DEBUG: refresh_display() - Refreshing rows %d to %d (display_mode: %d)\n", 
+		first_row, last_row, infos.display_mode);
+	
+	// Force rebuild of empty bitmap
 	build_empty_bitmap(true);
 
 	const auto n_rows = rows_.GetSize();
 	infos.parent = this;
+	
+	// Reset all rows to force reprocessing
 	for (auto image_index = 0; image_index < n_rows; image_index++)
 	{
 		auto* row = rows_.GetAt(image_index);
 		if (row == nullptr)
 			continue;
+		
+		// Force reprocessing by resetting the display processed flag
+		row->reset_display_processed();
 		row->set_display_parameters(&infos, image_index);
 	}
+	
+	// Force redraw of the list control
 	RedrawItems(first_row, last_row);
 	Invalidate();
 	UpdateWindow();
+	
+	TRACE("DEBUG: refresh_display() - Refresh completed\n");
 }
 
 void DataListCtrl::OnVScroll(const UINT n_sb_code, const UINT n_pos, CScrollBar* p_scroll_bar)
@@ -540,6 +582,18 @@ void DataListCtrl::resize_signal_column(const int n_pixels)
 		SAFE_DELETE(ptr->p_chart_spike_wnd)
 	}
 	refresh_display();
+}
+
+void DataListCtrl::set_display_mode(const int i_mode)
+{
+	TRACE("DEBUG: set_display_mode() - Changing from %d to %d\n", infos.display_mode, i_mode);
+	infos.display_mode = i_mode;
+	
+	//// Force refresh when display mode changes
+	//if (rows_.GetSize() > 0)
+	//{
+	//	refresh_display();
+	//}
 }
 
 void DataListCtrl::fit_columns_to_size(const int n_pixels)

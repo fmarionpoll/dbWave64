@@ -51,7 +51,8 @@ class DataListCtrl_Row : public CObject
 protected:
 	void display_data_wnd(DataListCtrlInfos* infos, int i_image);
 	void display_spike_wnd(DataListCtrlInfos* infos, int i_image);
-	static void display_empty_wnd(DataListCtrlInfos* infos, int i_image);
+	void display_empty_wnd(DataListCtrlInfos* infos, int i_image);
+	void print_filename_on_rectangle(const DataListCtrlInfos* infos, CDC& mem_dc);
 
 	void plot_data(DataListCtrlInfos* infos, int i_image) const;
 	void plot_spikes(DataListCtrlInfos* infos, int i_image) const;

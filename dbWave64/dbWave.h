@@ -34,6 +34,8 @@ public:
 	BOOL PreTranslateMessage(MSG* p_msg) override;
 
 	CdbMultiDocTemplate* m_db_wave_view_template  {nullptr};
+	CdbMultiDocTemplate* m_db_wave_view2_template{ nullptr };
+
 	CdbMultiDocTemplate* m_db_browse_view_template  {nullptr};
 	CdbMultiDocTemplate* m_note_view_template  {nullptr};
 	CdbMultiDocTemplate* m_data_view_template  {nullptr};
@@ -41,6 +43,8 @@ public:
 	CdbMultiDocTemplate* m_ad_view_template  {nullptr};
 
 	HMENU h_menu_db_view{};
+	HMENU h_menu_db_view2{};
+
 	HMENU h_menu_data_view{};
 	HMENU h_menu_spike_view{};
 	HMENU h_menu_browse_view{};

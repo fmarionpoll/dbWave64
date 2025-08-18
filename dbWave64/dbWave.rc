@@ -3065,6 +3065,156 @@ BEGIN
     MENUITEM "Win&dows 7",                  ID_VIEW_APPLOOK_WINDOWS_7
 END
 
+IDR_DBDATATYPE2 MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New\tCtrl+N",                ID_FILE_NEW_FRAME
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM "&Close",                      ID_FILE_CLOSE
+        MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE
+        MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
+        MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
+        MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Undo\tCtrl+Z",               ID_EDIT_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
+        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
+        MENUITEM "Paste &Special...",           ID_EDIT_PASTE_SPECIAL
+        MENUITEM SEPARATOR
+        MENUITEM "Insert &New Object...",       ID_OLE_INSERT_NEW
+        MENUITEM "Lin&ks...",                   ID_OLE_EDIT_LINKS
+        MENUITEM "<<OLE VERBS GO HERE>>",       ID_OLE_VERB_FIRST
+    END
+    POPUP "&Record"
+    BEGIN
+        MENUITEM "&First Record\tCtrl Home",    ID_RECORD_FIRST
+        MENUITEM "&Previous Record\tCtrl -",    ID_RECORD_PREV
+        MENUITEM "&Next Record\tCtrl +",        ID_RECORD_NEXT
+        MENUITEM "&Last Record\tCtrl End",      ID_RECORD_LAST
+        MENUITEM SEPARATOR
+        MENUITEM "&Delete record\tCtrl D",      ID_RECORD_DELETE
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "Data&base",                   ID_VIEW_DATABASE
+        MENUITEM "&Data file",                  ID_VIEW_DATA_FILE
+        MENUITEM "Spi&ke detection",            ID_VIEW_SPIKE_DETECTION
+        MENUITEM "Sp&ike display",              ID_VIEW_SPIKE_DISPLAY
+        MENUITEM "Spike s&orting (amplitude)",  ID_VIEW_SPIKE_SORTING_AMPLITUDE
+        MENUITEM "Spike sorting (t&emplates)",  ID_VIEW_SPIKE_SORTING_TEMPLATES
+        MENUITEM "Spike time se&ries",          ID_VIEW_SPIKE_TIME_SERIES
+        MENUITEM "Ac&quire data",               ID_VIEW_ACQUIRE_DATA
+        MENUITEM SEPARATOR
+        POPUP "&Cursor mode..."
+        BEGIN
+            MENUITEM "&Normal",                     ID_VIEW_CURSOR_MODE_NORMAL, CHECKED
+            MENUITEM "Zoom &in",                    ID_VIEW_CURSOR_MODE_ZOOMIN
+            MENUITEM "&Measure",                    ID_VIEW_CURSOR_MODE_MEASURE
+        END
+        MENUITEM SEPARATOR
+        POPUP "&Toolbars and Docking Windows"
+        BEGIN
+            MENUITEM "<placeholder>",               ID_VIEW_TOOLBAR
+        END
+        POPUP "Application &Look"
+        BEGIN
+            MENUITEM "Windows &2000",               32987
+            MENUITEM "Office &XP",                  32988
+            MENUITEM "&Windows XP",                 32989
+            MENUITEM "Office 200&3",                32990
+            MENUITEM "Visual Studio 200&5",         32991
+            MENUITEM "Visual Studio 200&8",         32992
+            POPUP "Office 200&7"
+            BEGIN
+                MENUITEM "&Blue Style",                 ID_VIEW_APPLOOK_OFF_2007_BLUE
+                MENUITEM "B&lack Style",                ID_VIEW_APPLOOK_OFF_2007_BLACK
+                MENUITEM "&Silver Style",               ID_VIEW_APPLOOK_OFF_2007_SILVER
+                MENUITEM "&Aqua Style",                 ID_VIEW_APPLOOK_OFF_2007_AQUA
+            END
+        END
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+    END
+    POPUP "Forma&t"
+    BEGIN
+        MENUITEM "&X scale...",                 ID_FORMAT_XSCALE
+        MENUITEM "F&irst frame\tShift+Home",    ID_FORMAT_FIRST_FRAME
+        MENUITEM "&Last frame\tShift+End",      ID_FORMAT_LAST_FRAME
+        MENUITEM "&All data\tCtrl Up",          ID_FORMAT_VIEW_ALL_DATA_ON_ABSCISSA
+        MENUITEM SEPARATOR
+        MENUITEM "&Y scale...",                 ID_FORMAT_ORDINATES
+        MENUITEM "&Center curve",               ID_FORMAT_CENTER_CURVE
+        MENUITEM "&Gain adjust",                ID_FORMAT_GAIN_ADJUST
+        MENUITEM "&Split curves",               ID_FORMAT_SPLIT_CURVES
+        MENUITEM SEPARATOR
+        MENUITEM "Data series a&ttributes...",  ID_FORMAT_DATA_SERIES_ATTRIBUTES
+        MENUITEM "C&opy settings to all curves", ID_FORMAT_COPY_SETTINGS_TO_ALL
+    END
+    POPUP "H&ardware"
+    BEGIN
+        MENUITEM "&Input channels...",          ID_HARDWARE_ADCHANNELS
+        MENUITEM "Sampling &duration...",       ID_HARDWARE_AD_INTERVALS
+        MENUITEM SEPARATOR
+        MENUITEM "&Experiment...",              ID_HARDWARE_DEFINE_EXPERIMENT
+    END
+    POPUP "Tool&s"
+    BEGIN
+        MENUITEM "&Data series...",             ID_TOOLS_DATA_SERIES
+        MENUITEM SEPARATOR
+        POPUP "E&xport"
+        BEGIN
+            MENUITEM "Export &spike data...",       ID_TOOLS_EXPORT_NUMBER_OF_SPIKES
+            MENUITEM "Export data &comments...",    ID_TOOLS_EXPORT_DATA_COMMENTS
+            MENUITEM "Export data files as &text...", ID_TOOLS_EXPORT_DATA_AS_TEXT
+            MENUITEM "Export data to other &formats...", ID_TOOLS_EXPORT_DATA_FILE
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Detection p&arameters...",    ID_TOOLS_DETECT_PARMS
+        MENUITEM "Spike &parameters...",        ID_TOOLS_SPIKE_DETECTION_PARAMETERS
+        MENUITEM "St&imulus parameters...",     ID_TOOLS_STIMULUS_DETECTION_PARAMETERS
+        MENUITEM "Detect spikes and stim&ulus", ID_TOOLS_DETECT
+        MENUITEM SEPARATOR
+        MENUITEM "&Edit && transform spikes...", ID_TOOLS_EDIT_SPIKES
+        MENUITEM "Edit stim&ulus ...",          ID_TOOLS_EDIT_STIMULUS, INACTIVE
+        MENUITEM SEPARATOR
+        MENUITEM "Measu&re mode...",            ID_TOOLS_MEASURE_MODE
+        MENUITEM "&Vertical cursors...",        ID_TOOLS_VERTICAL_TAGS
+        MENUITEM "&Horizontal cursors...",      ID_TOOLS_HORIZONTAL_CURSORS
+        MENUITEM "&Measure!",                   ID_TOOLS_MEASURE
+    END
+    POPUP "&Options"
+    BEGIN
+        MENUITEM "&Browse mode...",             ID_OPTIONS_BROWSE_MODE
+        MENUITEM "&Printing format...",         ID_OPTIONS_PRINT_MARGINS
+        MENUITEM SEPARATOR
+        MENUITEM "&Load/save options...",       ID_OPTIONS_LOAD_SAVE
+    END
+    POPUP "&Window"
+    BEGIN
+        MENUITEM "&New Window",                 ID_WINDOW_NEW
+        MENUITEM "&Cascade",                    ID_WINDOW_CASCADE
+        MENUITEM "&Tile",                       ID_WINDOW_TILE_HORZ
+        MENUITEM "&Arrange Icons",              ID_WINDOW_ARRANGE
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Index",                      ID_HELP_INDEX
+        MENUITEM "&Using Help",                 ID_HELP_USING
+        MENUITEM SEPARATOR
+        MENUITEM "&About dbWave...",            ID_APP_ABOUT
+    END
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -3977,6 +4127,7 @@ BEGIN
     IDS_FILTERPANE          "Filter Pane"
     IDS_PROPERTIESPANE      "Properties pane"
     IDS_SHORTCUTS           "Shortcuts"
+    IDS_BTTNDATABASE2       "new data base display prototype"
     IDC_UPDATE_INFOS        "Save changes made on the current selected record\nUpdate record"
 END
 

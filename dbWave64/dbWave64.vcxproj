@@ -17,7 +17,15 @@
   <ItemGroup>
     <ClCompile Include="chanlistitem.cpp" />
     <ClCompile Include="DatabaseUtils.cpp" />
-    <ClCompile Include="DataListCtrl.cpp" />
+    <ClCompile Include="dbView\DataListCtrl.cpp" />
+    <ClCompile Include="dbView\DataListCtrl_Row.cpp" />
+    <ClCompile Include="dbView\ViewdbWave.cpp" />
+    <ClCompile Include="dbView_optimized\DataListCtrl_Configuration.cpp" />
+    <ClCompile Include="dbView_optimized\DataListCtrl_Optimized.cpp" />
+    <ClCompile Include="dbView_optimized\DataListCtrl_Row_Optimized.cpp" />
+    <ClCompile Include="dbView_optimized\DataListCtrl_SupportingClasses.cpp" />
+    <ClCompile Include="dbView_optimized\ViewdbWave_Optimized.cpp" />
+    <ClCompile Include="dbView_optimized\ViewdbWave_SupportingClasses.cpp" />
     <ClCompile Include="dbWaveDoc.cpp" />
     <ClCompile Include="Envelope.cpp" />
     <ClCompile Include="StdAfx.cpp">
@@ -50,7 +58,6 @@
     <ClCompile Include="datafile_CEDSpike2.cpp" />
     <ClCompile Include="datafile_mcid.cpp" />
     <ClCompile Include="datafile_X.cpp" />
-    <ClCompile Include="DataListCtrl_Row.cpp" />
     <ClCompile Include="dbMultiDocTemplate.cpp" />
     <ClCompile Include="dbTable.cpp" />
     <ClCompile Include="dbTableAssociated.cpp" />
@@ -188,7 +195,6 @@
     <ClCompile Include="TemplateWnd.cpp" />
     <ClCompile Include="ViewData.cpp" />
     <ClCompile Include="ViewDbTable.cpp" />
-    <ClCompile Include="ViewdbWave.cpp" />
     <ClCompile Include="ViewNotedoc.cpp" />
     <ClCompile Include="ViewSpikeDetect.cpp" />
     <ClCompile Include="ViewSpikeHist.cpp" />
@@ -220,6 +226,17 @@
     <ClInclude Include="Controls\cdxCRot90DC.h" />
     <ClInclude Include="Controls\cdxCRotBevelLine.h" />
     <ClInclude Include="DatabaseUtils.h" />
+    <ClInclude Include="dbView\DataListCtrl.h" />
+    <ClInclude Include="dbView\DataListCtrl_Infos.h" />
+    <ClInclude Include="dbView\DataListCtrl_Row.h" />
+    <ClInclude Include="dbView\ViewdbWave.h" />
+    <ClInclude Include="dbView_optimized\DataListCtrl_Configuration.h" />
+    <ClInclude Include="dbView_optimized\DataListCtrl_Optimized.h" />
+    <ClInclude Include="dbView_optimized\DataListCtrl_Optimized_Infos.h" />
+    <ClInclude Include="dbView_optimized\DataListCtrl_Row_Optimized.h" />
+    <ClInclude Include="dbView_optimized\DataListCtrl_SupportingClasses.h" />
+    <ClInclude Include="dbView_optimized\ViewdbWave_Optimized.h" />
+    <ClInclude Include="dbView_optimized\ViewdbWave_SupportingClasses.h" />
     <ClInclude Include="GridCtrl\GridComboEdit.h" />
     <ClInclude Include="GridCtrl\InPlaceEdit.h" />
     <ClInclude Include="CPivotCache.h" />
@@ -254,9 +271,6 @@
     <ClInclude Include="datafile_X.h" />
     <ClInclude Include="dataheader_Asyst.H" />
     <ClInclude Include="dataheader_Atlab.H" />
-    <ClInclude Include="DataListCtrl.h" />
-    <ClInclude Include="DataListCtrl_Infos.h" />
-    <ClInclude Include="DataListCtrl_Row.h" />
     <ClInclude Include="dbMultiDocTemplate.h" />
     <ClInclude Include="dbTable.h" />
     <ClInclude Include="dbTableAssociated.h" />

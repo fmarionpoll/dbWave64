@@ -256,7 +256,7 @@ BOOL CMainFrame::create_outlook_bar()
 
 	img1.Create(IDB_NAVIGATIONLARGE, 32, 0, col_fuchsia);
 
-#define N_BUTTONS 8
+#define N_BUTTONS 9
 	constexpr WORD dw_style = TBSTYLE_BUTTON | TBSTYLE_AUTOSIZE;
 	constexpr struct
 	{
@@ -273,7 +273,8 @@ BOOL CMainFrame::create_outlook_bar()
 			{ID_VIEW_SPIKE_SORTING_AMPLITUDE,IDS_BTTNSORT, dw_style, 4},
 			{ID_VIEW_SPIKE_SORTING_TEMPLATES,IDS_BTTNTEMPLATES, dw_style, 5},
 			{ID_VIEW_SPIKE_TIME_SERIES, IDS_BTTNTIMESERIES, dw_style, 6},
-			{ID_VIEW_ACQUIRE_DATA, IDS_BTTNACQDATA, dw_style, 7}
+			{ID_VIEW_ACQUIRE_DATA, IDS_BTTNACQDATA, dw_style, 7},
+			{ID_VIEW_DATABASE2, IDS_BTTNDATABASE2, dw_style, 0 },
 		};
 
 	// Create first page:
@@ -287,7 +288,8 @@ BOOL CMainFrame::create_outlook_bar()
 		CString str;
 		if (!str.LoadString(buttons[i].string_id))
 			str = _T("??");
-		outlook_pane_.AddButton(img1.ExtractIcon(i), str, buttons[i].id);
+		int image_index = buttons[i].i_image;
+		outlook_pane_.AddButton(img1.ExtractIcon(image_index), str, buttons[i].id);
 		outlook_pane_.SetButtonInfo(i,
 		                               buttons[i].id, // command id
 		                               buttons[i].style, // buttons style

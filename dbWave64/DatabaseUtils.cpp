@@ -168,7 +168,7 @@ CString CDatabaseUtils::analyze_bstr_content(const COleVariant& var)
             analysis += _T("Content: ");
             for (UINT i = 0; i < bstrLen && i < 50; i++) // Limit to first 50 chars
             {
-                TCHAR ch = var.bstrVal[i];
+	            TCHAR ch = static_cast<TCHAR>(var.bstrVal[i]);
                 if (ch >= 32 && ch <= 127) // Printable ASCII
                 {
                     analysis += ch;
@@ -186,7 +186,7 @@ CString CDatabaseUtils::analyze_bstr_content(const COleVariant& var)
             analysis += _T("\nHex dump: ");
             for (UINT i = 0; i < bstrLen && i < 20; i++) // Limit to first 20 bytes
             {
-                TCHAR ch = var.bstrVal[i];
+                TCHAR ch = static_cast<TCHAR>(var.bstrVal[i]);
                 CString hexByte;
                 hexByte.Format(_T("%02X "), (unsigned char)ch);
                 analysis += hexByte;

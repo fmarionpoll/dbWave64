@@ -2,7 +2,7 @@
 #pragma once
 #include "ChartWnd.h"
 
-typedef struct tagDataListCtrlInfos
+struct DataListCtrlInfos
 {
 	CWnd* parent {nullptr};
 
@@ -22,5 +22,4 @@ typedef struct tagDataListCtrlInfos
 	boolean b_set_time_span{ false };
 	boolean b_set_mv_span{ false };
 	boolean b_display_file_name{ false };
-
-} DataListCtrlInfos;
+};

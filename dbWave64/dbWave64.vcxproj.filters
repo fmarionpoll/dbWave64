@@ -19,9 +19,6 @@
     <Filter Include="displayctrls">
       <UniqueIdentifier>{49e81a0a-caf5-4f23-913c-5dc6cded6820}</UniqueIdentifier>
     </Filter>
-    <Filter Include="dlgs">
-      <UniqueIdentifier>{dc05ecd4-803c-42a8-87cc-130eb002707b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="customctrl">
       <UniqueIdentifier>{caaa5830-8837-406f-a8ee-5db580987832}</UniqueIdentifier>
     </Filter>
@@ -33,6 +30,12 @@
     </Filter>
     <Filter Include="data_acquisition">
       <UniqueIdentifier>{a0adc36c-523d-4f57-8985-d3579a79e9f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dbView_optimized">
+      <UniqueIdentifier>{a2a4ddbe-1ae1-4156-b78a-8dbe48b7c142}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dbView">
+      <UniqueIdentifier>{9778a89c-052a-484f-a397-469f57498dc5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -73,9 +76,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ChildFrm.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DataListCtrl_Row.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dbMultiDocTemplate.cpp">
@@ -378,9 +378,6 @@
     <ClCompile Include="ViewDbTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ViewdbWave.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ViewNotedoc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -466,9 +463,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TemplateWnd.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DataListCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="datafile_ASD.cpp">
@@ -561,8 +555,35 @@
     <ClCompile Include="ChartDataAD.cpp">
       <Filter>data_acquisition</Filter>
     </ClCompile>
+    <ClCompile Include="dbView_optimized\DataListCtrl_Configuration.cpp">
+      <Filter>dbView_optimized</Filter>
+    </ClCompile>
+    <ClCompile Include="dbView_optimized\DataListCtrl_Optimized.cpp">
+      <Filter>dbView_optimized</Filter>
+    </ClCompile>
+    <ClCompile Include="dbView_optimized\DataListCtrl_Row_Optimized.cpp">
+      <Filter>dbView_optimized</Filter>
+    </ClCompile>
+    <ClCompile Include="dbView_optimized\DataListCtrl_SupportingClasses.cpp">
+      <Filter>dbView_optimized</Filter>
+    </ClCompile>
+    <ClCompile Include="dbView_optimized\ViewdbWave_Optimized.cpp">
+      <Filter>dbView_optimized</Filter>
+    </ClCompile>
+    <ClCompile Include="dbView_optimized\ViewdbWave_SupportingClasses.cpp">
+      <Filter>dbView_optimized</Filter>
+    </ClCompile>
     <ClCompile Include="DatabaseUtils.cpp">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbView\DataListCtrl_Row.cpp">
+      <Filter>dbView</Filter>
+    </ClCompile>
+    <ClCompile Include="dbView\DataListCtrl.cpp">
+      <Filter>dbView</Filter>
+    </ClCompile>
+    <ClCompile Include="dbView\ViewdbWave.cpp">
+      <Filter>dbView</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -624,15 +645,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CSpkListCtrlTab.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DataListCtrl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DataListCtrl_Infos.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DataListCtrl_Row.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="db_spike.h">
@@ -1214,8 +1226,41 @@
     <ClInclude Include="data_acquisition\ViewADcontinuous.h">
       <Filter>data_acquisition</Filter>
     </ClInclude>
+    <ClInclude Include="dbView_optimized\DataListCtrl_Configuration.h">
+      <Filter>dbView_optimized</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView_optimized\DataListCtrl_Optimized.h">
+      <Filter>dbView_optimized</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView_optimized\DataListCtrl_Row_Optimized.h">
+      <Filter>dbView_optimized</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView_optimized\DataListCtrl_SupportingClasses.h">
+      <Filter>dbView_optimized</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView_optimized\ViewdbWave_Optimized.h">
+      <Filter>dbView_optimized</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView_optimized\ViewdbWave_SupportingClasses.h">
+      <Filter>dbView_optimized</Filter>
+    </ClInclude>
     <ClInclude Include="DatabaseUtils.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView\DataListCtrl_Row.h">
+      <Filter>dbView</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView\DataListCtrl.h">
+      <Filter>dbView</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView\DataListCtrl_Infos.h">
+      <Filter>dbView</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView\ViewdbWave.h">
+      <Filter>dbView</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView_optimized\DataListCtrl_Optimized_Infos.h">
+      <Filter>dbView_optimized</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -104,6 +104,7 @@
 #define IDS_PROPERTIESPANE              161
 #define IDS_SHORTCUTS                   162
 #define ID_VIEW_CUSTOMIZE               163
+#define IDS_BTTNDATABASE2               163
 #define ID_VIEW_CAPTION_BAR             164
 #define IDC_CHANSELECT                  164
 #define ID_TOOLS_OPTIONS                165
@@ -444,6 +445,7 @@
 #define IDC_SPKFILECOMMENTS             536
 #define IDR_THEME_MENU                  538
 #define ID_SET_STYLE                    539
+#define IDR_DBDATATYPE1                 539
 #define ID_VIEW_APPLOOK_WIN_2000        540
 #define ID_VIEW_APPLOOK_OFF_XP          541
 #define ID_VIEW_APPLOOK_WIN_XP          542
@@ -458,6 +460,7 @@
 #define IDD_DTBOARD                     558
 #define IDD_OPTIONSDELETEDATFILE        559
 #define IDR_DBDATATYPE_256              571
+#define IDR_DBDATATYPE2                 571
 #define IDR_DBSPIKETYPE_256             572
 #define IDB_CHECK1                      573
 #define IDB_SPIKE_CLASS_PROPERTIES_HC   574
@@ -920,6 +923,7 @@
 #define ID_VIEW_SPIKE_SORTING_TEMPLATES 32941
 #define ID_VIEW_SPIKE_TIME_SERIES       32942
 #define ID_VIEW_ACQUIRE_DATA            32943
+#define ID_VIEW_DATABASE2               32944
 #define ID_TOOLS_EDIT_STIMULUS          32946
 #define ID_TOOLS_REMOVE_DUPLICATE_FILES 32948
 #define ID_TOOLS_RESTORE_DELETED_FILES  32951

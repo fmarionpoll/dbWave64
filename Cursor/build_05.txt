@@ -1,0 +1,34 @@
+1>------ Build started: Project: dbWave64, Configuration: Debug Win32 ------
+1>DataListCtrl_Optimized.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView_optimized\DataListCtrl_Optimized.cpp(56,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/dbView_optimized/DataListCtrl_Optimized.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView_optimized\DataListCtrl_Row_Optimized.h(29,8):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView_optimized\DataListCtrl_Optimized.cpp(520,9): error C2027: use of undefined type 'DataListCtrlInfos'
+1>(compiling source file '/dbView_optimized/DataListCtrl_Optimized.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView_optimized\DataListCtrl_Row_Optimized.h(29,8):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView_optimized\DataListCtrl_Optimized.cpp(521,9): error C2027: use of undefined type 'DataListCtrlInfos'
+1>(compiling source file '/dbView_optimized/DataListCtrl_Optimized.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView_optimized\DataListCtrl_Row_Optimized.h(29,8):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView_optimized\DataListCtrl_Optimized.cpp(524,34): error C2027: use of undefined type 'DataListCtrlInfos'
+1>(compiling source file '/dbView_optimized/DataListCtrl_Optimized.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView_optimized\DataListCtrl_Row_Optimized.h(29,8):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView_optimized\DataListCtrl_Optimized.cpp(524,56): error C2027: use of undefined type 'DataListCtrlInfos'
+1>(compiling source file '/dbView_optimized/DataListCtrl_Optimized.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView_optimized\DataListCtrl_Row_Optimized.h(29,8):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView_optimized\DataListCtrl_Optimized.cpp(607,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/dbView_optimized/DataListCtrl_Optimized.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView_optimized\DataListCtrl_Row_Optimized.h(29,8):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView_optimized\DataListCtrl_Optimized.cpp(830,33): error C2039: 'HasCachedRow': is not a member of 'DataListCtrlCache'
+1>(compiling source file '/dbView_optimized/DataListCtrl_Optimized.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView_optimized\DataListCtrl_SupportingClasses.h(128,7):
+1>    see declaration of 'DataListCtrlCache'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView_optimized\DataListCtrl_Optimized.cpp(1251,13): error C2027: use of undefined type 'DataListCtrlInfos'
+1>(compiling source file '/dbView_optimized/DataListCtrl_Optimized.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView_optimized\DataListCtrl_Row_Optimized.h(29,8):
+1>    see declaration of 'DataListCtrlInfos'

@@ -6,6 +6,20 @@
 
 // Simplified implementation - removed complex exception handling, state management, performance monitoring
 
+// Helper function for reading double values from INI files
+double GetPrivateProfileDouble(LPCTSTR lpAppName, LPCTSTR lpKeyName, double nDefault, LPCTSTR lpFileName)
+{
+    TCHAR szBuffer[256];
+    DWORD dwResult = GetPrivateProfileString(lpAppName, lpKeyName, _T(""), szBuffer, sizeof(szBuffer), lpFileName);
+    
+    if (dwResult > 0)
+    {
+        return _ttof(szBuffer);
+    }
+    
+    return nDefault;
+}
+
 // ViewdbWaveConfiguration implementation
 ViewdbWaveConfiguration::ViewdbWaveConfiguration()
     : m_timeFirst(0.0)
@@ -25,9 +39,14 @@ void ViewdbWaveConfiguration::LoadFromRegistry(const CString& section)
         // Simple registry loading with basic error handling
         CString appName = AfxGetApp()->m_pszAppName;
         
-        m_timeFirst = AfxGetApp()->GetProfileDouble(section, _T("TimeFirst"), 0.0);
-        m_timeLast = AfxGetApp()->GetProfileDouble(section, _T("TimeLast"), 100.0);
-        m_amplitudeSpan = AfxGetApp()->GetProfileDouble(section, _T("AmplitudeSpan"), 1.0);
+        // MFC doesn't have GetProfileDouble, so we use GetProfileString and convert
+        CString timeFirstStr = AfxGetApp()->GetProfileString(section, _T("TimeFirst"), _T("0.0"));
+        CString timeLastStr = AfxGetApp()->GetProfileString(section, _T("TimeLast"), _T("100.0"));
+        CString amplitudeSpanStr = AfxGetApp()->GetProfileString(section, _T("AmplitudeSpan"), _T("1.0"));
+        
+        m_timeFirst = _ttof(timeFirstStr);
+        m_timeLast = _ttof(timeLastStr);
+        m_amplitudeSpan = _ttof(amplitudeSpanStr);
         m_displayFileName = AfxGetApp()->GetProfileInt(section, _T("DisplayFileName"), 0) != 0;
         m_filterEnabled = AfxGetApp()->GetProfileInt(section, _T("FilterEnabled"), 0) != 0;
         m_displayMode = AfxGetApp()->GetProfileInt(section, _T("DisplayMode"), DataListCtrlConfigConstants::DISPLAY_MODE_EMPTY);
@@ -47,9 +66,15 @@ void ViewdbWaveConfiguration::SaveToRegistry(const CString& section) const
         // Simple registry saving with basic error handling
         CString appName = AfxGetApp()->m_pszAppName;
         
-        AfxGetApp()->WriteProfileDouble(section, _T("TimeFirst"), m_timeFirst);
-        AfxGetApp()->WriteProfileDouble(section, _T("TimeLast"), m_timeLast);
-        AfxGetApp()->WriteProfileDouble(section, _T("AmplitudeSpan"), m_amplitudeSpan);
+        // MFC doesn't have WriteProfileDouble, so we use WriteProfileString
+        CString timeFirstStr, timeLastStr, amplitudeSpanStr;
+        timeFirstStr.Format(_T("%.6f"), m_timeFirst);
+        timeLastStr.Format(_T("%.6f"), m_timeLast);
+        amplitudeSpanStr.Format(_T("%.6f"), m_amplitudeSpan);
+        
+        AfxGetApp()->WriteProfileString(section, _T("TimeFirst"), timeFirstStr);
+        AfxGetApp()->WriteProfileString(section, _T("TimeLast"), timeLastStr);
+        AfxGetApp()->WriteProfileString(section, _T("AmplitudeSpan"), amplitudeSpanStr);
         AfxGetApp()->WriteProfileInt(section, _T("DisplayFileName"), m_displayFileName ? 1 : 0);
         AfxGetApp()->WriteProfileInt(section, _T("FilterEnabled"), m_filterEnabled ? 1 : 0);
         AfxGetApp()->WriteProfileInt(section, _T("DisplayMode"), m_displayMode);
@@ -67,6 +92,7 @@ void ViewdbWaveConfiguration::LoadFromIniFile(const CString& filename, const CSt
     try
     {
         // Simple INI file loading with basic error handling
+        // Use helper function for reading double values from INI files
         m_timeFirst = GetPrivateProfileDouble(section, _T("TimeFirst"), 0.0, filename);
         m_timeLast = GetPrivateProfileDouble(section, _T("TimeLast"), 100.0, filename);
         m_amplitudeSpan = GetPrivateProfileDouble(section, _T("AmplitudeSpan"), 1.0, filename);
@@ -108,18 +134,4 @@ void ViewdbWaveConfiguration::SaveToIniFile(const CString& filename, const CStri
         // Simple error handling - just log the error
         TRACE(_T("ViewdbWaveConfiguration::SaveToIniFile - Error saving to INI file: %s\n"), CString(e.what()));
     }
-}
-
-// Helper function for reading double values from INI files
-double GetPrivateProfileDouble(LPCTSTR lpAppName, LPCTSTR lpKeyName, double nDefault, LPCTSTR lpFileName)
-{
-    TCHAR szBuffer[256];
-    DWORD dwResult = GetPrivateProfileString(lpAppName, lpKeyName, _T(""), szBuffer, sizeof(szBuffer), lpFileName);
-    
-    if (dwResult > 0)
-    {
-        return _ttof(szBuffer);
-    }
-    
-    return nDefault;
 }

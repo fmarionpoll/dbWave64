@@ -133,6 +133,8 @@ private:
     // Display management
     void UpdateDisplayInfo(LV_DISPINFO* pDispInfo);
     void HandleDisplayInfoRequest(LV_DISPINFO* pDispInfo);
+    void HandleTextDisplay(LV_DISPINFO* pDispInfo, DataListCtrl_Row_Optimized* row);
+    void HandleImageDisplay(LV_DISPINFO* pDispInfo, int index, int displayMode);
     void ProcessDisplayMode(int rowIndex, int displayMode);
     
     // Caching helpers

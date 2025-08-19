@@ -36,7 +36,11 @@ namespace ViewdbWaveConstants
     constexpr int VW_IDC_TAB1 = IDC_TAB1;
     constexpr int VW_IDC_LISTCTRL = IDC_LISTCTRL;
     
-    // Removed: Performance settings, UI settings, command IDs - not needed for core functionality
+    // Essential command IDs for message map
+    constexpr int ID_VIEW_REFRESH = 32771;  // Custom refresh command
+    constexpr int ID_VIEW_AUTO_REFRESH = 32772;  // Custom auto-refresh command
+    
+    // Removed: Performance settings, UI settings - not needed for core functionality
 }
 
 // Simplified error handling - using standard exceptions instead of complex custom exceptions

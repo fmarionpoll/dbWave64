@@ -1,8 +1,9 @@
 #include "StdAfx.h"
 #include "DataListCtrl_Configuration.h"
+#include "RegistryManager.h"
 
 // Helper function to convert float to CString
-CString FloatToString(float value)
+static CString float_to_string(const float value)
 {
     CString result;
     result.Format(_T("%.6f"), value);
@@ -293,38 +294,42 @@ void DataListCtrlConfiguration::LoadFromRegistry(const CString& section)
     try
     {
         // Load display settings
-        m_displaySettings.SetImageWidth(_ttoi(ReadRegistryValue(section, _T("ImageWidth"),
+        m_displaySettings.SetImageWidth(_ttoi(read_registry_value(section, _T("ImageWidth"),
             CString(std::to_string(DataListCtrlConfigConstants::DEFAULT_IMAGE_WIDTH).c_str()))));
-        m_displaySettings.SetImageHeight(_ttoi(ReadRegistryValue(section, _T("ImageHeight"),
+        m_displaySettings.SetImageHeight(_ttoi(read_registry_value(section, _T("ImageHeight"),
             CString(std::to_string(DataListCtrlConfigConstants::DEFAULT_IMAGE_HEIGHT).c_str()))));
-        m_displaySettings.SetDisplayMode(_ttoi(ReadRegistryValue(section, _T("DisplayMode"),
+        m_displaySettings.SetDisplayMode(_ttoi(read_registry_value(section, _T("DisplayMode"),
             CString(std::to_string(DataListCtrlConfigConstants::DEFAULT_DISPLAY_MODE).c_str()))));
 
         // Load time settings
-        CString default_value = FloatToString((DataListCtrlConfigConstants::DEFAULT_TIME_FIRST));
-        float value = _ttof(ReadRegistryValue(section, _T("TimeFirst"), default_value));
+        CString default_value = float_to_string(DataListCtrlConfigConstants::DEFAULT_TIME_FIRST);
+		CString strValue = read_registry_value(section, _T("TimeFirst"), default_value);
+        float value = static_cast<float>(_ttof(strValue));
         m_timeSettings.SetTimeFirst(value);
-        default_value = FloatToString((DataListCtrlConfigConstants::DEFAULT_TIME_LAST));
-        value = _ttof(ReadRegistryValue(section, _T("TimeLast"), default_value));
+        default_value = float_to_string(DataListCtrlConfigConstants::DEFAULT_TIME_LAST);
+        value = static_cast<float>(_ttof(read_registry_value(section, _T("TimeLast"), default_value)));
         m_timeSettings.SetTimeLast(value);
-        m_timeSettings.SetTimeSpanEnabled(_ttoi(ReadRegistryValue(section, _T("SetTimeSpan"), _T("0"))) != 0);
+        m_timeSettings.SetTimeSpanEnabled(_ttoi(read_registry_value(section, _T("SetTimeSpan"), _T("0"))) != 0);
 
         // Load amplitude settings
-        default_value = FloatToString(static_cast<float>(DataListCtrlConfigConstants::DEFAULT_MV_SPAN));
-        value = _ttof(ReadRegistryValue(section, _T("MvSpan"), default_value));
+        default_value = float_to_string(DataListCtrlConfigConstants::DEFAULT_MV_SPAN);
+        value = static_cast<float>(_ttof(read_registry_value(section, _T("MvSpan"), default_value)));
         m_amplitudeSettings.SetMvSpan(value);
 
-        m_amplitudeSettings.SetMvSpanEnabled(_ttoi(ReadRegistryValue(section, _T("SetMvSpan"), _T("0"))) != 0);
+        m_amplitudeSettings.SetMvSpanEnabled(_ttoi(read_registry_value(section, _T("SetMvSpan"), _T("0"))) != 0);
         
         // Load UI settings
-        m_uiSettings.SetDisplayFileName(_ttoi(ReadRegistryValue(section, _T("DisplayFileName"), _T("0"))) != 0);
+        m_uiSettings.SetDisplayFileName(_ttoi(read_registry_value(section, _T("DisplayFileName"), _T("0"))) != 0);
         
         // Load performance settings
-        m_performanceSettings.SetCachingEnabled(_ttoi(ReadRegistryValue(section, _T("CachingEnabled"), _T("1"))) != 0);
-        m_performanceSettings.SetLazyLoadingEnabled(_ttoi(ReadRegistryValue(section, _T("LazyLoadingEnabled"), _T("1"))) != 0);
-        m_performanceSettings.SetAsyncProcessingEnabled(_ttoi(ReadRegistryValue(section, _T("AsyncProcessingEnabled"), _T("1"))) != 0);
-        m_performanceSettings.SetMaxCacheSize(_ttoi(ReadRegistryValue(section, _T("MaxCacheSize"), _T("100"))));
-        m_performanceSettings.SetBatchSize(_ttoi(ReadRegistryValue(section, _T("BatchSize"), _T("10"))));
+        m_performanceSettings.SetCachingEnabled(_ttoi(read_registry_value(section, _T("CachingEnabled"), _T("1"))) != 0);
+        m_performanceSettings.SetLazyLoadingEnabled(_ttoi(read_registry_value(section, _T("LazyLoadingEnabled"), _T("1"))) != 0);
+        m_performanceSettings.SetAsyncProcessingEnabled(_ttoi(read_registry_value(section, _T("AsyncProcessingEnabled"), _T("1"))) != 0);
+        m_performanceSettings.SetMaxCacheSize(_ttoi(read_registry_value(section, _T("MaxCacheSize"), _T("100"))));
+        m_performanceSettings.SetBatchSize(_ttoi(read_registry_value(section, _T("BatchSize"), _T("10"))));
+        
+        // Load column widths
+        LoadColumnWidthsFromRegistry(section);
     }
     catch (const std::exception& e)
     {
@@ -338,28 +343,31 @@ void DataListCtrlConfiguration::SaveToRegistry(const CString& section)
     try
     {
         // Save display settings
-        WriteRegistryValue(section, _T("ImageWidth"), CString(std::to_string(m_displaySettings.GetImageWidth()).c_str()));
-        WriteRegistryValue(section, _T("ImageHeight"), CString(std::to_string(m_displaySettings.GetImageHeight()).c_str()));
-        WriteRegistryValue(section, _T("DisplayMode"), CString(std::to_string(m_displaySettings.GetDisplayMode()).c_str()));
+        write_registry_value(section, _T("ImageWidth"), CString(std::to_string(m_displaySettings.GetImageWidth()).c_str()));
+        write_registry_value(section, _T("ImageHeight"), CString(std::to_string(m_displaySettings.GetImageHeight()).c_str()));
+        write_registry_value(section, _T("DisplayMode"), CString(std::to_string(m_displaySettings.GetDisplayMode()).c_str()));
         
         // Save time settings
-        WriteRegistryValue(section, _T("TimeFirst"), FloatToString(m_timeSettings.GetTimeFirst()));
-        WriteRegistryValue(section, _T("TimeLast"), FloatToString(m_timeSettings.GetTimeLast()));
-        WriteRegistryValue(section, _T("SetTimeSpan"), m_timeSettings.IsTimeSpanSet() ? _T("1") : _T("0"));
+        write_registry_value(section, _T("TimeFirst"), float_to_string(m_timeSettings.GetTimeFirst()));
+        write_registry_value(section, _T("TimeLast"), float_to_string(m_timeSettings.GetTimeLast()));
+        write_registry_value(section, _T("SetTimeSpan"), m_timeSettings.IsTimeSpanSet() ? _T("1") : _T("0"));
         
         // Save amplitude settings
-        WriteRegistryValue(section, _T("MvSpan"), FloatToString(m_amplitudeSettings.GetMvSpan()));
-        WriteRegistryValue(section, _T("SetMvSpan"), m_amplitudeSettings.IsMvSpanSet() ? _T("1") : _T("0"));
+        write_registry_value(section, _T("MvSpan"), float_to_string(m_amplitudeSettings.GetMvSpan()));
+        write_registry_value(section, _T("SetMvSpan"), m_amplitudeSettings.IsMvSpanSet() ? _T("1") : _T("0"));
         
         // Save UI settings
-        WriteRegistryValue(section, _T("DisplayFileName"), m_uiSettings.IsDisplayFileName() ? _T("1") : _T("0"));
+        write_registry_value(section, _T("DisplayFileName"), m_uiSettings.IsDisplayFileName() ? _T("1") : _T("0"));
         
         // Save performance settings
-        WriteRegistryValue(section, _T("CachingEnabled"), m_performanceSettings.IsCachingEnabled() ? _T("1") : _T("0"));
-        WriteRegistryValue(section, _T("LazyLoadingEnabled"), m_performanceSettings.IsLazyLoadingEnabled() ? _T("1") : _T("0"));
-        WriteRegistryValue(section, _T("AsyncProcessingEnabled"), m_performanceSettings.IsAsyncProcessingEnabled() ? _T("1") : _T("0"));
-        WriteRegistryValue(section, _T("MaxCacheSize"), CString(std::to_string(m_performanceSettings.GetMaxCacheSize()).c_str()));
-        WriteRegistryValue(section, _T("BatchSize"), CString(std::to_string(m_performanceSettings.GetBatchSize()).c_str()));
+        write_registry_value(section, _T("CachingEnabled"), m_performanceSettings.IsCachingEnabled() ? _T("1") : _T("0"));
+        write_registry_value(section, _T("LazyLoadingEnabled"), m_performanceSettings.IsLazyLoadingEnabled() ? _T("1") : _T("0"));
+        write_registry_value(section, _T("AsyncProcessingEnabled"), m_performanceSettings.IsAsyncProcessingEnabled() ? _T("1") : _T("0"));
+        write_registry_value(section, _T("MaxCacheSize"), CString(std::to_string(m_performanceSettings.GetMaxCacheSize()).c_str()));
+        write_registry_value(section, _T("BatchSize"), CString(std::to_string(m_performanceSettings.GetBatchSize()).c_str()));
+        
+        // Save column widths
+        SaveColumnWidthsToRegistry(section);
     }
     catch (const std::exception& e)
     {
@@ -373,37 +381,40 @@ void DataListCtrlConfiguration::LoadFromFile(const CString& filename)
     try
     {
         // Load display settings
-        m_displaySettings.SetImageWidth(_ttoi(ReadIniValue(filename, _T("Display"), _T("ImageWidth"), 
+        m_displaySettings.SetImageWidth(_ttoi(read_ini_value(filename, _T("Display"), _T("ImageWidth"), 
             CString(std::to_string(DataListCtrlConfigConstants::DEFAULT_IMAGE_WIDTH).c_str()))));
-        m_displaySettings.SetImageHeight(_ttoi(ReadIniValue(filename, _T("Display"), _T("ImageHeight"), 
+        m_displaySettings.SetImageHeight(_ttoi(read_ini_value(filename, _T("Display"), _T("ImageHeight"), 
             CString(std::to_string(DataListCtrlConfigConstants::DEFAULT_IMAGE_HEIGHT).c_str()))));
-        m_displaySettings.SetDisplayMode(_ttoi(ReadIniValue(filename, _T("Display"), _T("DisplayMode"), 
+        m_displaySettings.SetDisplayMode(_ttoi(read_ini_value(filename, _T("Display"), _T("DisplayMode"), 
             CString(std::to_string(DataListCtrlConfigConstants::DEFAULT_DISPLAY_MODE).c_str()))));
         
         // Load time settings
-        CString default_value = FloatToString((DataListCtrlConfigConstants::DEFAULT_TIME_FIRST));
-        float value = _ttof(ReadIniValue(filename, _T("Time"), _T("TimeFirst"), default_value));
+        CString default_value = float_to_string(DataListCtrlConfigConstants::DEFAULT_TIME_FIRST);
+        float value = static_cast<float>(_ttof(read_ini_value(filename, _T("Time"), _T("TimeFirst"), default_value)));
         m_timeSettings.SetTimeFirst(value);
-		default_value = FloatToString((DataListCtrlConfigConstants::DEFAULT_TIME_LAST));
-		value = _ttof(ReadIniValue(filename, _T("Time"), _T("TimeLast"), default_value));
+		default_value = float_to_string(DataListCtrlConfigConstants::DEFAULT_TIME_LAST);
+		value = static_cast<float>(_ttof(read_ini_value(filename, _T("Time"), _T("TimeLast"), default_value)));
         m_timeSettings.SetTimeLast(value);
-        m_timeSettings.SetTimeSpanEnabled(_ttoi(ReadIniValue(filename, _T("Time"), _T("SetTimeSpan"), _T("0"))) != 0);
+        m_timeSettings.SetTimeSpanEnabled(_ttoi(read_ini_value(filename, _T("Time"), _T("SetTimeSpan"), _T("0"))) != 0);
         
         // Load amplitude settings
-		default_value = FloatToString(static_cast<float>(DataListCtrlConfigConstants::DEFAULT_MV_SPAN));
-		value = _ttof(ReadIniValue(filename, _T("Amplitude"), _T("MvSpan"), default_value));
+		default_value = float_to_string(DataListCtrlConfigConstants::DEFAULT_MV_SPAN);
+		value = static_cast<float>(_ttof(read_ini_value(filename, _T("Amplitude"), _T("MvSpan"), default_value)));
         m_amplitudeSettings.SetMvSpan(value);
-        m_amplitudeSettings.SetMvSpanEnabled(_ttoi(ReadIniValue(filename, _T("Amplitude"), _T("SetMvSpan"), _T("0"))) != 0);
+        m_amplitudeSettings.SetMvSpanEnabled(_ttoi(read_ini_value(filename, _T("Amplitude"), _T("SetMvSpan"), _T("0"))) != 0);
         
         // Load UI settings
-        m_uiSettings.SetDisplayFileName(_ttoi(ReadIniValue(filename, _T("UI"), _T("DisplayFileName"), _T("0"))) != 0);
+        m_uiSettings.SetDisplayFileName(_ttoi(read_ini_value(filename, _T("UI"), _T("DisplayFileName"), _T("0"))) != 0);
         
         // Load performance settings
-        m_performanceSettings.SetCachingEnabled(_ttoi(ReadIniValue(filename, _T("Performance"), _T("CachingEnabled"), _T("1"))) != 0);
-        m_performanceSettings.SetLazyLoadingEnabled(_ttoi(ReadIniValue(filename, _T("Performance"), _T("LazyLoadingEnabled"), _T("1"))) != 0);
-        m_performanceSettings.SetAsyncProcessingEnabled(_ttoi(ReadIniValue(filename, _T("Performance"), _T("AsyncProcessingEnabled"), _T("1"))) != 0);
-        m_performanceSettings.SetMaxCacheSize(_ttoi(ReadIniValue(filename, _T("Performance"), _T("MaxCacheSize"), _T("100"))));
-        m_performanceSettings.SetBatchSize(_ttoi(ReadIniValue(filename, _T("Performance"), _T("BatchSize"), _T("10"))));
+        m_performanceSettings.SetCachingEnabled(_ttoi(read_ini_value(filename, _T("Performance"), _T("CachingEnabled"), _T("1"))) != 0);
+        m_performanceSettings.SetLazyLoadingEnabled(_ttoi(read_ini_value(filename, _T("Performance"), _T("LazyLoadingEnabled"), _T("1"))) != 0);
+        m_performanceSettings.SetAsyncProcessingEnabled(_ttoi(read_ini_value(filename, _T("Performance"), _T("AsyncProcessingEnabled"), _T("1"))) != 0);
+        m_performanceSettings.SetMaxCacheSize(_ttoi(read_ini_value(filename, _T("Performance"), _T("MaxCacheSize"), _T("100"))));
+        m_performanceSettings.SetBatchSize(_ttoi(read_ini_value(filename, _T("Performance"), _T("BatchSize"), _T("10"))));
+        
+        // Load column widths
+        LoadColumnWidthsFromFile(filename);
     }
     catch (const std::exception& e)
     {
@@ -417,28 +428,31 @@ void DataListCtrlConfiguration::SaveToFile(const CString& filename)
     try
     {
         // Save display settings
-        WriteIniValue(filename, _T("Display"), _T("ImageWidth"), CString(std::to_string(m_displaySettings.GetImageWidth()).c_str()));
-        WriteIniValue(filename, _T("Display"), _T("ImageHeight"), CString(std::to_string(m_displaySettings.GetImageHeight()).c_str()));
-        WriteIniValue(filename, _T("Display"), _T("DisplayMode"), CString(std::to_string(m_displaySettings.GetDisplayMode()).c_str()));
+        write_ini_value(filename, _T("Display"), _T("ImageWidth"), CString(std::to_string(m_displaySettings.GetImageWidth()).c_str()));
+        write_ini_value(filename, _T("Display"), _T("ImageHeight"), CString(std::to_string(m_displaySettings.GetImageHeight()).c_str()));
+        write_ini_value(filename, _T("Display"), _T("DisplayMode"), CString(std::to_string(m_displaySettings.GetDisplayMode()).c_str()));
         
         // Save time settings
-        WriteIniValue(filename, _T("Time"), _T("TimeFirst"), FloatToString(m_timeSettings.GetTimeFirst()));
-        WriteIniValue(filename, _T("Time"), _T("TimeLast"), FloatToString(m_timeSettings.GetTimeLast()));
-        WriteIniValue(filename, _T("Time"), _T("SetTimeSpan"), m_timeSettings.IsTimeSpanSet() ? _T("1") : _T("0"));
+        write_ini_value(filename, _T("Time"), _T("TimeFirst"), float_to_string(m_timeSettings.GetTimeFirst()));
+        write_ini_value(filename, _T("Time"), _T("TimeLast"), float_to_string(m_timeSettings.GetTimeLast()));
+        write_ini_value(filename, _T("Time"), _T("SetTimeSpan"), m_timeSettings.IsTimeSpanSet() ? _T("1") : _T("0"));
         
         // Save amplitude settings
-        WriteIniValue(filename, _T("Amplitude"), _T("MvSpan"), FloatToString(m_amplitudeSettings.GetMvSpan()));
-        WriteIniValue(filename, _T("Amplitude"), _T("SetMvSpan"), m_amplitudeSettings.IsMvSpanSet() ? _T("1") : _T("0"));
+        write_ini_value(filename, _T("Amplitude"), _T("MvSpan"), float_to_string(m_amplitudeSettings.GetMvSpan()));
+        write_ini_value(filename, _T("Amplitude"), _T("SetMvSpan"), m_amplitudeSettings.IsMvSpanSet() ? _T("1") : _T("0"));
         
         // Save UI settings
-        WriteIniValue(filename, _T("UI"), _T("DisplayFileName"), m_uiSettings.IsDisplayFileName() ? _T("1") : _T("0"));
+        write_ini_value(filename, _T("UI"), _T("DisplayFileName"), m_uiSettings.IsDisplayFileName() ? _T("1") : _T("0"));
         
         // Save performance settings
-        WriteIniValue(filename, _T("Performance"), _T("CachingEnabled"), m_performanceSettings.IsCachingEnabled() ? _T("1") : _T("0"));
-        WriteIniValue(filename, _T("Performance"), _T("LazyLoadingEnabled"), m_performanceSettings.IsLazyLoadingEnabled() ? _T("1") : _T("0"));
-        WriteIniValue(filename, _T("Performance"), _T("AsyncProcessingEnabled"), m_performanceSettings.IsAsyncProcessingEnabled() ? _T("1") : _T("0"));
-        WriteIniValue(filename, _T("Performance"), _T("MaxCacheSize"), CString(std::to_string(m_performanceSettings.GetMaxCacheSize()).c_str()));
-        WriteIniValue(filename, _T("Performance"), _T("BatchSize"), CString(std::to_string(m_performanceSettings.GetBatchSize()).c_str()));
+        write_ini_value(filename, _T("Performance"), _T("CachingEnabled"), m_performanceSettings.IsCachingEnabled() ? _T("1") : _T("0"));
+        write_ini_value(filename, _T("Performance"), _T("LazyLoadingEnabled"), m_performanceSettings.IsLazyLoadingEnabled() ? _T("1") : _T("0"));
+        write_ini_value(filename, _T("Performance"), _T("AsyncProcessingEnabled"), m_performanceSettings.IsAsyncProcessingEnabled() ? _T("1") : _T("0"));
+        write_ini_value(filename, _T("Performance"), _T("MaxCacheSize"), CString(std::to_string(m_performanceSettings.GetMaxCacheSize()).c_str()));
+        write_ini_value(filename, _T("Performance"), _T("BatchSize"), CString(std::to_string(m_performanceSettings.GetBatchSize()).c_str()));
+        
+        // Save column widths
+        SaveColumnWidthsToFile(filename);
     }
     catch (const std::exception& e)
     {
@@ -620,48 +634,217 @@ void DataListCtrlConfiguration::ValidateAllSettings() const
     }
 }
 
-void DataListCtrlConfiguration::WriteRegistryValue(const CString& section, const CString& key, const CString& value)
+void DataListCtrlConfiguration::write_registry_value(const CString& section, const CString& key, const CString& value)
 {
-    CString fullKey = _T("Software\\dbWave64\\") + section + _T("\\") + key;
-    HKEY hKey;
-    if (RegCreateKeyEx(HKEY_CURRENT_USER, fullKey, 0, nullptr, REG_OPTION_NON_VOLATILE, 
-                       KEY_WRITE, nullptr, &hKey, nullptr) == ERROR_SUCCESS)
-    {
-        RegSetValueEx(hKey, _T(""), 0, REG_SZ, (const BYTE*)value.GetString(), 
-                      (value.GetLength() + 1) * sizeof(TCHAR));
-        RegCloseKey(hKey);
-    }
+    // Use centralized registry manager
+    RegistryManager::GetInstance().WriteStringValue(section, key, value);
 }
 
-CString DataListCtrlConfiguration::ReadRegistryValue(const CString& section, const CString& key, const CString& defaultValue)
+CString DataListCtrlConfiguration::read_registry_value(const CString& section, const CString& key, const CString& default_value)
 {
-    CString fullKey = _T("Software\\dbWave64\\") + section + _T("\\") + key;
-    HKEY hKey;
-    if (RegOpenKeyEx(HKEY_CURRENT_USER, fullKey, 0, KEY_READ, &hKey) == ERROR_SUCCESS)
-    {
-        TCHAR buffer[256];
-        DWORD bufferSize = sizeof(buffer);
-        DWORD type = REG_SZ;
-        if (RegQueryValueEx(hKey, _T(""), nullptr, &type, (BYTE*)buffer, &bufferSize) == ERROR_SUCCESS)
-        {
-            RegCloseKey(hKey);
-            return CString(buffer);
-        }
-        RegCloseKey(hKey);
-    }
-    return defaultValue;
+    // Use centralized registry manager
+    return RegistryManager::GetInstance().ReadStringValue(section, key, default_value);
 }
 
-void DataListCtrlConfiguration::WriteIniValue(const CString& filename, const CString& section, const CString& key, const CString& value)
+void DataListCtrlConfiguration::write_ini_value(const CString& filename, const CString& section, const CString& key, const CString& value)
 {
     WritePrivateProfileString(section, key, value, filename);
 }
 
-CString DataListCtrlConfiguration::ReadIniValue(const CString& filename, const CString& section, const CString& key, const CString& defaultValue)
+CString DataListCtrlConfiguration::read_ini_value(const CString& filename, const CString& section, const CString& key, const CString& default_value)
 {
     TCHAR buffer[256];
-    GetPrivateProfileString(section, key, defaultValue, buffer, sizeof(buffer), filename);
+    GetPrivateProfileString(section, key, default_value, buffer, sizeof(buffer), filename);
     return CString(buffer);
+}
+
+// Column management implementation
+void DataListCtrlConfiguration::SetColumns(const std::vector<ColumnConfig>& columns)
+{
+    m_columns = columns;
+    NotifyChange(_T("Columns"), _T("Updated"));
+}
+
+std::vector<DataListCtrlConfiguration::ColumnConfig> DataListCtrlConfiguration::GetColumns() const
+{
+    return m_columns;
+}
+
+void DataListCtrlConfiguration::AddColumn(const ColumnConfig& column)
+{
+    m_columns.push_back(column);
+    NotifyChange(_T("Columns"), _T("Added"));
+}
+
+void DataListCtrlConfiguration::RemoveColumn(int index)
+{
+    if (index >= 0 && index < static_cast<int>(m_columns.size()))
+    {
+        m_columns.erase(m_columns.begin() + index);
+        NotifyChange(_T("Columns"), _T("Removed"));
+    }
+}
+
+void DataListCtrlConfiguration::ClearColumns()
+{
+    m_columns.clear();
+    NotifyChange(_T("Columns"), _T("Cleared"));
+}
+
+// Column width persistence helper methods
+void DataListCtrlConfiguration::LoadColumnWidthsFromRegistry(const CString& section)
+{
+    try
+    {
+        // Load column count first
+        int columnCount = _ttoi(read_registry_value(section, _T("ColumnCount"), _T("0")));
+        
+        if (columnCount > 0)
+        {
+            m_columns.clear();
+            m_columns.reserve(columnCount);
+            
+            for (int i = 0; i < columnCount; ++i)
+            {
+                CString columnKey;
+                columnKey.Format(_T("Column%d"), i);
+                
+                ColumnConfig column;
+                column.width = _ttoi(read_registry_value(section, columnKey + _T("_Width"), _T("100")));
+                column.header = read_registry_value(section, columnKey + _T("_Header"), _T(""));
+                column.index = _ttoi(read_registry_value(section, columnKey + _T("_Index"), _T("0")));
+                column.visible = _ttoi(read_registry_value(section, columnKey + _T("_Visible"), _T("1"))) != 0;
+                column.format = _ttoi(read_registry_value(section, columnKey + _T("_Format"), _T("0")));
+                
+                m_columns.push_back(column);
+            }
+        }
+        else
+        {
+            // Load default column configuration if no saved columns
+            LoadDefaultColumnConfiguration();
+        }
+    }
+    catch (const std::exception&)
+    {
+        // If loading fails, use default configuration
+        LoadDefaultColumnConfiguration();
+    }
+}
+
+void DataListCtrlConfiguration::SaveColumnWidthsToRegistry(const CString& section)
+{
+    try
+    {
+        // Save column count
+        write_registry_value(section, _T("ColumnCount"), CString(std::to_string(m_columns.size()).c_str()));
+        
+        // Save each column configuration
+        for (size_t i = 0; i < m_columns.size(); ++i)
+        {
+            CString columnKey;
+            columnKey.Format(_T("Column%d"), static_cast<int>(i));
+            
+            const auto& column = m_columns[i];
+            write_registry_value(section, columnKey + _T("_Width"), CString(std::to_string(column.width).c_str()));
+            write_registry_value(section, columnKey + _T("_Header"), column.header);
+            write_registry_value(section, columnKey + _T("_Index"), CString(std::to_string(column.index).c_str()));
+            write_registry_value(section, columnKey + _T("_Visible"), column.visible ? _T("1") : _T("0"));
+            write_registry_value(section, columnKey + _T("_Format"), CString(std::to_string(column.format).c_str()));
+        }
+    }
+    catch (const std::exception& e)
+    {
+        throw ConfigurationException(ConfigurationError::RESOURCE_FAILED, 
+            _T("Failed to save column widths to registry: ") + CString(e.what()));
+    }
+}
+
+void DataListCtrlConfiguration::LoadColumnWidthsFromFile(const CString& filename)
+{
+    try
+    {
+        // Load column count first
+        int columnCount = _ttoi(read_ini_value(filename, _T("Columns"), _T("ColumnCount"), _T("0")));
+        
+        if (columnCount > 0)
+        {
+            m_columns.clear();
+            m_columns.reserve(columnCount);
+            
+            for (int i = 0; i < columnCount; ++i)
+            {
+                CString columnKey;
+                columnKey.Format(_T("Column%d"), i);
+                
+                ColumnConfig column;
+                column.width = _ttoi(read_ini_value(filename, _T("Columns"), columnKey + _T("_Width"), _T("100")));
+                column.header = read_ini_value(filename, _T("Columns"), columnKey + _T("_Header"), _T(""));
+                column.index = _ttoi(read_ini_value(filename, _T("Columns"), columnKey + _T("_Index"), _T("0")));
+                column.visible = _ttoi(read_ini_value(filename, _T("Columns"), columnKey + _T("_Visible"), _T("1"))) != 0;
+                column.format = _ttoi(read_ini_value(filename, _T("Columns"), columnKey + _T("_Format"), _T("0")));
+                
+                m_columns.push_back(column);
+            }
+        }
+        else
+        {
+            // Load default column configuration if no saved columns
+            LoadDefaultColumnConfiguration();
+        }
+    }
+    catch (const std::exception&)
+    {
+        // If loading fails, use default configuration
+        LoadDefaultColumnConfiguration();
+    }
+}
+
+void DataListCtrlConfiguration::SaveColumnWidthsToFile(const CString& filename)
+{
+    try
+    {
+        // Save column count
+        write_ini_value(filename, _T("Columns"), _T("ColumnCount"), CString(std::to_string(m_columns.size()).c_str()));
+        
+        // Save each column configuration
+        for (size_t i = 0; i < m_columns.size(); ++i)
+        {
+            CString columnKey;
+            columnKey.Format(_T("Column%d"), static_cast<int>(i));
+            
+            const auto& column = m_columns[i];
+            write_ini_value(filename, _T("Columns"), columnKey + _T("_Width"), CString(std::to_string(column.width).c_str()));
+            write_ini_value(filename, _T("Columns"), columnKey + _T("_Header"), column.header);
+            write_ini_value(filename, _T("Columns"), columnKey + _T("_Index"), CString(std::to_string(column.index).c_str()));
+            write_ini_value(filename, _T("Columns"), columnKey + _T("_Visible"), column.visible ? _T("1") : _T("0"));
+            write_ini_value(filename, _T("Columns"), columnKey + _T("_Format"), CString(std::to_string(column.format).c_str()));
+        }
+    }
+    catch (const std::exception& e)
+    {
+        throw ConfigurationException(ConfigurationError::RESOURCE_FAILED, 
+            _T("Failed to save column widths to file: ") + CString(e.what()));
+    }
+}
+
+void DataListCtrlConfiguration::LoadDefaultColumnConfiguration()
+{
+    // Create default column configuration matching the original DataListCtrl
+    m_columns.clear();
+    m_columns = {
+        {1, _T(""), 0, true, LVCFMT_LEFT},
+        {10, _T("#"), 1, true, LVCFMT_CENTER},
+        {300, _T("data"), 2, true, LVCFMT_CENTER},
+        {15, _T("insect ID"), 3, true, LVCFMT_CENTER},
+        {30, _T("sensillum"), 4, true, LVCFMT_CENTER},
+        {30, _T("stim1"), 5, true, LVCFMT_CENTER},
+        {50, _T("conc1"), 6, true, LVCFMT_CENTER},
+        {40, _T("stim2"), 7, true, LVCFMT_CENTER},
+        {40, _T("conc2"), 8, true, LVCFMT_CENTER},
+        {40, _T("spikes"), 9, true, LVCFMT_CENTER},
+        {40, _T("flag"), 10, true, LVCFMT_CENTER}
+    };
 }
 
 // ConfigurationManager implementation
@@ -710,37 +893,4 @@ void ConfigurationManager::ResetAllConfigurations()
             pair.second->ResetToDefaults();
         }
     }
-}
-
-// Column management implementation
-void DataListCtrlConfiguration::SetColumns(const std::vector<ColumnConfig>& columns)
-{
-    m_columns = columns;
-    NotifyChange(_T("Columns"), _T("Updated"));
-}
-
-std::vector<DataListCtrlConfiguration::ColumnConfig> DataListCtrlConfiguration::GetColumns() const
-{
-    return m_columns;
-}
-
-void DataListCtrlConfiguration::AddColumn(const ColumnConfig& column)
-{
-    m_columns.push_back(column);
-    NotifyChange(_T("Columns"), _T("Added"));
-}
-
-void DataListCtrlConfiguration::RemoveColumn(int index)
-{
-    if (index >= 0 && index < static_cast<int>(m_columns.size()))
-    {
-        m_columns.erase(m_columns.begin() + index);
-        NotifyChange(_T("Columns"), _T("Removed"));
-    }
-}
-
-void DataListCtrlConfiguration::ClearColumns()
-{
-    m_columns.clear();
-    NotifyChange(_T("Columns"), _T("Cleared"));
 }

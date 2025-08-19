@@ -210,19 +210,15 @@ BOOL CMainFrame::create_docking_panes()
 void CMainFrame::set_docking_panes_icons(BOOL b_hi_color_icons)
 {
 	const auto h_filter_pane_icon = static_cast<HICON>(::LoadImage(AfxGetResourceHandle(),
-	                                                               MAKEINTRESOURCE(
-		                                                               b_hi_color_icons ? IDI_FILE_VIEW_HC :
-		                                                               IDI_FILE_VIEW),
-	                                                               IMAGE_ICON, GetSystemMetrics(SM_CXSMICON),
-	                                                               GetSystemMetrics(SM_CYSMICON), 0));
+		MAKEINTRESOURCE(b_hi_color_icons ? IDI_FILE_VIEW_HC :IDI_FILE_VIEW),
+		IMAGE_ICON, GetSystemMetrics(SM_CXSMICON),
+		GetSystemMetrics(SM_CYSMICON), 0));
 	panel_db_filter_.SetIcon(h_filter_pane_icon, FALSE);
 
 	const auto h_properties_pane_icon = static_cast<HICON>(::LoadImage(AfxGetResourceHandle(),
-	                                                                   MAKEINTRESOURCE(
-		                                                                   b_hi_color_icons ? IDI_PROPERTIES_WND_HC :
-		                                                                   IDI_PROPERTIES_WND),
-	                                                                   IMAGE_ICON, GetSystemMetrics(SM_CXSMICON),
-	                                                                   GetSystemMetrics(SM_CYSMICON), 0));
+	    MAKEINTRESOURCE( b_hi_color_icons ? IDI_PROPERTIES_WND_HC :IDI_PROPERTIES_WND),
+	    IMAGE_ICON, GetSystemMetrics(SM_CXSMICON),
+	    GetSystemMetrics(SM_CYSMICON), 0));
 	panel_db_properties_.SetIcon(h_properties_pane_icon, FALSE);
 
 	UpdateMDITabbedBarsIcons();
@@ -253,7 +249,6 @@ BOOL CMainFrame::create_outlook_bar()
 
 	// add images to this bar
 	CImageList img1;
-
 	img1.Create(IDB_NAVIGATIONLARGE, 32, 0, col_fuchsia);
 
 #define N_BUTTONS 9
@@ -274,7 +269,7 @@ BOOL CMainFrame::create_outlook_bar()
 			{ID_VIEW_SPIKE_SORTING_TEMPLATES,IDS_BTTNTEMPLATES, dw_style, 5},
 			{ID_VIEW_SPIKE_TIME_SERIES, IDS_BTTNTIMESERIES, dw_style, 6},
 			{ID_VIEW_ACQUIRE_DATA, IDS_BTTNACQDATA, dw_style, 7},
-			{ID_VIEW_DATABASE2, IDS_BTTNDATABASE2, dw_style, 0 },
+			{ID_VIEW_DATABASE2, IDS_BTTNDATABASE2, dw_style, 0 }
 		};
 
 	// Create first page:
@@ -285,15 +280,13 @@ BOOL CMainFrame::create_outlook_bar()
 
 	for (int i = 0; i < N_BUTTONS; i++)
 	{
+		const int i_image = buttons[i].i_image;
+		const HICON icon = img1.ExtractIcon(i_image);
 		CString str;
 		if (!str.LoadString(buttons[i].string_id))
 			str = _T("??");
-		int image_index = buttons[i].i_image;
-		outlook_pane_.AddButton(img1.ExtractIcon(image_index), str, buttons[i].id);
-		outlook_pane_.SetButtonInfo(i,
-		                               buttons[i].id, // command id
-		                               buttons[i].style, // buttons style
-		                               buttons[i].i_image); // index of image in bitmap
+		outlook_pane_.AddButton(icon, str, buttons[i].id);
+		outlook_pane_.SetButtonInfo(i, buttons[i].id, buttons[i].style, i_image); 
 	}
 	p_shortcuts_bar_container->AddTab(&outlook_pane_, _T("Views"), static_cast<UINT>(-1), FALSE);
 	img1.Detach();

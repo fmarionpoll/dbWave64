@@ -36,7 +36,7 @@ namespace DataListCtrlConstants
 }
 
 // Column configuration arrays (matching original DataListCtrl)
-extern int g_column_width_[DLC_N_COLUMNS];
+extern int g_column_width[DLC_N_COLUMNS];
 extern CString g_column_headers_[DLC_N_COLUMNS];
 extern int g_column_format_[DLC_N_COLUMNS];
 extern int g_column_index_[DLC_N_COLUMNS];
@@ -148,9 +148,14 @@ public:
     void set_spike_plot_mode(int mode);
     void set_selected_class(int classIndex);
     
+    // Signal column adjustment methods (from original DataListCtrl)
+    void resize_signal_column(int n_pixels);
+    void fit_columns_to_size(int n_pixels);
+    
     // Override methods
     // Note: OnInitialUpdate() removed - this is a CView method, not appropriate for CListCtrl
     virtual void OnDestroy();
+    virtual void OnSize(UINT nType, int cx, int cy);
     
 protected:
     // Message map handlers

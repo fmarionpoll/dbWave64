@@ -49,6 +49,10 @@ namespace DataListCtrlConfigConstants
     constexpr float MAX_TIME_VALUE = 1000000.0f;
     constexpr float MIN_MV_SPAN = 0.0f;
     constexpr float MAX_MV_SPAN = 1000000.0f;
+    
+    // Registry configuration - Now managed by centralized RegistryManager
+// The base path is configured in RegistryManager::GetInstance().SetBasePath()
+// Default: "Software\\FMP\\dbWave64\\"
 }
 
 // Exception handling
@@ -350,13 +354,20 @@ private:
     void NotifyChange(const CString& setting, const CString& value);
     void ValidateAllSettings() const;
     
-    // Registry helpers
-    void WriteRegistryValue(const CString& section, const CString& key, const CString& value);
-    CString ReadRegistryValue(const CString& section, const CString& key, const CString& defaultValue);
+    // Registry helpers - Now using centralized RegistryManager
+    static void write_registry_value(const CString& section, const CString& key, const CString& value);
+    static CString read_registry_value(const CString& section, const CString& key, const CString& default_value);
     
     // File helpers
-    void WriteIniValue(const CString& filename, const CString& section, const CString& key, const CString& value);
-    CString ReadIniValue(const CString& filename, const CString& section, const CString& key, const CString& defaultValue);
+    void write_ini_value(const CString& filename, const CString& section, const CString& key, const CString& value);
+    CString read_ini_value(const CString& filename, const CString& section, const CString& key, const CString& default_value);
+    
+    // Column width persistence helpers
+    void LoadColumnWidthsFromRegistry(const CString& section);
+    void SaveColumnWidthsToRegistry(const CString& section);
+    void LoadColumnWidthsFromFile(const CString& filename);
+    void SaveColumnWidthsToFile(const CString& filename);
+    void LoadDefaultColumnConfiguration();
 };
 
 // Global configuration manager

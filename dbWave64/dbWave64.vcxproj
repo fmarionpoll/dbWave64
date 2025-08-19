@@ -24,6 +24,7 @@
     <ClCompile Include="dbView_optimized\ViewdbWave_SupportingClasses.cpp" />
     <ClCompile Include="dbWaveDoc.cpp" />
     <ClCompile Include="Envelope.cpp" />
+    <ClCompile Include="RegistryManager.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -385,6 +386,7 @@
     <ClInclude Include="PaneldbProperties.h" />
     <ClInclude Include="PaneldbPropertiesToolBar.h" />
     <ClInclude Include="Controls\QuadStateTree.h" />
+    <ClInclude Include="RegistryManager.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Controls\Ruler.h" />
     <ClInclude Include="Controls\RulerBar.h" />

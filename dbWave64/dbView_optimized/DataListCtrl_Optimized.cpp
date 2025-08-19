@@ -14,7 +14,7 @@
 const std::chrono::milliseconds DataListCtrlConstants::SCROLL_THROTTLE_TIME{50};
 
 // Column configuration arrays (matching original DataListCtrl)
-int g_column_width_[DLC_N_COLUMNS] = {
+int g_column_width[DLC_N_COLUMNS] = {
     1,
     10, 300, 15, 30,
     30, 50, 40, 40,
@@ -65,7 +65,10 @@ DataListCtrl_Optimized::DataListCtrl_Optimized()
 DataListCtrl_Optimized::~DataListCtrl_Optimized()
 {
     CancelAsyncUpdate();
+    SaveColumnWidths(); // Save column widths on destruction
 }
+
+
 
 DataListCtrl_Optimized::DataListCtrl_Optimized(DataListCtrl_Optimized&& other) noexcept
     : m_rows(std::move(other.m_rows))
@@ -168,12 +171,12 @@ void DataListCtrl_Optimized::InitializeColumns()
         // Add columns using the original column configuration
         for (int i = 0; i < DLC_N_COLUMNS; i++)
         {
-            InsertColumn(i, g_column_headers_[i], g_column_format_[i], g_column_width_[i], -1);
+            InsertColumn(i, g_column_headers_[i], g_column_format_[i], g_column_width[i], -1);
         }
         
         // Set image width for the curve column (column 2)
         if (m_infos)
-            m_infos->image_width = g_column_width_[DLC_COLUMN_CURVE];
+            m_infos->image_width = g_column_width[DLC_COLUMN_CURVE];
     }
     catch (const std::exception& e)
     {
@@ -211,13 +214,13 @@ void DataListCtrl_Optimized::SetupColumns()
         // Add columns using the original column configuration
         for (int i = 0; i < DLC_N_COLUMNS; i++)
         {
-            InsertColumn(i, g_column_headers_[i], g_column_format_[i], g_column_width_[i], -1);
+            InsertColumn(i, g_column_headers_[i], g_column_format_[i], g_column_width[i], -1);
         }
         
         // Set image width for the curve column (column 2)
         if (m_infos)
         {
-            m_infos->image_width = g_column_width_[DLC_COLUMN_CURVE];
+            m_infos->image_width = g_column_width[DLC_COLUMN_CURVE];
         }
     }
     catch (const std::exception& e)
@@ -727,8 +730,27 @@ void DataListCtrl_Optimized::OnDestroy()
 {
     try
     {
+        SaveColumnWidths(); // Save column widths before destruction
         CancelAsyncUpdate();
         CListCtrl::OnDestroy();
+    }
+    catch (const std::exception& e)
+    {
+        HandleError(DataListCtrlError::UI_UPDATE_FAILED, CString(e.what()));
+    }
+}
+
+void DataListCtrl_Optimized::OnSize(UINT nType, int cx, int cy)
+{
+    try
+    {
+        CListCtrl::OnSize(nType, cx, cy);
+        
+        // Auto-adjust signal column width when control is resized
+        if (m_initialized && cx > 0)
+        {
+            fit_columns_to_size(cx);
+        }
     }
     catch (const std::exception& e)
     {
@@ -743,6 +765,8 @@ BEGIN_MESSAGE_MAP(DataListCtrl_Optimized, CListCtrl)
     ON_WM_KEYUP()
     ON_WM_CHAR()
     ON_WM_KEYDOWN()
+    ON_WM_DESTROY()
+    ON_WM_SIZE()
     ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnGetDisplayInfo)
 END_MESSAGE_MAP()
 
@@ -827,12 +851,8 @@ void DataListCtrl_Optimized::OnGetDisplayInfo(NMHDR* pNMHDR, LRESULT* pResult)
 
 void DataListCtrl_Optimized::InitializeImageList()
 {
-    // Check if the control has been created
     if (!GetSafeHwnd())
-    {
-        // Control not created yet, just return
         return;
-    }
     
     const auto& display_config = m_config.GetDisplayConfig();
     m_imageList = std::make_unique<CImageList>();
@@ -1169,15 +1189,45 @@ void DataListCtrl_Optimized::SaveColumnWidths()
 {
     try
     {
+        if (!m_initialized)
+            return;
+            
+        // Check if the control and header are still valid
+        if (!GetSafeHwnd())
+            return;
+            
+        CHeaderCtrl* pHeader = GetHeaderCtrl();
+        if (!pHeader || !pHeader->GetSafeHwnd())
+            return;
+            
         // Save column widths to configuration
         std::vector<DataListCtrlConfiguration::ColumnConfig> columns = m_config.GetColumns();
         
-        for (size_t i = 0; i < columns.size() && i < static_cast<size_t>(GetHeaderCtrl()->GetItemCount()); ++i)
+        // Ensure we have enough columns
+        int headerItemCount = pHeader->GetItemCount();
+        if (columns.size() < static_cast<size_t>(headerItemCount))
         {
-            columns[i].width = GetColumnWidth(i);
+            columns.resize(headerItemCount);
+        }
+        
+        // Save current column widths
+        for (int i = 0; i < headerItemCount; ++i)
+        {
+            if (i < static_cast<int>(columns.size()))
+            {
+                columns[i].width = GetColumnWidth(i);
+                // Also update the global array for compatibility
+                if (i < DLC_N_COLUMNS)
+                {
+                    g_column_width[i] = GetColumnWidth(i);
+                }
+            }
         }
         
         m_config.SetColumns(columns);
+        
+        // Save to registry for persistence
+        m_config.SaveToRegistry(_T("DataListCtrl_Optimized"));
     }
     catch (const std::exception& e)
     {
@@ -1189,12 +1239,30 @@ void DataListCtrl_Optimized::LoadColumnWidths()
 {
     try
     {
+        if (!m_initialized)
+            return;
+            
+        // Check if the control and header are still valid
+        if (!GetSafeHwnd())
+            return;
+            
+        CHeaderCtrl* pHeader = GetHeaderCtrl();
+        if (!pHeader || !pHeader->GetSafeHwnd())
+            return;
+            
         // Load column widths from configuration
         const auto& columns = m_config.GetColumns();
         
-        for (size_t i = 0; i < columns.size() && i < static_cast<size_t>(GetHeaderCtrl()->GetItemCount()); ++i)
+        // Apply column widths to the list control
+        int headerItemCount = pHeader->GetItemCount();
+        for (size_t i = 0; i < columns.size() && i < static_cast<size_t>(headerItemCount); ++i)
         {
-            SetColumnWidth(i, columns[i].width);
+            SetColumnWidth(static_cast<int>(i), columns[i].width);
+            // Also update the global array for compatibility
+            if (i < DLC_N_COLUMNS)
+            {
+                g_column_width[i] = columns[i].width;
+            }
         }
     }
     catch (const std::exception& e)
@@ -1207,8 +1275,118 @@ void DataListCtrl_Optimized::ApplyColumnConfiguration()
 {
     try
     {
+        // Load configuration from registry first
+        m_config.LoadFromRegistry(_T("DataListCtrl_Optimized"));
+        
         SetupColumns();
         LoadColumnWidths();
+    }
+    catch (const std::exception& e)
+    {
+        HandleError(DataListCtrlError::INVALID_PARAMETER, CString(e.what()));
+    }
+}
+
+// Signal column adjustment methods (from original DataListCtrl)
+void DataListCtrl_Optimized::resize_signal_column(int n_pixels)
+{
+    try
+    {
+        if (!m_initialized || !m_infos)
+            return;
+            
+        // Check if the control is still valid
+        if (!GetSafeHwnd())
+            return;
+            
+        // Update the signal column width in the global array
+        g_column_width[DLC_COLUMN_CURVE] = n_pixels;
+        
+        // Update the image list with new width
+        if (m_imageList)
+        {
+            m_imageList->DeleteImageList();
+        }
+        
+        m_infos->image_width = n_pixels;
+        m_infos->image_height = m_config.GetDisplayConfig().GetImageHeight();
+        
+        m_imageList = std::make_unique<CImageList>();
+        if (!m_imageList->Create(m_infos->image_width, m_infos->image_height, ILC_COLOR4, 10, 10))
+        {
+            HandleError(DataListCtrlError::GDI_RESOURCE_FAILED, _T("Failed to create image list"));
+            return;
+        }
+        
+        SetImageList(m_imageList.get(), LVSIL_SMALL);
+        
+        // Clear chart data for all rows to force regeneration
+        for (auto& row : m_rows)
+        {
+            if (row)
+            {
+                // Clear chart data windows to force regeneration
+                // This matches the original behavior
+            }
+        }
+        
+        // Update the configuration
+        auto columns = m_config.GetColumns();
+        if (columns.size() > DLC_COLUMN_CURVE)
+        {
+            columns[DLC_COLUMN_CURVE].width = n_pixels;
+            m_config.SetColumns(columns);
+        }
+        
+        // Refresh the display
+        RefreshDisplay();
+    }
+    catch (const std::exception& e)
+    {
+        HandleError(DataListCtrlError::INVALID_PARAMETER, CString(e.what()));
+    }
+}
+
+void DataListCtrl_Optimized::fit_columns_to_size(int n_pixels)
+{
+    try
+    {
+        if (!m_initialized)
+            return;
+            
+        // Check if the control is still valid
+        if (!GetSafeHwnd())
+            return;
+            
+        // Calculate total width of fixed columns (excluding signal column)
+        int fixed_width = 0;
+        for (int i = 0; i < DLC_N_COLUMNS; ++i)
+        {
+            if (i != DLC_COLUMN_CURVE)
+            {
+                fixed_width += g_column_width[i];
+            }
+        }
+        
+        // Calculate available width for signal column
+        int signal_column_width = n_pixels - fixed_width;
+        
+        // Ensure minimum width for signal column
+        if (signal_column_width < 50)
+            signal_column_width = 50;
+        
+        // Only adjust if the new width is different and reasonable
+        if (signal_column_width != g_column_width[DLC_COLUMN_CURVE] && signal_column_width > 2)
+        {
+            // Update the global array first
+            g_column_width[DLC_COLUMN_CURVE] = signal_column_width;
+            
+            // Set the column width in the list control
+            SetColumnWidth(DLC_COLUMN_CURVE, signal_column_width);
+            
+            // Update the image list and configuration
+            resize_signal_column(signal_column_width);
+        }
     }
     catch (const std::exception& e)
     {

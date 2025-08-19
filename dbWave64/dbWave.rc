@@ -4127,7 +4127,7 @@ BEGIN
     IDS_FILTERPANE          "Filter Pane"
     IDS_PROPERTIESPANE      "Properties pane"
     IDS_SHORTCUTS           "Shortcuts"
-    IDS_BTTNDATABASE2       "new data base display prototype"
+    IDS_BTTNDATABASE2       "Database prototype"
     IDC_UPDATE_INFOS        "Save changes made on the current selected record\nUpdate record"
 END
 

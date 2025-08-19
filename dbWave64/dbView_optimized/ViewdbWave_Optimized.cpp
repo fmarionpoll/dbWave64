@@ -228,10 +228,20 @@ void ViewdbWave_Optimized::make_controls_stretchable()
 
 void ViewdbWave_Optimized::SetDocument(CdbWaveDoc* pDoc)
 {
-    std::lock_guard<std::mutex> lock(m_viewMutex);
-    m_pDocument = pDoc;  // Simple assignment for raw pointer
+    bool shouldLoadData = false;
     
-    if (m_pDocument && m_initialized)
+    {
+        std::lock_guard<std::mutex> lock(m_viewMutex);
+        m_pDocument = pDoc;  // Simple assignment for raw pointer
+        
+        if (m_pDocument && m_initialized)
+        {
+            shouldLoadData = true;
+        }
+    }
+    
+    // Call LoadData outside the mutex to avoid deadlock
+    if (shouldLoadData)
     {
         LoadData();
     }
@@ -262,6 +272,12 @@ void ViewdbWave_Optimized::LoadData()
         
         m_stateManager->SetState(ViewState::READY);
         
+        // Refresh the display after data loading is complete
+        if (m_pDataListCtrl)
+        {
+            m_pDataListCtrl->RefreshDisplay();
+        }
+        
         m_performanceMonitor->EndOperation(_T("LoadData"));
     }
     catch (const std::exception& e)
@@ -285,11 +301,8 @@ void ViewdbWave_Optimized::LoadDataFromDocument()
             // For now, we'll just simulate a brief loading operation
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
             
-            // Update the data list control if available
-            if (m_pDataListCtrl)
-            {
-                m_pDataListCtrl->RefreshDisplay();
-            }
+            // Note: Don't call RefreshDisplay here to avoid deadlock
+            // The refresh will be handled by the calling method after releasing the mutex
         }
         
         LogPerformanceMetrics(_T("LoadDataFromDocument"));
@@ -326,22 +339,29 @@ void ViewdbWave_Optimized::UpdateDisplay()
 {
     try
     {
-        std::lock_guard<std::mutex> lock(m_viewMutex);
+        bool shouldRefreshDataList = false;
         
-        // Update control values from configuration
-        UpdateControlValues();
+        {
+            std::lock_guard<std::mutex> lock(m_viewMutex);
+            
+            // Update control values from configuration
+            UpdateControlValues();
+            
+            // Check if we should refresh the data list control
+            shouldRefreshDataList = (m_pDataListCtrl != nullptr);
+            
+            // Update the view
+            Invalidate();
+            UpdateWindow();
+            
+            m_lastUpdateTime = std::chrono::steady_clock::now();
+        }
         
-        // Update the data list control
-        if (m_pDataListCtrl)
+        // Call RefreshDisplay outside the mutex to avoid deadlock
+        if (shouldRefreshDataList)
         {
             m_pDataListCtrl->RefreshDisplay();
         }
-        
-        // Update the view
-        Invalidate();
-        UpdateWindow();
-        
-        m_lastUpdateTime = std::chrono::steady_clock::now();
         
         LogPerformanceMetrics(_T("UpdateDisplay"));
     }

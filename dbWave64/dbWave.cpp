@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "dbWave.h"
+#include "RegistryManager.h"
 
 #include <winspool.h>
 #include "MainFrm.h"
@@ -310,7 +311,7 @@ void CdbWaveApp::default_parameters(BOOL b_read)
 		while (i >= 0)
 		{
 			wsprintf(&sz_entry[0], sz_file_entry, i + 1);
-			auto dummy = GetProfileString(sz_vds, &sz_entry[0]);
+			auto dummy = RegistryManager::GetInstance().GetProfileString(sz_vds, &sz_entry[0]);
 			if (dummy.IsEmpty())
 				break;
 			if (dummy.Find(cs_ext) > 0)
@@ -337,7 +338,7 @@ void CdbWaveApp::default_parameters(BOOL b_read)
 		for (auto i = 0; i < m_cs_parameter_files.GetSize(); i++)
 		{
 			wsprintf(&sz_entry[0], sz_file_entry, i + 1);
-			WriteProfileString(sz_vds, &sz_entry[0], m_cs_parameter_files[i]);
+			RegistryManager::GetInstance().WriteProfileString(sz_vds, &sz_entry[0], m_cs_parameter_files[i]);
 		}
 	}
 }

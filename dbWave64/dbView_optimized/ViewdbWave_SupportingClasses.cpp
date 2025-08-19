@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ViewdbWave_SupportingClasses.h"
+#include "RegistryManager.h"
 #include <sstream>
 
 // ViewdbWaveException implementation
@@ -308,22 +309,18 @@ void ViewdbWaveConfiguration::LoadFromRegistry(const CString& section)
     
     try
     {
-        CWinApp* pApp = AfxGetApp();
-        if (!pApp)
-        {
-            throw ViewdbWaveException(ViewdbWaveError::CONFIGURATION_ERROR, 
-                _T("Failed to get application instance"));
-        }
+        // Use centralized registry manager
+        auto& registry = RegistryManager::GetInstance();
         
-        CString timeFirstStr = pApp->GetProfileString(section, _T("TimeFirst"), _T("0.0"));
-        CString timeLastStr = pApp->GetProfileString(section, _T("TimeLast"), _T("100.0"));
-        CString amplitudeSpanStr = pApp->GetProfileString(section, _T("AmplitudeSpan"), _T("1.0"));
+        CString timeFirstStr = registry.GetProfileString(section, _T("TimeFirst"), _T("0.0"));
+        CString timeLastStr = registry.GetProfileString(section, _T("TimeLast"), _T("100.0"));
+        CString amplitudeSpanStr = registry.GetProfileString(section, _T("AmplitudeSpan"), _T("1.0"));
         
         m_timeFirst = _ttof(timeFirstStr);
         m_timeLast = _ttof(timeLastStr);
         m_amplitudeSpan = _ttof(amplitudeSpanStr);
-        m_displayFileName = pApp->GetProfileInt(section, _T("DisplayFileName"), 0) != 0;
-        m_filterEnabled = pApp->GetProfileInt(section, _T("FilterEnabled"), 0) != 0;
+        m_displayFileName = registry.GetProfileInt(section, _T("DisplayFileName"), 0) != 0;
+        m_filterEnabled = registry.GetProfileInt(section, _T("FilterEnabled"), 0) != 0;
     }
     catch (const std::exception& e)
     {
@@ -338,23 +335,19 @@ void ViewdbWaveConfiguration::SaveToRegistry(const CString& section) const
     
     try
     {
-        CWinApp* pApp = AfxGetApp();
-        if (!pApp)
-        {
-            throw ViewdbWaveException(ViewdbWaveError::CONFIGURATION_ERROR, 
-                _T("Failed to get application instance"));
-        }
+        // Use centralized registry manager
+        auto& registry = RegistryManager::GetInstance();
         
         CString timeFirstStr, timeLastStr, amplitudeSpanStr;
         timeFirstStr.Format(_T("%.6f"), m_timeFirst);
         timeLastStr.Format(_T("%.6f"), m_timeLast);
         amplitudeSpanStr.Format(_T("%.6f"), m_amplitudeSpan);
         
-        pApp->WriteProfileString(section, _T("TimeFirst"), timeFirstStr);
-        pApp->WriteProfileString(section, _T("TimeLast"), timeLastStr);
-        pApp->WriteProfileString(section, _T("AmplitudeSpan"), amplitudeSpanStr);
-        pApp->WriteProfileInt(section, _T("DisplayFileName"), m_displayFileName ? 1 : 0);
-        pApp->WriteProfileInt(section, _T("FilterEnabled"), m_filterEnabled ? 1 : 0);
+        registry.WriteProfileString(section, _T("TimeFirst"), timeFirstStr);
+        registry.WriteProfileString(section, _T("TimeLast"), timeLastStr);
+        registry.WriteProfileString(section, _T("AmplitudeSpan"), amplitudeSpanStr);
+        registry.WriteProfileInt(section, _T("DisplayFileName"), m_displayFileName ? 1 : 0);
+        registry.WriteProfileInt(section, _T("FilterEnabled"), m_filterEnabled ? 1 : 0);
     }
     catch (const std::exception& e)
     {

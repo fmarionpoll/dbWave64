@@ -145,7 +145,7 @@ void DataListCtrl::init_columns(CUIntArray* width_columns)
 	// Create image list with proper parameters
 	if (!infos.image_list.Create(infos.image_width, infos.image_height, ILC_COLOR4, 10, 10))
 	{
-		TRACE("DEBUG: init_columns() - Failed to create image list\n");
+		//TRACE("DEBUG: init_columns() - Failed to create image list\n");
 		return;
 	}
 	
@@ -440,7 +440,7 @@ void DataListCtrl::build_empty_bitmap(const boolean b_forced_update)
 	CDC mem_dc;
 	if (!mem_dc.CreateCompatibleDC(&dc))
 	{
-		TRACE("DEBUG: build_empty_bitmap() - Failed to create compatible DC\n");
+		//TRACE("DEBUG: build_empty_bitmap() - Failed to create compatible DC\n");
 		return;
 	}
 
@@ -448,7 +448,7 @@ void DataListCtrl::build_empty_bitmap(const boolean b_forced_update)
 		dc.GetDeviceCaps(PLANES), 
 		dc.GetDeviceCaps(BITSPIXEL), nullptr))
 	{
-		TRACE("DEBUG: build_empty_bitmap() - Failed to create bitmap\n");
+		//TRACE("DEBUG: build_empty_bitmap() - Failed to create bitmap\n");
 		return;
 	}
 	
@@ -471,15 +471,15 @@ void DataListCtrl::refresh_display()
 {
 	if (rows_.GetSize() == NULL)
 	{
-		TRACE("DEBUG: refresh_display() - No rows to refresh\n");
+		//TRACE("DEBUG: refresh_display() - No rows to refresh\n");
 		return;
 	}
 
 	const int first_row = rows_.GetAt(0)->index;
 	const int last_row = rows_.GetAt(rows_.GetUpperBound())->index;
 	
-	TRACE("DEBUG: refresh_display() - Refreshing rows %d to %d (display_mode: %d)\n", 
-		first_row, last_row, infos.display_mode);
+	//TRACE("DEBUG: refresh_display() - Refreshing rows %d to %d (display_mode: %d)\n", 
+		//first_row, last_row, infos.display_mode);
 	
 	// Force rebuild of empty bitmap
 	build_empty_bitmap(true);
@@ -504,7 +504,7 @@ void DataListCtrl::refresh_display()
 	Invalidate();
 	UpdateWindow();
 	
-	TRACE("DEBUG: refresh_display() - Refresh completed\n");
+	//TRACE("DEBUG: refresh_display() - Refresh completed\n");
 }
 
 void DataListCtrl::OnVScroll(const UINT n_sb_code, const UINT n_pos, CScrollBar* p_scroll_bar)
@@ -584,7 +584,7 @@ void DataListCtrl::resize_signal_column(const int n_pixels)
 
 void DataListCtrl::set_display_mode(const int i_mode)
 {
-	TRACE("DEBUG: set_display_mode() - Changing from %d to %d\n", infos.display_mode, i_mode);
+	//TRACE("DEBUG: set_display_mode() - Changing from %d to %d\n", infos.display_mode, i_mode);
 	infos.display_mode = i_mode;
 	
 	//// Force refresh when display mode changes

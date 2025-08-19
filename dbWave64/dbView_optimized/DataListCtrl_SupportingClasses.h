@@ -27,9 +27,9 @@ namespace DataListCtrlConstants
 {
     // Default values - using definitions from DataListCtrl_Configuration.h
     constexpr int DEFAULT_DISPLAY_MODE = 0;
-    constexpr double DEFAULT_TIME_FIRST = 0.0;
-    constexpr double DEFAULT_TIME_LAST = 100.0;
-    constexpr double DEFAULT_MV_SPAN = 1.0;
+    constexpr float DEFAULT_TIME_FIRST = 0.0f;
+    constexpr float DEFAULT_TIME_LAST = 100.0f;
+    constexpr float DEFAULT_MV_SPAN = 1.0f;
     
     // Performance settings
     constexpr size_t DEFAULT_CACHE_SIZE = 100;

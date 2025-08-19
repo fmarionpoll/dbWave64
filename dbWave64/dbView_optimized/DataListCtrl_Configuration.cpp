@@ -1,6 +1,14 @@
 #include "StdAfx.h"
 #include "DataListCtrl_Configuration.h"
 
+// Helper function to convert float to CString
+CString FloatToString(float value)
+{
+    CString result;
+    result.Format(_T("%.6f"), value);
+    return result;
+}
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -285,23 +293,27 @@ void DataListCtrlConfiguration::LoadFromRegistry(const CString& section)
     try
     {
         // Load display settings
-        m_displaySettings.SetImageWidth(_ttoi(ReadRegistryValue(section, _T("ImageWidth"), 
+        m_displaySettings.SetImageWidth(_ttoi(ReadRegistryValue(section, _T("ImageWidth"),
             CString(std::to_string(DataListCtrlConfigConstants::DEFAULT_IMAGE_WIDTH).c_str()))));
-        m_displaySettings.SetImageHeight(_ttoi(ReadRegistryValue(section, _T("ImageHeight"), 
+        m_displaySettings.SetImageHeight(_ttoi(ReadRegistryValue(section, _T("ImageHeight"),
             CString(std::to_string(DataListCtrlConfigConstants::DEFAULT_IMAGE_HEIGHT).c_str()))));
-        m_displaySettings.SetDisplayMode(_ttoi(ReadRegistryValue(section, _T("DisplayMode"), 
+        m_displaySettings.SetDisplayMode(_ttoi(ReadRegistryValue(section, _T("DisplayMode"),
             CString(std::to_string(DataListCtrlConfigConstants::DEFAULT_DISPLAY_MODE).c_str()))));
-        
+
         // Load time settings
-        m_timeSettings.SetTimeFirst(_ttof(ReadRegistryValue(section, _T("TimeFirst"), 
-            CString(std::to_string(DataListCtrlConfigConstants::DEFAULT_TIME_FIRST).c_str()))));
-        m_timeSettings.SetTimeLast(_ttof(ReadRegistryValue(section, _T("TimeLast"), 
-            CString(std::to_string(DataListCtrlConfigConstants::DEFAULT_TIME_LAST).c_str()))));
+        CString default_value = FloatToString((DataListCtrlConfigConstants::DEFAULT_TIME_FIRST));
+        float value = _ttof(ReadRegistryValue(section, _T("TimeFirst"), default_value));
+        m_timeSettings.SetTimeFirst(value);
+        default_value = FloatToString((DataListCtrlConfigConstants::DEFAULT_TIME_LAST));
+        value = _ttof(ReadRegistryValue(section, _T("TimeLast"), default_value));
+        m_timeSettings.SetTimeLast(value);
         m_timeSettings.SetTimeSpanEnabled(_ttoi(ReadRegistryValue(section, _T("SetTimeSpan"), _T("0"))) != 0);
-        
+
         // Load amplitude settings
-        m_amplitudeSettings.SetMvSpan(_ttof(ReadRegistryValue(section, _T("MvSpan"), 
-            CString(std::to_string(DataListCtrlConfigConstants::DEFAULT_MV_SPAN).c_str()))));
+        default_value = FloatToString(static_cast<float>(DataListCtrlConfigConstants::DEFAULT_MV_SPAN));
+        value = _ttof(ReadRegistryValue(section, _T("MvSpan"), default_value));
+        m_amplitudeSettings.SetMvSpan(value);
+
         m_amplitudeSettings.SetMvSpanEnabled(_ttoi(ReadRegistryValue(section, _T("SetMvSpan"), _T("0"))) != 0);
         
         // Load UI settings
@@ -331,12 +343,12 @@ void DataListCtrlConfiguration::SaveToRegistry(const CString& section)
         WriteRegistryValue(section, _T("DisplayMode"), CString(std::to_string(m_displaySettings.GetDisplayMode()).c_str()));
         
         // Save time settings
-        WriteRegistryValue(section, _T("TimeFirst"), CString(std::to_string(m_timeSettings.GetTimeFirst()).c_str()));
-        WriteRegistryValue(section, _T("TimeLast"), CString(std::to_string(m_timeSettings.GetTimeLast()).c_str()));
+        WriteRegistryValue(section, _T("TimeFirst"), FloatToString(m_timeSettings.GetTimeFirst()));
+        WriteRegistryValue(section, _T("TimeLast"), FloatToString(m_timeSettings.GetTimeLast()));
         WriteRegistryValue(section, _T("SetTimeSpan"), m_timeSettings.IsTimeSpanSet() ? _T("1") : _T("0"));
         
         // Save amplitude settings
-        WriteRegistryValue(section, _T("MvSpan"), CString(std::to_string(m_amplitudeSettings.GetMvSpan()).c_str()));
+        WriteRegistryValue(section, _T("MvSpan"), FloatToString(m_amplitudeSettings.GetMvSpan()));
         WriteRegistryValue(section, _T("SetMvSpan"), m_amplitudeSettings.IsMvSpanSet() ? _T("1") : _T("0"));
         
         // Save UI settings
@@ -369,15 +381,18 @@ void DataListCtrlConfiguration::LoadFromFile(const CString& filename)
             CString(std::to_string(DataListCtrlConfigConstants::DEFAULT_DISPLAY_MODE).c_str()))));
         
         // Load time settings
-        m_timeSettings.SetTimeFirst(_ttof(ReadIniValue(filename, _T("Time"), _T("TimeFirst"), 
-            CString(std::to_string(DataListCtrlConfigConstants::DEFAULT_TIME_FIRST).c_str()))));
-        m_timeSettings.SetTimeLast(_ttof(ReadIniValue(filename, _T("Time"), _T("TimeLast"), 
-            CString(std::to_string(DataListCtrlConfigConstants::DEFAULT_TIME_LAST).c_str()))));
+        CString default_value = FloatToString((DataListCtrlConfigConstants::DEFAULT_TIME_FIRST));
+        float value = _ttof(ReadIniValue(filename, _T("Time"), _T("TimeFirst"), default_value));
+        m_timeSettings.SetTimeFirst(value);
+		default_value = FloatToString((DataListCtrlConfigConstants::DEFAULT_TIME_LAST));
+		value = _ttof(ReadIniValue(filename, _T("Time"), _T("TimeLast"), default_value));
+        m_timeSettings.SetTimeLast(value);
         m_timeSettings.SetTimeSpanEnabled(_ttoi(ReadIniValue(filename, _T("Time"), _T("SetTimeSpan"), _T("0"))) != 0);
         
         // Load amplitude settings
-        m_amplitudeSettings.SetMvSpan(_ttof(ReadIniValue(filename, _T("Amplitude"), _T("MvSpan"), 
-            CString(std::to_string(DataListCtrlConfigConstants::DEFAULT_MV_SPAN).c_str()))));
+		default_value = FloatToString(static_cast<float>(DataListCtrlConfigConstants::DEFAULT_MV_SPAN));
+		value = _ttof(ReadIniValue(filename, _T("Amplitude"), _T("MvSpan"), default_value));
+        m_amplitudeSettings.SetMvSpan(value);
         m_amplitudeSettings.SetMvSpanEnabled(_ttoi(ReadIniValue(filename, _T("Amplitude"), _T("SetMvSpan"), _T("0"))) != 0);
         
         // Load UI settings
@@ -407,12 +422,12 @@ void DataListCtrlConfiguration::SaveToFile(const CString& filename)
         WriteIniValue(filename, _T("Display"), _T("DisplayMode"), CString(std::to_string(m_displaySettings.GetDisplayMode()).c_str()));
         
         // Save time settings
-        WriteIniValue(filename, _T("Time"), _T("TimeFirst"), CString(std::to_string(m_timeSettings.GetTimeFirst()).c_str()));
-        WriteIniValue(filename, _T("Time"), _T("TimeLast"), CString(std::to_string(m_timeSettings.GetTimeLast()).c_str()));
+        WriteIniValue(filename, _T("Time"), _T("TimeFirst"), FloatToString(m_timeSettings.GetTimeFirst()));
+        WriteIniValue(filename, _T("Time"), _T("TimeLast"), FloatToString(m_timeSettings.GetTimeLast()));
         WriteIniValue(filename, _T("Time"), _T("SetTimeSpan"), m_timeSettings.IsTimeSpanSet() ? _T("1") : _T("0"));
         
         // Save amplitude settings
-        WriteIniValue(filename, _T("Amplitude"), _T("MvSpan"), CString(std::to_string(m_amplitudeSettings.GetMvSpan()).c_str()));
+        WriteIniValue(filename, _T("Amplitude"), _T("MvSpan"), FloatToString(m_amplitudeSettings.GetMvSpan()));
         WriteIniValue(filename, _T("Amplitude"), _T("SetMvSpan"), m_amplitudeSettings.IsMvSpanSet() ? _T("1") : _T("0"));
         
         // Save UI settings

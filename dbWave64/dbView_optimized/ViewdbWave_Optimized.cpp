@@ -32,10 +32,10 @@ ViewdbWave_Optimized::ViewdbWave_Optimized()
     , m_uiStateManager(std::make_unique<UIStateManager>())
     , m_asyncManager(std::make_unique<AsyncOperationManager>())
     , m_configManager(std::make_unique<ViewdbWaveConfiguration>())
-    , m_pTimeFirstEdit(nullptr)
-    , m_pTimeLastEdit(nullptr)
-    , m_pAmplitudeSpanEdit(nullptr)
-    , m_pSpikeClassCombo(nullptr)
+    , m_pTimeFirstEdit(std::make_unique<CEditCtrl>())
+    , m_pTimeLastEdit(std::make_unique<CEditCtrl>())
+    , m_pAmplitudeSpanEdit(std::make_unique<CEditCtrl>())
+    , m_pSpikeClassEdit(std::make_unique<CEditCtrl>())
     , m_pDisplayDataButton(nullptr)
     , m_pDisplaySpikesButton(nullptr)
     , m_pDisplayNothingButton(nullptr)
@@ -62,6 +62,10 @@ ViewdbWave_Optimized::~ViewdbWave_Optimized()
 void ViewdbWave_Optimized::DoDataExchange(CDataExchange* pDX)
 {
     ViewDbTable::DoDataExchange(pDX);
+    
+    // Associate the DataListCtrl_Optimized with the dialog control
+    DDX_Control(pDX, ViewdbWaveConstants::VW_IDC_LISTCTRL, *m_pDataListCtrl);
+    
     // Add data exchange for controls if needed
     // Example: DDX_Text(pDX, IDC_TIMEFIRST, m_timeFirst);
 }
@@ -80,16 +84,12 @@ void ViewdbWave_Optimized::Initialize()
         
         // Set initial state
         m_stateManager->SetState(ViewState::INITIALIZED);
-        
-        // Initialize configuration
-        InitializeConfiguration();
-        
-        // Initialize controls
+
         InitializeControls();
-        
-        // Initialize data list control
         InitializeDataListControl();
-        
+        make_controls_stretchable();
+        InitializeConfiguration();
+
         // Set up state change callback
         m_stateManager->RegisterStateChangeCallback([this](ViewState oldState, ViewState newState) {
             OnStateChanged(oldState, newState);
@@ -132,15 +132,16 @@ void ViewdbWave_Optimized::InitializeControls()
     try
     {
         m_performanceMonitor->StartOperation(_T("InitializeControls"));
-        
-        // Get control references (these should be set up in the dialog/resource)
-        m_pTimeFirstEdit = static_cast<CEdit*>(GetDlgItem(ViewdbWaveConstants::VW_IDC_TIMEFIRST));
-        m_pTimeLastEdit = static_cast<CEdit*>(GetDlgItem(ViewdbWaveConstants::VW_IDC_TIMELAST));
-        m_pAmplitudeSpanEdit = static_cast<CEdit*>(GetDlgItem(ViewdbWaveConstants::VW_IDC_AMPLITUDESPAN));
-        m_pSpikeClassCombo = static_cast<CComboBox*>(GetDlgItem(ViewdbWaveConstants::VW_IDC_SPIKECLASS));
+
+        VERIFY(m_pTimeFirstEdit->SubclassDlgItem(ViewdbWaveConstants::VW_IDC_TIMEFIRST, this));
+        VERIFY(m_pTimeLastEdit->SubclassDlgItem(ViewdbWaveConstants::VW_IDC_TIMELAST, this));
+        VERIFY(m_pAmplitudeSpanEdit->SubclassDlgItem(ViewdbWaveConstants::VW_IDC_AMPLITUDESPAN, this));
+        VERIFY(m_pSpikeClassEdit->SubclassDlgItem(ViewdbWaveConstants::VW_IDC_SPIKECLASS, this));
+
         m_pDisplayDataButton = static_cast<CButton*>(GetDlgItem(ViewdbWaveConstants::VW_IDC_DISPLAYDATA));
         m_pDisplaySpikesButton = static_cast<CButton*>(GetDlgItem(ViewdbWaveConstants::VW_IDC_DISPLAY_SPIKES));
         m_pDisplayNothingButton = static_cast<CButton*>(GetDlgItem(ViewdbWaveConstants::VW_IDC_DISPLAY_NOTHING));
+
         m_pCheckFileNameButton = static_cast<CButton*>(GetDlgItem(ViewdbWaveConstants::VW_IDC_CHECKFILENAME));
         m_pFilterCheckButton = static_cast<CButton*>(GetDlgItem(ViewdbWaveConstants::VW_IDC_FILTERCHECK));
         m_pRadioAllClassesButton = static_cast<CButton*>(GetDlgItem(ViewdbWaveConstants::VW_IDC_RADIOALLCLASSES));
@@ -148,7 +149,7 @@ void ViewdbWave_Optimized::InitializeControls()
         m_pTabCtrl = static_cast<CTabCtrl*>(GetDlgItem(ViewdbWaveConstants::VW_IDC_TAB1));
         
         // Validate controls
-        if (!m_pTimeFirstEdit || !m_pTimeLastEdit || !m_pAmplitudeSpanEdit)
+        if (!m_pTimeFirstEdit || !m_pTimeLastEdit || !m_pAmplitudeSpanEdit || !m_pSpikeClassEdit)
         {
             throw ViewdbWaveException(ViewdbWaveError::INVALID_CONTROL, 
                 _T("Required controls not found"));
@@ -176,8 +177,16 @@ void ViewdbWave_Optimized::InitializeDataListControl()
             throw ViewdbWaveException(ViewdbWaveError::INVALID_CONTROL, 
                 _T("Data list control not initialized"));
         }
-        
-        // Initialize the data list control with configuration
+
+        // Check if the control has a valid HWND before initializing
+        if (!m_pDataListCtrl->GetSafeHwnd())
+        {
+            // Control not ready yet, this is expected during early initialization
+            // The control will be initialized later when the HWND is available
+            m_performanceMonitor->EndOperation(_T("InitializeDataListControl"));
+            return;
+        }
+
         m_pDataListCtrl->Initialize(*m_pConfiguration);
         
         m_performanceMonitor->EndOperation(_T("InitializeDataListControl"));
@@ -186,6 +195,35 @@ void ViewdbWave_Optimized::InitializeDataListControl()
     {
         HandleError(ViewdbWaveError::INVALID_CONTROL, CString(e.what()));
     }
+}
+
+void ViewdbWave_Optimized::EnsureDataListControlInitialized()
+{
+    try
+    {
+        if (!m_pDataListCtrl)
+        {
+            return;
+        }
+
+        // Check if the control has a valid HWND and hasn't been initialized yet
+        if (m_pDataListCtrl->GetSafeHwnd() && !m_pDataListCtrl->IsInitialized())
+        {
+            m_pDataListCtrl->Initialize(*m_pConfiguration);
+        }
+    }
+    catch (const std::exception& e)
+    {
+        HandleError(ViewdbWaveError::INVALID_CONTROL, CString(e.what()));
+    }
+}
+
+void ViewdbWave_Optimized::make_controls_stretchable()
+{
+    stretch_.attach_parent(this);
+    stretch_.new_prop(IDC_LISTCTRL, XLEQ_XREQ, YTEQ_YBEQ);
+    stretch_.new_prop(IDC_TAB1, XLEQ_XREQ, SZEQ_YBEQ);
+    b_init_ = TRUE;
 }
 
 void ViewdbWave_Optimized::SetDocument(CdbWaveDoc* pDoc)
@@ -432,25 +470,6 @@ CString ViewdbWave_Optimized::GetLastErrorMessage() const
 }
 
 // MFC overrides
-void ViewdbWave_Optimized::OnDraw(CDC* pDC)
-{
-    if (!pDC)
-        return;
-    
-    try
-    {
-        // Basic drawing implementation
-        CRect rect;
-        GetClientRect(&rect);
-        
-        pDC->FillSolidRect(&rect, RGB(255, 255, 255));
-        pDC->TextOut(10, 10, _T("ViewdbWave_Optimized"));
-    }
-    catch (const std::exception& e)
-    {
-        HandleError(ViewdbWaveError::UI_UPDATE_FAILED, CString(e.what()));
-    }
-}
 
 BOOL ViewdbWave_Optimized::PreCreateWindow(CREATESTRUCT& cs)
 {
@@ -468,6 +487,9 @@ void ViewdbWave_Optimized::OnInitialUpdate()
     try
     {
         Initialize();
+        
+        // Ensure the DataListCtrl is initialized after the window is created
+        EnsureDataListControlInitialized();
     }
     catch (const std::exception& e)
     {
@@ -482,6 +504,9 @@ void ViewdbWave_Optimized::OnSize(UINT nType, int cx, int cy)
     
     try
     {
+        // Ensure the DataListCtrl is initialized when the window is resized
+        EnsureDataListControlInitialized();
+        
         // Handle window resize
         if (m_pDataListCtrl)
         {
@@ -597,7 +622,7 @@ void ViewdbWave_Optimized::UpdateControlStates()
         if (m_pTimeFirstEdit) m_pTimeFirstEdit->EnableWindow(enabled);
         if (m_pTimeLastEdit) m_pTimeLastEdit->EnableWindow(enabled);
         if (m_pAmplitudeSpanEdit) m_pAmplitudeSpanEdit->EnableWindow(enabled);
-        if (m_pSpikeClassCombo) m_pSpikeClassCombo->EnableWindow(enabled);
+        if (m_pSpikeClassEdit) m_pSpikeClassEdit->EnableWindow(enabled);
         if (m_pDisplayDataButton) m_pDisplayDataButton->EnableWindow(enabled);
         if (m_pDisplaySpikesButton) m_pDisplaySpikesButton->EnableWindow(enabled);
         if (m_pDisplayNothingButton) m_pDisplayNothingButton->EnableWindow(enabled);

@@ -102,6 +102,7 @@ public:
     
     // Initialization and setup
     void Initialize(const DataListCtrlConfiguration& config);
+    bool IsInitialized() const { return m_initialized; }
     void SetupColumns();
     void SetupImageList();
     void SetParentWindow(CWnd* parent);

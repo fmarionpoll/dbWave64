@@ -152,14 +152,9 @@ void DataListCtrl_Optimized::InitializeColumns()
 {
     try
     {
-        // Check if the control has been created
         if (!GetSafeHwnd())
-        {
-            // Control not created yet, just return
             return;
-        }
-        
-        // Clear existing columns
+
         DeleteAllItems();
         
         // Check if header control exists before accessing it
@@ -167,9 +162,7 @@ void DataListCtrl_Optimized::InitializeColumns()
         if (pHeader && pHeader->GetSafeHwnd())
         {
             while (pHeader->GetItemCount() > 0)
-            {
                 DeleteColumn(0);
-            }
         }
         
         // Add columns using the original column configuration
@@ -180,9 +173,7 @@ void DataListCtrl_Optimized::InitializeColumns()
         
         // Set image width for the curve column (column 2)
         if (m_infos)
-        {
             m_infos->image_width = g_column_width_[DLC_COLUMN_CURVE];
-        }
     }
     catch (const std::exception& e)
     {

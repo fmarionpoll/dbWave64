@@ -150,8 +150,6 @@ void DataListCtrl::init_columns(CUIntArray* width_columns)
 	}
 	
 	SetImageList(&infos.image_list, LVSIL_SMALL);
-	
-	// Initialize empty bitmap
 	build_empty_bitmap(true);
 }
 

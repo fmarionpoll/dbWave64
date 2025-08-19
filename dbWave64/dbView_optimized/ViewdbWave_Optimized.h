@@ -4,6 +4,7 @@
 #include <afxwin.h>
 #include <afxext.h>
 
+#include "Editctrl.h"
 #include "ViewDbTable.h"
 
 
@@ -31,7 +32,9 @@ public:
     void InitializeConfiguration();
     void InitializeControls();
     void InitializeDataListControl();
-    
+    void EnsureDataListControlInitialized();
+    void make_controls_stretchable();
+
     // Document and application integration
     void SetDocument(CdbWaveDoc* pDoc);
     void SetApplication(CdbWaveApp* pApp);
@@ -68,7 +71,6 @@ public:
 
 protected:
     // MFC overrides
-    virtual void OnDraw(CDC* pDC);
     virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
     virtual void OnInitialUpdate();
     virtual void DoDataExchange(CDataExchange* pDX);
@@ -86,8 +88,8 @@ protected:
 
 private:
     // Core components
-    CdbWaveDoc* m_pDocument;  // Raw pointer - managed by application framework
-    CdbWaveApp* m_pApplication;  // Raw pointer - managed by application framework
+    CdbWaveDoc* m_pDocument; 
+    CdbWaveApp* m_pApplication; 
     std::unique_ptr<DataListCtrl_Optimized> m_pDataListCtrl;
     std::unique_ptr<::DataListCtrlConfiguration> m_pConfiguration;
     
@@ -99,10 +101,11 @@ private:
     std::unique_ptr<ViewdbWaveConfiguration> m_configManager;
     
     // Control references
-    CEdit* m_pTimeFirstEdit;
-    CEdit* m_pTimeLastEdit;
-    CEdit* m_pAmplitudeSpanEdit;
-    CComboBox* m_pSpikeClassCombo;
+    std::unique_ptr<CEditCtrl> m_pTimeFirstEdit;
+    std::unique_ptr<CEditCtrl> m_pTimeLastEdit;
+    std::unique_ptr<CEditCtrl> m_pAmplitudeSpanEdit;
+    std::unique_ptr<CEditCtrl> m_pSpikeClassEdit;
+
     CButton* m_pDisplayDataButton;
     CButton* m_pDisplaySpikesButton;
     CButton* m_pDisplayNothingButton;

@@ -312,7 +312,13 @@ void DataListCtrl_Row_Optimized::Serialize(CArchive& ar)
     }
     catch (const CArchiveException& e)
     {
-        throw DataListCtrlException(DataListCtrlError::SERIALIZATION_FAILED, _T("Serialization failed"));
+        CString archiveErrorMsg;
+        e.GetErrorMessage(archiveErrorMsg.GetBuffer(256), 256);
+        archiveErrorMsg.ReleaseBuffer();
+        
+        CString errorMessage;
+        errorMessage.Format(_T("Serialization failed: %s (Error code: %d)"), archiveErrorMsg, e.m_cause);
+        throw DataListCtrlException(DataListCtrlError::SERIALIZATION_FAILED, errorMessage);
     }
 }
 

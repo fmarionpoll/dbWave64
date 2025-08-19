@@ -38,12 +38,12 @@ public:
     // Document and application integration
     void SetDocument(CdbWaveDoc* pDoc);
     void SetApplication(CdbWaveApp* pApp);
-    CdbWaveDoc* GetDocument() const { return m_pDocument; }
+    CdbWaveDoc* GetDocument() const;  // Override to use MFC framework
     CdbWaveApp* GetApplication() const { return m_pApplication; }
     
     // Data operations
     void LoadData();
-    void LoadDataFromDocument();
+    void LoadDataFromDocument(CdbWaveDoc* pDoc);
     void RefreshDisplay();
     void UpdateDisplay();
     void AutoRefresh();
@@ -74,6 +74,7 @@ protected:
     virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
     virtual void OnInitialUpdate();
     virtual void DoDataExchange(CDataExchange* pDX);
+    virtual void OnUpdate(CView* p_sender, const LPARAM l_hint, CObject* p_hint);
     
     // Message map functions
     afx_msg void OnSize(UINT nType, int cx, int cy);

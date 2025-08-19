@@ -112,11 +112,13 @@ public:
     bool CanTransitionTo(ViewState newState) const;
     void RegisterStateChangeCallback(StateChangeCallback callback);
     void Reset();
+    void SetThreadSafe(bool threadSafe) { m_threadSafe = threadSafe; }
     
 private:
     ViewState m_currentState;
     ViewState m_previousState;
     StateChangeCallback m_stateChangeCallback;
+    bool m_threadSafe = false;  // Disable thread safety by default
     mutable std::mutex m_stateMutex;
 };
 
@@ -145,12 +147,14 @@ public:
     void EndOperation(const CString& operationName);
     void SetEnabled(bool enabled) { m_enabled = enabled; }
     bool IsEnabled() const { return m_enabled; }
+    void SetThreadSafe(bool threadSafe) { m_threadSafe = threadSafe; }
     
     ViewdbWavePerformanceMetrics GetMetrics() const;
     CString GetPerformanceReport() const;
     
 private:
     bool m_enabled;
+    bool m_threadSafe = false;  // Disable thread safety by default
     std::chrono::steady_clock::time_point m_startTime;
     std::map<CString, std::chrono::steady_clock::time_point> m_operationStartTimes;
     std::map<CString, size_t> m_operationCounts;
@@ -170,6 +174,7 @@ public:
     void UpdateControlVisibility(bool show);
     void SetLoadingState(bool loading);
     void SetErrorState(bool error, const CString& errorMessage = _T(""));
+    void SetThreadSafe(bool threadSafe) { m_threadSafe = threadSafe; }
     
 private:
     bool m_controlsEnabled;
@@ -177,6 +182,7 @@ private:
     bool m_loading;
     bool m_error;
     CString m_errorMessage;
+    bool m_threadSafe = false;  // Disable thread safety by default
     std::mutex m_uiMutex;
 };
 
@@ -196,11 +202,13 @@ public:
     void WaitForAllOperations();
     size_t GetActiveOperationCount() const;
     void CancelAllOperations();
+    void SetThreadSafe(bool threadSafe) { m_threadSafe = threadSafe; }
     
 private:
     std::unique_ptr<std::thread> m_workerThread;
     std::vector<std::future<void>> m_pendingOperations;
     std::atomic<bool> m_shutdown;
+    bool m_threadSafe = false;  // Disable thread safety by default
     mutable std::mutex m_operationsMutex;
 };
 
@@ -215,6 +223,7 @@ public:
     void SaveToRegistry(const CString& section) const;
     void LoadFromIniFile(const CString& filename, const CString& section);
     void SaveToIniFile(const CString& filename, const CString& section) const;
+    void SetThreadSafe(bool threadSafe) { m_threadSafe = threadSafe; }
     
     // Getters and setters for configuration values
     double GetTimeFirst() const { return m_timeFirst; }
@@ -238,5 +247,6 @@ private:
     double m_amplitudeSpan;
     bool m_displayFileName;
     bool m_filterEnabled;
+    bool m_threadSafe = false;  // Disable thread safety by default
     mutable std::mutex m_configMutex;
 };

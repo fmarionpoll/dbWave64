@@ -27,7 +27,8 @@ ViewdbWaveStateManager::ViewdbWaveStateManager()
 
 void ViewdbWaveStateManager::SetState(ViewState newState)
 {
-    std::lock_guard<std::mutex> lock(m_stateMutex);
+    std::unique_lock<std::mutex> lock(m_stateMutex, std::defer_lock);
+    if (m_threadSafe) lock.lock();
     
     try
     {
@@ -56,13 +57,15 @@ void ViewdbWaveStateManager::SetState(ViewState newState)
 
 ViewState ViewdbWaveStateManager::GetCurrentState() const
 {
-    std::lock_guard<std::mutex> lock(m_stateMutex);
+    std::unique_lock<std::mutex> lock(m_stateMutex, std::defer_lock);
+    if (m_threadSafe) lock.lock();
     return m_currentState;
 }
 
 ViewState ViewdbWaveStateManager::GetPreviousState() const
 {
-    std::lock_guard<std::mutex> lock(m_stateMutex);
+    std::unique_lock<std::mutex> lock(m_stateMutex, std::defer_lock);
+    if (m_threadSafe) lock.lock();
     return m_previousState;
 }
 
@@ -90,13 +93,15 @@ bool ViewdbWaveStateManager::CanTransitionTo(ViewState newState) const
 
 void ViewdbWaveStateManager::RegisterStateChangeCallback(StateChangeCallback callback)
 {
-    std::lock_guard<std::mutex> lock(m_stateMutex);
+    std::unique_lock<std::mutex> lock(m_stateMutex, std::defer_lock);
+    if (m_threadSafe) lock.lock();
     m_stateChangeCallback = callback;
 }
 
 void ViewdbWaveStateManager::Reset()
 {
-    std::lock_guard<std::mutex> lock(m_stateMutex);
+    std::unique_lock<std::mutex> lock(m_stateMutex, std::defer_lock);
+    if (m_threadSafe) lock.lock();
     m_currentState = ViewState::UNINITIALIZED;
     m_previousState = ViewState::UNINITIALIZED;
 }
@@ -123,7 +128,8 @@ ViewdbWavePerformanceMonitor::ViewdbWavePerformanceMonitor()
 
 void ViewdbWavePerformanceMonitor::Reset()
 {
-    std::lock_guard<std::mutex> lock(m_metricsMutex);
+    std::unique_lock<std::mutex> lock(m_metricsMutex, std::defer_lock);
+    if (m_threadSafe) lock.lock();
     m_operationCounts.clear();
     m_operationDurations.clear();
     m_memoryUsage.clear();
@@ -135,7 +141,8 @@ void ViewdbWavePerformanceMonitor::StartOperation(const CString& operationName)
     if (!m_enabled)
         return;
     
-    std::lock_guard<std::mutex> lock(m_metricsMutex);
+    std::unique_lock<std::mutex> lock(m_metricsMutex, std::defer_lock);
+    if (m_threadSafe) lock.lock();
     m_operationStartTimes[operationName] = std::chrono::steady_clock::now();
 }
 
@@ -144,7 +151,8 @@ void ViewdbWavePerformanceMonitor::EndOperation(const CString& operationName)
     if (!m_enabled)
         return;
     
-    std::lock_guard<std::mutex> lock(m_metricsMutex);
+    std::unique_lock<std::mutex> lock(m_metricsMutex, std::defer_lock);
+    if (m_threadSafe) lock.lock();
     
     auto it = m_operationStartTimes.find(operationName);
     if (it != m_operationStartTimes.end())
@@ -161,7 +169,8 @@ void ViewdbWavePerformanceMonitor::EndOperation(const CString& operationName)
 
 ViewdbWavePerformanceMetrics ViewdbWavePerformanceMonitor::GetMetrics() const
 {
-    std::lock_guard<std::mutex> lock(m_metricsMutex);
+    std::unique_lock<std::mutex> lock(m_metricsMutex, std::defer_lock);
+    if (m_threadSafe) lock.lock();
     
     ViewdbWavePerformanceMetrics metrics;
     
@@ -186,7 +195,8 @@ ViewdbWavePerformanceMetrics ViewdbWavePerformanceMonitor::GetMetrics() const
 
 CString ViewdbWavePerformanceMonitor::GetPerformanceReport() const
 {
-    std::lock_guard<std::mutex> lock(m_metricsMutex);
+    std::unique_lock<std::mutex> lock(m_metricsMutex, std::defer_lock);
+    if (m_threadSafe) lock.lock();
     
     CString report;
     report.Format(_T("Performance Report:\n"));
@@ -218,25 +228,29 @@ UIStateManager::UIStateManager()
 
 void UIStateManager::SetControlState(bool enabled)
 {
-    std::lock_guard<std::mutex> lock(m_uiMutex);
+    std::unique_lock<std::mutex> lock(m_uiMutex, std::defer_lock);
+    if (m_threadSafe) lock.lock();
     m_controlsEnabled = enabled;
 }
 
 void UIStateManager::UpdateControlVisibility(bool show)
 {
-    std::lock_guard<std::mutex> lock(m_uiMutex);
+    std::unique_lock<std::mutex> lock(m_uiMutex, std::defer_lock);
+    if (m_threadSafe) lock.lock();
     m_controlsVisible = show;
 }
 
 void UIStateManager::SetLoadingState(bool loading)
 {
-    std::lock_guard<std::mutex> lock(m_uiMutex);
+    std::unique_lock<std::mutex> lock(m_uiMutex, std::defer_lock);
+    if (m_threadSafe) lock.lock();
     m_loading = loading;
 }
 
 void UIStateManager::SetErrorState(bool error, const CString& errorMessage)
 {
-    std::lock_guard<std::mutex> lock(m_uiMutex);
+    std::unique_lock<std::mutex> lock(m_uiMutex, std::defer_lock);
+    if (m_threadSafe) lock.lock();
     m_error = error;
     m_errorMessage = errorMessage;
 }
@@ -257,7 +271,8 @@ AsyncOperationManager::~AsyncOperationManager()
 
 void AsyncOperationManager::WaitForAllOperations()
 {
-    std::lock_guard<std::mutex> lock(m_operationsMutex);
+    std::unique_lock<std::mutex> lock(m_operationsMutex, std::defer_lock);
+    if (m_threadSafe) lock.lock();
     
     for (auto& future : m_pendingOperations)
     {
@@ -272,7 +287,8 @@ void AsyncOperationManager::WaitForAllOperations()
 
 size_t AsyncOperationManager::GetActiveOperationCount() const
 {
-    std::lock_guard<std::mutex> lock(m_operationsMutex);
+    std::unique_lock<std::mutex> lock(m_operationsMutex, std::defer_lock);
+    if (m_threadSafe) lock.lock();
     
     size_t count = 0;
     for (const auto& future : m_pendingOperations)
@@ -305,7 +321,8 @@ ViewdbWaveConfiguration::ViewdbWaveConfiguration()
 
 void ViewdbWaveConfiguration::LoadFromRegistry(const CString& section)
 {
-    std::lock_guard<std::mutex> lock(m_configMutex);
+    std::unique_lock<std::mutex> lock(m_configMutex, std::defer_lock);
+    if (m_threadSafe) lock.lock();
     
     try
     {
@@ -331,7 +348,8 @@ void ViewdbWaveConfiguration::LoadFromRegistry(const CString& section)
 
 void ViewdbWaveConfiguration::SaveToRegistry(const CString& section) const
 {
-    std::lock_guard<std::mutex> lock(m_configMutex);
+    std::unique_lock<std::mutex> lock(m_configMutex, std::defer_lock);
+    if (m_threadSafe) lock.lock();
     
     try
     {
@@ -358,7 +376,8 @@ void ViewdbWaveConfiguration::SaveToRegistry(const CString& section) const
 
 void ViewdbWaveConfiguration::LoadFromIniFile(const CString& filename, const CString& section)
 {
-    std::lock_guard<std::mutex> lock(m_configMutex);
+    std::unique_lock<std::mutex> lock(m_configMutex, std::defer_lock);
+    if (m_threadSafe) lock.lock();
     
     try
     {
@@ -385,7 +404,8 @@ void ViewdbWaveConfiguration::LoadFromIniFile(const CString& filename, const CSt
 
 void ViewdbWaveConfiguration::SaveToIniFile(const CString& filename, const CString& section) const
 {
-    std::lock_guard<std::mutex> lock(m_configMutex);
+    std::unique_lock<std::mutex> lock(m_configMutex, std::defer_lock);
+    if (m_threadSafe) lock.lock();
     
     try
     {

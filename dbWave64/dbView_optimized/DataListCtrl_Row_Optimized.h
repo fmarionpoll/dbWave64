@@ -93,6 +93,37 @@ public:
     int GetLastDisplayMode() const { return m_lastDisplayMode; }
     int GetIndex() const { return m_index; }
     
+    // Public getter methods for database fields
+    long GetInsectId() const { return m_insectId; }
+    int GetRecordId() const { return m_recordId; }
+    CString GetComment() const { return m_comment; }
+    CString GetDataFileName() const { return m_dataFileName; }
+    CString GetSpikeFileName() const { return m_spikeFileName; }
+    CString GetSensillumName() const { return m_sensillumName; }
+    CString GetStimulus1() const { return m_stimulus1; }
+    CString GetConcentration1() const { return m_concentration1; }
+    CString GetStimulus2() const { return m_stimulus2; }
+    CString GetConcentration2() const { return m_concentration2; }
+    CString GetNSpikes() const { return m_nSpikes; }
+    CString GetFlag() const { return m_flag; }
+    CString GetDate() const { return m_date; }
+    
+    // Public setter methods for database fields
+    void SetIndex(int index) { m_index = index; }
+    void SetInsectId(long insectId) { m_insectId = insectId; }
+    void SetRecordId(int recordId) { m_recordId = recordId; }
+    void SetComment(const CString& comment) { m_comment = comment; }
+    void SetDataFileName(const CString& fileName) { m_dataFileName = fileName; }
+    void SetSpikeFileName(const CString& fileName) { m_spikeFileName = fileName; }
+    void SetSensillumName(const CString& name) { m_sensillumName = name; }
+    void SetStimulus1(const CString& stimulus) { m_stimulus1 = stimulus; }
+    void SetConcentration1(const CString& concentration) { m_concentration1 = concentration; }
+    void SetStimulus2(const CString& stimulus) { m_stimulus2 = stimulus; }
+    void SetConcentration2(const CString& concentration) { m_concentration2 = concentration; }
+    void SetNSpikes(const CString& spikes) { m_nSpikes = spikes; }
+    void SetFlag(const CString& flag) { m_flag = flag; }
+    void SetDate(const CString& date) { m_date = date; }
+    
     // Dependency injection for testing
     void SetDataDocument(std::unique_ptr<AcqDataDoc> doc);
     void SetSpikeDocument(std::unique_ptr<CSpikeDoc> doc);

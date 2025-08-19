@@ -200,6 +200,7 @@ private:
     void InitializeImageList();
     void CreateEmptyBitmap();
     void SetupDefaultConfiguration();
+    void SetupVirtualListControl();
     
     // Row management helpers
     void EnsureRowExists(int index);
@@ -280,4 +281,7 @@ private:
     void SaveColumnWidths();
     void LoadColumnWidths();
     void ApplyColumnConfiguration();
+    
+    // Database access
+    bool LoadRowDataFromDatabase(CdbWaveDoc* pdb_doc, int index, DataListCtrl_Row_Optimized& row);
 };

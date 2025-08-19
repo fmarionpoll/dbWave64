@@ -3,6 +3,7 @@
 #include "ViewdbWave_SupportingClasses.h"
 #include "DataListCtrl_Optimized.h"
 #include "DataListCtrl_Configuration.h"
+#include "dbWave_constants.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -228,28 +229,26 @@ void ViewdbWave_Optimized::make_controls_stretchable()
 
 void ViewdbWave_Optimized::SetDocument(CdbWaveDoc* pDoc)
 {
-    bool shouldLoadData = false;
+    TRACE(_T("ViewdbWave_Optimized::SetDocument - Document pointer: %p\n"), pDoc);
     
-    {
-        std::lock_guard<std::mutex> lock(m_viewMutex);
-        m_pDocument = pDoc;  // Simple assignment for raw pointer
-        
-        if (m_pDocument && m_initialized)
-        {
-            shouldLoadData = true;
-        }
-    }
+    // Note: This method is kept for compatibility but the document is now managed by MFC framework
+    // The actual document is obtained through GetDocument() which uses CDaoRecordView::GetDocument()
     
-    // Call LoadData outside the mutex to avoid deadlock
-    if (shouldLoadData)
+    if (pDoc && m_initialized)
     {
+        TRACE(_T("ViewdbWave_Optimized::SetDocument - Document set and initialized, calling LoadData\n"));
         LoadData();
+    }
+    else
+    {
+        TRACE(_T("ViewdbWave_Optimized::SetDocument - Document set but not initialized yet\n"));
+        TRACE(_T("ViewdbWave_Optimized::SetDocument - Document: %p, Initialized: %s\n"), 
+              pDoc, m_initialized ? _T("true") : _T("false"));
     }
 }
 
 void ViewdbWave_Optimized::SetApplication(CdbWaveApp* pApp)
 {
-    std::lock_guard<std::mutex> lock(m_viewMutex);
     m_pApplication = pApp;  // Simple assignment for raw pointer
 }
 
@@ -257,58 +256,86 @@ void ViewdbWave_Optimized::LoadData()
 {
     try
     {
+        TRACE(_T("ViewdbWave_Optimized::LoadData - Starting\n"));
+        
         m_performanceMonitor->StartOperation(_T("LoadData"));
         
-        if (!m_pDocument)
+        CdbWaveDoc* pDoc = GetDocument();
+        if (!pDoc)
         {
+            TRACE(_T("ViewdbWave_Optimized::LoadData - No document available\n"));
             throw ViewdbWaveException(ViewdbWaveError::INVALID_DOCUMENT, 
                 _T("No document available"));
         }
         
+        TRACE(_T("ViewdbWave_Optimized::LoadData - Document available, setting state to LOADING\n"));
         m_stateManager->SetState(ViewState::LOADING);
         
         // Load data directly (simplified approach)
-        LoadDataFromDocument();
+        TRACE(_T("ViewdbWave_Optimized::LoadData - Calling LoadDataFromDocument\n"));
+        LoadDataFromDocument(pDoc);
         
+        TRACE(_T("ViewdbWave_Optimized::LoadData - Data loaded, setting state to READY\n"));
         m_stateManager->SetState(ViewState::READY);
         
         // Refresh the display after data loading is complete
         if (m_pDataListCtrl)
         {
+            TRACE(_T("ViewdbWave_Optimized::LoadData - Refreshing display\n"));
             m_pDataListCtrl->RefreshDisplay();
         }
         
         m_performanceMonitor->EndOperation(_T("LoadData"));
+        TRACE(_T("ViewdbWave_Optimized::LoadData - Complete\n"));
     }
     catch (const std::exception& e)
     {
+        TRACE(_T("ViewdbWave_Optimized::LoadData - Exception: %s\n"), CString(e.what()));
         m_stateManager->SetState(ViewState::ERROR_STATE);
         HandleError(ViewdbWaveError::INVALID_DOCUMENT, CString(e.what()));
     }
 }
 
-void ViewdbWave_Optimized::LoadDataFromDocument()
+void ViewdbWave_Optimized::LoadDataFromDocument(CdbWaveDoc* pDoc)
 {
     try
     {
+        TRACE(_T("ViewdbWave_Optimized::LoadDataFromDocument - Starting\n"));
+        
         // Direct data loading from document
         // This replaces the asynchronous approach with simple, direct loading
         
-        if (m_pDocument)
+        if (pDoc && m_pDataListCtrl)
         {
-            // Load data from the document
-            // This is where you would implement the actual data loading logic
-            // For now, we'll just simulate a brief loading operation
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            // Get the number of records from the database
+            const int n_records = pDoc->db_get_records_count();
+            TRACE(_T("ViewdbWave_Optimized::LoadDataFromDocument - Record count: %d\n"), n_records);
+            
+            // Set the item count for the virtual list control
+            m_pDataListCtrl->SetItemCount(n_records);
+            TRACE(_T("ViewdbWave_Optimized::LoadDataFromDocument - Set item count to: %d\n"), n_records);
+            
+            // Also try setting row count as backup
+            m_pDataListCtrl->SetRowCount(n_records);
+            TRACE(_T("ViewdbWave_Optimized::LoadDataFromDocument - Set row count to: %d\n"), n_records);
+            
+            // Force a refresh to trigger the display
+            m_pDataListCtrl->Invalidate();
+            TRACE(_T("ViewdbWave_Optimized::LoadDataFromDocument - Forced invalidate\n"));
             
             // Note: Don't call RefreshDisplay here to avoid deadlock
             // The refresh will be handled by the calling method after releasing the mutex
+        }
+        else
+        {
+            TRACE(_T("ViewdbWave_Optimized::LoadDataFromDocument - No document or data list control\n"));
         }
         
         LogPerformanceMetrics(_T("LoadDataFromDocument"));
     }
     catch (const std::exception& e)
     {
+        TRACE(_T("ViewdbWave_Optimized::LoadDataFromDocument - Exception: %s\n"), CString(e.what()));
         throw ViewdbWaveException(ViewdbWaveError::DATA_LOAD_FAILED, CString(e.what()));
     }
 }
@@ -339,26 +366,17 @@ void ViewdbWave_Optimized::UpdateDisplay()
 {
     try
     {
-        bool shouldRefreshDataList = false;
+        // Update control values from configuration
+        UpdateControlValues();
         
-        {
-            std::lock_guard<std::mutex> lock(m_viewMutex);
-            
-            // Update control values from configuration
-            UpdateControlValues();
-            
-            // Check if we should refresh the data list control
-            shouldRefreshDataList = (m_pDataListCtrl != nullptr);
-            
-            // Update the view
-            Invalidate();
-            UpdateWindow();
-            
-            m_lastUpdateTime = std::chrono::steady_clock::now();
-        }
+        // Update the view
+        Invalidate();
+        UpdateWindow();
         
-        // Call RefreshDisplay outside the mutex to avoid deadlock
-        if (shouldRefreshDataList)
+        m_lastUpdateTime = std::chrono::steady_clock::now();
+        
+        // Refresh the data list control if available
+        if (m_pDataListCtrl != nullptr)
         {
             m_pDataListCtrl->RefreshDisplay();
         }
@@ -506,13 +524,35 @@ void ViewdbWave_Optimized::OnInitialUpdate()
     
     try
     {
+        TRACE(_T("ViewdbWave_Optimized::OnInitialUpdate - Starting\n"));
+        
         Initialize();
         
         // Ensure the DataListCtrl is initialized after the window is created
         EnsureDataListControlInitialized();
+        
+        // Load data if document is already available
+        CdbWaveDoc* pDoc = GetDocument();
+        if (pDoc && m_initialized)
+        {
+            TRACE(_T("ViewdbWave_Optimized::OnInitialUpdate - Document available, loading data\n"));
+            LoadData();
+        }
+        else
+        {
+            TRACE(_T("ViewdbWave_Optimized::OnInitialUpdate - No document or not initialized\n"));
+            TRACE(_T("ViewdbWave_Optimized::OnInitialUpdate - GetDocument() returned: %p, Initialized: %s\n"), 
+                  pDoc, m_initialized ? _T("true") : _T("false"));
+        }
+        
+        TRACE(_T("ViewdbWave_Optimized::OnInitialUpdate - Complete\n"));
+        
+        // Set a timer to check for document availability after a short delay
+        SetTimer(999, 100, nullptr); // 100ms delay
     }
     catch (const std::exception& e)
     {
+        TRACE(_T("ViewdbWave_Optimized::OnInitialUpdate - Exception: %s\n"), CString(e.what()));
         HandleError(ViewdbWaveError::INITIALIZATION_FAILED, CString(e.what()));
     }
 }
@@ -548,6 +588,25 @@ void ViewdbWave_Optimized::OnTimer(UINT_PTR nIDEvent)
     if (nIDEvent == m_autoRefreshTimer)
     {
         AutoRefresh();
+    }
+    else if (nIDEvent == 999)
+    {
+        // Check for document availability
+        TRACE(_T("ViewdbWave_Optimized::OnTimer - Checking for document availability\n"));
+        KillTimer(999);
+        
+        CdbWaveDoc* pDoc = GetDocument();
+        if (pDoc && m_initialized)
+        {
+            TRACE(_T("ViewdbWave_Optimized::OnTimer - Document now available, loading data\n"));
+            LoadData();
+        }
+        else
+        {
+            TRACE(_T("ViewdbWave_Optimized::OnTimer - Document still not available\n"));
+            TRACE(_T("ViewdbWave_Optimized::OnTimer - GetDocument(): %p, Initialized: %s\n"), 
+                  pDoc, m_initialized ? _T("true") : _T("false"));
+        }
     }
     else
     {
@@ -602,6 +661,45 @@ void ViewdbWave_Optimized::OnViewAutoRefresh()
             KillTimer(m_autoRefreshTimer);
             m_autoRefreshTimer = 0;
         }
+    }
+}
+
+void ViewdbWave_Optimized::OnUpdate(CView* p_sender, const LPARAM l_hint, CObject* p_hint)
+{
+    TRACE(_T("ViewdbWave_Optimized::OnUpdate - Hint: 0x%08X\n"), l_hint);
+    
+    if (!m_initialized)
+    {
+        TRACE(_T("ViewdbWave_Optimized::OnUpdate - Not initialized, returning\n"));
+        return;
+    }
+
+    switch (LOWORD(l_hint))
+    {
+    case HINT_REQUERY:
+        TRACE(_T("ViewdbWave_Optimized::OnUpdate - HINT_REQUERY received\n"));
+        LoadData();
+        break;
+        
+    case HINT_DOC_HAS_CHANGED:
+        TRACE(_T("ViewdbWave_Optimized::OnUpdate - HINT_DOC_HAS_CHANGED received\n"));
+        LoadData();
+        break;
+        
+    case HINT_DOC_MOVE_RECORD:
+        TRACE(_T("ViewdbWave_Optimized::OnUpdate - HINT_DOC_MOVE_RECORD received\n"));
+        UpdateDisplay();
+        break;
+        
+    case HINT_REPLACE_VIEW:
+        TRACE(_T("ViewdbWave_Optimized::OnUpdate - HINT_REPLACE_VIEW received\n"));
+        LoadData();
+        break;
+        
+    default:
+        TRACE(_T("ViewdbWave_Optimized::OnUpdate - Default case, updating display\n"));
+        UpdateDisplay();
+        break;
     }
 }
 
@@ -793,6 +891,12 @@ void ViewdbWave_Optimized::ClearErrorMessage()
 {
     // Clear any displayed error messages
     // Implementation depends on how errors are displayed
+}
+
+CdbWaveDoc* ViewdbWave_Optimized::GetDocument() const
+{
+    // Use MFC framework to get the document
+    return static_cast<CdbWaveDoc*>(CDaoRecordView::GetDocument());
 }
 
 

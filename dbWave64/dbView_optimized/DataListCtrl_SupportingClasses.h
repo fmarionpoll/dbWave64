@@ -66,7 +66,8 @@ enum class DataListCtrlError
     ASYNC_OPERATION_FAILED,
     SERIALIZATION_FAILED,
     WINDOW_CREATION_FAILED,
-    FILE_OPEN_FAILED
+    FILE_OPEN_FAILED,
+    DATABASE_ACCESS_FAILED
 };
 
 class DataListCtrlException : public std::exception

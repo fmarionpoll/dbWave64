@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #include "RegistryManager.h"
 
+#include <string>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -400,14 +402,14 @@ bool RegistryManager::WriteProfileInt(const CString& section, const CString& key
 }
 
 // Private Profile compatibility
-CString RegistryManager::GetPrivateProfileString(const CString& filename, const CString& section, const CString& key, const CString& defaultValue) const
+CString RegistryManager::GetPrivateProfileString(const CString& filename, const CString& section, const CString& key, const CString& defaultValue)
 {
     TCHAR buffer[256];
     ::GetPrivateProfileString(section, key, defaultValue, buffer, sizeof(buffer), filename);
     return CString(buffer);
 }
 
-int RegistryManager::GetPrivateProfileInt(const CString& filename, const CString& section, const CString& key, int defaultValue) const
+int RegistryManager::GetPrivateProfileInt(const CString& filename, const CString& section, const CString& key, int defaultValue)
 {
     return ::GetPrivateProfileInt(section, key, defaultValue, filename);
 }

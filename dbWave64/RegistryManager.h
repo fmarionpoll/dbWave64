@@ -2,13 +2,9 @@
 
 // MFC includes
 #include <afx.h>
-#include <afxwin.h>
 
 // Standard library includes
-#include <string>
 #include <vector>
-#include <map>
-#include <memory>
 #include <functional>
 
 // Forward declarations
@@ -115,9 +111,9 @@ public:
     bool WriteProfileInt(const CString& section, const CString& key, int value);
     
     // Private Profile compatibility
-    CString GetPrivateProfileString(const CString& filename, const CString& section, const CString& key, const CString& defaultValue = _T("")) const;
-    int GetPrivateProfileInt(const CString& filename, const CString& section, const CString& key, int defaultValue = 0) const;
-    bool WritePrivateProfileString(const CString& filename, const CString& section, const CString& key, const CString& value);
+    static CString GetPrivateProfileString(const CString& filename, const CString& section, const CString& key, const CString& defaultValue = _T(""));
+    static int GetPrivateProfileInt(const CString& filename, const CString& section, const CString& key, int defaultValue = 0);
+    static bool WritePrivateProfileString(const CString& filename, const CString& section, const CString& key, const CString& value);
     bool WritePrivateProfileInt(const CString& filename, const CString& section, const CString& key, int value);
     
     // Section operations
@@ -144,7 +140,7 @@ private:
     ~RegistryManager() = default;
     
     // Helper methods
-    HKEY GetRootKey() const { return HKEY_CURRENT_USER; }
+    static HKEY GetRootKey() { return HKEY_CURRENT_USER; }
     CString BuildFullPath(const CString& section, const CString& key) const;
     void SetLastError(RegistryError error, const CString& message = _T(""));
     bool EnsureKeyExists(const CString& section);

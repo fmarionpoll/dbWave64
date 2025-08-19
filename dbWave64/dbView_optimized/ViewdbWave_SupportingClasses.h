@@ -1,15 +1,10 @@
 #pragma once
 
 #include <memory>
-#include <mutex>
 #include <vector>
-#include <functional>
-#include <future>
-#include <atomic>
-#include <chrono>
-#include <map>
 #include <string>
 #include <afxwin.h>
+// Removed: mutex, functional, future, atomic, chrono, map - no longer needed for simplified configuration
 
 
 // Forward declarations
@@ -23,10 +18,10 @@ class CTabCtrl;
 class CEdit;
 class CButton;
 
-// Constants namespace
+// Simplified constants - keeping only essential control IDs
 namespace ViewdbWaveConstants
 {
-    // Control IDs (using VW_ prefix to avoid macro conflicts)
+    // Essential control IDs (using VW_ prefix to avoid macro conflicts)
     constexpr int VW_IDC_TIMEFIRST = IDC_TIMEFIRST;
     constexpr int VW_IDC_TIMELAST = IDC_TIMELAST;
     constexpr int VW_IDC_AMPLITUDESPAN = IDC_AMPLITUDESPAN;
@@ -41,189 +36,27 @@ namespace ViewdbWaveConstants
     constexpr int VW_IDC_TAB1 = IDC_TAB1;
     constexpr int VW_IDC_LISTCTRL = IDC_LISTCTRL;
     
-    // Performance settings
-    constexpr std::chrono::milliseconds UI_UPDATE_THROTTLE{16}; // ~60 FPS
-    constexpr int MAX_ASYNC_OPERATIONS = 4;
-    constexpr size_t MAX_CACHE_SIZE = 1000;
-    
-    // UI settings
-    constexpr int DEFAULT_WINDOW_WIDTH = 800;
-    constexpr int DEFAULT_WINDOW_HEIGHT = 600;
-    constexpr int MIN_WINDOW_WIDTH = 400;
-    constexpr int MIN_WINDOW_HEIGHT = 300;
-    
-    // Command IDs (if not defined in resource.h)
-    constexpr int ID_VIEW_REFRESH = 32771;  // Custom refresh command
-    constexpr int ID_VIEW_AUTO_REFRESH = 32772;  // Custom auto-refresh command
+    // Removed: Performance settings, UI settings, command IDs - not needed for core functionality
 }
 
-// Exception handling
-enum class ViewdbWaveError
-{
-    SUCCESS,
-    INVALID_DOCUMENT,
-    INVALID_CONTROL,
-    MEMORY_ALLOCATION_FAILED,
-    UI_UPDATE_FAILED,
-    ASYNC_OPERATION_FAILED,
-    INITIALIZATION_FAILED,
-    STATE_TRANSITION_FAILED,
-    CONFIGURATION_ERROR,
-    DATA_LOAD_FAILED
-};
+// Simplified error handling - using standard exceptions instead of complex custom exceptions
+// Removed complex state management - not needed for single-user database access
 
-class ViewdbWaveException : public std::exception
-{
-public:
-    explicit ViewdbWaveException(ViewdbWaveError error, const CString& message = _T(""));
-    ViewdbWaveError GetError() const { return m_error; }
-    CString GetMessage() const { return m_message; }
-    const char* what() const noexcept override;
-    
-private:
-    ViewdbWaveError m_error;
-    CString m_message;
-};
+// Simplified supporting classes - removed complex state management, performance monitoring, and async operations
+// These were over-engineered for single-user database access and made the code harder to debug
 
-// View states
-enum class ViewState
-{
-    UNINITIALIZED,
-    INITIALIZED,
-    LOADING,
-    READY,
-    PROCESSING,
-    ERROR_STATE
-};
-
-// State change callback type
-using StateChangeCallback = std::function<void(ViewState, ViewState)>;
-
-// State management
-class ViewdbWaveStateManager
-{
-public:
-    ViewdbWaveStateManager();
-    ~ViewdbWaveStateManager() = default;
-    
-    void SetState(ViewState newState);
-    ViewState GetCurrentState() const;
-    ViewState GetPreviousState() const;
-    bool CanTransitionTo(ViewState newState) const;
-    void RegisterStateChangeCallback(StateChangeCallback callback);
-    void Reset();
-    void SetThreadSafe(bool threadSafe) { m_threadSafe = threadSafe; }
-    
-private:
-    ViewState m_currentState;
-    ViewState m_previousState;
-    StateChangeCallback m_stateChangeCallback;
-    bool m_threadSafe = false;  // Disable thread safety by default
-    mutable std::mutex m_stateMutex;
-};
-
-// Performance monitoring
-struct ViewdbWavePerformanceMetrics
-{
-    std::chrono::microseconds lastUIUpdateTime{0};
-    std::chrono::microseconds averageUIUpdateTime{0};
-    size_t totalUIUpdates = 0;
-    size_t asyncOperationsCompleted = 0;
-    size_t asyncOperationsFailed = 0;
-    size_t cacheHits = 0;
-    size_t cacheMisses = 0;
-    
-    void Reset();
-};
-
-class ViewdbWavePerformanceMonitor
-{
-public:
-    ViewdbWavePerformanceMonitor();
-    ~ViewdbWavePerformanceMonitor() = default;
-    
-    void Reset();
-    void StartOperation(const CString& operationName);
-    void EndOperation(const CString& operationName);
-    void SetEnabled(bool enabled) { m_enabled = enabled; }
-    bool IsEnabled() const { return m_enabled; }
-    void SetThreadSafe(bool threadSafe) { m_threadSafe = threadSafe; }
-    
-    ViewdbWavePerformanceMetrics GetMetrics() const;
-    CString GetPerformanceReport() const;
-    
-private:
-    bool m_enabled;
-    bool m_threadSafe = false;  // Disable thread safety by default
-    std::chrono::steady_clock::time_point m_startTime;
-    std::map<CString, std::chrono::steady_clock::time_point> m_operationStartTimes;
-    std::map<CString, size_t> m_operationCounts;
-    std::map<CString, std::chrono::microseconds> m_operationDurations;
-    std::map<CString, size_t> m_memoryUsage;
-    mutable std::mutex m_metricsMutex;
-};
-
-// UI state management
-class UIStateManager
-{
-public:
-    UIStateManager();
-    ~UIStateManager() = default;
-    
-    void SetControlState(bool enabled);
-    void UpdateControlVisibility(bool show);
-    void SetLoadingState(bool loading);
-    void SetErrorState(bool error, const CString& errorMessage = _T(""));
-    void SetThreadSafe(bool threadSafe) { m_threadSafe = threadSafe; }
-    
-private:
-    bool m_controlsEnabled;
-    bool m_controlsVisible;
-    bool m_loading;
-    bool m_error;
-    CString m_errorMessage;
-    bool m_threadSafe = false;  // Disable thread safety by default
-    std::mutex m_uiMutex;
-};
-
-// Async operation manager
-class AsyncOperationManager
-{
-public:
-    AsyncOperationManager();
-    ~AsyncOperationManager();
-    
-    template<typename Func, typename... Args>
-    auto SubmitOperation(Func&& func, Args&&... args) -> std::future<decltype(func(args...))>
-    {
-        return std::async(std::launch::async, std::forward<Func>(func), std::forward<Args>(args)...);
-    }
-    
-    void WaitForAllOperations();
-    size_t GetActiveOperationCount() const;
-    void CancelAllOperations();
-    void SetThreadSafe(bool threadSafe) { m_threadSafe = threadSafe; }
-    
-private:
-    std::unique_ptr<std::thread> m_workerThread;
-    std::vector<std::future<void>> m_pendingOperations;
-    std::atomic<bool> m_shutdown;
-    bool m_threadSafe = false;  // Disable thread safety by default
-    mutable std::mutex m_operationsMutex;
-};
-
-// Configuration manager
+// Simplified configuration manager
 class ViewdbWaveConfiguration
 {
 public:
     ViewdbWaveConfiguration();
     ~ViewdbWaveConfiguration() = default;
     
+    // Simple load/save operations with basic error handling
     void LoadFromRegistry(const CString& section);
     void SaveToRegistry(const CString& section) const;
     void LoadFromIniFile(const CString& filename, const CString& section);
     void SaveToIniFile(const CString& filename, const CString& section) const;
-    void SetThreadSafe(bool threadSafe) { m_threadSafe = threadSafe; }
     
     // Getters and setters for configuration values
     double GetTimeFirst() const { return m_timeFirst; }
@@ -241,12 +74,22 @@ public:
     bool IsFilterEnabled() const { return m_filterEnabled; }
     void SetFilterEnabled(bool enabled) { m_filterEnabled = enabled; }
     
+    // Display mode methods
+    int GetDisplayMode() const { return m_displayMode; }
+    void SetDisplayMode(int mode) { m_displayMode = mode; }
+    
+    bool GetFilterData() const { return m_filterEnabled; }
+    bool GetDisplayAllClasses() const { return m_displayAllClasses; }
+    void SetDisplayAllClasses(bool enabled) { m_displayAllClasses = enabled; }
+    
 private:
     double m_timeFirst;
     double m_timeLast;
     double m_amplitudeSpan;
     bool m_displayFileName;
     bool m_filterEnabled;
-    bool m_threadSafe = false;  // Disable thread safety by default
-    mutable std::mutex m_configMutex;
+    int m_displayMode;
+    bool m_displayAllClasses;
+    // Removed: std::mutex m_configMutex - no longer needed for single-user access
+    // Removed: bool m_threadSafe - no longer needed
 };

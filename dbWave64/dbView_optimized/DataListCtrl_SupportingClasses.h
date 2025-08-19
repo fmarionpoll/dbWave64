@@ -12,6 +12,7 @@
 #include <afxwin.h>
 #include <afxext.h>
 #include <afxcmn.h>
+#include "DataListCtrl_Row_Optimized.h"
 
 // Forward declarations
 class CListCtrl;
@@ -20,7 +21,6 @@ class CBitmap;
 class CDC;
 class CBrush;
 class CPen;
-class DataListCtrl_Row_Optimized;
 
 // Constants namespace
 namespace DataListCtrlConstants
@@ -136,6 +136,7 @@ public:
     void RemoveRow(int index);
     void InvalidateCache(int index);  // Alias for RemoveRow for compatibility
     void SetCachedRow(int index, DataListCtrl_Row_Optimized* row, int displayMode);
+    DataListCtrl_Row_Optimized* GetCachedRow(int index) const;
     void Clear();
     size_t GetSize() const;
     size_t GetMaxSize() const { return m_maxSize; }
@@ -155,8 +156,31 @@ public:
     void ResetStats();
     
 private:
-    // Row data cache
-    std::map<int, DataListCtrlRow> m_cache;
+    // Row data cache - store DataListCtrl_Row_Optimized objects
+    struct CachedRowData
+    {
+        std::unique_ptr<DataListCtrl_Row_Optimized> row;
+        std::chrono::steady_clock::time_point timestamp;
+        bool isValid;
+        int displayMode;
+        
+        CachedRowData()
+            : row(nullptr)
+            , timestamp(std::chrono::steady_clock::now())
+            , isValid(false)
+            , displayMode(0)
+        {
+        }
+        
+        CachedRowData(std::unique_ptr<DataListCtrl_Row_Optimized> r, int mode)
+            : row(std::move(r))
+            , timestamp(std::chrono::steady_clock::now())
+            , isValid(true)
+            , displayMode(mode)
+        {
+        }
+    };
+    std::map<int, CachedRowData> m_cache;
     
     // Bitmap cache (for DataListCtrl_Row_Optimized)
     struct CachedBitmap

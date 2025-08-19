@@ -28,11 +28,6 @@ ViewdbWave_Optimized::ViewdbWave_Optimized()
     , m_pApplication(nullptr)
     , m_pDataListCtrl(std::make_unique<DataListCtrl_Optimized>())
     , m_pConfiguration(std::make_unique<::DataListCtrlConfiguration>())
-    , m_stateManager(std::make_unique<ViewdbWaveStateManager>())
-    , m_performanceMonitor(std::make_unique<ViewdbWavePerformanceMonitor>())
-    , m_uiStateManager(std::make_unique<UIStateManager>())
-    , m_asyncManager(std::make_unique<AsyncOperationManager>())
-    , m_configManager(std::make_unique<ViewdbWaveConfiguration>())
     , m_pTimeFirstEdit(std::make_unique<CEditCtrl>())
     , m_pTimeLastEdit(std::make_unique<CEditCtrl>())
     , m_pAmplitudeSpanEdit(std::make_unique<CEditCtrl>())
@@ -46,9 +41,9 @@ ViewdbWave_Optimized::ViewdbWave_Optimized()
     , m_pRadioOneClassButton(nullptr)
     , m_pTabCtrl(nullptr)
     , m_initialized(false)
+    , m_processing(false)
     , m_autoRefreshEnabled(false)
     , m_autoRefreshTimer(0)
-    , m_lastUpdateTime(std::chrono::steady_clock::now())
 {
 }
 
@@ -75,36 +70,25 @@ void ViewdbWave_Optimized::Initialize()
 {
     try
     {
-        m_performanceMonitor->StartOperation(_T("Initialize"));
-        
         if (m_initialized)
         {
-            throw ViewdbWaveException(ViewdbWaveError::INITIALIZATION_FAILED, 
-                _T("View already initialized"));
+            TRACE(_T("ViewdbWave_Optimized::Initialize - Already initialized\n"));
+            return;
         }
         
-        // Set initial state
-        m_stateManager->SetState(ViewState::INITIALIZED);
-
+        TRACE(_T("ViewdbWave_Optimized::Initialize - Starting initialization\n"));
+        
         InitializeControls();
         InitializeDataListControl();
         make_controls_stretchable();
         InitializeConfiguration();
-
-        // Set up state change callback
-        m_stateManager->RegisterStateChangeCallback([this](ViewState oldState, ViewState newState) {
-            OnStateChanged(oldState, newState);
-        });
         
         m_initialized = true;
-        m_stateManager->SetState(ViewState::READY);
-        
-        m_performanceMonitor->EndOperation(_T("Initialize"));
+        TRACE(_T("ViewdbWave_Optimized::Initialize - Initialization complete\n"));
     }
     catch (const std::exception& e)
     {
-        m_stateManager->SetState(ViewState::ERROR_STATE);
-        HandleError(ViewdbWaveError::INITIALIZATION_FAILED, CString(e.what()));
+        HandleError(CString(e.what()));
     }
 }
 
@@ -112,19 +96,15 @@ void ViewdbWave_Optimized::InitializeConfiguration()
 {
     try
     {
-        m_performanceMonitor->StartOperation(_T("InitializeConfiguration"));
-        
         // Load configuration from registry
-        m_configManager->LoadFromRegistry(_T("ViewdbWave"));
+        m_configManager.LoadFromRegistry(_T("ViewdbWave"));
         
         // Apply configuration to controls
         ApplyConfigurationToControls();
-        
-        m_performanceMonitor->EndOperation(_T("InitializeConfiguration"));
     }
     catch (const std::exception& e)
     {
-        HandleError(ViewdbWaveError::CONFIGURATION_ERROR, CString(e.what()));
+        HandleError(CString(e.what()));
     }
 }
 
@@ -132,8 +112,6 @@ void ViewdbWave_Optimized::InitializeControls()
 {
     try
     {
-        m_performanceMonitor->StartOperation(_T("InitializeControls"));
-
         VERIFY(m_pTimeFirstEdit->SubclassDlgItem(ViewdbWaveConstants::VW_IDC_TIMEFIRST, this));
         VERIFY(m_pTimeLastEdit->SubclassDlgItem(ViewdbWaveConstants::VW_IDC_TIMELAST, this));
         VERIFY(m_pAmplitudeSpanEdit->SubclassDlgItem(ViewdbWaveConstants::VW_IDC_AMPLITUDESPAN, this));
@@ -152,18 +130,18 @@ void ViewdbWave_Optimized::InitializeControls()
         // Validate controls
         if (!m_pTimeFirstEdit || !m_pTimeLastEdit || !m_pAmplitudeSpanEdit || !m_pSpikeClassEdit)
         {
-            throw ViewdbWaveException(ViewdbWaveError::INVALID_CONTROL, 
-                _T("Required controls not found"));
+            throw std::runtime_error("Required controls not found");
         }
         
         // Set initial control states
         UpdateControlStates();
         
-        m_performanceMonitor->EndOperation(_T("InitializeControls"));
+        // Set default display mode to "no display" (grey rectangle)
+        SetDisplayMode(DataListCtrlConfigConstants::DISPLAY_MODE_EMPTY);
     }
     catch (const std::exception& e)
     {
-        HandleError(ViewdbWaveError::INVALID_CONTROL, CString(e.what()));
+        HandleError(CString(e.what()));
     }
 }
 
@@ -171,12 +149,9 @@ void ViewdbWave_Optimized::InitializeDataListControl()
 {
     try
     {
-        m_performanceMonitor->StartOperation(_T("InitializeDataListControl"));
-        
         if (!m_pDataListCtrl)
         {
-            throw ViewdbWaveException(ViewdbWaveError::INVALID_CONTROL, 
-                _T("Data list control not initialized"));
+            throw std::runtime_error("Data list control not initialized");
         }
 
         // Check if the control has a valid HWND before initializing
@@ -184,40 +159,18 @@ void ViewdbWave_Optimized::InitializeDataListControl()
         {
             // Control not ready yet, this is expected during early initialization
             // The control will be initialized later when the HWND is available
-            m_performanceMonitor->EndOperation(_T("InitializeDataListControl"));
             return;
         }
 
         m_pDataListCtrl->Initialize(*m_pConfiguration);
-        
-        m_performanceMonitor->EndOperation(_T("InitializeDataListControl"));
     }
     catch (const std::exception& e)
     {
-        HandleError(ViewdbWaveError::INVALID_CONTROL, CString(e.what()));
+        HandleError(CString(e.what()));
     }
 }
 
-void ViewdbWave_Optimized::EnsureDataListControlInitialized()
-{
-    try
-    {
-        if (!m_pDataListCtrl)
-        {
-            return;
-        }
-
-        // Check if the control has a valid HWND and hasn't been initialized yet
-        if (m_pDataListCtrl->GetSafeHwnd() && !m_pDataListCtrl->IsInitialized())
-        {
-            m_pDataListCtrl->Initialize(*m_pConfiguration);
-        }
-    }
-    catch (const std::exception& e)
-    {
-        HandleError(ViewdbWaveError::INVALID_CONTROL, CString(e.what()));
-    }
-}
+// EnsureDataListControlInitialized method removed - simplified implementation
 
 void ViewdbWave_Optimized::make_controls_stretchable()
 {
@@ -258,41 +211,38 @@ void ViewdbWave_Optimized::LoadData()
     {
         TRACE(_T("ViewdbWave_Optimized::LoadData - Starting\n"));
         
-        m_performanceMonitor->StartOperation(_T("LoadData"));
-        
         CdbWaveDoc* pDoc = GetDocument();
         if (!pDoc)
         {
             TRACE(_T("ViewdbWave_Optimized::LoadData - No document available\n"));
-            throw ViewdbWaveException(ViewdbWaveError::INVALID_DOCUMENT, 
-                _T("No document available"));
+            return;
         }
         
-        TRACE(_T("ViewdbWave_Optimized::LoadData - Document available, setting state to LOADING\n"));
-        m_stateManager->SetState(ViewState::LOADING);
+        m_processing = true;
+        TRACE(_T("ViewdbWave_Optimized::LoadData - Document available, loading data\n"));
         
-        // Load data directly (simplified approach)
-        TRACE(_T("ViewdbWave_Optimized::LoadData - Calling LoadDataFromDocument\n"));
+        // Load data directly
         LoadDataFromDocument(pDoc);
         
-        TRACE(_T("ViewdbWave_Optimized::LoadData - Data loaded, setting state to READY\n"));
-        m_stateManager->SetState(ViewState::READY);
-        
         // Refresh the display after data loading is complete
-        if (m_pDataListCtrl)
+        if (m_pDataListCtrl && m_pDataListCtrl->GetSafeHwnd())
         {
             TRACE(_T("ViewdbWave_Optimized::LoadData - Refreshing display\n"));
             m_pDataListCtrl->RefreshDisplay();
         }
+        else
+        {
+            TRACE(_T("ViewdbWave_Optimized::LoadData - DataListCtrl not available for refresh\n"));
+        }
         
-        m_performanceMonitor->EndOperation(_T("LoadData"));
+        m_processing = false;
         TRACE(_T("ViewdbWave_Optimized::LoadData - Complete\n"));
     }
     catch (const std::exception& e)
     {
         TRACE(_T("ViewdbWave_Optimized::LoadData - Exception: %s\n"), CString(e.what()));
-        m_stateManager->SetState(ViewState::ERROR_STATE);
-        HandleError(ViewdbWaveError::INVALID_DOCUMENT, CString(e.what()));
+        m_processing = false;
+        HandleError(CString(e.what()));
     }
 }
 
@@ -301,9 +251,6 @@ void ViewdbWave_Optimized::LoadDataFromDocument(CdbWaveDoc* pDoc)
     try
     {
         TRACE(_T("ViewdbWave_Optimized::LoadDataFromDocument - Starting\n"));
-        
-        // Direct data loading from document
-        // This replaces the asynchronous approach with simple, direct loading
         
         if (pDoc && m_pDataListCtrl)
         {
@@ -322,21 +269,16 @@ void ViewdbWave_Optimized::LoadDataFromDocument(CdbWaveDoc* pDoc)
             // Force a refresh to trigger the display
             m_pDataListCtrl->Invalidate();
             TRACE(_T("ViewdbWave_Optimized::LoadDataFromDocument - Forced invalidate\n"));
-            
-            // Note: Don't call RefreshDisplay here to avoid deadlock
-            // The refresh will be handled by the calling method after releasing the mutex
         }
         else
         {
             TRACE(_T("ViewdbWave_Optimized::LoadDataFromDocument - No document or data list control\n"));
         }
-        
-        LogPerformanceMetrics(_T("LoadDataFromDocument"));
     }
     catch (const std::exception& e)
     {
         TRACE(_T("ViewdbWave_Optimized::LoadDataFromDocument - Exception: %s\n"), CString(e.what()));
-        throw ViewdbWaveException(ViewdbWaveError::DATA_LOAD_FAILED, CString(e.what()));
+        throw;
     }
 }
 
@@ -344,21 +286,17 @@ void ViewdbWave_Optimized::RefreshDisplay()
 {
     try
     {
-        m_performanceMonitor->StartOperation(_T("RefreshDisplay"));
-        
         if (!m_initialized)
         {
-            throw ViewdbWaveException(ViewdbWaveError::INVALID_CONTROL, 
-                _T("View not initialized"));
+            TRACE(_T("ViewdbWave_Optimized::RefreshDisplay - Not initialized\n"));
+            return;
         }
         
         UpdateDisplay();
-        
-        m_performanceMonitor->EndOperation(_T("RefreshDisplay"));
     }
     catch (const std::exception& e)
     {
-        HandleError(ViewdbWaveError::UI_UPDATE_FAILED, CString(e.what()));
+        HandleError(CString(e.what()));
     }
 }
 
@@ -373,19 +311,16 @@ void ViewdbWave_Optimized::UpdateDisplay()
         Invalidate();
         UpdateWindow();
         
-        m_lastUpdateTime = std::chrono::steady_clock::now();
-        
         // Refresh the data list control if available
-        if (m_pDataListCtrl != nullptr)
+        if (m_pDataListCtrl != nullptr && m_pDataListCtrl->GetSafeHwnd())
         {
             m_pDataListCtrl->RefreshDisplay();
         }
         
-        LogPerformanceMetrics(_T("UpdateDisplay"));
     }
     catch (const std::exception& e)
     {
-        HandleError(ViewdbWaveError::UI_UPDATE_FAILED, CString(e.what()));
+        HandleError(CString(e.what()));
     }
 }
 
@@ -401,12 +336,12 @@ void ViewdbWave_Optimized::LoadConfiguration()
 {
     try
     {
-        m_configManager->LoadFromRegistry(_T("ViewdbWave"));
+        m_configManager.LoadFromRegistry(_T("ViewdbWave"));
         ApplyConfigurationToControls();
     }
     catch (const std::exception& e)
     {
-        HandleError(ViewdbWaveError::CONFIGURATION_ERROR, CString(e.what()));
+        HandleError(CString(e.what()));
     }
 }
 
@@ -415,11 +350,11 @@ void ViewdbWave_Optimized::SaveConfiguration()
     try
     {
         SaveControlValuesToConfiguration();
-        m_configManager->SaveToRegistry(_T("ViewdbWave"));
+        m_configManager.SaveToRegistry(_T("ViewdbWave"));
     }
     catch (const std::exception& e)
     {
-        HandleError(ViewdbWaveError::CONFIGURATION_ERROR, CString(e.what()));
+        HandleError(CString(e.what()));
     }
 }
 
@@ -427,85 +362,24 @@ void ViewdbWave_Optimized::ResetConfiguration()
 {
     try
     {
-        m_configManager = std::make_unique<ViewdbWaveConfiguration>();
+        // Reset configuration to default values instead of creating new object
+        m_configManager.SetTimeFirst(0.0);
+        m_configManager.SetTimeLast(100.0);
+        m_configManager.SetAmplitudeSpan(1.0);
+        m_configManager.SetDisplayFileName(false);
+        m_configManager.SetFilterEnabled(false);
+        m_configManager.SetDisplayMode(DataListCtrlConfigConstants::DISPLAY_MODE_EMPTY);
+        m_configManager.SetDisplayAllClasses(true);
+        
         ApplyConfigurationToControls();
     }
     catch (const std::exception& e)
     {
-        HandleError(ViewdbWaveError::CONFIGURATION_ERROR, CString(e.what()));
+        HandleError(CString(e.what()));
     }
 }
 
-void ViewdbWave_Optimized::EnablePerformanceMonitoring(bool enable)
-{
-    if (m_performanceMonitor)
-    {
-        m_performanceMonitor->SetEnabled(enable);
-    }
-}
-
-CString ViewdbWave_Optimized::GetPerformanceReport() const
-{
-    if (m_performanceMonitor)
-    {
-        return m_performanceMonitor->GetPerformanceReport();
-    }
-    return _T("Performance monitoring not available");
-}
-
-void ViewdbWave_Optimized::ResetPerformanceMetrics()
-{
-    if (m_performanceMonitor)
-    {
-        m_performanceMonitor->Reset();
-    }
-}
-
-ViewState ViewdbWave_Optimized::GetCurrentState() const
-{
-    if (m_stateManager)
-    {
-        return m_stateManager->GetCurrentState();
-    }
-    return ViewState::UNINITIALIZED;
-}
-
-bool ViewdbWave_Optimized::IsReady() const
-{
-    return GetCurrentState() == ViewState::READY;
-}
-
-bool ViewdbWave_Optimized::IsProcessing() const
-{
-    return GetCurrentState() == ViewState::PROCESSING;
-}
-
-bool ViewdbWave_Optimized::HasError() const
-{
-    return GetCurrentState() == ViewState::ERROR_STATE;
-}
-
-void ViewdbWave_Optimized::HandleError(ViewdbWaveError error, const CString& message)
-{
-    LogError(error, message);
-    DisplayErrorMessage(message);
-    m_stateManager->SetState(ViewState::ERROR_STATE);
-}
-
-void ViewdbWave_Optimized::ClearError()
-{
-    ClearErrorMessage();
-    if (GetCurrentState() == ViewState::ERROR_STATE)
-    {
-        m_stateManager->SetState(ViewState::READY);
-    }
-}
-
-CString ViewdbWave_Optimized::GetLastErrorMessage() const
-{
-    // This would typically return the last error message from a member variable
-    return _T("No error message available");
-}
+// Performance monitoring and complex state management methods removed - simplified implementation
 
 // MFC overrides
 
@@ -527,9 +401,6 @@ void ViewdbWave_Optimized::OnInitialUpdate()
         TRACE(_T("ViewdbWave_Optimized::OnInitialUpdate - Starting\n"));
         
         Initialize();
-        
-        // Ensure the DataListCtrl is initialized after the window is created
-        EnsureDataListControlInitialized();
         
         // Load data if document is already available
         CdbWaveDoc* pDoc = GetDocument();
@@ -553,7 +424,7 @@ void ViewdbWave_Optimized::OnInitialUpdate()
     catch (const std::exception& e)
     {
         TRACE(_T("ViewdbWave_Optimized::OnInitialUpdate - Exception: %s\n"), CString(e.what()));
-        HandleError(ViewdbWaveError::INITIALIZATION_FAILED, CString(e.what()));
+        HandleError(CString(e.what()));
     }
 }
 
@@ -564,9 +435,6 @@ void ViewdbWave_Optimized::OnSize(UINT nType, int cx, int cy)
     
     try
     {
-        // Ensure the DataListCtrl is initialized when the window is resized
-        EnsureDataListControlInitialized();
-        
         // Handle window resize
         if (m_pDataListCtrl)
         {
@@ -579,7 +447,7 @@ void ViewdbWave_Optimized::OnSize(UINT nType, int cx, int cy)
     }
     catch (const std::exception& e)
     {
-        HandleError(ViewdbWaveError::UI_UPDATE_FAILED, CString(e.what()));
+        HandleError(CString(e.what()));
     }
 }
 
@@ -703,33 +571,7 @@ void ViewdbWave_Optimized::OnUpdate(CView* p_sender, const LPARAM l_hint, CObjec
     }
 }
 
-// Private helper methods
-void ViewdbWave_Optimized::OnStateChanged(ViewState oldState, ViewState newState)
-{
-    try
-    {
-        // Handle state changes
-        switch (newState)
-        {
-        case ViewState::READY:
-            UpdateControlStates();
-            break;
-        case ViewState::ERROR_STATE:
-            // Disable controls on error
-            if (m_uiStateManager)
-            {
-                m_uiStateManager->SetControlState(false);
-            }
-            break;
-        default:
-            break;
-        }
-    }
-    catch (const std::exception& e)
-    {
-        LogError(ViewdbWaveError::STATE_TRANSITION_FAILED, CString(e.what()));
-    }
-}
+// OnStateChanged method removed - simplified implementation
 
 void ViewdbWave_Optimized::UpdateControlStates()
 {
@@ -751,7 +593,7 @@ void ViewdbWave_Optimized::UpdateControlStates()
     }
     catch (const std::exception& e)
     {
-        LogError(ViewdbWaveError::UI_UPDATE_FAILED, CString(e.what()));
+        HandleError(CString(e.what()));
     }
 }
 
@@ -762,27 +604,27 @@ void ViewdbWave_Optimized::UpdateControlValues()
         if (m_pTimeFirstEdit)
         {
             CString value;
-            value.Format(_T("%.3f"), m_configManager->GetTimeFirst());
+            value.Format(_T("%.3f"), m_configManager.GetTimeFirst());
             m_pTimeFirstEdit->SetWindowText(value);
         }
         
         if (m_pTimeLastEdit)
         {
             CString value;
-            value.Format(_T("%.3f"), m_configManager->GetTimeLast());
+            value.Format(_T("%.3f"), m_configManager.GetTimeLast());
             m_pTimeLastEdit->SetWindowText(value);
         }
         
         if (m_pAmplitudeSpanEdit)
         {
             CString value;
-            value.Format(_T("%.3f"), m_configManager->GetAmplitudeSpan());
+            value.Format(_T("%.3f"), m_configManager.GetAmplitudeSpan());
             m_pAmplitudeSpanEdit->SetWindowText(value);
         }
     }
     catch (const std::exception& e)
     {
-        LogError(ViewdbWaveError::UI_UPDATE_FAILED, CString(e.what()));
+        HandleError(CString(e.what()));
     }
 }
 
@@ -790,33 +632,23 @@ void ViewdbWave_Optimized::ValidateConfiguration()
 {
     try
     {
-        if (m_configManager->GetTimeFirst() >= m_configManager->GetTimeLast())
+        if (m_configManager.GetTimeFirst() >= m_configManager.GetTimeLast())
         {
-            throw ViewdbWaveException(ViewdbWaveError::CONFIGURATION_ERROR, 
-                _T("Time first must be less than time last"));
+            throw std::runtime_error("Time first must be less than time last");
         }
         
-        if (m_configManager->GetAmplitudeSpan() <= 0.0)
+        if (m_configManager.GetAmplitudeSpan() <= 0.0)
         {
-            throw ViewdbWaveException(ViewdbWaveError::CONFIGURATION_ERROR, 
-                _T("Amplitude span must be positive"));
+            throw std::runtime_error("Amplitude span must be positive");
         }
     }
     catch (const std::exception& e)
     {
-        HandleError(ViewdbWaveError::CONFIGURATION_ERROR, CString(e.what()));
+        HandleError(CString(e.what()));
     }
 }
 
-void ViewdbWave_Optimized::LogPerformanceMetrics(const CString& operation)
-{
-    if (m_performanceMonitor && m_performanceMonitor->IsEnabled())
-    {
-        m_performanceMonitor->EndOperation(operation);
-    }
-}
-
-// HandleAsyncOperationResult method removed - no longer needed with direct loading approach
+// LogPerformanceMetrics method removed - simplified implementation
 
 void ViewdbWave_Optimized::LoadControlValuesFromConfiguration()
 {
@@ -827,7 +659,7 @@ void ViewdbWave_Optimized::LoadControlValuesFromConfiguration()
     }
     catch (const std::exception& e)
     {
-        LogError(ViewdbWaveError::CONFIGURATION_ERROR, CString(e.what()));
+        HandleError(CString(e.what()));
     }
 }
 
@@ -839,26 +671,26 @@ void ViewdbWave_Optimized::SaveControlValuesToConfiguration()
         {
             CString value;
             m_pTimeFirstEdit->GetWindowText(value);
-            m_configManager->SetTimeFirst(_ttof(value));
+            m_configManager.SetTimeFirst(_ttof(value));
         }
         
         if (m_pTimeLastEdit)
         {
             CString value;
             m_pTimeLastEdit->GetWindowText(value);
-            m_configManager->SetTimeLast(_ttof(value));
+            m_configManager.SetTimeLast(_ttof(value));
         }
         
         if (m_pAmplitudeSpanEdit)
         {
             CString value;
             m_pAmplitudeSpanEdit->GetWindowText(value);
-            m_configManager->SetAmplitudeSpan(_ttof(value));
+            m_configManager.SetAmplitudeSpan(_ttof(value));
         }
     }
     catch (const std::exception& e)
     {
-        LogError(ViewdbWaveError::CONFIGURATION_ERROR, CString(e.what()));
+        HandleError(CString(e.what()));
     }
 }
 
@@ -871,27 +703,11 @@ void ViewdbWave_Optimized::ApplyConfigurationToControls()
     }
     catch (const std::exception& e)
     {
-        LogError(ViewdbWaveError::CONFIGURATION_ERROR, CString(e.what()));
+        HandleError(CString(e.what()));
     }
 }
 
-void ViewdbWave_Optimized::LogError(ViewdbWaveError error, const CString& message)
-{
-    // Log error to debug output
-    TRACE(_T("ViewdbWave_Optimized Error: %s\n"), message);
-}
-
-void ViewdbWave_Optimized::DisplayErrorMessage(const CString& message)
-{
-    // Display error message to user
-    AfxMessageBox(message, MB_OK | MB_ICONERROR);
-}
-
-void ViewdbWave_Optimized::ClearErrorMessage()
-{
-    // Clear any displayed error messages
-    // Implementation depends on how errors are displayed
-}
+// Complex error handling methods removed - simplified implementation
 
 CdbWaveDoc* ViewdbWave_Optimized::GetDocument() const
 {
@@ -899,5 +715,174 @@ CdbWaveDoc* ViewdbWave_Optimized::GetDocument() const
     return static_cast<CdbWaveDoc*>(CDaoRecordView::GetDocument());
 }
 
+// Display mode methods
+void ViewdbWave_Optimized::SetDisplayMode(int mode)
+{
+    try
+    {
+        TRACE(_T("ViewdbWave_Optimized::SetDisplayMode - Setting mode: %d\n"), mode);
+        
+        // Update the configuration
+        m_configManager.SetDisplayMode(mode);
+        
+        // Update the data list control
+        if (m_pDataListCtrl)
+        {
+            m_pDataListCtrl->SetDisplayMode(mode);
+        }
+        
+        // Update button states based on mode
+        switch (mode)
+        {
+        case DataListCtrlConfigConstants::DISPLAY_MODE_DATA:
+            DisplayData();
+            break;
+        case DataListCtrlConfigConstants::DISPLAY_MODE_SPIKE:
+            DisplaySpikes();
+            break;
+        case DataListCtrlConfigConstants::DISPLAY_MODE_EMPTY:
+        default:
+            DisplayNothing();
+            break;
+        }
+    }
+    catch (const std::exception& e)
+    {
+        HandleError(CString(e.what()));
+    }
+}
 
+void ViewdbWave_Optimized::DisplayData()
+{
+    try
+    {
+        TRACE(_T("ViewdbWave_Optimized::DisplayData - Setting display data mode\n"));
+        
+        // Set button states
+        if (m_pDisplayDataButton) m_pDisplayDataButton->SetCheck(BST_CHECKED);
+        if (m_pDisplaySpikesButton) m_pDisplaySpikesButton->SetCheck(BST_UNCHECKED);
+        if (m_pDisplayNothingButton) m_pDisplayNothingButton->SetCheck(BST_UNCHECKED);
+        
+        // Enable/disable related controls
+        if (m_pRadioAllClassesButton) m_pRadioAllClassesButton->EnableWindow(FALSE);
+        if (m_pRadioOneClassButton) m_pRadioOneClassButton->EnableWindow(FALSE);
+        if (m_pSpikeClassEdit) m_pSpikeClassEdit->EnableWindow(FALSE);
+        if (m_pFilterCheckButton) m_pFilterCheckButton->EnableWindow(TRUE);
+        
+        // Set filter check state
+        if (m_pFilterCheckButton)
+        {
+            m_pFilterCheckButton->SetCheck(m_configManager.GetFilterData() ? BST_CHECKED : BST_UNCHECKED);
+        }
+        
+        // Update data list control
+        if (m_pDataListCtrl)
+        {
+            m_pDataListCtrl->SetDisplayMode(DataListCtrlConfigConstants::DISPLAY_MODE_DATA);
+        }
+        
+        // Hide spike tab control if it exists
+        if (m_pTabCtrl)
+        {
+            m_pTabCtrl->ShowWindow(SW_HIDE);
+        }
+    }
+    catch (const std::exception& e)
+    {
+        HandleError(CString(e.what()));
+    }
+}
 
+void ViewdbWave_Optimized::DisplaySpikes()
+{
+    try
+    {
+        TRACE(_T("ViewdbWave_Optimized::DisplaySpikes - Setting display spikes mode\n"));
+        
+        // Set button states
+        if (m_pDisplaySpikesButton) m_pDisplaySpikesButton->SetCheck(BST_CHECKED);
+        if (m_pDisplayDataButton) m_pDisplayDataButton->SetCheck(BST_UNCHECKED);
+        if (m_pDisplayNothingButton) m_pDisplayNothingButton->SetCheck(BST_UNCHECKED);
+        
+        // Enable/disable related controls
+        if (m_pFilterCheckButton) m_pFilterCheckButton->EnableWindow(FALSE);
+        if (m_pRadioAllClassesButton) m_pRadioAllClassesButton->EnableWindow(TRUE);
+        if (m_pRadioOneClassButton) m_pRadioOneClassButton->EnableWindow(TRUE);
+        if (m_pSpikeClassEdit) m_pSpikeClassEdit->EnableWindow(TRUE);
+        
+        // Set radio button states based on configuration
+        if (m_configManager.GetDisplayAllClasses())
+        {
+            if (m_pRadioAllClassesButton) m_pRadioAllClassesButton->SetCheck(BST_CHECKED);
+            if (m_pRadioOneClassButton) m_pRadioOneClassButton->SetCheck(BST_UNCHECKED);
+        }
+        else
+        {
+            if (m_pRadioAllClassesButton) m_pRadioAllClassesButton->SetCheck(BST_UNCHECKED);
+            if (m_pRadioOneClassButton) m_pRadioOneClassButton->SetCheck(BST_CHECKED);
+        }
+        
+        // Update data list control
+        if (m_pDataListCtrl)
+        {
+            m_pDataListCtrl->SetDisplayMode(DataListCtrlConfigConstants::DISPLAY_MODE_SPIKE);
+        }
+        
+        // Show spike tab control if it exists
+        if (m_pTabCtrl)
+        {
+            m_pTabCtrl->ShowWindow(SW_SHOW);
+        }
+    }
+    catch (const std::exception& e)
+    {
+        HandleError(CString(e.what()));
+    }
+}
+
+void ViewdbWave_Optimized::DisplayNothing()
+{
+    try
+    {
+        TRACE(_T("ViewdbWave_Optimized::DisplayNothing - Setting display nothing mode\n"));
+        
+        // Set button states
+        if (m_pDisplayNothingButton) m_pDisplayNothingButton->SetCheck(BST_CHECKED);
+        if (m_pDisplayDataButton) m_pDisplayDataButton->SetCheck(BST_UNCHECKED);
+        if (m_pDisplaySpikesButton) m_pDisplaySpikesButton->SetCheck(BST_UNCHECKED);
+        
+        // Disable related controls
+        if (m_pFilterCheckButton) m_pFilterCheckButton->EnableWindow(FALSE);
+        if (m_pRadioAllClassesButton) m_pRadioAllClassesButton->EnableWindow(FALSE);
+        if (m_pRadioOneClassButton) m_pRadioOneClassButton->EnableWindow(FALSE);
+        if (m_pSpikeClassEdit) m_pSpikeClassEdit->EnableWindow(FALSE);
+        
+        // Update data list control
+        if (m_pDataListCtrl)
+        {
+            m_pDataListCtrl->SetDisplayMode(DataListCtrlConfigConstants::DISPLAY_MODE_EMPTY);
+        }
+        
+        // Hide spike tab control if it exists
+        if (m_pTabCtrl)
+        {
+            m_pTabCtrl->ShowWindow(SW_HIDE);
+        }
+    }
+    catch (const std::exception& e)
+    {
+        HandleError(CString(e.what()));
+    }
+}
+
+// Simplified error handling methods
+void ViewdbWave_Optimized::HandleError(const CString& message)
+{
+    m_lastError = message;
+    TRACE(_T("ViewdbWave_Optimized Error: %s\n"), message);
+}
+
+void ViewdbWave_Optimized::ClearError()
+{
+    m_lastError.Empty();
+}

@@ -15,8 +15,7 @@
 #define new DEBUG_NEW
 #endif
 
-// Static constant definitions
-const std::chrono::milliseconds DataListCtrlConstants::SCROLL_THROTTLE_TIME{50};
+// Static constant definitions removed - simplified implementation
 
 // Column configuration arrays (matching original DataListCtrl)
 int g_column_width[DLC_N_COLUMNS] = {
@@ -58,79 +57,20 @@ int g_column_index_[DLC_N_COLUMNS] = {
 DataListCtrl_Optimized::DataListCtrl_Optimized()
     : m_cache(std::make_unique<DataListCtrlCache>())
     , m_infos(nullptr)
-    , m_performanceMonitoringEnabled(true)
     , m_initialized(false)
     , m_cachingEnabled(true)
-    , m_threadSafe(false)  // Disable thread safety to prevent deadlocks
     , m_parentWindow(nullptr)
-    , m_updateCancelled(false)
 {
 }
 
 DataListCtrl_Optimized::~DataListCtrl_Optimized()
 {
-    CancelAsyncUpdate();
     SaveColumnWidths(); // Save column widths on destruction
 }
 
 
 
-DataListCtrl_Optimized::DataListCtrl_Optimized(DataListCtrl_Optimized&& other) noexcept
-    : m_rows(std::move(other.m_rows))
-    , m_cache(std::move(other.m_cache))
-    , m_config(std::move(other.m_config))
-    , m_infos(other.m_infos)
-    , m_performanceMetrics(std::move(other.m_performanceMetrics))
-    , m_performanceMonitoringEnabled(other.m_performanceMonitoringEnabled)
-    , m_lastScrollTime(std::move(other.m_lastScrollTime))
-    , m_initialized(other.m_initialized)
-    , m_cachingEnabled(other.m_cachingEnabled)
-    , m_threadSafe(false)  // Disable thread safety to prevent deadlocks
-    , m_parentWindow(other.m_parentWindow)
-    , m_imageList(std::move(other.m_imageList))
-    , m_emptyBitmap(std::move(other.m_emptyBitmap))
-    , m_asyncUpdateFuture(std::move(other.m_asyncUpdateFuture))
-    , m_updateCancelled(other.m_updateCancelled.load())
-{
-    other.m_infos = nullptr;
-    other.m_parentWindow = nullptr;
-    other.m_initialized = false;
-    other.m_cachingEnabled = true;
-    other.m_threadSafe = false;  // Disable thread safety to prevent deadlocks
-    other.m_updateCancelled = false;
-}
-
-DataListCtrl_Optimized& DataListCtrl_Optimized::operator=(DataListCtrl_Optimized&& other) noexcept
-{
-    if (this != &other)
-    {
-        CancelAsyncUpdate();
-        
-        m_rows = std::move(other.m_rows);
-        m_cache = std::move(other.m_cache);
-        m_config = std::move(other.m_config);
-        m_infos = other.m_infos;
-        m_performanceMetrics = std::move(other.m_performanceMetrics);
-        m_performanceMonitoringEnabled = other.m_performanceMonitoringEnabled;
-        m_lastScrollTime = std::move(other.m_lastScrollTime);
-        m_initialized = other.m_initialized;
-        m_cachingEnabled = other.m_cachingEnabled;
-        m_threadSafe = false;  // Disable thread safety to prevent deadlocks
-        m_parentWindow = other.m_parentWindow;
-        m_imageList = std::move(other.m_imageList);
-        m_emptyBitmap = std::move(other.m_emptyBitmap);
-        m_asyncUpdateFuture = std::move(other.m_asyncUpdateFuture);
-        m_updateCancelled = other.m_updateCancelled.load();
-        
-        other.m_infos = nullptr;
-        other.m_parentWindow = nullptr;
-        other.m_initialized = false;
-        other.m_cachingEnabled = true;
-        other.m_threadSafe = false;  // Disable thread safety to prevent deadlocks
-        other.m_updateCancelled = false;
-    }
-    return *this;
-}
+// Move constructor and assignment operator removed - simplified implementation
 
 void DataListCtrl_Optimized::Initialize(const DataListCtrlConfiguration& config)
 {
@@ -138,13 +78,8 @@ void DataListCtrl_Optimized::Initialize(const DataListCtrlConfiguration& config)
     {
         TRACE(_T("DataListCtrl_Optimized::Initialize - Starting initialization\n"));
         
-        // Copy configuration settings instead of using assignment operator
-        m_config.GetDisplaySettings() = config.GetDisplaySettings();
-        m_config.GetTimeSettings() = config.GetTimeSettings();
-        m_config.GetAmplitudeSettings() = config.GetAmplitudeSettings();
-        m_config.GetUISettings() = config.GetUISettings();
-        m_config.GetPerformanceSettings() = config.GetPerformanceSettings();
-        m_config.SetColumns(config.GetColumns());
+        // Copy configuration settings
+        m_config = config;
         
         TRACE(_T("DataListCtrl_Optimized::Initialize - Configuration copied\n"));
         
@@ -163,13 +98,18 @@ void DataListCtrl_Optimized::Initialize(const DataListCtrlConfiguration& config)
         CreateEmptyBitmap();
         TRACE(_T("DataListCtrl_Optimized::Initialize - Empty bitmap created\n"));
         
+        // Enable caching by default
+        m_cachingEnabled = true;
+        m_cache = std::make_unique<DataListCtrlCache>();
+        TRACE(_T("DataListCtrl_Optimized::Initialize - Caching enabled\n"));
+        
         m_initialized = true;
         TRACE(_T("DataListCtrl_Optimized::Initialize - Initialization complete\n"));
     }
     catch (const std::exception& e)
     {
         TRACE(_T("DataListCtrl_Optimized::Initialize - Exception: %s\n"), CString(e.what()));
-        HandleError(DataListCtrlError::INVALID_PARAMETER, CString(e.what()));
+        HandleError(CString(e.what()));
     }
 }
 
@@ -202,7 +142,7 @@ void DataListCtrl_Optimized::InitializeColumns()
     }
     catch (const std::exception& e)
     {
-        HandleError(DataListCtrlError::INVALID_PARAMETER, CString(e.what()));
+        HandleError(CString(e.what()));
     }
 }
 
@@ -247,7 +187,7 @@ void DataListCtrl_Optimized::SetupColumns()
     }
     catch (const std::exception& e)
     {
-        HandleError(DataListCtrlError::INVALID_PARAMETER, CString(e.what()));
+        HandleError(CString(e.what()));
     }
 }
 
@@ -273,7 +213,7 @@ void DataListCtrl_Optimized::SetupImageList()
     }
     catch (const std::exception& e)
     {
-        HandleError(DataListCtrlError::GDI_RESOURCE_FAILED, CString(e.what()));
+        HandleError(CString(e.what()));
     }
 }
 
@@ -544,21 +484,28 @@ void DataListCtrl_Optimized::RefreshDisplay()
     try
     {
         if (!m_initialized)
-            return;
-        
-        // Check if the control has been created
-        if (!GetSafeHwnd())
         {
-            // Control not created yet, just return
+            TRACE(_T("DataListCtrl_Optimized::RefreshDisplay - Not initialized\n"));
+            return;
+        }
+        
+        // Check if the control has been created and is still valid
+        HWND hWnd = GetSafeHwnd();
+        if (!hWnd || !IsWindow(hWnd))
+        {
+            TRACE(_T("DataListCtrl_Optimized::RefreshDisplay - Invalid window handle\n"));
             return;
         }
         
         // Since we're no longer using async loading, always use synchronous update
         Invalidate();
         UpdateWindow();
+        
+        TRACE(_T("DataListCtrl_Optimized::RefreshDisplay - Display refreshed successfully\n"));
     }
     catch (const std::exception& e)
     {
+        TRACE(_T("DataListCtrl_Optimized::RefreshDisplay - Exception: %s\n"), CString(e.what()));
         HandleError(DataListCtrlError::UI_UPDATE_FAILED, CString(e.what()));
     }
 }
@@ -1043,33 +990,56 @@ void DataListCtrl_Optimized::UpdateDisplayInfo(LV_DISPINFO* pDispInfo)
             return;
         }
         
-        // Get the database document
-        CWnd* parent = GetParent();
-        if (!parent)
+        // Check cache first
+        DataListCtrl_Row_Optimized* cachedRow = nullptr;
+        if (m_cache && m_cachingEnabled)
         {
-            TRACE(_T("DataListCtrl_Optimized::UpdateDisplayInfo - No parent window\n"));
-            return;
+            cachedRow = m_cache->GetCachedRow(index);
         }
         
-        const auto pdb_doc = static_cast<ViewdbWave_Optimized*>(parent)->GetDocument();
-        if (pdb_doc == nullptr)
+        if (!cachedRow)
         {
-            TRACE(_T("DataListCtrl_Optimized::UpdateDisplayInfo - No document\n"));
-            return;
+            // Load from database only if not cached
+            TRACE(_T("DataListCtrl_Optimized::UpdateDisplayInfo - Loading row data for index: %d\n"), index);
+            
+            // Get the database document
+            CWnd* parent = GetParent();
+            if (!parent)
+            {
+                TRACE(_T("DataListCtrl_Optimized::UpdateDisplayInfo - No parent window\n"));
+                return;
+            }
+            
+            const auto pdb_doc = static_cast<ViewdbWave_Optimized*>(parent)->GetDocument();
+            if (pdb_doc == nullptr)
+            {
+                TRACE(_T("DataListCtrl_Optimized::UpdateDisplayInfo - No document\n"));
+                return;
+            }
+            
+            // Create new row object
+            auto newRow = std::make_unique<DataListCtrl_Row_Optimized>();
+            newRow->SetIndex(index);
+            
+            if (!LoadRowDataFromDatabase(pdb_doc, index, *newRow))
+            {
+                TRACE(_T("DataListCtrl_Optimized::UpdateDisplayInfo - Failed to load row data for index: %d\n"), index);
+                return;
+            }
+            
+            // Cache the row
+            if (m_cache && m_cachingEnabled)
+            {
+                m_cache->SetCachedRow(index, newRow.get(), 0); // displayMode = 0 for now
+            }
+            
+            cachedRow = newRow.get();
+            TRACE(_T("DataListCtrl_Optimized::UpdateDisplayInfo - Cached row data for index: %d\n"), index);
         }
-        
-        // Get the row data from the database
-        DataListCtrl_Row_Optimized row;
-        row.SetIndex(index);
-        
-        // Load row data from database
-        TRACE(_T("DataListCtrl_Optimized::UpdateDisplayInfo - Loading row data for index: %d\n"), index);
-        if (!LoadRowDataFromDatabase(pdb_doc, index, row))
+        else
         {
-            TRACE(_T("DataListCtrl_Optimized::UpdateDisplayInfo - Failed to load row data for index: %d\n"), index);
-            return;
+            TRACE(_T("DataListCtrl_Optimized::UpdateDisplayInfo - Using cached row data for index: %d\n"), index);
         }
-        TRACE(_T("DataListCtrl_Optimized::UpdateDisplayInfo - Successfully loaded row data for index: %d\n"), index);
         
         // Handle text display
         if (pDispInfo->item.mask & LVIF_TEXT)
@@ -1083,31 +1053,31 @@ void DataListCtrl_Optimized::UpdateDisplayInfo(LV_DISPINFO* pDispInfo)
                 flag = FALSE;
                 break;
             case DLC_COLUMN_INDEX: 
-                cs.Format(_T("%i"), row.GetIndex());
+                cs.Format(_T("%i"), cachedRow->GetIndex());
                 break;
             case DLC_COLUMN_INSECT: 
-                cs.Format(_T("%i"), row.GetInsectId());
+                cs.Format(_T("%i"), cachedRow->GetInsectId());
                 break;
             case DLC_COLUMN_SENSI: 
-                cs = row.GetSensillumName();
+                cs = cachedRow->GetSensillumName();
                 break;
             case DLC_COLUMN_STIM1: 
-                cs = row.GetStimulus1();
+                cs = cachedRow->GetStimulus1();
                 break;
             case DLC_COLUMN_CONC1: 
-                cs = row.GetConcentration1();
+                cs = cachedRow->GetConcentration1();
                 break;
             case DLC_COLUMN_STIM2: 
-                cs = row.GetStimulus2();
+                cs = cachedRow->GetStimulus2();
                 break;
             case DLC_COLUMN_CONC2: 
-                cs = row.GetConcentration2();
+                cs = cachedRow->GetConcentration2();
                 break;
             case DLC_COLUMN_NBSPK: 
-                cs = row.GetNSpikes();
+                cs = cachedRow->GetNSpikes();
                 break;
             case DLC_COLUMN_FLAG: 
-                cs = row.GetFlag();
+                cs = cachedRow->GetFlag();
                 break;
             default: 
                 flag = FALSE;
@@ -1200,21 +1170,14 @@ void DataListCtrl_Optimized::InvalidateCacheForRow(int index)
     }
 }
 
-void DataListCtrl_Optimized::HandleError(DataListCtrlError error, const CString& message)
+void DataListCtrl_Optimized::HandleError(const CString& message)
 {
     LogError(message);
-    throw DataListCtrlException(error, message);
 }
 
 void DataListCtrl_Optimized::LogError(const CString& message) const
 {
     TRACE(_T("DataListCtrl_Optimized Error: %s\n"), message);
-}
-
-void DataListCtrl_Optimized::LogPerformance(const CString& operation, std::chrono::microseconds duration) const
-{
-    TRACE(_T("DataListCtrl_Optimized Performance: %s took %lld microseconds\n"), 
-          operation, duration.count());
 }
 
 bool DataListCtrl_Optimized::IsValidIndex(int index) const
@@ -1236,105 +1199,11 @@ void DataListCtrl_Optimized::ValidateConfiguration() const
 {
     if (!m_config.ValidateConfiguration())
     {
-        throw DataListCtrlException(DataListCtrlError::INVALID_PARAMETER, 
-                                   _T("Invalid configuration"));
+        throw std::runtime_error("Invalid configuration");
     }
 }
 
-void DataListCtrl_Optimized::StartAsyncUpdate()
-{
-    try
-    {
-        if (m_asyncUpdateFuture.valid())
-        {
-            // Cancel existing update
-            CancelAsyncUpdate();
-        }
-        
-        m_updateCancelled = false;
-        m_asyncUpdateFuture = std::async(std::launch::async, [this]() -> void {
-            this->ProcessAsyncUpdate();
-        });
-    }
-    catch (const std::exception& e)
-    {
-        HandleError(DataListCtrlError::ASYNC_OPERATION_FAILED, CString(e.what()));
-    }
-}
-
-void DataListCtrl_Optimized::CancelAsyncUpdate()
-{
-    try
-    {
-        m_updateCancelled = true;
-        
-        if (m_asyncUpdateFuture.valid())
-        {
-            m_asyncUpdateFuture.wait();
-        }
-    }
-    catch (const std::exception& e)
-    {
-        HandleError(DataListCtrlError::ASYNC_OPERATION_FAILED, CString(e.what()));
-    }
-}
-
-void DataListCtrl_Optimized::ProcessAsyncUpdate()
-{
-    try
-    {
-        // Process all visible rows
-        int visibleCount = GetCountPerPage();
-        int topIndex = GetTopIndex();
-        
-        for (int i = 0; i < visibleCount && !m_updateCancelled; ++i)
-        {
-            int rowIndex = topIndex + i;
-            if (IsValidIndex(rowIndex))
-            {
-                ProcessRowUpdate(rowIndex);
-            }
-        }
-        
-        // Post message to update UI
-        if (!m_updateCancelled)
-        {
-            PostMessage(WM_PAINT);
-        }
-    }
-    catch (const std::exception& e)
-    {
-        HandleError(DataListCtrlError::ASYNC_OPERATION_FAILED, CString(e.what()));
-    }
-}
-
-void DataListCtrl_Optimized::HandleScrollEvent(UINT scrollCode, UINT position)
-{
-    try
-    {
-        m_performanceMetrics.scrollEvents++;
-        
-        if (ShouldThrottleScroll())
-        {
-            return;
-        }
-        
-        m_lastScrollTime = std::chrono::steady_clock::now();
-        
-        // Handle scroll event
-        // This could involve preloading data for newly visible rows
-    }
-    catch (const std::exception& e)
-    {
-        HandleError(DataListCtrlError::UI_UPDATE_FAILED, CString(e.what()));
-    }
-}
-
-bool DataListCtrl_Optimized::ShouldThrottleScroll() const
-{
-    auto now = std::chrono::steady_clock::now();
-    return (now - m_lastScrollTime) < DataListCtrlConstants::SCROLL_THROTTLE_TIME;
-}
+// Async processing and complex scroll handling methods removed - simplified implementation
 
 void DataListCtrl_Optimized::SaveColumnWidths()
 {

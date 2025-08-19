@@ -14,8 +14,11 @@
 #include <functional>
 
 // Supporting classes
-#include "DataListCtrl_SupportingClasses.h"
 #include "DataListCtrl_Configuration.h"
+
+// Forward declarations for supporting classes
+class DataListCtrlCache;
+enum class DataListCtrlError;
 
 // Forward declarations
 class AcqDataDoc;

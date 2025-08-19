@@ -7,7 +7,6 @@
 #include "Editctrl.h"
 #include "ViewDbTable.h"
 
-
 // Forward declarations for MFC classes
 class CdbWaveDoc;
 class CdbWaveApp;
@@ -16,7 +15,7 @@ class DataListCtrlConfiguration;
 class CdbTableMain;
 class CSpikeDoc;
 
-// Main ViewdbWave_Optimized class
+// Main ViewdbWave_Optimized class - Simplified
 class ViewdbWave_Optimized : public ViewDbTable
 {
     DECLARE_DYNCREATE(ViewdbWave_Optimized)
@@ -32,7 +31,6 @@ public:
     void InitializeConfiguration();
     void InitializeControls();
     void InitializeDataListControl();
-    void EnsureDataListControlInitialized();
     void make_controls_stretchable();
 
     // Document and application integration
@@ -53,21 +51,15 @@ public:
     void SaveConfiguration();
     void ResetConfiguration();
     
-    // Performance monitoring
-    void EnablePerformanceMonitoring(bool enable);
-    CString GetPerformanceReport() const;
-    void ResetPerformanceMetrics();
-    
-    // State management
-    ViewState GetCurrentState() const;
-    bool IsReady() const;
-    bool IsProcessing() const;
-    bool HasError() const;
+    // Simple state management
+    bool IsReady() const { return m_initialized && m_pDocument != nullptr; }
+    bool IsProcessing() const { return m_processing; }
+    bool HasError() const { return !m_lastError.IsEmpty(); }
     
     // Error handling
-    void HandleError(ViewdbWaveError error, const CString& message);
+    void HandleError(const CString& message);
     void ClearError();
-    CString GetLastErrorMessage() const;
+    CString GetLastErrorMessage() const { return m_lastError; }
 
 protected:
     // MFC overrides
@@ -94,12 +86,8 @@ private:
     std::unique_ptr<DataListCtrl_Optimized> m_pDataListCtrl;
     std::unique_ptr<::DataListCtrlConfiguration> m_pConfiguration;
     
-    // Supporting managers
-    std::unique_ptr<ViewdbWaveStateManager> m_stateManager;
-    std::unique_ptr<ViewdbWavePerformanceMonitor> m_performanceMonitor;
-    std::unique_ptr<UIStateManager> m_uiStateManager;
-    std::unique_ptr<AsyncOperationManager> m_asyncManager;
-    std::unique_ptr<ViewdbWaveConfiguration> m_configManager;
+    // Simplified configuration management
+    ViewdbWaveConfiguration m_configManager;
     
     // Control references
     std::unique_ptr<CEditCtrl> m_pTimeFirstEdit;
@@ -116,29 +104,26 @@ private:
     CButton* m_pRadioOneClassButton;
     CTabCtrl* m_pTabCtrl;
     
-    // State variables
+    // Simple state variables
     bool m_initialized;
+    bool m_processing;
     bool m_autoRefreshEnabled;
     UINT_PTR m_autoRefreshTimer;
-    std::chrono::steady_clock::time_point m_lastUpdateTime;
-    
-    // Thread safety
-    mutable std::mutex m_viewMutex;
+    CString m_lastError;
     
     // Private helper methods
-    void OnStateChanged(ViewState oldState, ViewState newState);
     void UpdateControlStates();
     void UpdateControlValues();
     void ValidateConfiguration();
-    void LogPerformanceMetrics(const CString& operation);
     
     // Configuration helpers
     void LoadControlValuesFromConfiguration();
     void SaveControlValuesToConfiguration();
     void ApplyConfigurationToControls();
     
-    // Error handling helpers
-    void LogError(ViewdbWaveError error, const CString& message);
-    void DisplayErrorMessage(const CString& message);
-    void ClearErrorMessage();
+    // Display mode methods
+    void SetDisplayMode(int mode);
+    void DisplayData();
+    void DisplaySpikes();
+    void DisplayNothing();
 };

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "DataListCtrl_SupportingClasses.h"
+#include "DataListCtrl_Row_Optimized.h"
 #include <algorithm>
 #include <sstream>
 #include <iomanip>
@@ -28,30 +29,16 @@ DataListCtrlCache::DataListCtrlCache(size_t maxSize)
 
 void DataListCtrlCache::AddRow(int index, const DataListCtrlRow& row)
 {
-    std::lock_guard<std::mutex> lock(m_cacheMutex);
-    
-    // Check if cache is full
-    if (m_cache.size() >= m_maxSize)
-    {
-        // Remove oldest entry (first in map)
-        m_cache.erase(m_cache.begin());
-    }
-    
-    m_cache[index] = row;
+    // This method is deprecated - use SetCachedRow instead for DataListCtrl_Row_Optimized
+    // Keeping for backward compatibility but it won't work with the new cache structure
+    TRACE(_T("DataListCtrlCache::AddRow - Deprecated method called, use SetCachedRow instead\n"));
 }
 
 bool DataListCtrlCache::GetRow(int index, DataListCtrlRow& row) const
 {
-    std::lock_guard<std::mutex> lock(m_cacheMutex);
-    
-    auto it = m_cache.find(index);
-    if (it != m_cache.end())
-    {
-        row = it->second;
-        m_hitCount++;
-        return true;
-    }
-    
+    // This method is deprecated - use GetCachedRow instead for DataListCtrl_Row_Optimized
+    // Keeping for backward compatibility but it won't work with the new cache structure
+    TRACE(_T("DataListCtrlCache::GetRow - Deprecated method called, use GetCachedRow instead\n"));
     m_missCount++;
     return false;
 }
@@ -78,22 +65,50 @@ void DataListCtrlCache::SetCachedRow(int index, DataListCtrl_Row_Optimized* row,
     // Add the new row
     if (row)
     {
-        // Convert DataListCtrl_Row_Optimized to DataListCtrlRow for storage
-        DataListCtrlRow cachedRow;
-        cachedRow.index = index;
-        cachedRow.displayMode = displayMode;
-        cachedRow.timestamp = std::chrono::steady_clock::now();
-        cachedRow.isValid = true;
+        // Create a copy of the row for caching
+        auto cachedRow = std::make_unique<DataListCtrl_Row_Optimized>(*row);
+        m_cache[index] = CachedRowData(std::move(cachedRow), displayMode);
         
-        m_cache[index] = cachedRow;
+        TRACE(_T("DataListCtrlCache::SetCachedRow - Cached row data for index: %d\n"), index);
         
         // Evict oldest entries if cache is full
         if (m_cache.size() > m_maxSize)
         {
             auto oldest = m_cache.begin();
             m_cache.erase(oldest);
+            TRACE(_T("DataListCtrlCache::SetCachedRow - Evicted oldest cache entry\n"));
         }
     }
+}
+
+DataListCtrl_Row_Optimized* DataListCtrlCache::GetCachedRow(int index) const
+{
+    std::lock_guard<std::mutex> lock(m_cacheMutex);
+    
+    auto it = m_cache.find(index);
+    if (it != m_cache.end() && it->second.isValid)
+    {
+        // Check if the cached data is still valid (not expired)
+        auto now = std::chrono::steady_clock::now();
+        if (now - it->second.timestamp < std::chrono::minutes(10)) // 10 minute expiry
+        {
+            // Cache hit - return the cached row
+            m_hitCount++;
+            TRACE(_T("DataListCtrlCache::GetCachedRow - Cache HIT for index: %d\n"), index);
+            return it->second.row.get();
+        }
+        else
+        {
+            // Expired, remove it
+            const_cast<DataListCtrlCache*>(this)->m_cache.erase(it);
+            TRACE(_T("DataListCtrlCache::GetCachedRow - Cache entry expired for index: %d\n"), index);
+        }
+    }
+    
+    // Cache miss
+    m_missCount++;
+    TRACE(_T("DataListCtrlCache::GetCachedRow - Cache MISS for index: %d\n"), index);
+    return nullptr;
 }
 
 void DataListCtrlCache::Clear()

@@ -69,14 +69,12 @@ void DataListCtrlCache::SetCachedRow(int index, DataListCtrl_Row_Optimized* row,
         auto cachedRow = std::make_unique<DataListCtrl_Row_Optimized>(*row);
         m_cache[index] = CachedRowData(std::move(cachedRow), displayMode);
         
-        TRACE(_T("DataListCtrlCache::SetCachedRow - Cached row data for index: %d\n"), index);
         
         // Evict oldest entries if cache is full
         if (m_cache.size() > m_maxSize)
         {
             auto oldest = m_cache.begin();
             m_cache.erase(oldest);
-            TRACE(_T("DataListCtrlCache::SetCachedRow - Evicted oldest cache entry\n"));
         }
     }
 }
@@ -94,20 +92,17 @@ DataListCtrl_Row_Optimized* DataListCtrlCache::GetCachedRow(int index) const
         {
             // Cache hit - return the cached row
             m_hitCount++;
-            TRACE(_T("DataListCtrlCache::GetCachedRow - Cache HIT for index: %d\n"), index);
             return it->second.row.get();
         }
         else
         {
             // Expired, remove it
             const_cast<DataListCtrlCache*>(this)->m_cache.erase(it);
-            TRACE(_T("DataListCtrlCache::GetCachedRow - Cache entry expired for index: %d\n"), index);
         }
     }
     
     // Cache miss
     m_missCount++;
-    TRACE(_T("DataListCtrlCache::GetCachedRow - Cache MISS for index: %d\n"), index);
     return nullptr;
 }
 

@@ -95,7 +95,7 @@ public:
     
     // Display mode management
     void set_display_mode(int mode);
-    int get_display_mode() const;
+    int get_display_mode();
     
     // Selection management
     int get_current_selection() const { return m_current_selection_; }
@@ -162,7 +162,6 @@ private:
     
     // Error handling
     void handle_error(const CString& message = _T(""));
-    void log_error(const CString& message) const;
     
     // Utility methods
     bool is_valid_index(int index) const;

@@ -64,8 +64,6 @@ void DataListCtrl_Optimized::initialize(const data_list_ctrl_configuration& conf
 {
     try
     {
-        TRACE(_T("DataListCtrl_Optimized::Initialize - Starting initialization\n"));
-        
         // Copy configuration settings - avoid assignment operator
         m_config_.get_display_settings() = config.get_display_settings();
         m_config_.get_time_settings() = config.get_time_settings();
@@ -73,33 +71,12 @@ void DataListCtrl_Optimized::initialize(const data_list_ctrl_configuration& conf
         m_config_.get_ui_settings() = config.get_ui_settings();
         m_config_.get_performance_settings() = config.get_performance_settings();
         m_config_.set_columns(config.get_columns());
-        
-        TRACE(_T("DataListCtrl_Optimized::Initialize - Configuration copied\n"));
-        
-        // Setup default configuration
+
         setup_default_configuration();
-        
-        TRACE(_T("DataListCtrl_Optimized::Initialize - Default configuration setup complete\n"));
-        
-        // Setup virtual list control
         setup_virtual_list_control();
-        
-        TRACE(_T("DataListCtrl_Optimized::Initialize - Virtual list control setup complete\n"));
-        
-        // Initialize columns
         initialize_columns();
-        
-        TRACE(_T("DataListCtrl_Optimized::Initialize - Columns initialized\n"));
-        
-        // Setup image list
         setup_image_list();
-        
-        TRACE(_T("DataListCtrl_Optimized::Initialize - Image list initialized\n"));
-        
-        // Create empty bitmap
         create_empty_bitmap();
-        
-        TRACE(_T("DataListCtrl_Optimized::Initialize - Empty bitmap created\n"));
         
         // Initialize cache
         m_cache_ = std::make_unique<DataListCtrlCache>();
@@ -110,8 +87,6 @@ void DataListCtrl_Optimized::initialize(const data_list_ctrl_configuration& conf
         m_infos_->image_height = m_config_.get_display_config().get_image_height();
         
         m_initialized_ = true;
-        
-        TRACE(_T("DataListCtrl_Optimized::Initialize - Initialization complete\n"));
     }
     catch (const std::exception& e)
     {
@@ -123,37 +98,21 @@ void DataListCtrl_Optimized::set_row_count(int count)
 {
     try
     {
-        TRACE(_T("DataListCtrl_Optimized::SetRowCount - Setting count to: %d\n"), count);
         clear_rows();
         m_rows_.resize(count);
 
         if (GetSafeHwnd())
         {
             SetItemCount(count);
-            TRACE(_T("DataListCtrl_Optimized::SetRowCount - SetItemCount(%d) called successfully\n"), count);
             
-                    // Ensure image list is properly set after the control is fully initialized
-        if (m_image_list_ && m_image_list_->GetImageCount() > 0)
-        {
-            // Force the image list to be set
-            SetImageList(m_image_list_.get(), LVSIL_SMALL);
-            TRACE(_T("DataListCtrl_Optimized::SetRowCount - Image list set with %d images\n"), m_image_list_->GetImageCount());
-            
-            // Force a refresh to ensure the image list is properly applied
-            Invalidate();
-            UpdateWindow();
-            
-            // Force a redraw of all items to show the images
-            RedrawItems(0, count - 1);
-        }
-        else
-        {
-            TRACE(_T("DataListCtrl_Optimized::SetRowCount - No image list available or no images\n"));
-        }
-        }
-        else
-        {
-            TRACE(_T("DataListCtrl_Optimized::SetRowCount - No window handle, cannot set item count\n"));
+        	// Ensure image list is properly set after the control is fully initialized
+	        if (m_image_list_ && m_image_list_->GetImageCount() > 0)
+	        {
+	            SetImageList(m_image_list_.get(), LVSIL_SMALL);
+	            Invalidate();
+	            UpdateWindow();
+	            RedrawItems(0, count - 1);
+	        }
         }
     }
     catch (const std::exception& e)
@@ -280,13 +239,10 @@ void DataListCtrl_Optimized::set_display_mode(int mode)
             if (m_cache_)
             {
                 m_cache_->Clear();
-                TRACE(_T("DataListCtrl_Optimized::SetDisplayMode - Cache cleared for mode change: %d -> %d\n"), currentMode, mode);
             }
             
             // Refresh display to show new mode
             refresh_display();
-            
-            TRACE(_T("DataListCtrl_Optimized::SetDisplayMode - Display mode changed to: %d\n"), mode);
         }
     }
     catch (const std::exception& e)
@@ -295,7 +251,7 @@ void DataListCtrl_Optimized::set_display_mode(int mode)
     }
 }
 
-int DataListCtrl_Optimized::get_display_mode() const
+int DataListCtrl_Optimized::get_display_mode() 
 {
     try
     {
@@ -303,8 +259,7 @@ int DataListCtrl_Optimized::get_display_mode() const
     }
     catch (const std::exception& e)
     {
-        // Return default mode if there's an error
-		TRACE("exception %s\n", e.what());
+		handle_error( CString(e.what()));
         return 0;
     }
 }
@@ -394,7 +349,6 @@ void DataListCtrl_Optimized::refresh_display()
         if (m_image_list_ && m_image_list_->GetImageCount() > 0)
         {
             SetImageList(m_image_list_.get(), LVSIL_SMALL);
-            TRACE(_T("DataListCtrl_Optimized::refresh_display - Image list set with %d images\n"), m_image_list_->GetImageCount());
         }
         
         // Force a complete redraw of all items
@@ -402,14 +356,9 @@ void DataListCtrl_Optimized::refresh_display()
         if (itemCount > 0)
         {
             RedrawItems(0, itemCount - 1);
-            TRACE(_T("DataListCtrl_Optimized::refresh_display - Redrew %d items\n"), itemCount);
         }
-        
-        // Invalidate and update the display
         Invalidate();
         UpdateWindow();
-        
-        TRACE(_T("DataListCtrl_Optimized::refresh_display - Display refreshed with mode: %d\n"), currentMode);
     }
     catch (const std::exception& e)
     {
@@ -559,11 +508,7 @@ void DataListCtrl_Optimized::resize_signal_column(int n_pixels)
 {
     try
     {
-        if (!m_initialized_ || !m_infos_)
-            return;
-            
-        // Check if the control is still valid
-        if (!GetSafeHwnd())
+        if (!m_initialized_ || !m_infos_ || !GetSafeHwnd())
             return;
             
         // Update the signal column width in the global array
@@ -776,8 +721,6 @@ void DataListCtrl_Optimized::OnLButtonDown(UINT nFlags, CPoint point)
         int itemIndex = HitTest(point);
         if (itemIndex >= 0)
         {
-            TRACE(_T("DataListCtrl_Optimized::OnLButtonDown - Clicked on item %d\n"), itemIndex);
-            
             // Update our selection tracking
             set_current_selection(itemIndex);
             
@@ -787,30 +730,12 @@ void DataListCtrl_Optimized::OnLButtonDown(UINT nFlags, CPoint point)
                 const auto pdb_doc = static_cast<ViewdbWave_Optimized*>(m_parent_window_)->GetDocument();
                 if (pdb_doc)
                 {
-                    TRACE(_T("DataListCtrl_Optimized::OnLButtonDown - Setting database record position to %d\n"), itemIndex);
-                    
-                    // Set the database to the clicked record
                     if (pdb_doc->db_set_current_record_position(itemIndex))
                     {
-                        TRACE(_T("DataListCtrl_Optimized::OnLButtonDown - Database record position set successfully\n"));
-                        
-                        // Update all views to reflect the change
                         pdb_doc->UpdateAllViews(nullptr, HINT_DOC_MOVE_RECORD);
-                        TRACE(_T("DataListCtrl_Optimized::OnLButtonDown - UpdateAllViews called with HINT_DOC_MOVE_RECORD\n"));
-                    }
-                    else
-                    {
-                        TRACE(_T("DataListCtrl_Optimized::OnLButtonDown - Failed to set database record position\n"));
+
                     }
                 }
-                else
-                {
-                    TRACE(_T("DataListCtrl_Optimized::OnLButtonDown - No document available\n"));
-                }
-            }
-            else
-            {
-                TRACE(_T("DataListCtrl_Optimized::OnLButtonDown - No parent window available\n"));
             }
         }
     }
@@ -826,7 +751,6 @@ void DataListCtrl_Optimized::center_item_in_viewport(int itemIndex)
     {
         if (!GetSafeHwnd() || itemIndex < 0 || itemIndex >= GetItemCount())
         {
-            TRACE(_T("DataListCtrl_Optimized::center_item_in_viewport - Invalid parameters\n"));
             return;
         }
 
@@ -837,41 +761,24 @@ void DataListCtrl_Optimized::center_item_in_viewport(int itemIndex)
         int topIndex = GetTopIndex();
         int visibleCount = GetCountPerPage();
         int bottomIndex = topIndex + visibleCount - 1;
-        
-        CString rangeMsg;
-        rangeMsg.Format(_T("DataListCtrl_Optimized::center_item_in_viewport - Current range: %d to %d, Target: %d\n"), 
-                       topIndex, bottomIndex, itemIndex);
-        TRACE(rangeMsg);
-        
+
         // Always center the item, even if it's already visible
         // Calculate the target top index to center the item
         int targetTopIndex = itemIndex - (visibleCount / 2);
-        if (targetTopIndex < 0) targetTopIndex = 0;
+        if (targetTopIndex < 0) 
+            targetTopIndex = 0;
         
         // Only scroll if the target position is different from current position
         if (targetTopIndex != topIndex)
         {
-            CString scrollMsg;
-            scrollMsg.Format(_T("DataListCtrl_Optimized::center_item_in_viewport - Scrolling to center item at top index: %d (current: %d)\n"), targetTopIndex, topIndex);
-            TRACE(scrollMsg);
-            
             // Use the standard MFC approach: ensure the target item is visible
             // This will automatically scroll the list to show the item
             EnsureVisible(targetTopIndex, FALSE);
             UpdateWindow();
-            
-            TRACE(_T("DataListCtrl_Optimized::center_item_in_viewport - Scroll completed\n"));
-        }
-        else
-        {
-            TRACE(_T("DataListCtrl_Optimized::center_item_in_viewport - Item already centered\n"));
         }
     }
     catch (const std::exception& e)
     {
-        CString errorMsg;
-        errorMsg.Format(_T("DataListCtrl_Optimized::center_item_in_viewport - Exception: %s\n"), e.what());
-        TRACE(errorMsg);
         handle_error(CString(e.what()));
     }
 }
@@ -883,8 +790,6 @@ void DataListCtrl_Optimized::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
         // Handle column click for sorting (if needed in the future)
         // For now, just log the event
         NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
-        TRACE(_T("DataListCtrl_Optimized::OnColumnClick - Column %d clicked\n"), pNMListView->iSubItem);
-        
         *pResult = 0;
     }
     catch (const std::exception& e)
@@ -899,8 +804,6 @@ void DataListCtrl_Optimized::OnGetDisplayInfo(NMHDR* pNMHDR, LRESULT* pResult)
     try
     {
         LV_DISPINFO* pDispInfo = (LV_DISPINFO*)pNMHDR;
-        
-        // Ensure we request text, state, and image information
         if (pDispInfo->item.mask & LVIF_TEXT)
         {
             // Request state and image information as well
@@ -909,7 +812,6 @@ void DataListCtrl_Optimized::OnGetDisplayInfo(NMHDR* pNMHDR, LRESULT* pResult)
         
         // Always handle the display info request to ensure selection state is properly set
         handle_display_info_request(pDispInfo);
-        
         *pResult = 0;
     }
     catch (const std::exception& e)
@@ -944,7 +846,6 @@ void DataListCtrl_Optimized::create_colored_rectangles()
     {
         if (!m_image_list_)
         {
-            TRACE(_T("DataListCtrl_Optimized::create_colored_rectangles - No image list\n"));
             return;
         }
         
@@ -963,7 +864,6 @@ void DataListCtrl_Optimized::create_colored_rectangles()
             std::unique_ptr<CBitmap> greyBitmap = std::make_unique<CBitmap>();
             if (!greyBitmap->CreateCompatibleBitmap(GetDC(), width, height))
             {
-                TRACE(_T("DataListCtrl_Optimized::create_colored_rectangles - Failed to create grey bitmap\n"));
                 return;
             }
             
@@ -1061,16 +961,10 @@ void DataListCtrl_Optimized::setup_virtual_list_control()
     try
     {
         DWORD currentStyle = GetStyle();
-        TRACE(_T("DataListCtrl_Optimized::SetupVirtualListControl - Current style: 0x%08X\n"), currentStyle);
         
         if (!(currentStyle & LVS_OWNERDATA))
         {
             ModifyStyle(0, LVS_OWNERDATA);
-            TRACE(_T("DataListCtrl_Optimized::SetupVirtualListControl - LVS_OWNERDATA style added\n"));
-        }
-        else
-        {
-            TRACE(_T("DataListCtrl_Optimized::SetupVirtualListControl - LVS_OWNERDATA style already present\n"));
         }
     }
     catch (const std::exception& e)
@@ -1087,11 +981,8 @@ void DataListCtrl_Optimized::process_row_update(int index)
         {
             return;
         }
-        
-        // Update cache
+
         update_cache(index, 0); // displayMode = 0 for now
-        
-        // Redraw the item
         if (GetSafeHwnd())
         {
             RedrawItems(index, index);
@@ -1168,7 +1059,6 @@ void DataListCtrl_Optimized::handle_display_info_request(LV_DISPINFO* pDispInfo)
             {
                 state |= LVIS_SELECTED | LVIS_FOCUSED;
                 stateMask |= LVIS_SELECTED | LVIS_FOCUSED;
-                TRACE(_T("DataListCtrl_Optimized::handle_display_info_request - Setting selection state for item %d\n"), index);
             }
             
             pDispInfo->item.state = state;
@@ -1275,10 +1165,7 @@ void DataListCtrl_Optimized::handle_image_display(LV_DISPINFO* pDispInfo, int in
     {
         return;
     }
-    
-    TRACE(_T("DataListCtrl_Optimized::handle_image_display - Item %d, subitem %d, displayMode %d\n"), 
-          pDispInfo->item.iItem, pDispInfo->item.iSubItem, displayMode);
-    
+
     // For now, create a simple colored rectangle based on display mode
     // In a full implementation, this would create actual data/spike images
     switch (displayMode)
@@ -1349,7 +1236,6 @@ void DataListCtrl_Optimized::update_cache(int index, int displayMode)
                 {
                     // Cache the row with current display mode
                     m_cache_->SetCachedRow(index, newRow.get(), displayMode);
-                    TRACE(_T("DataListCtrl_Optimized::UpdateCache - Cached row %d with display mode %d\n"), index, displayMode);
                 }
             }
         }
@@ -1381,7 +1267,6 @@ void DataListCtrl_Optimized::save_column_widths()
     {
         if (!GetSafeHwnd())
         {
-            TRACE(_T("DataListCtrl_Optimized::save_column_widths - No window handle\n"));
             return;
         }
         
@@ -1434,11 +1319,8 @@ void DataListCtrl_Optimized::load_column_widths()
     {
         if (!GetSafeHwnd())
         {
-            TRACE(_T("DataListCtrl_Optimized::load_column_widths - No window handle\n"));
             return;
         }
-        
-        TRACE(_T("DataListCtrl_Optimized::load_column_widths - Loading column widths\n"));
         
         // First try to load from registry
         CWinApp* pApp = AfxGetApp();
@@ -1455,7 +1337,6 @@ void DataListCtrl_Optimized::load_column_widths()
                 {
                     g_column_width[i] = width;
                     loadedFromRegistry = true;
-                    TRACE(_T("DataListCtrl_Optimized::load_column_widths - Loaded from registry: Column %d width: %d\n"), i, width);
                 }
             }
         }
@@ -1463,11 +1344,10 @@ void DataListCtrl_Optimized::load_column_widths()
         // Apply column widths to the control
         for (int i = 0; i < DLC_N_COLUMNS; ++i)
         {
-            int width = g_column_width[i];
+            const int width = g_column_width[i];
             if (width > 0)
             {
                 SetColumnWidth(static_cast<int>(i), width);
-                TRACE(_T("DataListCtrl_Optimized::load_column_widths - Applied column %d width: %d\n"), i, width);
             }
             else
             {
@@ -1484,18 +1364,10 @@ void DataListCtrl_Optimized::load_column_widths()
                 
                 SetColumnWidth(static_cast<int>(i), defaultWidth);
                 g_column_width[i] = defaultWidth;
-                TRACE(_T("DataListCtrl_Optimized::load_column_widths - Set default width for column %d: %d\n"), i, defaultWidth);
             }
         }
         
-        if (loadedFromRegistry)
-        {
-            TRACE(_T("DataListCtrl_Optimized::load_column_widths - Successfully loaded column widths from registry\n"));
-        }
-        else
-        {
-            TRACE(_T("DataListCtrl_Optimized::load_column_widths - No saved column widths found, using defaults\n"));
-        }
+        loadedFromRegistry;
     }
     catch (const std::exception& e)
     {
@@ -1625,21 +1497,16 @@ void DataListCtrl_Optimized::handle_error(const CString& message)
 
 void DataListCtrl_Optimized::set_current_selection(int record_position)
 {
-    TRACE(_T("=== DEBUG: set_current_selection() START - record_position: %d ===\n"), record_position);
-    
     try
     {
         if (!GetSafeHwnd())
         {
-            TRACE(_T("=== DEBUG: set_current_selection() - No window handle ===\n"));
             return;
         }
         
         // Validate the record position
         if (record_position < 0 || record_position >= GetItemCount())
         {
-            TRACE(_T("=== DEBUG: set_current_selection() - Invalid record position: %d (item count: %d) ===\n"), 
-                  record_position, GetItemCount());
             return;
         }
         
@@ -1647,19 +1514,14 @@ void DataListCtrl_Optimized::set_current_selection(int record_position)
         int oldSelection = m_current_selection_;
         m_current_selection_ = record_position;
         
-        TRACE(_T("=== DEBUG: set_current_selection() - Old selection: %d, New selection: %d ===\n"), 
-              oldSelection, m_current_selection_);
-        
         // Clear previous selection
         if (oldSelection >= 0 && oldSelection < GetItemCount())
         {
-            TRACE(_T("=== DEBUG: set_current_selection() - Clearing old selection at position %d ===\n"), oldSelection);
             SetItemState(oldSelection, 0, LVIS_SELECTED | LVIS_FOCUSED);
             RedrawItems(oldSelection, oldSelection);
         }
         
         // Set new selection
-        TRACE(_T("=== DEBUG: set_current_selection() - Setting new selection at position %d ===\n"), record_position);
         SetItemState(record_position, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
         
         // Ensure the selected item is visible and centered
@@ -1674,21 +1536,11 @@ void DataListCtrl_Optimized::set_current_selection(int record_position)
         
         // Update the window to show the changes
         UpdateWindow();
-        
-        TRACE(_T("=== DEBUG: set_current_selection() - Selection updated successfully ===\n"));
     }
     catch (const std::exception& e)
     {
-        TRACE(_T("=== DEBUG: set_current_selection() - Exception: %s ===\n"), CString(e.what()));
         handle_error(CString(e.what()));
     }
-    
-    TRACE(_T("=== DEBUG: set_current_selection() END ===\n"));
-}
-
-void DataListCtrl_Optimized::log_error(const CString& message) const
-{
-    TRACE(_T("DataListCtrl_Optimized Error: %s\n"), message);
 }
 
 void DataListCtrl_Optimized::setup_default_configuration()
@@ -1710,8 +1562,6 @@ void DataListCtrl_Optimized::setup_default_configuration()
         // Set default UI settings
         auto& uiConfig = m_config_.get_ui_settings();
         uiConfig.set_display_file_name(false); // Don't display file names by default
-        
-        TRACE(_T("DataListCtrl_Optimized::SetupDefaultConfiguration - Default display mode set to: 0 (no display)\n"));
     }
     catch (const std::exception& e)
     {
@@ -1761,8 +1611,6 @@ void DataListCtrl_Optimized::initialize_columns()
             columns.push_back(col);
         }
         m_config_.set_columns(columns);
-        
-        TRACE(_T("DataListCtrl_Optimized::initialize_columns - Initialized %d columns\n"), DLC_N_COLUMNS);
     }
     catch (const std::exception& e)
     {
@@ -1789,7 +1637,6 @@ void DataListCtrl_Optimized::setup_image_list()
     {
         if (!GetSafeHwnd())
         {
-            TRACE(_T("DataListCtrl_Optimized::setup_image_list - No window handle\n"));
             return;
         }
         
@@ -1799,7 +1646,6 @@ void DataListCtrl_Optimized::setup_image_list()
         if (width <= 0)
         {
             width = 300; // Default width for curve column
-            TRACE(_T("DataListCtrl_Optimized::setup_image_list - Using default width: %d\n"), width);
         }
         const int height = 16; // Fixed height for consistency
         
@@ -1828,9 +1674,6 @@ void DataListCtrl_Optimized::setup_image_list()
             Invalidate();
             UpdateWindow();
         }
-        
-        TRACE(_T("DataListCtrl_Optimized::setup_image_list - Image list setup complete with %d images\n"), 
-              m_image_list_->GetImageCount());
     }
     catch (const std::exception& e)
     {

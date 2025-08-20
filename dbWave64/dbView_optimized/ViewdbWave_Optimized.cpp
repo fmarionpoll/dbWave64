@@ -418,15 +418,13 @@ void ViewdbWave_Optimized::OnInitialUpdate()
     {
 		initialize();
         
-        // Load data if document is already available (simplified approach)
+        // Load data if document is already available 
         CdbWaveDoc* pDoc = GetDocument();
         if (pDoc && m_initialized)
         {
-            // Get the current record position BEFORE loading data
+
             const int current_record_position_before = pDoc->db_get_current_record_position();
 			load_data();
-           
-            // Get the current record position AFTER loading data
             const int current_record_position_after = pDoc->db_get_current_record_position();
             
             if (m_pDataListCtrl && m_pDataListCtrl->GetSafeHwnd())
@@ -434,17 +432,10 @@ void ViewdbWave_Optimized::OnInitialUpdate()
                // Ensure the data list control is properly initialized
                 if (m_pDataListCtrl->GetItemCount() > 0)
                 {
-                    // Set the current selection
                     m_pDataListCtrl->set_current_selection(current_record_position_after);
-                    
-                    // Ensure the item is visible and centered in the viewport
                     m_pDataListCtrl->center_item_in_viewport(current_record_position_after);
-                    
-                    // Force a redraw to show the selection
                     m_pDataListCtrl->RedrawItems(current_record_position_after, current_record_position_after);
                     m_pDataListCtrl->UpdateWindow();
-                    
-                   // Force a refresh of the image list to ensure rectangles are displayed
                     m_pDataListCtrl->refresh_display();
                     
                     // Mark that initial selection has been set and protect it for a few calls
@@ -466,7 +457,7 @@ void ViewdbWave_Optimized::OnSize(UINT nType, int cx, int cy)
     ViewDbTable::OnSize(nType, cx, cy);
     try
     {
-        if (m_pDataListCtrl)
+        if (m_pDataListCtrl && IsWindow(m_pDataListCtrl->m_hWnd))
         {
             CRect rect;
             m_pDataListCtrl->GetClientRect(&rect);

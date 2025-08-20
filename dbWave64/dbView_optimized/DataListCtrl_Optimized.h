@@ -39,46 +39,47 @@ class DataListCtrl_Optimized : public CListCtrl
 public:
     // Constructors
     DataListCtrl_Optimized();
-    virtual ~DataListCtrl_Optimized();
+    ~DataListCtrl_Optimized() override;
     
     // Prevent copying
     DataListCtrl_Optimized(const DataListCtrl_Optimized&) = delete;
     DataListCtrl_Optimized& operator=(const DataListCtrl_Optimized&) = delete;
     
     // Initialization and setup
-    void Initialize(const DataListCtrlConfiguration& config);
-    bool IsInitialized() const { return m_initialized; }
-    void SetupColumns();
-    void SetupImageList();
-    void SetParentWindow(CWnd* parent);
+    void initialize(const DataListCtrlConfiguration& config);
+    bool is_initialized() const { return m_initialized_; }
+    void setup_columns();
+    void setup_image_list();
+    void set_parent_window(CWnd* parent);
     
     // Row management
-    void SetRowCount(int count);
-    void ClearRows();
-    void AddRow(std::unique_ptr<DataListCtrl_Row_Optimized> row);
-    void RemoveRow(int index);
-    void UpdateRow(int index);
+    void set_row_count(int count);
+	int get_row_count() const { return static_cast<int>(m_rows_.size()); }
+    void clear_rows();
+    void add_row(std::unique_ptr<DataListCtrl_Row_Optimized> row);
+    void remove_row(int index);
+    void update_row(int index);
     
     // Display management
-    void SetDisplayMode(int mode);
-    void SetTimeSpan(float first, float last);
-    void SetAmplitudeSpan(float span);
-    void SetDisplayFileName(bool display);
-    void RefreshDisplay();
+    void set_time_span(float first, float last);
+    void set_amplitude_span(float span);
+    void set_display_file_name(bool display);
+    void refresh_display();
+    
+    // Selection management
+    void set_current_selection(int record_position);
     
     // Configuration
-    void SetConfiguration(const DataListCtrlConfiguration& config);
-    const DataListCtrlConfiguration& GetConfiguration() const { return m_config; }
+    void set_configuration(const DataListCtrlConfiguration& config);
+    const DataListCtrlConfiguration& get_configuration() const { return m_config_; }
     
     // Caching
-    void EnableCaching(bool enable) { m_cachingEnabled = enable; }
-    bool IsCachingEnabled() const { return m_cachingEnabled; }
-    void ClearCache();
+    void enable_caching(const bool enable) { m_caching_enabled_ = enable; }
+    bool is_caching_enabled() const { return m_caching_enabled_; }
+    void clear_cache();
     
     // Public interface methods (maintaining compatibility)
     void init_columns(std::vector<int>* width_columns);
-    void set_amplitude_span(float span);
-    void set_display_file_name(bool display);
     void set_time_intervals(float first, float last);
     void set_data_transform(int transform);
     void set_spike_plot_mode(int mode);
@@ -87,6 +88,20 @@ public:
     // Signal column adjustment methods (from original DataListCtrl)
     void resize_signal_column(int n_pixels);
     void fit_columns_to_size(int n_pixels);
+
+    // Column management
+    void save_column_widths();
+    void load_column_widths();
+    
+    // Display mode management
+    void set_display_mode(int mode);
+    int get_display_mode() const;
+    
+    // Selection management
+    int get_current_selection() const { return m_current_selection_; }
+    
+    // Viewport management
+    void center_item_in_viewport(int itemIndex);
     
     // Override methods
     virtual void OnDestroy();
@@ -100,61 +115,63 @@ protected:
     afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
     afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
     afx_msg void OnGetDisplayInfo(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
     
     DECLARE_MESSAGE_MAP()
 
 private:
     // Core data members
-    std::vector<std::unique_ptr<DataListCtrl_Row_Optimized>> m_rows;
-    std::unique_ptr<DataListCtrlCache> m_cache;
-    DataListCtrlConfiguration m_config;
-    DataListCtrlInfos* m_infos;
+    std::vector<std::unique_ptr<DataListCtrl_Row_Optimized>> m_rows_;
+    std::unique_ptr<DataListCtrlCache> m_cache_;
+    DataListCtrlConfiguration m_config_;
+    DataListCtrlInfos* m_infos_;
     
     // State management
-    bool m_initialized;
-    bool m_cachingEnabled;
+    bool m_initialized_;
+    bool m_caching_enabled_;
+    int m_current_selection_; // Track the currently selected item
     
     // UI components
-    CWnd* m_parentWindow;
-    std::unique_ptr<CImageList> m_imageList;
-    std::unique_ptr<CBitmap> m_emptyBitmap;
+    CWnd* m_parent_window_;
+    std::unique_ptr<CImageList> m_image_list_;
+    std::unique_ptr<CBitmap> m_empty_bitmap_;
     
     // Core functionality methods
-    void InitializeColumns();
-    void InitializeImageList();
-    void CreateEmptyBitmap();
-    void SetupDefaultConfiguration();
-    void SetupVirtualListControl();
+    void initialize_columns();
+    void initialize_image_list();
+    void create_empty_bitmap();
+    void create_colored_rectangles();
+    void setup_default_configuration();
+    void setup_virtual_list_control();
     
     // Row management helpers
-    void EnsureRowExists(int index);
-    void ProcessRowUpdate(int index);
+    void ensure_row_exists(int index);
+    void process_row_update(int index);
     
     // Display management
-    void UpdateDisplayInfo(LV_DISPINFO* pDispInfo);
-    void HandleDisplayInfoRequest(LV_DISPINFO* pDispInfo);
-    void HandleTextDisplay(LV_DISPINFO* pDispInfo, DataListCtrl_Row_Optimized* row);
-    void HandleImageDisplay(LV_DISPINFO* pDispInfo, int index, int displayMode);
-    void ProcessDisplayMode(int rowIndex, int displayMode);
+    void update_display_info(LV_DISPINFO* pDispInfo);
+    void handle_display_info_request(LV_DISPINFO* pDispInfo);
+    void handle_text_display(LV_DISPINFO* pDispInfo, DataListCtrl_Row_Optimized* row);
+    void handle_image_display(LV_DISPINFO* pDispInfo, int index, int displayMode);
+    void process_display_mode(int rowIndex, int displayMode);
     
     // Caching helpers
-    void UpdateCache(int index, int displayMode);
-    void InvalidateCacheForRow(int index);
+    void update_cache(int index, int displayMode);
+    void invalidate_cache_for_row(int index);
     
     // Error handling
-    void HandleError(const CString& message = _T(""));
-    void LogError(const CString& message) const;
+    void handle_error(const CString& message = _T(""));
+    void log_error(const CString& message) const;
     
     // Utility methods
-    bool IsValidIndex(int index) const;
-    bool IsValidDisplayMode(int mode) const;
-    void ValidateConfiguration() const;
+    bool is_valid_index(int index) const;
+    bool is_valid_display_mode(int mode) const;
+    void validate_configuration() const;
     
     // Column management
-    void SaveColumnWidths();
-    void LoadColumnWidths();
-    void ApplyColumnConfiguration();
+    void apply_column_configuration();
     
     // Database access
-    bool LoadRowDataFromDatabase(CdbWaveDoc* pdb_doc, int index, DataListCtrl_Row_Optimized& row);
+    bool load_row_data_from_database(CdbWaveDoc* pdb_doc, int index, DataListCtrl_Row_Optimized& row);
 };

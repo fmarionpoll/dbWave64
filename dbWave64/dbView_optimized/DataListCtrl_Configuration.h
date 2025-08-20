@@ -85,38 +85,38 @@ public:
     DisplaySettings();
     
     // Getters
-    int GetImageWidth() const { return m_imageWidth; }
-    int GetImageHeight() const { return m_imageHeight; }
-    int GetDataTransform() const { return m_dataTransform; }
-    int GetDisplayMode() const { return m_displayMode; }
-    int GetSpikePlotMode() const { return m_spikePlotMode; }
-    int GetSelectedClass() const { return m_selectedClass; }
+    int get_image_width() const { return m_image_width_; }
+    int get_image_height() const { return m_image_height_; }
+    int get_data_transform() const { return m_data_transform_; }
+    int get_display_mode() const { return m_display_mode_; }
+    int get_spike_plot_mode() const { return m_spike_plot_mode_; }
+    int get_selected_class() const { return m_selected_class_; }
     
     // Setters with validation
-    void SetImageWidth(int width);
-    void SetImageHeight(int height);
-    void SetDataTransform(int transform);
-    void SetDisplayMode(int mode);
-    void SetSpikePlotMode(int mode);
-    void SetSelectedClass(int classIndex);
+    void set_image_width(int width);
+    void set_image_height(int height);
+    void set_data_transform(int transform);
+    void set_display_mode(int mode);
+    void set_spike_plot_mode(int mode);
+    void set_selected_class(int class_index);
     
     // Validation
-    bool IsValidImageWidth(int width) const;
-    bool IsValidImageHeight(int height) const;
-    bool IsValidDisplayMode(int mode) const;
-    bool IsValidSpikePlotMode(int mode) const;
-    bool IsValidSelectedClass(int classIndex) const;
+    static bool is_valid_image_width(int width);
+    bool is_valid_image_height(int height) const;
+    bool is_valid_display_mode(int mode) const;
+    bool is_valid_spike_plot_mode(int mode) const;
+    bool is_valid_selected_class(int class_index) const;
     
     // Reset to defaults
-    void ResetToDefaults();
+    void reset_to_defaults();
     
 private:
-    int m_imageWidth;
-    int m_imageHeight;
-    int m_dataTransform;
-    int m_displayMode;
-    int m_spikePlotMode;
-    int m_selectedClass;
+    int m_image_width_;
+    int m_image_height_;
+    int m_data_transform_;
+    int m_display_mode_;
+    int m_spike_plot_mode_;
+    int m_selected_class_;
 };
 
 // Time settings
@@ -126,27 +126,27 @@ public:
     TimeSettings();
     
     // Getters
-    float GetTimeFirst() const { return m_timeFirst; }
-    float GetTimeLast() const { return m_timeLast; }
-    bool IsTimeSpanSet() const { return m_setTimeSpan; }
+    float get_time_first() const { return m_time_first_; }
+    float get_time_last() const { return m_time_last_; }
+    bool is_time_span_set() const { return m_set_time_span_; }
     
     // Setters with validation
-    void SetTimeFirst(float time);
-    void SetTimeLast(float time);
-    void SetTimeSpan(float first, float last);
-    void SetTimeSpanEnabled(bool enabled) { m_setTimeSpan = enabled; }
+    void set_time_first(float time);
+    void set_time_last(float time);
+    void set_time_span(float first, float last);
+    void set_time_span_enabled(const bool enabled) { m_set_time_span_ = enabled; }
     
     // Validation
-    bool IsValidTimeValue(float time) const;
-    bool IsValidTimeSpan(float first, float last) const;
+    bool is_valid_time_value(float time) const;
+    bool is_valid_time_span(float first, float last) const;
     
     // Reset to defaults
-    void ResetToDefaults();
+    void reset_to_defaults();
     
 private:
-    float m_timeFirst;
-    float m_timeLast;
-    bool m_setTimeSpan;
+    float m_time_first_;
+    float m_time_last_;
+    bool m_set_time_span_;
 };
 
 // Amplitude settings
@@ -156,22 +156,22 @@ public:
     AmplitudeSettings();
     
     // Getters
-    float GetMvSpan() const { return m_mvSpan; }
-    bool IsMvSpanSet() const { return m_setMvSpan; }
+    float get_mv_span() const { return m_mv_span_; }
+    bool is_mv_span_set() const { return m_set_mv_span_; }
     
     // Setters with validation
-    void SetMvSpan(float span);
-    void SetMvSpanEnabled(bool enabled) { m_setMvSpan = enabled; }
+    void set_mv_span(float span);
+    void set_mv_span_enabled(bool enabled) { m_set_mv_span_ = enabled; }
     
     // Validation
-    bool IsValidMvSpan(float span) const;
+    bool is_valid_mv_span(float span) const;
     
     // Reset to defaults
-    void ResetToDefaults();
+    void reset_to_defaults();
     
 private:
-    float m_mvSpan;
-    bool m_setMvSpan;
+    float m_mv_span_;
+    bool m_set_mv_span_;
 };
 
 // UI settings
@@ -181,25 +181,25 @@ public:
     UISettings();
     
     // Getters
-    bool IsDisplayFileName() const { return m_displayFileName; }
-    CWnd* GetParent() const { return m_parent; }
-    CImageList* GetImageList() const { return m_imageList; }
-    CBitmap* GetEmptyBitmap() const { return m_emptyBitmap; }
+    bool is_display_file_name() const { return m_display_file_name_; }
+    CWnd* get_parent() const { return m_parent_; }
+    CImageList* get_image_list() const { return m_image_list_; }
+    CBitmap* get_empty_bitmap() const { return m_empty_bitmap_; }
     
     // Setters
-    void SetDisplayFileName(bool display) { m_displayFileName = display; }
-    void SetParent(CWnd* parent) { m_parent = parent; }
-    void SetImageList(CImageList* imageList) { m_imageList = imageList; }
-    void SetEmptyBitmap(CBitmap* bitmap) { m_emptyBitmap = bitmap; }
+    void set_display_file_name(bool display) { m_display_file_name_ = display; }
+    void set_parent(CWnd* parent) { m_parent_ = parent; }
+    void set_image_list(CImageList* imageList) { m_image_list_ = imageList; }
+    void set_empty_bitmap(CBitmap* bitmap) { m_empty_bitmap_ = bitmap; }
     
     // Reset to defaults
-    void ResetToDefaults();
+    void reset_to_defaults();
     
 private:
-    bool m_displayFileName;
-    CWnd* m_parent;
-    CImageList* m_imageList;
-    CBitmap* m_emptyBitmap;
+    bool m_display_file_name_;
+    CWnd* m_parent_;
+    CImageList* m_image_list_;
+    CBitmap* m_empty_bitmap_;
 };
 
 // Performance settings
@@ -209,28 +209,28 @@ public:
     PerformanceSettings();
     
     // Getters
-    bool IsCachingEnabled() const { return m_cachingEnabled; }
-    bool IsLazyLoadingEnabled() const { return m_lazyLoadingEnabled; }
-    bool IsAsyncProcessingEnabled() const { return m_asyncProcessingEnabled; }
-    size_t GetMaxCacheSize() const { return m_maxCacheSize; }
-    int GetBatchSize() const { return m_batchSize; }
+    bool is_caching_enabled() const { return m_caching_enabled_; }
+    bool is_lazy_loading_enabled() const { return m_lazy_loading_enabled_; }
+    bool is_async_processing_enabled() const { return m_async_processing_enabled_; }
+    size_t get_max_cache_size() const { return m_max_cache_size_; }
+    int get_batch_size() const { return m_batch_size_; }
     
     // Setters
-    void SetCachingEnabled(bool enabled) { m_cachingEnabled = enabled; }
-    void SetLazyLoadingEnabled(bool enabled) { m_lazyLoadingEnabled = enabled; }
-    void SetAsyncProcessingEnabled(bool enabled) { m_asyncProcessingEnabled = enabled; }
-    void SetMaxCacheSize(size_t size) { m_maxCacheSize = size; }
-    void SetBatchSize(int size) { m_batchSize = size; }
+    void set_caching_enabled(const bool enabled) { m_caching_enabled_ = enabled; }
+    void set_lazy_loading_enabled(const bool enabled) { m_lazy_loading_enabled_ = enabled; }
+    void set_async_processing_enabled(const bool enabled) { m_async_processing_enabled_ = enabled; }
+    void set_max_cache_size(const size_t size) { m_max_cache_size_ = size; }
+    void set_batch_size(const int size) { m_batch_size_ = size; }
     
     // Reset to defaults
-    void ResetToDefaults();
+    void reset_to_defaults();
     
 private:
-    bool m_cachingEnabled;
-    bool m_lazyLoadingEnabled;
-    bool m_asyncProcessingEnabled;
-    size_t m_maxCacheSize;
-    int m_batchSize;
+    bool m_caching_enabled_;
+    bool m_lazy_loading_enabled_;
+    bool m_async_processing_enabled_;
+    size_t m_max_cache_size_;
+    int m_batch_size_;
 };
 
 // Main configuration class
@@ -249,38 +249,38 @@ public:
     DataListCtrlConfiguration& operator=(DataListCtrlConfiguration&& other) noexcept;
     
     // Access to settings
-    DisplaySettings& GetDisplaySettings() { return m_displaySettings; }
-    const DisplaySettings& GetDisplaySettings() const { return m_displaySettings; }
+    DisplaySettings& get_display_settings() { return m_display_settings_; }
+    const DisplaySettings& get_display_settings() const { return m_display_settings_; }
     
-    TimeSettings& GetTimeSettings() { return m_timeSettings; }
-    const TimeSettings& GetTimeSettings() const { return m_timeSettings; }
+    TimeSettings& get_time_settings() { return m_time_settings_; }
+    const TimeSettings& get_time_settings() const { return m_time_settings_; }
     
-    AmplitudeSettings& GetAmplitudeSettings() { return m_amplitudeSettings; }
-    const AmplitudeSettings& GetAmplitudeSettings() const { return m_amplitudeSettings; }
+    AmplitudeSettings& get_amplitude_settings() { return m_amplitude_settings_; }
+    const AmplitudeSettings& get_amplitude_settings() const { return m_amplitude_settings_; }
     
-    UISettings& GetUISettings() { return m_uiSettings; }
-    const UISettings& GetUISettings() const { return m_uiSettings; }
+    UISettings& get_ui_settings() { return m_ui_settings_; }
+    const UISettings& get_ui_settings() const { return m_ui_settings_; }
     
-    PerformanceSettings& GetPerformanceSettings() { return m_performanceSettings; }
-    const PerformanceSettings& GetPerformanceSettings() const { return m_performanceSettings; }
+    PerformanceSettings& get_performance_settings() { return m_performance_settings_; }
+    const PerformanceSettings& get_performance_settings() const { return m_performance_settings_; }
     
     // Configuration management
-    void LoadFromRegistry(const CString& section);
-    void SaveToRegistry(const CString& section);
-    void LoadFromFile(const CString& filename);
-    void SaveToFile(const CString& filename);
+    void load_from_registry(const CString& section);
+    void save_to_registry(const CString& section);
+    void load_from_file(const CString& filename);
+    void save_to_file(const CString& filename);
     
     // Validation
-    bool ValidateConfiguration() const;
-    CString GetValidationErrors() const;
+    bool validate_configuration() const;
+    CString get_validation_errors() const;
     
     // Reset to defaults
-    void ResetToDefaults();
+    void reset_to_defaults();
     
     // Change notification
     using ChangeCallback = std::function<void(const CString& setting, const CString& value)>;
-    void RegisterChangeCallback(ChangeCallback callback);
-    void UnregisterChangeCallback();
+    void register_change_callback(ChangeCallback callback);
+    void unregister_change_callback();
     
     // Column configuration structure
     struct ColumnConfig
@@ -292,22 +292,22 @@ public:
         int format;
         
         ColumnConfig() : width(100), index(0), visible(true), format(LVCFMT_LEFT) {}
-        ColumnConfig(int w, const CString& h, int i) : width(w), header(h), index(i), visible(true), format(LVCFMT_LEFT) {}
-        ColumnConfig(int w, const CString& h, int i, bool v, int f) : width(w), header(h), index(i), visible(v), format(f) {}
+        ColumnConfig(int w, const CString& h, const int i) : width(w), header(h), index(i), visible(true), format(LVCFMT_LEFT) {}
+        ColumnConfig(int w, const CString& h, const int i, const bool v, const int f) : width(w), header(h), index(i), visible(v), format(f) {}
     };
     
     // Column management
-    void SetColumns(const std::vector<ColumnConfig>& columns);
-    std::vector<ColumnConfig> GetColumns() const;
-    void AddColumn(const ColumnConfig& column);
-    void RemoveColumn(int index);
-    void ClearColumns();
+    void set_columns(const std::vector<ColumnConfig>& columns);
+    std::vector<ColumnConfig> get_columns() const;
+    void add_column(const ColumnConfig& column);
+    void remove_column(int index);
+    void clear_columns();
     
     // Configuration access methods
-    const DisplaySettings& GetDisplayConfig() const { return m_displaySettings; }
-    const PerformanceSettings& GetPerformanceConfig() const { return m_performanceSettings; }
-    DisplaySettings& GetDisplayConfig() { return m_displaySettings; }
-    PerformanceSettings& GetPerformanceConfig() { return m_performanceSettings; }
+    const DisplaySettings& get_display_config() const { return m_display_settings_; }
+    const PerformanceSettings& get_performance_config() const { return m_performance_settings_; }
+    DisplaySettings& get_display_config() { return m_display_settings_; }
+    PerformanceSettings& get_performance_config() { return m_performance_settings_; }
     
     // Compatibility with old DataListCtrlInfos structure
     struct LegacyInfo
@@ -338,17 +338,17 @@ public:
     
 private:
     // Settings objects
-    DisplaySettings m_displaySettings;
-    TimeSettings m_timeSettings;
-    AmplitudeSettings m_amplitudeSettings;
-    UISettings m_uiSettings;
-    PerformanceSettings m_performanceSettings;
+    DisplaySettings m_display_settings_;
+    TimeSettings m_time_settings_;
+    AmplitudeSettings m_amplitude_settings_;
+    UISettings m_ui_settings_;
+    PerformanceSettings m_performance_settings_;
     
     // Column configuration
-    std::vector<ColumnConfig> m_columns;
+    std::vector<ColumnConfig> m_columns_;
     
     // Change notification
-    ChangeCallback m_changeCallback;
+    ChangeCallback m_change_callback_;
     
     // Helper methods
     void NotifyChange(const CString& setting, const CString& value);
@@ -383,10 +383,10 @@ public:
     
     // Global settings
     void SetGlobalCachingEnabled(bool enabled);
-    bool IsGlobalCachingEnabled() const { return m_globalCachingEnabled; }
+    bool IsGlobalCachingEnabled() const { return m_global_caching_enabled_; }
     
     void SetGlobalPerformanceMonitoring(bool enabled);
-    bool IsGlobalPerformanceMonitoringEnabled() const { return m_globalPerformanceMonitoring; }
+    bool IsGlobalPerformanceMonitoringEnabled() const { return m_global_performance_monitoring_; }
     
     // Reset all configurations
     void ResetAllConfigurations();
@@ -399,7 +399,7 @@ private:
     ConfigurationManager(const ConfigurationManager&) = delete;
     ConfigurationManager& operator=(const ConfigurationManager&) = delete;
     
-    std::map<CString, std::shared_ptr<DataListCtrlConfiguration>> m_configurations;
-    bool m_globalCachingEnabled = true;
-    bool m_globalPerformanceMonitoring = true;
+    std::map<CString, std::shared_ptr<DataListCtrlConfiguration>> m_configurations_;
+    bool m_global_caching_enabled_ = true;
+    bool m_global_performance_monitoring_ = true;
 };

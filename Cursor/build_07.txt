@@ -1,0 +1,12 @@
+C:\Users\fred\source\repos\dbwave64\dbWave64\dbView_optimized\ViewdbWave_Optimized.cpp(547,85): error C4839: non-standard use of class 'std::unique_ptr<DataListCtrl_Optimized,std::default_delete<DataListCtrl_Optimized>>' as an argument to a variadic function
+1>(compiling source file '/dbView_optimized/ViewdbWave_Optimized.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView_optimized\ViewdbWave_Optimized.cpp(547,85):
+1>    the constructor and destructor will not be called; a bitwise copy of the class will be passed as the argument
+1>    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3347,7):
+1>    see declaration of 'std::unique_ptr<DataListCtrl_Optimized,std::default_delete<DataListCtrl_Optimized>>'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView_optimized\ViewdbWave_Optimized.cpp(547,17): error C2280: 'std::unique_ptr<DataListCtrl_Optimized,std::default_delete<DataListCtrl_Optimized>>::unique_ptr(const std::unique_ptr<DataListCtrl_Optimized,std::default_delete<DataListCtrl_Optimized>> &)': attempting to reference a deleted function
+1>(compiling source file '/dbView_optimized/ViewdbWave_Optimized.cpp')
+1>    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3475,5):
+1>    see declaration of 'std::unique_ptr<DataListCtrl_Optimized,std::default_delete<DataListCtrl_Optimized>>::unique_ptr'
+1>    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3475,5):
+1>    'std::unique_ptr<DataListCtrl_Optimized,std::default_delete<DataListCtrl_Optimized>>::unique_ptr(const std::unique_ptr<DataListCtrl_Optimized,std::default_delete<DataListCtrl_Optimized>> &)': function was explicitly deleted

@@ -46,9 +46,6 @@ public:
 	void resize_signal_column(int n_pixels);
 	int get_visible_rows_size() const { return rows_.GetSize(); }
 	CSpikeDoc* get_visible_rows_spike_doc_at(const int index) { return rows_[index]->p_spike_doc; }
-	
-	// Debug function to force red rectangle display
-	void force_red_rectangle_display();
 
 protected:
 	CArray<DataListCtrl_Row*, DataListCtrl_Row*> rows_;

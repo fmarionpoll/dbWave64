@@ -111,8 +111,6 @@ BOOL CEditCtrl::process_keys(UINT n_char)
 
 void CEditCtrl::on_en_change(CWnd* parent_wnd, float& parameter, const float delta_up, const float delta_down)
 {
-	
-	;
 	switch (m_n_char)
 	{
 	case VK_RETURN:

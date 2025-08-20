@@ -27,10 +27,10 @@ public:
     virtual ~ViewdbWave_Optimized();
 
     // Initialization and setup
-    void Initialize();
-    void InitializeConfiguration();
-    void InitializeControls();
-    void InitializeDataListControl();
+    void initialize();
+    void initialize_configuration();
+    void initialize_controls();
+    void initialize_data_list_control();
     void make_controls_stretchable();
 
     // Document and application integration
@@ -40,25 +40,26 @@ public:
     CdbWaveApp* GetApplication() const { return m_pApplication; }
     
     // Data operations
-    void LoadData();
-    void LoadDataFromDocument(CdbWaveDoc* pDoc);
-    void RefreshDisplay();
-    void UpdateDisplay();
-    void AutoRefresh();
+    void load_data();
+    void load_data_from_document(CdbWaveDoc* pDoc);
+    void refresh_display();
+    void update_display();
+    void update_controls();
+    void auto_refresh();
     
     // Configuration management
-    void LoadConfiguration();
-    void SaveConfiguration();
-    void ResetConfiguration();
+    void load_configuration();
+    void save_configuration();
+    void reset_configuration();
     
     // Simple state management
-    bool IsReady() const { return m_initialized && m_pDocument != nullptr; }
-    bool IsProcessing() const { return m_processing; }
-    bool HasError() const { return !m_lastError.IsEmpty(); }
+    bool is_ready() const { return m_initialized && m_pDocument != nullptr; }
+    bool is_processing() const { return m_processing; }
+    bool has_error() const { return !m_lastError.IsEmpty(); }
     
     // Error handling
-    void HandleError(const CString& message);
-    void ClearError();
+    void handle_error(const CString& message);
+    void clear_error();
     CString GetLastErrorMessage() const { return m_lastError; }
 
 protected:
@@ -70,13 +71,27 @@ protected:
     
     // Message map functions
     afx_msg void OnSize(UINT nType, int cx, int cy);
-    afx_msg void OnTimer(UINT_PTR nIDEvent);
     afx_msg void OnDestroy();
+    afx_msg void OnTimer(UINT nIDEvent);
     afx_msg void OnUpdateViewRefresh(CCmdUI* pCmdUI);
     afx_msg void OnViewRefresh();
     afx_msg void OnUpdateViewAutoRefresh(CCmdUI* pCmdUI);
     afx_msg void OnViewAutoRefresh();
+    afx_msg void on_item_activate_list_ctrl(NMHDR* pNMHDR, LRESULT* pResult);
+
+    afx_msg void on_bn_clicked_data();
+    afx_msg void on_bn_clicked_display_spikes();
+    afx_msg void on_bn_clicked_display_nothing();
     
+    // Display mode management
+    void set_display_mode(int mode);
+    int get_display_mode() const;
+    afx_msg void on_en_change_time_first();
+    afx_msg void on_en_change_time_last();
+    afx_msg void on_en_change_amplitude_span();
+    afx_msg void on_bn_clicked_check_filename();
+    afx_msg void on_en_change_spike_class();
+
     DECLARE_MESSAGE_MAP()
 
 private:
@@ -110,20 +125,22 @@ private:
     bool m_autoRefreshEnabled;
     UINT_PTR m_autoRefreshTimer;
     CString m_lastError;
+    bool m_initialSelectionSet;  // Flag to prevent update_controls from overriding initial selection
+    int m_initialSelectionProtectionCount;  // Counter to protect initial selection for a few calls
     
     // Private helper methods
-    void UpdateControlStates();
-    void UpdateControlValues();
-    void ValidateConfiguration();
+    void update_control_states();
+    void update_control_values();
+    void validate_configuration();
     
     // Configuration helpers
-    void LoadControlValuesFromConfiguration();
-    void SaveControlValuesToConfiguration();
-    void ApplyConfigurationToControls();
+    void load_control_values_from_configuration();
+    void save_control_values_to_configuration();
+    void apply_configuration_to_controls();
     
     // Display mode methods
-    void SetDisplayMode(int mode);
-    void DisplayData();
-    void DisplaySpikes();
-    void DisplayNothing();
+    void display_data();
+    void display_spikes();
+    void display_nothing();
+
 };

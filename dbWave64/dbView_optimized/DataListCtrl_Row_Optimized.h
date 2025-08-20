@@ -26,7 +26,7 @@ class ChartData;
 class CSpikeDoc;
 class ChartSpikeBar;
 class CdbWaveDoc;
-struct DataListCtrlInfos;
+struct data_list_ctrl_infos;
 class CDC;
 class CBitmap;
 class CWnd;
@@ -85,7 +85,7 @@ public:
     
     // Public interface
     void AttachDatabaseRecord(CdbWaveDoc* db_wave_doc);
-    void SetDisplayParameters(DataListCtrlInfos* infos, int imageIndex);
+    void SetDisplayParameters(data_list_ctrl_infos* infos, int imageIndex);
     void ResetDisplayProcessed();
     
     // Serialization
@@ -192,33 +192,33 @@ private:
     PerformanceMetrics m_performanceMetrics;
     
     // Core functionality methods
-    void InitializeDisplayComponents(DataListCtrlInfos* infos, int imageIndex);
+    void InitializeDisplayComponents(data_list_ctrl_infos* infos, int imageIndex);
     void ValidateImageIndex(int imageIndex, CdbWaveDoc* pDoc);
-    void ProcessDisplayMode(DataListCtrlInfos* infos, int imageIndex);
+    void ProcessDisplayMode(data_list_ctrl_infos* infos, int imageIndex);
     
     // Data window management
-    void CreateDataWindow(DataListCtrlInfos* infos, int imageIndex);
+    void CreateDataWindow(data_list_ctrl_infos* infos, int imageIndex);
     void LoadDataDocument();
-    void ConfigureDataWindow(DataListCtrlInfos* infos);
-    void DisplayDataWindow(DataListCtrlInfos* infos, int imageIndex);
+    void ConfigureDataWindow(data_list_ctrl_infos* infos);
+    void DisplayDataWindow(data_list_ctrl_infos* infos, int imageIndex);
     
     // Spike window management
-    void CreateSpikeWindow(DataListCtrlInfos* infos, int imageIndex);
+    void CreateSpikeWindow(data_list_ctrl_infos* infos, int imageIndex);
     void LoadSpikeDocument();
-    void ConfigureSpikeWindow(DataListCtrlInfos* infos);
-    void DisplaySpikeWindow(DataListCtrlInfos* infos, int imageIndex);
+    void ConfigureSpikeWindow(data_list_ctrl_infos* infos);
+    void DisplaySpikeWindow(data_list_ctrl_infos* infos, int imageIndex);
     
     // Empty window management
-    void DisplayEmptyWindow(DataListCtrlInfos* infos, int imageIndex);
+    void DisplayEmptyWindow(data_list_ctrl_infos* infos, int imageIndex);
     
     // Plotting functionality
-    void PlotToImageList(DataListCtrlInfos* infos, int imageIndex, 
+    void PlotToImageList(data_list_ctrl_infos* infos, int imageIndex, 
                         ChartData* pChart, const CString& filename);
-    void PlotToImageList(DataListCtrlInfos* infos, int imageIndex, 
+    void PlotToImageList(data_list_ctrl_infos* infos, int imageIndex, 
                         ChartSpikeBar* pChart, const CString& filename);
-    void CreatePlotBitmap(DataListCtrlInfos* infos, int imageIndex,
+    void CreatePlotBitmap(data_list_ctrl_infos* infos, int imageIndex,
                          ChartData* pChart, CBitmap& bitmap);
-    void CreatePlotBitmap(DataListCtrlInfos* infos, int imageIndex,
+    void CreatePlotBitmap(data_list_ctrl_infos* infos, int imageIndex,
                          ChartSpikeBar* pChart, CBitmap& bitmap);
     
     // Utility methods

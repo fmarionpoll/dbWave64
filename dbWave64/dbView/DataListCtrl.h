@@ -70,7 +70,7 @@ protected:
 	AcqDataDoc* get_visible_rows_acq_data_doc_at(const int index) { return rows_[index]->p_data_doc; }
 
 public:
-	DataListCtrlInfos infos;
+	data_list_ctrl_infos infos;
 
 protected:
 	void delete_ptr_array();

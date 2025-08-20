@@ -7,7 +7,7 @@
 
 // Forward declarations
 class DataListCtrl_Row_Optimized;
-struct DataListCtrlInfos;
+struct data_list_ctrl_infos;
 class CdbWaveDoc;
 class CWnd;
 
@@ -46,7 +46,7 @@ public:
     DataListCtrl_Optimized& operator=(const DataListCtrl_Optimized&) = delete;
     
     // Initialization and setup
-    void initialize(const DataListCtrlConfiguration& config);
+    void initialize(const data_list_ctrl_configuration& config);
     bool is_initialized() const { return m_initialized_; }
     void setup_columns();
     void setup_image_list();
@@ -70,8 +70,8 @@ public:
     void set_current_selection(int record_position);
     
     // Configuration
-    void set_configuration(const DataListCtrlConfiguration& config);
-    const DataListCtrlConfiguration& get_configuration() const { return m_config_; }
+    void set_configuration(const data_list_ctrl_configuration& config);
+    const data_list_ctrl_configuration& get_configuration() const { return m_config_; }
     
     // Caching
     void enable_caching(const bool enable) { m_caching_enabled_ = enable; }
@@ -124,8 +124,8 @@ private:
     // Core data members
     std::vector<std::unique_ptr<DataListCtrl_Row_Optimized>> m_rows_;
     std::unique_ptr<DataListCtrlCache> m_cache_;
-    DataListCtrlConfiguration m_config_;
-    DataListCtrlInfos* m_infos_;
+    data_list_ctrl_configuration m_config_;
+    data_list_ctrl_infos* m_infos_;
     
     // State management
     bool m_initialized_;

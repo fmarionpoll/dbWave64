@@ -181,7 +181,7 @@ void DataListCtrl_Row::attach_database_record(CdbWaveDoc* db_wave_doc)
 	}
 }
 
-void DataListCtrl_Row::set_display_parameters(DataListCtrlInfos* infos, const int i_image)
+void DataListCtrl_Row::set_display_parameters(data_list_ctrl_infos* infos, const int i_image)
 {
 	static int call_count = 0;
 	call_count++;
@@ -229,7 +229,7 @@ void DataListCtrl_Row::set_display_parameters(DataListCtrlInfos* infos, const in
 	}
 }
 
-void DataListCtrl_Row::display_data_wnd(DataListCtrlInfos* infos, const int i_image)
+void DataListCtrl_Row::display_data_wnd(data_list_ctrl_infos* infos, const int i_image)
 {
 	// create objects if necessary
 	if (p_chart_data_wnd == nullptr)
@@ -286,7 +286,7 @@ void DataListCtrl_Row::display_data_wnd(DataListCtrlInfos* infos, const int i_im
 	plot_data(infos, i_image);
 }
 
-void DataListCtrl_Row::plot_data(DataListCtrlInfos* infos, const int i_image) const
+void DataListCtrl_Row::plot_data(data_list_ctrl_infos* infos, const int i_image) const
 {
 	p_chart_data_wnd->set_values_for_bottom_comment(infos->b_display_file_name, cs_datafile_name);
 	CRect client_rect;
@@ -338,7 +338,7 @@ void DataListCtrl_Row::plot_data(DataListCtrlInfos* infos, const int i_image) co
 	p_chart_data_wnd->ReleaseDC(p_dc);
 }
 
-void DataListCtrl_Row::display_spike_wnd(DataListCtrlInfos* infos, const int i_image)
+void DataListCtrl_Row::display_spike_wnd(data_list_ctrl_infos* infos, const int i_image)
 {
 	// create spike window and spike document if necessary
 	if (p_chart_spike_wnd == nullptr)
@@ -412,7 +412,7 @@ void DataListCtrl_Row::display_spike_wnd(DataListCtrlInfos* infos, const int i_i
 	plot_spikes(infos, i_image);
 }
 
-void DataListCtrl_Row::plot_spikes(DataListCtrlInfos* infos, const int i_image) const
+void DataListCtrl_Row::plot_spikes(data_list_ctrl_infos* infos, const int i_image) const
 {
 	p_chart_spike_wnd->set_values_for_bottom_comment(infos->b_display_file_name, cs_spike_file_name);
 
@@ -450,7 +450,7 @@ void DataListCtrl_Row::plot_spikes(DataListCtrlInfos* infos, const int i_image) 
 	//}
 }
 
-void DataListCtrl_Row::display_empty_wnd(DataListCtrlInfos* infos, const int i_image)
+void DataListCtrl_Row::display_empty_wnd(data_list_ctrl_infos* infos, const int i_image)
 {
 	// Create a custom bitmap with light grey rectangle and filename
 	CBitmap custom_bitmap;
@@ -506,7 +506,7 @@ void DataListCtrl_Row::display_empty_wnd(DataListCtrlInfos* infos, const int i_i
 	//}
 }
 
-void DataListCtrl_Row::print_filename_on_rectangle(const DataListCtrlInfos* infos, CDC& mem_dc)
+void DataListCtrl_Row::print_filename_on_rectangle(const data_list_ctrl_infos* infos, CDC& mem_dc)
 {
 	// Draw filename text on the bitmap
 	mem_dc.SetTextColor(RGB(0, 0, 0)); // Black text

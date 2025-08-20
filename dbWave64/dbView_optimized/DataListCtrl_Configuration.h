@@ -17,7 +17,7 @@ class CBitmap;
 class CWnd;
 
 // Constants namespace
-namespace DataListCtrlConfigConstants
+namespace DataListCtrl_ConfigConstants
 {
     // Display modes
     constexpr int DISPLAY_MODE_DATA = 1;
@@ -56,7 +56,7 @@ namespace DataListCtrlConfigConstants
 }
 
 // Exception handling
-enum class ConfigurationError
+enum class Configuration_Error
 {
     SUCCESS,
     INVALID_PARAMETER,
@@ -65,24 +65,24 @@ enum class ConfigurationError
     RESOURCE_FAILED
 };
 
-class ConfigurationException : public std::exception
+class Configuration_Exception : public std::exception
 {
 public:
-    explicit ConfigurationException(ConfigurationError error, const CString& message = _T(""));
-    ConfigurationError GetError() const { return m_error; }
+    explicit Configuration_Exception(Configuration_Error error, const CString& message = _T(""));
+    Configuration_Error GetError() const { return m_error; }
     CString GetMessage() const { return m_message; }
     const char* what() const noexcept override;
     
 private:
-    ConfigurationError m_error;
+    Configuration_Error m_error;
     CString m_message;
 };
 
 // Display settings
-class DisplaySettings
+class display_settings
 {
 public:
-    DisplaySettings();
+    display_settings();
     
     // Getters
     int get_image_width() const { return m_image_width_; }
@@ -120,10 +120,10 @@ private:
 };
 
 // Time settings
-class TimeSettings
+class time_settings
 {
 public:
-    TimeSettings();
+    time_settings();
     
     // Getters
     float get_time_first() const { return m_time_first_; }
@@ -150,10 +150,10 @@ private:
 };
 
 // Amplitude settings
-class AmplitudeSettings
+class amplitude_settings
 {
 public:
-    AmplitudeSettings();
+    amplitude_settings();
     
     // Getters
     float get_mv_span() const { return m_mv_span_; }
@@ -175,10 +175,10 @@ private:
 };
 
 // UI settings
-class UISettings
+class ui_settings
 {
 public:
-    UISettings();
+    ui_settings();
     
     // Getters
     bool is_display_file_name() const { return m_display_file_name_; }
@@ -203,10 +203,10 @@ private:
 };
 
 // Performance settings
-class PerformanceSettings
+class performance_settings
 {
 public:
-    PerformanceSettings();
+    performance_settings();
     
     // Getters
     bool is_caching_enabled() const { return m_caching_enabled_; }
@@ -234,35 +234,35 @@ private:
 };
 
 // Main configuration class
-class DataListCtrlConfiguration
+class data_list_ctrl_configuration
 {
 public:
-    DataListCtrlConfiguration();
-    ~DataListCtrlConfiguration();
+    data_list_ctrl_configuration();
+    ~data_list_ctrl_configuration();
     
     // Prevent copying
-    DataListCtrlConfiguration(const DataListCtrlConfiguration&) = delete;
-    DataListCtrlConfiguration& operator=(const DataListCtrlConfiguration&) = delete;
+    data_list_ctrl_configuration(const data_list_ctrl_configuration&) = delete;
+    data_list_ctrl_configuration& operator=(const data_list_ctrl_configuration&) = delete;
     
     // Allow moving
-    DataListCtrlConfiguration(DataListCtrlConfiguration&& other) noexcept;
-    DataListCtrlConfiguration& operator=(DataListCtrlConfiguration&& other) noexcept;
+    data_list_ctrl_configuration(data_list_ctrl_configuration&& other) noexcept;
+    data_list_ctrl_configuration& operator=(data_list_ctrl_configuration&& other) noexcept;
     
     // Access to settings
-    DisplaySettings& get_display_settings() { return m_display_settings_; }
-    const DisplaySettings& get_display_settings() const { return m_display_settings_; }
+    display_settings& get_display_settings() { return m_display_settings_; }
+    const display_settings& get_display_settings() const { return m_display_settings_; }
     
-    TimeSettings& get_time_settings() { return m_time_settings_; }
-    const TimeSettings& get_time_settings() const { return m_time_settings_; }
+    time_settings& get_time_settings() { return m_time_settings_; }
+    const time_settings& get_time_settings() const { return m_time_settings_; }
     
-    AmplitudeSettings& get_amplitude_settings() { return m_amplitude_settings_; }
-    const AmplitudeSettings& get_amplitude_settings() const { return m_amplitude_settings_; }
+    amplitude_settings& get_amplitude_settings() { return m_amplitude_settings_; }
+    const amplitude_settings& get_amplitude_settings() const { return m_amplitude_settings_; }
     
-    UISettings& get_ui_settings() { return m_ui_settings_; }
-    const UISettings& get_ui_settings() const { return m_ui_settings_; }
+    ui_settings& get_ui_settings() { return m_ui_settings_; }
+    const ui_settings& get_ui_settings() const { return m_ui_settings_; }
     
-    PerformanceSettings& get_performance_settings() { return m_performance_settings_; }
-    const PerformanceSettings& get_performance_settings() const { return m_performance_settings_; }
+    performance_settings& get_performance_settings() { return m_performance_settings_; }
+    const performance_settings& get_performance_settings() const { return m_performance_settings_; }
     
     // Configuration management
     void load_from_registry(const CString& section);
@@ -283,7 +283,7 @@ public:
     void unregister_change_callback();
     
     // Column configuration structure
-    struct ColumnConfig
+    struct column_config
     {
         int width;
         CString header;
@@ -291,23 +291,23 @@ public:
         bool visible;
         int format;
         
-        ColumnConfig() : width(100), index(0), visible(true), format(LVCFMT_LEFT) {}
-        ColumnConfig(int w, const CString& h, const int i) : width(w), header(h), index(i), visible(true), format(LVCFMT_LEFT) {}
-        ColumnConfig(int w, const CString& h, const int i, const bool v, const int f) : width(w), header(h), index(i), visible(v), format(f) {}
+        column_config() : width(100), index(0), visible(true), format(LVCFMT_LEFT) {}
+        column_config(int w, const CString& h, const int i) : width(w), header(h), index(i), visible(true), format(LVCFMT_LEFT) {}
+        column_config(int w, const CString& h, const int i, const bool v, const int f) : width(w), header(h), index(i), visible(v), format(f) {}
     };
     
     // Column management
-    void set_columns(const std::vector<ColumnConfig>& columns);
-    std::vector<ColumnConfig> get_columns() const;
-    void add_column(const ColumnConfig& column);
+    void set_columns(const std::vector<column_config>& columns);
+    std::vector<column_config> get_columns() const;
+    void add_column(const column_config& column);
     void remove_column(int index);
     void clear_columns();
     
     // Configuration access methods
-    const DisplaySettings& get_display_config() const { return m_display_settings_; }
-    const PerformanceSettings& get_performance_config() const { return m_performance_settings_; }
-    DisplaySettings& get_display_config() { return m_display_settings_; }
-    PerformanceSettings& get_performance_config() { return m_performance_settings_; }
+    const display_settings& get_display_config() const { return m_display_settings_; }
+    const performance_settings& get_performance_config() const { return m_performance_settings_; }
+    display_settings& get_display_config() { return m_display_settings_; }
+    performance_settings& get_performance_config() { return m_performance_settings_; }
     
     // Compatibility with old DataListCtrlInfos structure
     struct LegacyInfo
@@ -338,14 +338,14 @@ public:
     
 private:
     // Settings objects
-    DisplaySettings m_display_settings_;
-    TimeSettings m_time_settings_;
-    AmplitudeSettings m_amplitude_settings_;
-    UISettings m_ui_settings_;
-    PerformanceSettings m_performance_settings_;
+    display_settings m_display_settings_;
+    time_settings m_time_settings_;
+    amplitude_settings m_amplitude_settings_;
+    ui_settings m_ui_settings_;
+    performance_settings m_performance_settings_;
     
     // Column configuration
-    std::vector<ColumnConfig> m_columns_;
+    std::vector<column_config> m_columns_;
     
     // Change notification
     ChangeCallback m_change_callback_;
@@ -371,14 +371,14 @@ private:
 };
 
 // Global configuration manager
-class ConfigurationManager
+class Configuration_Manager
 {
 public:
-    static ConfigurationManager& GetInstance();
+    static Configuration_Manager& GetInstance();
     
     // Configuration management
-    void RegisterConfiguration(const CString& name, std::shared_ptr<DataListCtrlConfiguration> config);
-    std::shared_ptr<DataListCtrlConfiguration> GetConfiguration(const CString& name);
+    void RegisterConfiguration(const CString& name, std::shared_ptr<data_list_ctrl_configuration> config);
+    std::shared_ptr<data_list_ctrl_configuration> GetConfiguration(const CString& name);
     void UnregisterConfiguration(const CString& name);
     
     // Global settings
@@ -392,14 +392,14 @@ public:
     void ResetAllConfigurations();
     
 private:
-    ConfigurationManager() = default;
-    ~ConfigurationManager() = default;
+    Configuration_Manager() = default;
+    ~Configuration_Manager() = default;
     
     // Prevent copying
-    ConfigurationManager(const ConfigurationManager&) = delete;
-    ConfigurationManager& operator=(const ConfigurationManager&) = delete;
+    Configuration_Manager(const Configuration_Manager&) = delete;
+    Configuration_Manager& operator=(const Configuration_Manager&) = delete;
     
-    std::map<CString, std::shared_ptr<DataListCtrlConfiguration>> m_configurations_;
+    std::map<CString, std::shared_ptr<data_list_ctrl_configuration>> m_configurations_;
     bool m_global_caching_enabled_ = true;
     bool m_global_performance_monitoring_ = true;
 };

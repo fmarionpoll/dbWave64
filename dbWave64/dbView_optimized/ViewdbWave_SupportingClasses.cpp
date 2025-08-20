@@ -27,7 +27,7 @@ ViewdbWaveConfiguration::ViewdbWaveConfiguration()
     , m_amplitudeSpan(1.0)
     , m_displayFileName(false)
     , m_filterEnabled(false)
-    , m_displayMode(DataListCtrlConfigConstants::DISPLAY_MODE_EMPTY)
+    , m_displayMode(DataListCtrl_ConfigConstants::DISPLAY_MODE_EMPTY)
     , m_displayAllClasses(true)
 {
 }
@@ -49,7 +49,7 @@ void ViewdbWaveConfiguration::LoadFromRegistry(const CString& section)
         m_amplitudeSpan = _ttof(amplitudeSpanStr);
         m_displayFileName = AfxGetApp()->GetProfileInt(section, _T("DisplayFileName"), 0) != 0;
         m_filterEnabled = AfxGetApp()->GetProfileInt(section, _T("FilterEnabled"), 0) != 0;
-        m_displayMode = AfxGetApp()->GetProfileInt(section, _T("DisplayMode"), DataListCtrlConfigConstants::DISPLAY_MODE_EMPTY);
+        m_displayMode = AfxGetApp()->GetProfileInt(section, _T("DisplayMode"), DataListCtrl_ConfigConstants::DISPLAY_MODE_EMPTY);
         m_displayAllClasses = AfxGetApp()->GetProfileInt(section, _T("DisplayAllClasses"), 1) != 0;
     }
     catch (const std::exception& e)
@@ -98,7 +98,7 @@ void ViewdbWaveConfiguration::LoadFromIniFile(const CString& filename, const CSt
         m_amplitudeSpan = GetPrivateProfileDouble(section, _T("AmplitudeSpan"), 1.0, filename);
         m_displayFileName = GetPrivateProfileInt(section, _T("DisplayFileName"), 0, filename) != 0;
         m_filterEnabled = GetPrivateProfileInt(section, _T("FilterEnabled"), 0, filename) != 0;
-        m_displayMode = GetPrivateProfileInt(section, _T("DisplayMode"), DataListCtrlConfigConstants::DISPLAY_MODE_EMPTY, filename);
+        m_displayMode = GetPrivateProfileInt(section, _T("DisplayMode"), DataListCtrl_ConfigConstants::DISPLAY_MODE_EMPTY, filename);
         m_displayAllClasses = GetPrivateProfileInt(section, _T("DisplayAllClasses"), 1, filename) != 0;
     }
     catch (const std::exception& e)

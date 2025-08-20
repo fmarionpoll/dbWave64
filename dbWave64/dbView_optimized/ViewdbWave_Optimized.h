@@ -11,7 +11,7 @@
 class CdbWaveDoc;
 class CdbWaveApp;
 class DataListCtrl_Optimized;
-class DataListCtrlConfiguration;
+class data_list_ctrl_configuration;
 class CdbTableMain;
 class CSpikeDoc;
 
@@ -68,38 +68,13 @@ protected:
     virtual void OnInitialUpdate();
     virtual void DoDataExchange(CDataExchange* pDX);
     virtual void OnUpdate(CView* p_sender, const LPARAM l_hint, CObject* p_hint);
-    
-    // Message map functions
-    afx_msg void OnSize(UINT nType, int cx, int cy);
-    afx_msg void OnDestroy();
-    afx_msg void OnTimer(UINT nIDEvent);
-    afx_msg void OnUpdateViewRefresh(CCmdUI* pCmdUI);
-    afx_msg void OnViewRefresh();
-    afx_msg void OnUpdateViewAutoRefresh(CCmdUI* pCmdUI);
-    afx_msg void OnViewAutoRefresh();
-    afx_msg void on_item_activate_list_ctrl(NMHDR* pNMHDR, LRESULT* pResult);
-
-    afx_msg void on_bn_clicked_data();
-    afx_msg void on_bn_clicked_display_spikes();
-    afx_msg void on_bn_clicked_display_nothing();
-    
-    // Display mode management
-    void set_display_mode(int mode);
-    int get_display_mode() const;
-    afx_msg void on_en_change_time_first();
-    afx_msg void on_en_change_time_last();
-    afx_msg void on_en_change_amplitude_span();
-    afx_msg void on_bn_clicked_check_filename();
-    afx_msg void on_en_change_spike_class();
-
-    DECLARE_MESSAGE_MAP()
 
 private:
     // Core components
     CdbWaveDoc* m_pDocument; 
     CdbWaveApp* m_pApplication; 
     std::unique_ptr<DataListCtrl_Optimized> m_pDataListCtrl;
-    std::unique_ptr<::DataListCtrlConfiguration> m_pConfiguration;
+    std::unique_ptr<::data_list_ctrl_configuration> m_pConfiguration;
     
     // Simplified configuration management
     ViewdbWaveConfiguration m_configManager;
@@ -143,4 +118,34 @@ private:
     void display_spikes();
     void display_nothing();
 
+    // Display mode management
+    void set_display_mode(int mode);
+    int get_display_mode();
+
+protected:
+    DECLARE_MESSAGE_MAP()
+
+    // Message map functions
+    afx_msg void OnSize(UINT nType, int cx, int cy);
+    afx_msg void OnDestroy();
+    afx_msg void OnTimer(UINT nIDEvent);
+    afx_msg void OnUpdateViewRefresh(CCmdUI* pCmdUI);
+    afx_msg void OnViewRefresh();
+    afx_msg void OnUpdateViewAutoRefresh(CCmdUI* pCmdUI);
+    afx_msg void OnViewAutoRefresh();
+
+    afx_msg void on_item_activate_list_ctrl(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void on_record_page_up();
+    afx_msg void on_record_page_down();
+    afx_msg void on_click_median_filter();
+    afx_msg void on_bn_clicked_data();
+    afx_msg void on_bn_clicked_display_spikes();
+    afx_msg void on_bn_clicked_display_nothing();
+    afx_msg void on_bn_clicked_check_filename();
+    afx_msg void on_dbl_clk_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_result);
+
+    afx_msg void on_en_change_time_first();
+    afx_msg void on_en_change_time_last();
+    afx_msg void on_en_change_amplitude_span();
+    afx_msg void on_en_change_spike_class();
 };

@@ -3,7 +3,7 @@
 #include "ChartWnd.h"
 
 
-struct DataListCtrlInfos
+struct data_list_ctrl_infos
 {
 	CWnd* parent {nullptr};
 

@@ -47,7 +47,7 @@ DataListCtrl_Optimized::DataListCtrl_Optimized()
     , m_current_selection_(-1)
 {
     // Initialize with default configuration
-    m_config_ = DataListCtrlConfiguration();
+    m_config_ = data_list_ctrl_configuration();
 }
 
 DataListCtrl_Optimized::~DataListCtrl_Optimized()
@@ -60,7 +60,7 @@ DataListCtrl_Optimized::~DataListCtrl_Optimized()
     }
 }
 
-void DataListCtrl_Optimized::initialize(const DataListCtrlConfiguration& config)
+void DataListCtrl_Optimized::initialize(const data_list_ctrl_configuration& config)
 {
     try
     {
@@ -105,7 +105,7 @@ void DataListCtrl_Optimized::initialize(const DataListCtrlConfiguration& config)
         m_cache_ = std::make_unique<DataListCtrlCache>();
         
         // Initialize m_infos
-        m_infos_ = new DataListCtrlInfos();
+        m_infos_ = new data_list_ctrl_infos();
         m_infos_->image_width = g_column_width[DLC_COLUMN_CURVE];
         m_infos_->image_height = m_config_.get_display_config().get_image_height();
         
@@ -417,7 +417,7 @@ void DataListCtrl_Optimized::refresh_display()
     }
 }
 
-void DataListCtrl_Optimized::set_configuration(const DataListCtrlConfiguration& config)
+void DataListCtrl_Optimized::set_configuration(const data_list_ctrl_configuration& config)
 {
     try
     {
@@ -826,7 +826,7 @@ void DataListCtrl_Optimized::center_item_in_viewport(int itemIndex)
     {
         if (!GetSafeHwnd() || itemIndex < 0 || itemIndex >= GetItemCount())
         {
-            OutputDebugString(_T("DataListCtrl_Optimized::center_item_in_viewport - Invalid parameters\n"));
+            TRACE(_T("DataListCtrl_Optimized::center_item_in_viewport - Invalid parameters\n"));
             return;
         }
 
@@ -841,7 +841,7 @@ void DataListCtrl_Optimized::center_item_in_viewport(int itemIndex)
         CString rangeMsg;
         rangeMsg.Format(_T("DataListCtrl_Optimized::center_item_in_viewport - Current range: %d to %d, Target: %d\n"), 
                        topIndex, bottomIndex, itemIndex);
-        OutputDebugString(rangeMsg);
+        TRACE(rangeMsg);
         
         // Always center the item, even if it's already visible
         // Calculate the target top index to center the item
@@ -853,25 +853,25 @@ void DataListCtrl_Optimized::center_item_in_viewport(int itemIndex)
         {
             CString scrollMsg;
             scrollMsg.Format(_T("DataListCtrl_Optimized::center_item_in_viewport - Scrolling to center item at top index: %d (current: %d)\n"), targetTopIndex, topIndex);
-            OutputDebugString(scrollMsg);
+            TRACE(scrollMsg);
             
             // Use the standard MFC approach: ensure the target item is visible
             // This will automatically scroll the list to show the item
             EnsureVisible(targetTopIndex, FALSE);
             UpdateWindow();
             
-            OutputDebugString(_T("DataListCtrl_Optimized::center_item_in_viewport - Scroll completed\n"));
+            TRACE(_T("DataListCtrl_Optimized::center_item_in_viewport - Scroll completed\n"));
         }
         else
         {
-            OutputDebugString(_T("DataListCtrl_Optimized::center_item_in_viewport - Item already centered\n"));
+            TRACE(_T("DataListCtrl_Optimized::center_item_in_viewport - Item already centered\n"));
         }
     }
     catch (const std::exception& e)
     {
         CString errorMsg;
-        errorMsg.Format(_T("DataListCtrl_Optimized::center_item_in_viewport - Exception: %s\n"), CString(e.what()));
-        OutputDebugString(errorMsg);
+        errorMsg.Format(_T("DataListCtrl_Optimized::center_item_in_viewport - Exception: %s\n"), e.what());
+        TRACE(errorMsg);
         handle_error(CString(e.what()));
     }
 }
@@ -1749,10 +1749,10 @@ void DataListCtrl_Optimized::initialize_columns()
             m_infos_->image_width = g_column_width[DLC_COLUMN_CURVE];
             
         // Initialize the configuration with the correct column information
-        std::vector<DataListCtrlConfiguration::ColumnConfig> columns;
+        std::vector<data_list_ctrl_configuration::column_config> columns;
         for (int i = 0; i < DLC_N_COLUMNS; i++)
         {
-            DataListCtrlConfiguration::ColumnConfig col;
+            data_list_ctrl_configuration::column_config col;
             col.width = g_column_width[i];
             col.header = g_column_headers_[i];
             col.format = g_column_format_[i];

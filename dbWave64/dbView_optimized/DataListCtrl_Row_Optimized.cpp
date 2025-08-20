@@ -228,7 +228,7 @@ void DataListCtrl_Row_Optimized::AttachDatabaseRecord(CdbWaveDoc* db_wave_doc)
     }
 }
 
-void DataListCtrl_Row_Optimized::SetDisplayParameters(DataListCtrlInfos* infos, int imageIndex)
+void DataListCtrl_Row_Optimized::SetDisplayParameters(data_list_ctrl_infos* infos, int imageIndex)
 {
     if (!infos)
     {
@@ -354,24 +354,24 @@ void DataListCtrl_Row_Optimized::ResetPerformanceMetrics()
 }
 
 // Private implementation methods
-void DataListCtrl_Row_Optimized::ProcessDisplayMode(DataListCtrlInfos* infos, int imageIndex)
+void DataListCtrl_Row_Optimized::ProcessDisplayMode(data_list_ctrl_infos* infos, int imageIndex)
 {
     switch (infos->display_mode)
     {
-    case DataListCtrlConfigConstants::DISPLAY_MODE_DATA:
+    case DataListCtrl_ConfigConstants::DISPLAY_MODE_DATA:
         DisplayDataWindow(infos, imageIndex);
         break;
-    case DataListCtrlConfigConstants::DISPLAY_MODE_SPIKE:
+    case DataListCtrl_ConfigConstants::DISPLAY_MODE_SPIKE:
         DisplaySpikeWindow(infos, imageIndex);
         break;
-    case DataListCtrlConfigConstants::DISPLAY_MODE_EMPTY:
+    case DataListCtrl_ConfigConstants::DISPLAY_MODE_EMPTY:
     default:
         DisplayEmptyWindow(infos, imageIndex);
         break;
     }
 }
 
-void DataListCtrl_Row_Optimized::DisplayDataWindow(DataListCtrlInfos* infos, int imageIndex)
+void DataListCtrl_Row_Optimized::DisplayDataWindow(data_list_ctrl_infos* infos, int imageIndex)
 {
     MeasurePerformance([&]() {
         CreateDataWindow(infos, imageIndex);
@@ -381,7 +381,7 @@ void DataListCtrl_Row_Optimized::DisplayDataWindow(DataListCtrlInfos* infos, int
     });
 }
 
-void DataListCtrl_Row_Optimized::DisplaySpikeWindow(DataListCtrlInfos* infos, int imageIndex)
+void DataListCtrl_Row_Optimized::DisplaySpikeWindow(data_list_ctrl_infos* infos, int imageIndex)
 {
     MeasurePerformance([&]() {
         CreateSpikeWindow(infos, imageIndex);
@@ -391,7 +391,7 @@ void DataListCtrl_Row_Optimized::DisplaySpikeWindow(DataListCtrlInfos* infos, in
     });
 }
 
-void DataListCtrl_Row_Optimized::DisplayEmptyWindow(DataListCtrlInfos* infos, int imageIndex)
+void DataListCtrl_Row_Optimized::DisplayEmptyWindow(data_list_ctrl_infos* infos, int imageIndex)
 {
     MeasurePerformance([&]() {
         // Create empty bitmap with filename using standard MFC GDI
@@ -464,7 +464,7 @@ void DataListCtrl_Row_Optimized::DisplayEmptyWindow(DataListCtrlInfos* infos, in
     });
 }
 
-void DataListCtrl_Row_Optimized::CreateDataWindow(DataListCtrlInfos* infos, int imageIndex)
+void DataListCtrl_Row_Optimized::CreateDataWindow(data_list_ctrl_infos* infos, int imageIndex)
 {
     if (!m_pChartDataWnd)
     {
@@ -511,7 +511,7 @@ void DataListCtrl_Row_Optimized::LoadDataDocument()
     m_pDataDoc->acq_close_file();
 }
 
-void DataListCtrl_Row_Optimized::ConfigureDataWindow(DataListCtrlInfos* infos)
+void DataListCtrl_Row_Optimized::ConfigureDataWindow(data_list_ctrl_infos* infos)
 {
     if (!m_pChartDataWnd || !m_pDataDoc)
         return;
@@ -527,7 +527,7 @@ void DataListCtrl_Row_Optimized::ConfigureDataWindow(DataListCtrlInfos* infos)
     m_pChartDataWnd->adjust_gain(infos->b_set_mv_span, infos->mv_span);
 }
 
-void DataListCtrl_Row_Optimized::CreateSpikeWindow(DataListCtrlInfos* infos, int imageIndex)
+void DataListCtrl_Row_Optimized::CreateSpikeWindow(data_list_ctrl_infos* infos, int imageIndex)
 {
     if (!m_pChartSpikeWnd)
     {
@@ -567,7 +567,7 @@ void DataListCtrl_Row_Optimized::LoadSpikeDocument()
     }
 }
 
-void DataListCtrl_Row_Optimized::ConfigureSpikeWindow(DataListCtrlInfos* infos)
+void DataListCtrl_Row_Optimized::ConfigureSpikeWindow(data_list_ctrl_infos* infos)
 {
     if (!m_pChartSpikeWnd || !m_pSpikeDoc)
         return;
@@ -600,7 +600,7 @@ void DataListCtrl_Row_Optimized::ConfigureSpikeWindow(DataListCtrlInfos* infos)
     }
 }
 
-void DataListCtrl_Row_Optimized::PlotToImageList(DataListCtrlInfos* infos, int imageIndex, 
+void DataListCtrl_Row_Optimized::PlotToImageList(data_list_ctrl_infos* infos, int imageIndex, 
                                                 ChartData* pChart, const CString& filename)
 {
     if (!pChart)
@@ -663,7 +663,7 @@ void DataListCtrl_Row_Optimized::PlotToImageList(DataListCtrlInfos* infos, int i
     pChart->ReleaseDC(pDC);
 }
 
-void DataListCtrl_Row_Optimized::PlotToImageList(DataListCtrlInfos* infos, int imageIndex, 
+void DataListCtrl_Row_Optimized::PlotToImageList(data_list_ctrl_infos* infos, int imageIndex, 
                                                 ChartSpikeBar* pChart, const CString& filename)
 {
     if (!pChart)
@@ -726,7 +726,7 @@ void DataListCtrl_Row_Optimized::PlotToImageList(DataListCtrlInfos* infos, int i
     pChart->ReleaseDC(pDC);
 }
 
-void DataListCtrl_Row_Optimized::CreatePlotBitmap(DataListCtrlInfos* infos, int imageIndex,
+void DataListCtrl_Row_Optimized::CreatePlotBitmap(data_list_ctrl_infos* infos, int imageIndex,
                                                  ChartData* pChart, CBitmap& bitmap)
 {
     if (!pChart)
@@ -766,7 +766,7 @@ void DataListCtrl_Row_Optimized::CreatePlotBitmap(DataListCtrlInfos* infos, int 
     pChart->ReleaseDC(pDC);
 }
 
-void DataListCtrl_Row_Optimized::CreatePlotBitmap(DataListCtrlInfos* infos, int imageIndex,
+void DataListCtrl_Row_Optimized::CreatePlotBitmap(data_list_ctrl_infos* infos, int imageIndex,
                                                  ChartSpikeBar* pChart, CBitmap& bitmap)
 {
     if (!pChart)
@@ -832,8 +832,8 @@ bool DataListCtrl_Row_Optimized::IsValidIndex(int index, int maxCount) const
 
 bool DataListCtrl_Row_Optimized::IsValidDisplayMode(int mode) const
 {
-        return mode >= DataListCtrlConfigConstants::DISPLAY_MODE_EMPTY &&
-           mode <= DataListCtrlConfigConstants::DISPLAY_MODE_SPIKE;
+        return mode >= DataListCtrl_ConfigConstants::DISPLAY_MODE_EMPTY &&
+           mode <= DataListCtrl_ConfigConstants::DISPLAY_MODE_SPIKE;
 }
 
 void DataListCtrl_Row_Optimized::HandleError(DataListCtrlError error, const CString& message)

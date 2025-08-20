@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 #include "ViewdbWave_Optimized.h"
 
-#include "ChartWnd.h"
 #include "ViewdbWave_SupportingClasses.h"
 #include "DataListCtrl_Optimized.h"
 #include "DataListCtrl_Configuration.h"
@@ -21,6 +20,8 @@ BEGIN_MESSAGE_MAP(ViewdbWave_Optimized, ViewDbTable)
     ON_COMMAND(ViewdbWaveConstants::ID_VIEW_REFRESH, OnViewRefresh)
     ON_UPDATE_COMMAND_UI(ViewdbWaveConstants::ID_VIEW_AUTO_REFRESH, OnUpdateViewAutoRefresh)
     ON_COMMAND(ViewdbWaveConstants::ID_VIEW_AUTO_REFRESH, OnViewAutoRefresh)
+    ON_COMMAND(ID_RECORD_PAGE_UP, &ViewdbWave_Optimized::on_record_page_up)
+    ON_COMMAND(ID_RECORD_PAGE_DOWN, &ViewdbWave_Optimized::on_record_page_down)
 
     ON_BN_CLICKED(ViewdbWaveConstants::VW_IDC_DISPLAYDATA, &ViewdbWave_Optimized::on_bn_clicked_data)
     ON_BN_CLICKED(ViewdbWaveConstants::VW_IDC_DISPLAY_SPIKES, &ViewdbWave_Optimized::on_bn_clicked_display_spikes)
@@ -30,8 +31,11 @@ BEGIN_MESSAGE_MAP(ViewdbWave_Optimized, ViewDbTable)
     ON_EN_CHANGE(ViewdbWaveConstants::VW_IDC_AMPLITUDESPAN, &ViewdbWave_Optimized::on_en_change_amplitude_span)
     ON_EN_CHANGE(ViewdbWaveConstants::VW_IDC_SPIKECLASS, &ViewdbWave_Optimized::on_en_change_spike_class)
     ON_BN_CLICKED(ViewdbWaveConstants::VW_IDC_CHECKFILENAME, &ViewdbWave_Optimized::on_bn_clicked_check_filename)
+    ON_BN_CLICKED(ViewdbWaveConstants::VW_IDC_FILTERCHECK, &ViewdbWave_Optimized::on_click_median_filter)
+
     ON_WM_TIMER()
     ON_NOTIFY(LVN_ITEMACTIVATE, ViewdbWaveConstants::VW_IDC_LISTCTRL, &ViewdbWave_Optimized::on_item_activate_list_ctrl)
+    ON_NOTIFY(NM_DBLCLK, ViewdbWaveConstants::VW_IDC_LISTCTRL, &ViewdbWave_Optimized::on_dbl_clk_list_ctrl)
 
 END_MESSAGE_MAP()
 
@@ -40,7 +44,7 @@ ViewdbWave_Optimized::ViewdbWave_Optimized()
     , m_pDocument(nullptr)
     , m_pApplication(nullptr)
     , m_pDataListCtrl(std::make_unique<DataListCtrl_Optimized>())
-    , m_pConfiguration(std::make_unique<::DataListCtrlConfiguration>())
+    , m_pConfiguration(std::make_unique<::data_list_ctrl_configuration>())
     , m_pTimeFirstEdit(std::make_unique<CEditCtrl>())
     , m_pTimeLastEdit(std::make_unique<CEditCtrl>())
     , m_pAmplitudeSpanEdit(std::make_unique<CEditCtrl>())
@@ -94,19 +98,15 @@ void ViewdbWave_Optimized::initialize()
     {
         if (m_initialized)
         {
-            OutputDebugString(_T("ViewdbWave_Optimized::Initialize - Already initialized\n"));
             return;
         }
-        
-        OutputDebugString(_T("ViewdbWave_Optimized::Initialize - Starting initialization\n"));
-        
+
         initialize_controls();
         initialize_data_list_control();
         make_controls_stretchable();
         initialize_configuration();
         
         m_initialized = true;
-        OutputDebugString(_T("ViewdbWave_Optimized::Initialize - Initialization complete\n"));
     }
     catch (const std::exception& e)
     {
@@ -118,10 +118,7 @@ void ViewdbWave_Optimized::initialize_configuration()
 {
     try
     {
-        // Load configuration from registry
         m_configManager.LoadFromRegistry(_T("ViewdbWave"));
-        
-        // Apply configuration to controls
         apply_configuration_to_controls();
     }
     catch (const std::exception& e)
@@ -166,17 +163,14 @@ void ViewdbWave_Optimized::initialize_controls()
         if (m_pDisplayDataButton && m_pDisplayDataButton->GetSafeHwnd()) 
         {
             m_pDisplayDataButton->EnableWindow(TRUE);
-            OutputDebugString(_T("ViewdbWave_Optimized::initialize_controls - DisplayData button enabled\n"));
         }
         if (m_pDisplaySpikesButton && m_pDisplaySpikesButton->GetSafeHwnd()) 
         {
             m_pDisplaySpikesButton->EnableWindow(TRUE);
-            OutputDebugString(_T("ViewdbWave_Optimized::initialize_controls - DisplaySpikes button enabled\n"));
         }
         if (m_pDisplayNothingButton && m_pDisplayNothingButton->GetSafeHwnd()) 
         {
             m_pDisplayNothingButton->EnableWindow(TRUE);
-            OutputDebugString(_T("ViewdbWave_Optimized::initialize_controls - DisplayNothing button enabled\n"));
         }
         
         // Set default display mode to "no display" (grey rectangle) and select the button
@@ -186,7 +180,6 @@ void ViewdbWave_Optimized::initialize_controls()
         if (m_pDisplayNothingButton && m_pDisplayNothingButton->GetSafeHwnd())
         {
             m_pDisplayNothingButton->SetCheck(BST_CHECKED);
-            OutputDebugString(_T("ViewdbWave_Optimized::initialize_controls - DisplayNothing button set to checked\n"));
         }
         if (m_pDisplayDataButton && m_pDisplayDataButton->GetSafeHwnd())
         {
@@ -196,8 +189,7 @@ void ViewdbWave_Optimized::initialize_controls()
         {
             m_pDisplaySpikesButton->SetCheck(BST_UNCHECKED);
         }
-        
-        OutputDebugString(_T("ViewdbWave_Optimized::initialize_controls - Controls initialized successfully\n"));
+
     }
     catch (const std::exception& e)
     {
@@ -224,7 +216,6 @@ void ViewdbWave_Optimized::initialize_data_list_control()
 
         // Set the parent window so the DataListCtrl can access the document
         m_pDataListCtrl->set_parent_window(this);
-        
         m_pDataListCtrl->initialize(*m_pConfiguration);
         
         // Load saved column widths after initialization
@@ -248,26 +239,11 @@ void ViewdbWave_Optimized::make_controls_stretchable()
 
 void ViewdbWave_Optimized::SetDocument(CdbWaveDoc* pDoc)
 {
-            CString docPtrMsg;
-        docPtrMsg.Format(_T("ViewdbWave_Optimized::SetDocument - Document pointer: %p\n"), pDoc);
-        OutputDebugString(docPtrMsg);
-    
-    // Store the document reference
     m_pDocument = pDoc;
-    
     // Load data immediately if initialized (simplified approach for local database)
     if (pDoc && m_initialized)
     {
-        OutputDebugString(_T("ViewdbWave_Optimized::SetDocument - Document set and initialized, calling LoadData\n"));
         load_data();
-    }
-    else
-    {
-        OutputDebugString(_T("ViewdbWave_Optimized::SetDocument - Document set but not initialized yet\n"));
-                CString docInitMsg;
-        docInitMsg.Format(_T("ViewdbWave_Optimized::SetDocument - Document: %p, Initialized: %s\n"),
-              pDoc, m_initialized ? _T("true") : _T("false"));
-        OutputDebugString(docInitMsg);
     }
 }
 
@@ -280,40 +256,23 @@ void ViewdbWave_Optimized::load_data()
 {
     try
     {
-        OutputDebugString(_T("ViewdbWave_Optimized::LoadData - Starting\n"));
-        
         CdbWaveDoc* pDoc = GetDocument();
         if (!pDoc)
         {
-            OutputDebugString(_T("ViewdbWave_Optimized::LoadData - No document available\n"));
             return;
         }
-        
-        m_processing = true;
-        OutputDebugString(_T("ViewdbWave_Optimized::LoadData - Document available, loading data\n"));
-        
-        // Load data directly
+        m_processing = true;        
         load_data_from_document(pDoc);
         
         // Refresh the display after data loading is complete
         if (m_pDataListCtrl && m_pDataListCtrl->GetSafeHwnd())
         {
-            OutputDebugString(_T("ViewdbWave_Optimized::LoadData - Refreshing display\n"));
             m_pDataListCtrl->refresh_display();
         }
-        else
-        {
-            OutputDebugString(_T("ViewdbWave_Optimized::LoadData - DataListCtrl not available for refresh\n"));
-        }
-        
         m_processing = false;
-        OutputDebugString(_T("ViewdbWave_Optimized::LoadData - Complete\n"));
     }
     catch (const std::exception& e)
     {
-        CString loadExceptionMsg;
-        loadExceptionMsg.Format(_T("ViewdbWave_Optimized::LoadData - Exception: %s\n"), CString(e.what()));
-        OutputDebugString(loadExceptionMsg);
         m_processing = false;
         handle_error(CString(e.what()));
     }
@@ -323,55 +282,31 @@ void ViewdbWave_Optimized::load_data_from_document(CdbWaveDoc* pDoc)
 {
     try
     {
-        OutputDebugString(_T("ViewdbWave_Optimized::LoadDataFromDocument - Starting\n"));
-        
         if (pDoc && m_pDataListCtrl)
         {
-            // Clear existing items first (like the original fill_list_box)
+
             m_pDataListCtrl->DeleteAllItems();
-            
-            // Get the number of records from the database
             const int n_records = pDoc->db_get_records_count();
-            CString recordCountMsg;
-        recordCountMsg.Format(_T("ViewdbWave_Optimized::LoadDataFromDocument - Record count: %d\n"), n_records);
-        OutputDebugString(recordCountMsg);
-            
             // Set the item count for the virtual list control (like SetItemCountEx in original)
-            m_pDataListCtrl->SetItemCount(n_records);
-            CString itemCountMsg;
-            itemCountMsg.Format(_T("ViewdbWave_Optimized::LoadDataFromDocument - Set item count to: %d\n"), n_records);
-            OutputDebugString(itemCountMsg);
-            
-            // Also set row count for the optimized version
-            m_pDataListCtrl->set_row_count(n_records);
-            CString rowCountMsg;
-            rowCountMsg.Format(_T("ViewdbWave_Optimized::LoadDataFromDocument - Set row count to: %d\n"), n_records);
-            OutputDebugString(rowCountMsg);
+            m_pDataListCtrl->SetItemCount(n_records); // TODO: useful?
+            m_pDataListCtrl->set_row_count(n_records); 
             
             // Force a refresh to trigger the display
             m_pDataListCtrl->Invalidate();
-            OutputDebugString(_T("ViewdbWave_Optimized::LoadDataFromDocument - Forced invalidate\n"));
-            
+
             // Update the cache to ensure data is available for display
             if (m_pDataListCtrl->GetSafeHwnd())
             {
                 m_pDataListCtrl->refresh_display();
             }
-            
-            // Update controls to reflect the current database state
+
             update_controls();
-        }
-        else
-        {
-            OutputDebugString(_T("ViewdbWave_Optimized::LoadDataFromDocument - No document or data list control\n"));
         }
     }
     catch (const std::exception& e)
     {
-        CString loadDocExceptionMsg;
-        loadDocExceptionMsg.Format(_T("ViewdbWave_Optimized::LoadDataFromDocument - Exception: %s\n"), CString(e.what()));
-        OutputDebugString(loadDocExceptionMsg);
-        throw;
+        //throw;
+        handle_error(CString(e.what()));
     }
 }
 
@@ -381,10 +316,8 @@ void ViewdbWave_Optimized::refresh_display()
     {
         if (!m_initialized)
         {
-            OutputDebugString(_T("ViewdbWave_Optimized::RefreshDisplay - Not initialized\n"));
             return;
         }
-        
         update_display();
     }
     catch (const std::exception& e)
@@ -397,19 +330,11 @@ void ViewdbWave_Optimized::update_display()
 {
     try
     {
-        // Update control values from configuration
         update_control_values();
-        
-        // Update the view
         Invalidate();
         UpdateWindow();
-        
-        // Refresh the data list control if available
         if (m_pDataListCtrl != nullptr && m_pDataListCtrl->GetSafeHwnd())
-        {
             m_pDataListCtrl->refresh_display();
-        }
-        
     }
     catch (const std::exception& e)
     {
@@ -461,7 +386,7 @@ void ViewdbWave_Optimized::reset_configuration()
         m_configManager.SetAmplitudeSpan(1.0);
         m_configManager.SetDisplayFileName(false);
         m_configManager.SetFilterEnabled(false);
-        m_configManager.SetDisplayMode(DataListCtrlConfigConstants::DISPLAY_MODE_EMPTY);
+        m_configManager.SetDisplayMode(DataListCtrl_ConfigConstants::DISPLAY_MODE_EMPTY);
         m_configManager.SetDisplayAllClasses(true);
         
         apply_configuration_to_controls();
@@ -487,121 +412,50 @@ BOOL ViewdbWave_Optimized::PreCreateWindow(CREATESTRUCT& cs)
 
 void ViewdbWave_Optimized::OnInitialUpdate()
 {
-    OutputDebugString(_T("=== DEBUG: OnInitialUpdate START ===\n"));
-    
     ViewDbTable::OnInitialUpdate();
     
     try
     {
-        OutputDebugString(_T("=== DEBUG: OnInitialUpdate - After ViewDbTable::OnInitialUpdate() ===\n"));
-        
-        initialize();
-        
-        OutputDebugString(_T("=== DEBUG: OnInitialUpdate - After initialize() ===\n"));
+		initialize();
         
         // Load data if document is already available (simplified approach)
         CdbWaveDoc* pDoc = GetDocument();
-        CString docMsg;
-        docMsg.Format(_T("=== DEBUG: OnInitialUpdate - GetDocument() returned: %p ===\n"), pDoc);
-        OutputDebugString(docMsg);
-        
         if (pDoc && m_initialized)
         {
-            OutputDebugString(_T("=== DEBUG: OnInitialUpdate - Document available and initialized ===\n"));
-            
             // Get the current record position BEFORE loading data
             const int current_record_position_before = pDoc->db_get_current_record_position();
-            CString beforeMsg;
-            beforeMsg.Format(_T("=== DEBUG: OnInitialUpdate - Current record position BEFORE load_data: %d ===\n"), current_record_position_before);
-            OutputDebugString(beforeMsg);
-            
-            load_data();
-            
-            OutputDebugString(_T("=== DEBUG: OnInitialUpdate - After load_data() ===\n"));
-            
+			load_data();
+           
             // Get the current record position AFTER loading data
             const int current_record_position_after = pDoc->db_get_current_record_position();
-            CString afterMsg;
-            afterMsg.Format(_T("=== DEBUG: OnInitialUpdate - Current record position AFTER load_data: %d ===\n"), current_record_position_after);
-            OutputDebugString(afterMsg);
             
             if (m_pDataListCtrl && m_pDataListCtrl->GetSafeHwnd())
             {
-                OutputDebugString(_T("=== DEBUG: OnInitialUpdate - DataListCtrl is valid ===\n"));
-                CString countMsg;
-                countMsg.Format(_T("=== DEBUG: OnInitialUpdate - DataListCtrl item count: %d ===\n"), m_pDataListCtrl->GetItemCount());
-                OutputDebugString(countMsg);
-                
-                // Ensure the data list control is properly initialized
+               // Ensure the data list control is properly initialized
                 if (m_pDataListCtrl->GetItemCount() > 0)
                 {
-                    CString selectionMsg;
-                    selectionMsg.Format(_T("=== DEBUG: OnInitialUpdate - Setting selection to record: %d ===\n"), current_record_position_after);
-                    OutputDebugString(selectionMsg);
-                    
                     // Set the current selection
                     m_pDataListCtrl->set_current_selection(current_record_position_after);
                     
-                    OutputDebugString(_T("=== DEBUG: OnInitialUpdate - After set_current_selection() ===\n"));
-                    
                     // Ensure the item is visible and centered in the viewport
                     m_pDataListCtrl->center_item_in_viewport(current_record_position_after);
-                    
-                    OutputDebugString(_T("=== DEBUG: OnInitialUpdate - After center_item_in_viewport() ===\n"));
                     
                     // Force a redraw to show the selection
                     m_pDataListCtrl->RedrawItems(current_record_position_after, current_record_position_after);
                     m_pDataListCtrl->UpdateWindow();
                     
-                    OutputDebugString(_T("=== DEBUG: OnInitialUpdate - After RedrawItems() and UpdateWindow() ===\n"));
-                    
-                    // Force a refresh of the image list to ensure rectangles are displayed
+                   // Force a refresh of the image list to ensure rectangles are displayed
                     m_pDataListCtrl->refresh_display();
-                    
-                    OutputDebugString(_T("=== DEBUG: OnInitialUpdate - After refresh_display() ===\n"));
                     
                     // Mark that initial selection has been set and protect it for a few calls
                     m_initialSelectionSet = true;
                     m_initialSelectionProtectionCount = 5; // Protect for 5 update_controls calls
-                    
-                    CString focusMsg;
-                    focusMsg.Format(_T("=== DEBUG: OnInitialUpdate - Set focus to record: %d ===\n"), current_record_position_after);
-                    OutputDebugString(focusMsg);
-                }
-                else
-                {
-                    OutputDebugString(_T("=== DEBUG: OnInitialUpdate - Data list control has no items yet ===\n"));
-                }
-            }
-            else
-            {
-                OutputDebugString(_T("=== DEBUG: OnInitialUpdate - Data list control not available or no window handle ===\n"));
-                CString ctrlMsg;
-                ctrlMsg.Format(_T("=== DEBUG: OnInitialUpdate - m_pDataListCtrl: %p ===\n"), m_pDataListCtrl.get());
-                OutputDebugString(ctrlMsg);
-                if (m_pDataListCtrl) {
-                    CString handleMsg;
-                    handleMsg.Format(_T("=== DEBUG: OnInitialUpdate - DataListCtrl handle: %p ===\n"), m_pDataListCtrl->GetSafeHwnd());
-                    OutputDebugString(handleMsg);
                 }
             }
         }
-        else
-        {
-            OutputDebugString(_T("=== DEBUG: OnInitialUpdate - No document or not initialized ===\n"));
-            CString initMsg;
-            initMsg.Format(_T("=== DEBUG: OnInitialUpdate - GetDocument() returned: %p, Initialized: %s ===\n"), 
-                  pDoc, m_initialized ? _T("true") : _T("false"));
-            OutputDebugString(initMsg);
-        }
-        
-        OutputDebugString(_T("=== DEBUG: OnInitialUpdate END ===\n"));
     }
     catch (const std::exception& e)
     {
-        CString exceptionMsg;
-        exceptionMsg.Format(_T("=== DEBUG: OnInitialUpdate - Exception: %s ===\n"), CString(e.what()));
-        OutputDebugString(exceptionMsg);
         handle_error(CString(e.what()));
     }
 }
@@ -610,21 +464,16 @@ void ViewdbWave_Optimized::OnInitialUpdate()
 void ViewdbWave_Optimized::OnSize(UINT nType, int cx, int cy)
 {
     ViewDbTable::OnSize(nType, cx, cy);
-    
     try
     {
-        // Handle window resize
         if (m_pDataListCtrl)
         {
-            // Resize the data list control
             CRect rect;
-            GetClientRect(&rect);
-            // Adjust rect for other controls
-            // m_pDataListCtrl->MoveWindow(&rect);
+            m_pDataListCtrl->GetClientRect(&rect);
+            m_pDataListCtrl->fit_columns_to_size(rect.Width());
         }
     }
-    catch (const std::exception& e)
-    {
+    catch (const std::exception& e) {
         handle_error(CString(e.what()));
     }
 }
@@ -633,13 +482,9 @@ void ViewdbWave_Optimized::OnDestroy()
 {
     try
     {
-        // Save column widths before destroying
         if (m_pDataListCtrl)
-        {
             m_pDataListCtrl->save_column_widths();
-        }
-        
-        // Save configuration
+
         save_configuration();
         
         if (m_autoRefreshTimer)
@@ -750,41 +595,31 @@ void ViewdbWave_Optimized::OnTimer(UINT nIDEvent)
 
 void ViewdbWave_Optimized::OnUpdate(CView* p_sender, const LPARAM l_hint, CObject* p_hint)
 {
-    CString hintMsg;
-    hintMsg.Format(_T("ViewdbWave_Optimized::OnUpdate - Hint: 0x%08X\n"), l_hint);
-    OutputDebugString(hintMsg);
-    
     if (!m_initialized)
     {
-        OutputDebugString(_T("ViewdbWave_Optimized::OnUpdate - Not initialized, returning\n"));
         return;
     }
 
     switch (LOWORD(l_hint))
     {
     case HINT_REQUERY:
-        OutputDebugString(_T("ViewdbWave_Optimized::OnUpdate - HINT_REQUERY received\n"));
         load_data();
         break;
         
     case HINT_DOC_HAS_CHANGED:
-        OutputDebugString(_T("ViewdbWave_Optimized::OnUpdate - HINT_DOC_HAS_CHANGED received\n"));
         load_data();
         break;
         
     case HINT_DOC_MOVE_RECORD:
-        OutputDebugString(_T("ViewdbWave_Optimized::OnUpdate - HINT_DOC_MOVE_RECORD received\n"));
         update_controls();
         break;
         
     case HINT_REPLACE_VIEW:
-        OutputDebugString(_T("ViewdbWave_Optimized::OnUpdate - HINT_REPLACE_VIEW received\n"));
         load_data();
         break;
         
     default:
-        OutputDebugString(_T("ViewdbWave_Optimized::OnUpdate - Default case, updating display\n"));
-        update_display();
+       update_display();
         break;
     }
 }
@@ -795,7 +630,7 @@ void ViewdbWave_Optimized::update_control_states()
 {
     try
     {
-        bool enabled = is_ready();
+        const bool enabled = is_ready();
         
         if (m_pTimeFirstEdit) m_pTimeFirstEdit->EnableWindow(enabled);
         if (m_pTimeLastEdit) m_pTimeLastEdit->EnableWindow(enabled);
@@ -817,38 +652,22 @@ void ViewdbWave_Optimized::update_control_states()
 
 void ViewdbWave_Optimized::update_controls()
 {
-    OutputDebugString(_T("=== DEBUG: update_controls() START ===\n"));
-    
     try
     {
         const auto db_wave_doc = GetDocument();
         if (!db_wave_doc)
         {
-            OutputDebugString(_T("=== DEBUG: update_controls() - No document available ===\n"));
             return;
         }
 
-        // Get the current record position from the database
         const int current_record_position = db_wave_doc->db_get_current_record_position();
-        CString posMsg;
-        posMsg.Format(_T("=== DEBUG: update_controls() - Current record position: %d ===\n"), current_record_position);
-        OutputDebugString(posMsg);
-
         // Update the selection in the list control to reflect the database state
         if (m_pDataListCtrl && m_pDataListCtrl->GetSafeHwnd())
         {
-            OutputDebugString(_T("=== DEBUG: update_controls() - DataListCtrl is valid ===\n"));
-            
             // Only update if the current selection is different to avoid unnecessary updates
             int currentSelection = m_pDataListCtrl->get_current_selection();
-            CString selMsg;
-            selMsg.Format(_T("=== DEBUG: update_controls() - Current selection in DataListCtrl: %d ===\n"), currentSelection);
-            OutputDebugString(selMsg);
-            
             if (currentSelection != current_record_position)
             {
-                OutputDebugString(_T("=== DEBUG: update_controls() - Selection differs, checking if we should update ===\n"));
-                
                 // Additional check: don't update if we're in the middle of initialization
                 // This prevents update_controls from overriding the initial selection
                 if (m_initialized && m_pDataListCtrl->GetItemCount() > 0 && currentSelection != -1 && m_initialSelectionSet)
@@ -857,54 +676,23 @@ void ViewdbWave_Optimized::update_controls()
                     if (m_initialSelectionProtectionCount > 0)
                     {
                         m_initialSelectionProtectionCount--;
-                        CString protectionMsg;
-                        protectionMsg.Format(_T("=== DEBUG: update_controls() - Skipping update during protection period (count: %d, currentSelection: %d, dbPosition: %d) ===\n"), 
-                              m_initialSelectionProtectionCount, currentSelection, current_record_position);
-                        OutputDebugString(protectionMsg);
                     }
                     else
                     {
-                        CString updateMsg;
-                        updateMsg.Format(_T("=== DEBUG: update_controls() - Updating selection from %d to %d ===\n"), currentSelection, current_record_position);
-                        OutputDebugString(updateMsg);
-                        
-                        m_pDataListCtrl->set_current_selection(current_record_position);
+                       m_pDataListCtrl->set_current_selection(current_record_position);
                         m_pDataListCtrl->EnsureVisible(current_record_position, FALSE);
-                        CString updatedMsg;
-                        updatedMsg.Format(_T("=== DEBUG: update_controls() - Updated list control selection to position: %d ===\n"), current_record_position);
-                        OutputDebugString(updatedMsg);
                     }
                 }
-                else
-                {
-                    CString skipMsg;
-                    skipMsg.Format(_T("=== DEBUG: update_controls() - Skipping update during initialization (initialized: %s, itemCount: %d, currentSelection: %d, initialSelectionSet: %s) ===\n"), 
-                          m_initialized ? _T("true") : _T("false"), m_pDataListCtrl->GetItemCount(), currentSelection, m_initialSelectionSet ? _T("true") : _T("false"));
-                    OutputDebugString(skipMsg);
-                }
-            }
-            else
-            {
-                CString correctMsg;
-                correctMsg.Format(_T("=== DEBUG: update_controls() - Selection already correct at position: %d ===\n"), current_record_position);
-                OutputDebugString(correctMsg);
             }
         }
-        else
-        {
-            OutputDebugString(_T("=== DEBUG: update_controls() - No data list control available ===\n"));
-        }
+        
 
         // Update other controls as needed (similar to original update_controls)
         // This could include updating file status, spike list, etc.
-        
-        OutputDebugString(_T("=== DEBUG: update_controls() END ===\n"));
+
     }
     catch (const std::exception& e)
     {
-        CString exceptionMsg;
-        exceptionMsg.Format(_T("=== DEBUG: update_controls() - Exception: %s ===\n"), CString(e.what()));
-        OutputDebugString(exceptionMsg);
         handle_error(CString(e.what()));
     }
 }
@@ -1023,7 +811,6 @@ void ViewdbWave_Optimized::apply_configuration_to_controls()
 
 CdbWaveDoc* ViewdbWave_Optimized::GetDocument() const
 {
-    // Use MFC framework to get the document
     return static_cast<CdbWaveDoc*>(CDaoRecordView::GetDocument());
 }
 
@@ -1033,17 +820,10 @@ void ViewdbWave_Optimized::display_data()
 {
     try
     {
-        OutputDebugString(_T("ViewdbWave_Optimized::DisplayData - Setting display data mode\n"));
-        
-        // Validate button pointers before using them
+		// Validate button pointers before using them
         if (m_pDisplayDataButton && m_pDisplayDataButton->GetSafeHwnd())
         {
             m_pDisplayDataButton->SetCheck(BST_CHECKED);
-            OutputDebugString(_T("ViewdbWave_Optimized::DisplayData - Set DisplayData button to checked\n"));
-        }
-        else
-        {
-            OutputDebugString(_T("ViewdbWave_Optimized::DisplayData - DisplayData button not available\n"));
         }
         
         if (m_pDisplaySpikesButton && m_pDisplaySpikesButton->GetSafeHwnd())
@@ -1084,11 +864,6 @@ void ViewdbWave_Optimized::display_data()
         {
             m_pDataListCtrl->set_display_mode(1); // DISPLAY_MODE_DATA
             m_pDataListCtrl->refresh_display(); // Force refresh to show new display mode
-            OutputDebugString(_T("ViewdbWave_Optimized::DisplayData - Data list control display mode set to 1\n"));
-        }
-        else
-        {
-            OutputDebugString(_T("ViewdbWave_Optimized::DisplayData - Data list control not available\n"));
         }
         
         // Hide spike tab control if it exists
@@ -1096,14 +871,9 @@ void ViewdbWave_Optimized::display_data()
         {
             m_pTabCtrl->ShowWindow(SW_HIDE);
         }
-        
-        OutputDebugString(_T("ViewdbWave_Optimized::DisplayData - Display data mode set successfully\n"));
     }
     catch (const std::exception& e)
     {
-        CString displayDataExceptionMsg;
-        displayDataExceptionMsg.Format(_T("ViewdbWave_Optimized::DisplayData - Exception: %s\n"), CString(e.what()));
-        OutputDebugString(displayDataExceptionMsg);
         handle_error(CString(e.what()));
     }
 }
@@ -1112,17 +882,10 @@ void ViewdbWave_Optimized::display_spikes()
 {
     try
     {
-        OutputDebugString(_T("ViewdbWave_Optimized::DisplaySpikes - Setting display spikes mode\n"));
-        
         // Validate button pointers before using them
         if (m_pDisplaySpikesButton && m_pDisplaySpikesButton->GetSafeHwnd())
         {
             m_pDisplaySpikesButton->SetCheck(BST_CHECKED);
-            OutputDebugString(_T("ViewdbWave_Optimized::DisplaySpikes - Set DisplaySpikes button to checked\n"));
-        }
-        else
-        {
-            OutputDebugString(_T("ViewdbWave_Optimized::DisplaySpikes - DisplaySpikes button not available\n"));
         }
         
         if (m_pDisplayDataButton && m_pDisplayDataButton->GetSafeHwnd())
@@ -1181,11 +944,6 @@ void ViewdbWave_Optimized::display_spikes()
         {
             m_pDataListCtrl->set_display_mode(2); // DISPLAY_MODE_SPIKE
             m_pDataListCtrl->refresh_display(); // Force refresh to show new display mode
-            OutputDebugString(_T("ViewdbWave_Optimized::DisplaySpikes - Data list control display mode set to 2\n"));
-        }
-        else
-        {
-            OutputDebugString(_T("ViewdbWave_Optimized::DisplaySpikes - Data list control not available\n"));
         }
         
         // Show spike tab control if it exists
@@ -1193,14 +951,9 @@ void ViewdbWave_Optimized::display_spikes()
         {
             m_pTabCtrl->ShowWindow(SW_SHOW);
         }
-        
-        OutputDebugString(_T("ViewdbWave_Optimized::DisplaySpikes - Display spikes mode set successfully\n"));
     }
     catch (const std::exception& e)
     {
-        CString displaySpikesExceptionMsg;
-        displaySpikesExceptionMsg.Format(_T("ViewdbWave_Optimized::DisplaySpikes - Exception: %s\n"), CString(e.what()));
-        OutputDebugString(displaySpikesExceptionMsg);
         handle_error(CString(e.what()));
     }
 }
@@ -1209,17 +962,10 @@ void ViewdbWave_Optimized::display_nothing()
 {
     try
     {
-        OutputDebugString(_T("ViewdbWave_Optimized::DisplayNothing - Setting display nothing mode\n"));
-        
         // Validate button pointers before using them
         if (m_pDisplayNothingButton && m_pDisplayNothingButton->GetSafeHwnd())
         {
             m_pDisplayNothingButton->SetCheck(BST_CHECKED);
-            OutputDebugString(_T("ViewdbWave_Optimized::DisplayNothing - Set DisplayNothing button to checked\n"));
-        }
-        else
-        {
-            OutputDebugString(_T("ViewdbWave_Optimized::DisplayNothing - DisplayNothing button not available\n"));
         }
         
         if (m_pDisplayDataButton && m_pDisplayDataButton->GetSafeHwnd())
@@ -1254,11 +1000,6 @@ void ViewdbWave_Optimized::display_nothing()
         {
             m_pDataListCtrl->set_display_mode(0); // DISPLAY_MODE_EMPTY
             m_pDataListCtrl->refresh_display(); // Force refresh to show new display mode
-            OutputDebugString(_T("ViewdbWave_Optimized::DisplayNothing - Data list control display mode set to 0\n"));
-        }
-        else
-        {
-            OutputDebugString(_T("ViewdbWave_Optimized::DisplayNothing - Data list control not available\n"));
         }
         
         // Hide spike tab control if it exists
@@ -1266,14 +1007,9 @@ void ViewdbWave_Optimized::display_nothing()
         {
             m_pTabCtrl->ShowWindow(SW_HIDE);
         }
-        
-        OutputDebugString(_T("ViewdbWave_Optimized::DisplayNothing - Display nothing mode set successfully\n"));
     }
     catch (const std::exception& e)
     {
-        CString displayNothingExceptionMsg;
-        displayNothingExceptionMsg.Format(_T("ViewdbWave_Optimized::DisplayNothing - Exception: %s\n"), CString(e.what()));
-        OutputDebugString(displayNothingExceptionMsg);
         handle_error(CString(e.what()));
     }
 }
@@ -1282,9 +1018,9 @@ void ViewdbWave_Optimized::display_nothing()
 void ViewdbWave_Optimized::handle_error(const CString& message)
 {
     m_lastError = message;
-            CString errorMsg;
-        errorMsg.Format(_T("ViewdbWave_Optimized Error: %s\n"), static_cast<LPCTSTR>(message));
-        OutputDebugString(errorMsg);
+    CString errorMsg;
+    errorMsg.Format(_T("ViewdbWave_Optimized Error: %s\n"), static_cast<LPCTSTR>(message));
+    TRACE(errorMsg);
 }
 
 void ViewdbWave_Optimized::clear_error()
@@ -1296,10 +1032,6 @@ void ViewdbWave_Optimized::set_display_mode(int mode)
 {
     try
     {
-        CString modeMsg;
-        modeMsg.Format(_T("ViewdbWave_Optimized::set_display_mode - Setting mode %d\n"), mode);
-        OutputDebugString(modeMsg);
-        
         switch (mode)
         {
         case 0: // DISPLAY_MODE_EMPTY
@@ -1312,9 +1044,6 @@ void ViewdbWave_Optimized::set_display_mode(int mode)
             display_spikes();
             break;
         default:
-            CString invalidModeMsg;
-        invalidModeMsg.Format(_T("ViewdbWave_Optimized::set_display_mode - Invalid mode %d, defaulting to empty\n"), mode);
-        OutputDebugString(invalidModeMsg);
             display_nothing();
             break;
         }
@@ -1330,7 +1059,7 @@ void ViewdbWave_Optimized::set_display_mode(int mode)
     }
 }
 
-int ViewdbWave_Optimized::get_display_mode() const
+int ViewdbWave_Optimized::get_display_mode() 
 {
     try
     {
@@ -1338,14 +1067,11 @@ int ViewdbWave_Optimized::get_display_mode() const
         {
             return m_pDataListCtrl->get_display_mode();
         }
-        return 0; // Default to empty mode
+        return 0; 
     }
     catch (const std::exception& e)
     {
-        // Return default mode if there's an error
-        CString exceptionMsg;
-        exceptionMsg.Format(_T("exception %s\n"), CString(e.what()));
-        OutputDebugString(exceptionMsg);
+        handle_error( CString(e.what()));
         return 0;
     }
 }
@@ -1388,7 +1114,7 @@ void ViewdbWave_Optimized::on_en_change_time_first()
 {
     if (!m_pTimeFirstEdit->m_b_entry_done)
         return;
-    TimeSettings& time_settings = m_pConfiguration->get_time_settings();
+    time_settings& time_settings = m_pConfiguration->get_time_settings();
 	float time_first = time_settings.get_time_first();
     m_pTimeFirstEdit->on_en_change(this, time_first, 1.f, -1.f);
 
@@ -1445,4 +1171,34 @@ void ViewdbWave_Optimized::on_en_change_spike_class()
     m_pDataListCtrl->set_spike_plot_mode(selected_class);
     m_pDataListCtrl->refresh_display();
 }
+
+void ViewdbWave_Optimized::on_record_page_up()
+{
+    m_pDataListCtrl->SendMessage(WM_VSCROLL, SB_PAGEUP, NULL);
+}
+
+void ViewdbWave_Optimized::on_record_page_down()
+{
+    m_pDataListCtrl->SendMessage(WM_VSCROLL, SB_PAGEDOWN, NULL);
+}
+
+void ViewdbWave_Optimized::on_dbl_clk_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_result)
+{
+    *p_result = 0;
+    // quit the current view and switch to spike detection view
+    GetParent()->PostMessage(WM_COMMAND, static_cast<WPARAM>(ID_VIEW_SPIKE_DETECTION), static_cast<LPARAM>(NULL));
+}
+
+void ViewdbWave_Optimized::on_click_median_filter()
+{
+    auto& display_settings = m_pConfiguration->get_display_settings();
+	boolean flag = display_settings.get_data_transform() > 0 ? true : false;
+    if (flag == static_cast<CButton*>(GetDlgItem(IDC_FILTERCHECK))->GetCheck())
+        return;
+
+    flag = static_cast<CButton*>(GetDlgItem(IDC_FILTERCHECK))->GetCheck();
+    m_pDataListCtrl->set_data_transform(flag? 13:0);
+    m_pDataListCtrl->refresh_display();
+}
+
 

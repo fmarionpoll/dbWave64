@@ -11,7 +11,7 @@
 class CdbWaveDoc;
 class CdbWaveApp;
 class DataListCtrl_Optimized;
-class DataListCtrlConfiguration;
+class data_list_ctrl_configuration;
 class CdbTableMain;
 class CSpikeDoc;
 class CTabCtrl;

@@ -1105,7 +1105,7 @@ void DataListCtrl_Optimized::handle_display_info_request(LV_DISPINFO* pDispInfo)
             if (pdb_doc)
             {
                 auto newRow = std::make_unique<DataListCtrl_Row_Optimized>();
-                newRow->SetIndex(index);
+                newRow->set_index(index);
                 
                 if (load_row_data_from_database(pdb_doc, index, *newRow))
                 {
@@ -1143,31 +1143,31 @@ void DataListCtrl_Optimized::handle_text_display(LV_DISPINFO* pDispInfo, DataLis
         flag = FALSE; // Curve column shows image, not text
         break;
     case DLC_COLUMN_INDEX: 
-        cs.Format(_T("%i"), row->GetIndex());
+        cs.Format(_T("%i"), row->get_index());
         break;
     case DLC_COLUMN_INSECT: 
-        cs.Format(_T("%i"), row->GetInsectId());
+        cs.Format(_T("%i"), row->get_insect_id());
         break;
     case DLC_COLUMN_SENSI: 
-        cs = row->GetSensillumName();
+        cs = row->get_sensillum_name();
         break;
     case DLC_COLUMN_STIM1: 
-        cs = row->GetStimulus1();
+        cs = row->get_stimulus1();
         break;
     case DLC_COLUMN_CONC1: 
-        cs = row->GetConcentration1();
+        cs = row->get_concentration1();
         break;
     case DLC_COLUMN_STIM2: 
-        cs = row->GetStimulus2();
+        cs = row->get_stimulus2();
         break;
     case DLC_COLUMN_CONC2: 
-        cs = row->GetConcentration2();
+        cs = row->get_concentration2();
         break;
     case DLC_COLUMN_NBSPK: 
-        cs = row->GetNSpikes();
+        cs = row->get_n_spikes();
         break;
     case DLC_COLUMN_FLAG: 
-        cs = row->GetFlag();
+        cs = row->get_flag();
         break;
     default: 
         flag = FALSE;
@@ -1251,7 +1251,7 @@ void DataListCtrl_Optimized::update_cache(int index, int displayMode)
             if (pdb_doc)
             {
                 auto newRow = std::make_unique<DataListCtrl_Row_Optimized>();
-                newRow->SetIndex(index);
+                newRow->set_index(index);
                 
                 if (load_row_data_from_database(pdb_doc, index, *newRow))
                 {
@@ -1438,8 +1438,8 @@ bool DataListCtrl_Optimized::load_row_data_from_database(CdbWaveDoc* pdb_doc, in
         pdb_doc->open_current_spike_file();
         
         // Get file names
-        row.SetDataFileName(pdb_doc->db_get_current_dat_file_name(TRUE));
-        row.SetSpikeFileName(pdb_doc->db_get_current_spk_file_name(TRUE));
+        row.set_data_file_name(pdb_doc->db_get_current_dat_file_name(TRUE));
+        row.set_spike_file_name(pdb_doc->db_get_current_spk_file_name(TRUE));
         
         // Get database table
         const auto database = pdb_doc->db_table;
@@ -1450,46 +1450,46 @@ bool DataListCtrl_Optimized::load_row_data_from_database(CdbWaveDoc* pdb_doc, in
         DB_ITEMDESC desc;
         
         // Set the index
-        row.SetIndex(index);
+        row.set_index(index);
         
         // Get record ID
         database->get_record_item_value(CH_ID, &desc);
-        row.SetRecordId(desc.l_val);
+        row.set_record_id(desc.l_val);
         
         // Get insect ID
         database->get_record_item_value(CH_IDINSECT, &desc);
-        row.SetInsectId(desc.l_val);
+        row.set_insect_id(desc.l_val);
         
         // Get stimulus 1
         database->get_record_item_value(CH_STIM1_KEY, &desc);
-        row.SetStimulus1(desc.cs_val);
+        row.set_stimulus1(desc.cs_val);
         
         // Get concentration 1
         database->get_record_item_value(CH_CONC1_KEY, &desc);
-        row.SetConcentration1(desc.cs_val);
+        row.set_concentration1(desc.cs_val);
         
         // Get stimulus 2
         database->get_record_item_value(CH_STIM2_KEY, &desc);
-        row.SetStimulus2(desc.cs_val);
+        row.set_stimulus2(desc.cs_val);
         
         // Get concentration 2
         database->get_record_item_value(CH_CONC2_KEY, &desc);
-        row.SetConcentration2(desc.cs_val);
+        row.set_concentration2(desc.cs_val);
         
         // Get sensillum name
         database->get_record_item_value(CH_SENSILLUM_KEY, &desc);
-        row.SetSensillumName(desc.cs_val);
+        row.set_sensillum_name(desc.cs_val);
         
         // Get flag
         database->get_record_item_value(CH_FLAG, &desc);
         CString flagStr;
         flagStr.Format(_T("%i"), desc.l_val);
-        row.SetFlag(flagStr);
+        row.set_flag(flagStr);
         
         // Get number of spikes
-        if (row.GetSpikeFileName().IsEmpty())
+        if (row.get_spike_file_name().IsEmpty())
         {
-            row.SetNSpikes(_T(""));
+            row.set_n_spikes(_T(""));
         }
         else
         {
@@ -1498,7 +1498,7 @@ bool DataListCtrl_Optimized::load_row_data_from_database(CdbWaveDoc* pdb_doc, in
             database->get_record_item_value(CH_NSPIKECLASSES, &desc);
             CString spikesStr;
             spikesStr.Format(_T("%i (%i classes)"), n_spikes, desc.l_val);
-            row.SetNSpikes(spikesStr);
+            row.set_n_spikes(spikesStr);
         }
         
         return true;

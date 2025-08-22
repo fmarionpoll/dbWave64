@@ -80,7 +80,7 @@ void DataListCtrl_Optimized::initialize(const data_list_ctrl_configuration& conf
         create_empty_bitmap();
         
         // Initialize cache
-        m_cache_ = std::make_unique<DataListCtrlCache>();
+        m_cache_ = std::make_unique<data_list_ctrl_cache>();
         
         // Initialize m_infos
         m_infos_ = new data_list_ctrl_infos();
@@ -136,7 +136,7 @@ void DataListCtrl_Optimized::clear_rows()
         
         if (m_cache_)
         {
-            m_cache_->Clear();
+            m_cache_->clear();
         }
     }
     catch (const std::exception& e)
@@ -189,7 +189,7 @@ void DataListCtrl_Optimized::remove_row(int index)
         // Invalidate cache
         if (m_cache_)
         {
-            m_cache_->InvalidateCache(index);
+            m_cache_->invalidate_cache(index);
         }
     }
     catch (const std::exception& e)
@@ -239,7 +239,7 @@ void DataListCtrl_Optimized::set_display_mode(int mode)
             // Clear cache when display mode changes (different images needed)
             if (m_cache_)
             {
-                m_cache_->Clear();
+                m_cache_->clear();
             }
             
             // Refresh display to show new mode
@@ -281,7 +281,7 @@ void DataListCtrl_Optimized::set_time_span(float first, float last)
         // Clear cache
         if (m_cache_)
         {
-            m_cache_->Clear();
+            m_cache_->clear();
         }
         
         refresh_display();
@@ -308,7 +308,7 @@ void DataListCtrl_Optimized::set_amplitude_span(float span)
         // Clear cache
         if (m_cache_)
         {
-            m_cache_->Clear();
+            m_cache_->clear();
         }
         
         refresh_display();
@@ -382,7 +382,7 @@ void DataListCtrl_Optimized::set_configuration(const data_list_ctrl_configuratio
         // Clear cache
         if (m_cache_)
         {
-            m_cache_->Clear();
+            m_cache_->clear();
         }
         
         refresh_display();
@@ -399,7 +399,7 @@ void DataListCtrl_Optimized::clear_cache()
     {
         if (m_cache_)
         {
-            m_cache_->Clear();
+            m_cache_->clear();
         }
     }
     catch (const std::exception& e)
@@ -454,7 +454,7 @@ void DataListCtrl_Optimized::set_data_transform(int transform)
         
         if (m_cache_)
         {
-            m_cache_->Clear();
+            m_cache_->clear();
         }
         
         refresh_display();
@@ -474,7 +474,7 @@ void DataListCtrl_Optimized::set_spike_plot_mode(int mode)
         
         if (m_cache_)
         {
-            m_cache_->Clear();
+            m_cache_->clear();
         }
         
         refresh_display();
@@ -494,7 +494,7 @@ void DataListCtrl_Optimized::set_selected_class(int classIndex)
         
         if (m_cache_)
         {
-            m_cache_->Clear();
+            m_cache_->clear();
         }
         
         refresh_display();
@@ -1041,7 +1041,7 @@ void DataListCtrl_Optimized::update_display_info(LV_DISPINFO* pDispInfo)
         for (int i = startIndex; i <= endIndex; ++i)
         {
             // Only update if not already cached with current display mode
-            auto cachedRow = m_cache_ ? m_cache_->GetCachedRow(i) : nullptr;
+            auto cachedRow = m_cache_ ? m_cache_->get_cached_row(i) : nullptr;
             if (!cachedRow)
             {
                 update_cache(i, currentDisplayMode);
@@ -1090,7 +1090,7 @@ void DataListCtrl_Optimized::handle_display_info_request(LV_DISPINFO* pDispInfo)
         int currentDisplayMode = m_config_.get_display_config().get_display_mode();
         
         // Check cache first - use display mode for cache key
-        auto cachedRow = m_cache_ ? m_cache_->GetCachedRow(index) : nullptr;
+        auto cachedRow = m_cache_ ? m_cache_->get_cached_row(index) : nullptr;
         if (cachedRow)
         {
             handle_text_display(pDispInfo, cachedRow);
@@ -1112,7 +1112,7 @@ void DataListCtrl_Optimized::handle_display_info_request(LV_DISPINFO* pDispInfo)
                     // Cache the row with current display mode
                     if (m_cache_)
                     {
-                        m_cache_->SetCachedRow(index, newRow.get(), currentDisplayMode);
+                        m_cache_->set_cached_row(index, newRow.get(), currentDisplayMode);
                     }
                     
                     handle_text_display(pDispInfo, newRow.get());
@@ -1238,7 +1238,7 @@ void DataListCtrl_Optimized::update_cache(int index, int displayMode)
         }
         
         // Check if already cached with the same display mode
-        auto existingCachedRow = m_cache_->GetCachedRow(index);
+        auto existingCachedRow = m_cache_->get_cached_row(index);
         if (existingCachedRow)
         {
             return; // Already cached, no need to update
@@ -1256,7 +1256,7 @@ void DataListCtrl_Optimized::update_cache(int index, int displayMode)
                 if (load_row_data_from_database(pdb_doc, index, *newRow))
                 {
                     // Cache the row with current display mode
-                    m_cache_->SetCachedRow(index, newRow.get(), displayMode);
+                    m_cache_->set_cached_row(index, newRow.get(), displayMode);
                 }
             }
         }
@@ -1273,7 +1273,7 @@ void DataListCtrl_Optimized::invalidate_cache_for_row(int index)
     {
         if (m_cache_)
         {
-            m_cache_->InvalidateCache(index);
+            m_cache_->invalidate_cache(index);
         }
     }
     catch (const std::exception& e)

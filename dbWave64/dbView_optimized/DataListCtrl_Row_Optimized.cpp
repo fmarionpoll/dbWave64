@@ -24,12 +24,12 @@
 IMPLEMENT_SERIAL(DataListCtrl_Row_Optimized, CObject, 0)
 
 DataListCtrl_Row_Optimized::DataListCtrl_Row_Optimized()
-    : m_cache(std::make_unique<DataListCtrlCache>())
+    : m_cache(std::make_unique<data_list_ctrl_cache>())
 {
 }
 
 DataListCtrl_Row_Optimized::DataListCtrl_Row_Optimized(int index)
-    : m_index(index), m_cache(std::make_unique<DataListCtrlCache>())
+    : m_index(index), m_cache(std::make_unique<data_list_ctrl_cache>())
 {
 }
 
@@ -158,7 +158,7 @@ void DataListCtrl_Row_Optimized::AttachDatabaseRecord(CdbWaveDoc* db_wave_doc)
 {
     if (!db_wave_doc)
     {
-        HandleError(DataListCtrlError::INVALID_INDEX, _T("Invalid database document"));
+        HandleError(data_list_ctrl_error::INVALID_INDEX, _T("Invalid database document"));
         return;
     }
     
@@ -176,7 +176,7 @@ void DataListCtrl_Row_Optimized::AttachDatabaseRecord(CdbWaveDoc* db_wave_doc)
         const auto database = db_wave_doc->db_table;
         if (!database)
         {
-            HandleError(DataListCtrlError::INVALID_INDEX, _T("Invalid database table"));
+            HandleError(data_list_ctrl_error::INVALID_INDEX, _T("Invalid database table"));
             return;
         }
         
@@ -224,7 +224,7 @@ void DataListCtrl_Row_Optimized::AttachDatabaseRecord(CdbWaveDoc* db_wave_doc)
     }
     catch (const std::exception& e)
     {
-        HandleError(DataListCtrlError::FILE_OPEN_FAILED, CString(e.what()));
+        HandleError(data_list_ctrl_error::FILE_OPEN_FAILED, CString(e.what()));
     }
 }
 
@@ -232,7 +232,7 @@ void DataListCtrl_Row_Optimized::SetDisplayParameters(data_list_ctrl_infos* info
 {
     if (!infos)
     {
-        HandleError(DataListCtrlError::INVALID_INDEX, _T("Invalid display info"));
+        HandleError(data_list_ctrl_error::INVALID_INDEX, _T("Invalid display info"));
         return;
     }
     
@@ -262,7 +262,7 @@ void DataListCtrl_Row_Optimized::SetDisplayParameters(data_list_ctrl_infos* info
             const int db_record_count = pdb_doc->db_get_records_count();
             if (!IsValidIndex(imageIndex, db_record_count))
             {
-                HandleError(DataListCtrlError::INVALID_INDEX, 
+                HandleError(data_list_ctrl_error::INVALID_INDEX, 
                            _T("Invalid image index: ") + CString(std::to_string(imageIndex).c_str()));
                 return;
             }
@@ -271,7 +271,7 @@ void DataListCtrl_Row_Optimized::SetDisplayParameters(data_list_ctrl_infos* info
         // Check cache first
         if (m_cacheEnabled)
         {
-            CBitmap* cachedBitmap = m_cache->GetCachedBitmap(imageIndex, infos->display_mode);
+            CBitmap* cachedBitmap = m_cache->get_cached_bitmap(imageIndex, infos->display_mode);
             if (cachedBitmap)
             {
                 m_performanceMetrics.cacheHits++;
@@ -286,7 +286,7 @@ void DataListCtrl_Row_Optimized::SetDisplayParameters(data_list_ctrl_infos* info
     }
     catch (const std::exception& e)
     {
-        HandleError(DataListCtrlError::GDI_RESOURCE_FAILED, CString(e.what()));
+        HandleError(data_list_ctrl_error::GDI_RESOURCE_FAILED, CString(e.what()));
     }
 }
 
@@ -318,7 +318,7 @@ void DataListCtrl_Row_Optimized::Serialize(CArchive& ar)
         
         CString errorMessage;
         errorMessage.Format(_T("Serialization failed: %s (Error code: %d)"), archiveErrorMsg, e.m_cause);
-        throw DataListCtrlException(DataListCtrlError::SERIALIZATION_FAILED, errorMessage);
+        throw DataListCtrlException(data_list_ctrl_error::SERIALIZATION_FAILED, errorMessage);
     }
 }
 
@@ -398,7 +398,7 @@ void DataListCtrl_Row_Optimized::DisplayEmptyWindow(data_list_ctrl_infos* infos,
         CDC* pDC = infos->parent->GetDC();
         if (!pDC)
         {
-            HandleError(DataListCtrlError::GDI_RESOURCE_FAILED, _T("Failed to get device context"));
+            HandleError(data_list_ctrl_error::GDI_RESOURCE_FAILED, _T("Failed to get device context"));
             return;
         }
         
@@ -406,7 +406,7 @@ void DataListCtrl_Row_Optimized::DisplayEmptyWindow(data_list_ctrl_infos* infos,
         if (!memDC.CreateCompatibleDC(pDC))
         {
             infos->parent->ReleaseDC(pDC);
-            HandleError(DataListCtrlError::GDI_RESOURCE_FAILED, _T("Failed to create compatible DC"));
+            HandleError(data_list_ctrl_error::GDI_RESOURCE_FAILED, _T("Failed to create compatible DC"));
             return;
         }
         
@@ -414,7 +414,7 @@ void DataListCtrl_Row_Optimized::DisplayEmptyWindow(data_list_ctrl_infos* infos,
         if (!bitmap.CreateBitmap(infos->image_width, infos->image_height, pDC->GetDeviceCaps(PLANES), 4, nullptr))
         {
             infos->parent->ReleaseDC(pDC);
-            HandleError(DataListCtrlError::GDI_RESOURCE_FAILED, _T("Failed to create bitmap"));
+            HandleError(data_list_ctrl_error::GDI_RESOURCE_FAILED, _T("Failed to create bitmap"));
             return;
         }
         
@@ -476,7 +476,7 @@ void DataListCtrl_Row_Optimized::CreateDataWindow(data_list_ctrl_infos* infos, i
             
         if (!create_result)
         {
-            HandleError(DataListCtrlError::WINDOW_CREATION_FAILED, _T("Failed to create data window"));
+            HandleError(data_list_ctrl_error::WINDOW_CREATION_FAILED, _T("Failed to create data window"));
             m_pChartDataWnd.reset();
             return;
         }
@@ -539,7 +539,7 @@ void DataListCtrl_Row_Optimized::CreateSpikeWindow(data_list_ctrl_infos* infos, 
             
         if (!create_result)
         {
-            HandleError(DataListCtrlError::WINDOW_CREATION_FAILED, _T("Failed to create spike window"));
+            HandleError(data_list_ctrl_error::WINDOW_CREATION_FAILED, _T("Failed to create spike window"));
             m_pChartSpikeWnd.reset();
             return;
         }
@@ -563,7 +563,7 @@ void DataListCtrl_Row_Optimized::LoadSpikeDocument()
     
     if (!m_pSpikeDoc->OnOpenDocument(m_spikeFileName))
     {
-        HandleError(DataListCtrlError::FILE_OPEN_FAILED, _T("Failed to open spike file: ") + m_spikeFileName);
+        HandleError(data_list_ctrl_error::FILE_OPEN_FAILED, _T("Failed to open spike file: ") + m_spikeFileName);
     }
 }
 
@@ -615,7 +615,7 @@ void DataListCtrl_Row_Optimized::PlotToImageList(data_list_ctrl_infos* infos, in
     CDC* pDC = pChart->GetDC();
     if (!pDC)
     {
-        HandleError(DataListCtrlError::GDI_RESOURCE_FAILED, _T("Failed to get device context"));
+        HandleError(data_list_ctrl_error::GDI_RESOURCE_FAILED, _T("Failed to get device context"));
         return;
     }
     
@@ -623,7 +623,7 @@ void DataListCtrl_Row_Optimized::PlotToImageList(data_list_ctrl_infos* infos, in
     if (!memDC.CreateCompatibleDC(pDC))
     {
         pChart->ReleaseDC(pDC);
-        HandleError(DataListCtrlError::GDI_RESOURCE_FAILED, _T("Failed to create compatible DC"));
+        HandleError(data_list_ctrl_error::GDI_RESOURCE_FAILED, _T("Failed to create compatible DC"));
         return;
     }
     
@@ -631,7 +631,7 @@ void DataListCtrl_Row_Optimized::PlotToImageList(data_list_ctrl_infos* infos, in
     if (!bitmap.CreateBitmap(client_rect.right, client_rect.bottom, pDC->GetDeviceCaps(PLANES), 4, nullptr))
     {
         pChart->ReleaseDC(pDC);
-        HandleError(DataListCtrlError::GDI_RESOURCE_FAILED, _T("Failed to create bitmap"));
+        HandleError(data_list_ctrl_error::GDI_RESOURCE_FAILED, _T("Failed to create bitmap"));
         return;
     }
     
@@ -642,7 +642,7 @@ void DataListCtrl_Row_Optimized::PlotToImageList(data_list_ctrl_infos* infos, in
     {
         memDC.SelectObject(pOldBitmap);
         pChart->ReleaseDC(pDC);
-        HandleError(DataListCtrlError::WINDOW_CREATION_FAILED, _T("Invalid window handle"));
+        HandleError(data_list_ctrl_error::WINDOW_CREATION_FAILED, _T("Invalid window handle"));
         return;
     }
     
@@ -653,7 +653,7 @@ void DataListCtrl_Row_Optimized::PlotToImageList(data_list_ctrl_infos* infos, in
     {
         auto cachedBitmap = std::make_unique<CBitmap>();
         cachedBitmap->Attach(bitmap.GetSafeHandle());
-        m_cache->SetCachedBitmap(imageIndex, std::move(cachedBitmap), infos->display_mode);
+        m_cache->set_cached_bitmap(imageIndex, std::move(cachedBitmap), infos->display_mode);
     }
     
     infos->image_list.Replace(imageIndex, &bitmap, nullptr);
@@ -678,7 +678,7 @@ void DataListCtrl_Row_Optimized::PlotToImageList(data_list_ctrl_infos* infos, in
     CDC* pDC = pChart->GetDC();
     if (!pDC)
     {
-        HandleError(DataListCtrlError::GDI_RESOURCE_FAILED, _T("Failed to get device context"));
+        HandleError(data_list_ctrl_error::GDI_RESOURCE_FAILED, _T("Failed to get device context"));
         return;
     }
     
@@ -686,7 +686,7 @@ void DataListCtrl_Row_Optimized::PlotToImageList(data_list_ctrl_infos* infos, in
     if (!memDC.CreateCompatibleDC(pDC))
     {
         pChart->ReleaseDC(pDC);
-        HandleError(DataListCtrlError::GDI_RESOURCE_FAILED, _T("Failed to create compatible DC"));
+        HandleError(data_list_ctrl_error::GDI_RESOURCE_FAILED, _T("Failed to create compatible DC"));
         return;
     }
     
@@ -694,7 +694,7 @@ void DataListCtrl_Row_Optimized::PlotToImageList(data_list_ctrl_infos* infos, in
     if (!bitmap.CreateBitmap(client_rect.right, client_rect.bottom, pDC->GetDeviceCaps(PLANES), 4, nullptr))
     {
         pChart->ReleaseDC(pDC);
-        HandleError(DataListCtrlError::GDI_RESOURCE_FAILED, _T("Failed to create bitmap"));
+        HandleError(data_list_ctrl_error::GDI_RESOURCE_FAILED, _T("Failed to create bitmap"));
         return;
     }
     
@@ -705,7 +705,7 @@ void DataListCtrl_Row_Optimized::PlotToImageList(data_list_ctrl_infos* infos, in
     {
         memDC.SelectObject(pOldBitmap);
         pChart->ReleaseDC(pDC);
-        HandleError(DataListCtrlError::WINDOW_CREATION_FAILED, _T("Invalid window handle"));
+        HandleError(data_list_ctrl_error::WINDOW_CREATION_FAILED, _T("Invalid window handle"));
         return;
     }
     
@@ -716,7 +716,7 @@ void DataListCtrl_Row_Optimized::PlotToImageList(data_list_ctrl_infos* infos, in
     {
         auto cachedBitmap = std::make_unique<CBitmap>();
         cachedBitmap->Attach(bitmap.GetSafeHandle());
-        m_cache->SetCachedBitmap(imageIndex, std::move(cachedBitmap), infos->display_mode);
+        m_cache->set_cached_bitmap(imageIndex, std::move(cachedBitmap), infos->display_mode);
     }
     
     infos->image_list.Replace(imageIndex, &bitmap, nullptr);
@@ -738,14 +738,14 @@ void DataListCtrl_Row_Optimized::CreatePlotBitmap(data_list_ctrl_infos* infos, i
     CDC* pDC = pChart->GetDC();
     if (!pDC)
     {
-        HandleError(DataListCtrlError::GDI_RESOURCE_FAILED, _T("Failed to get device context"));
+        HandleError(data_list_ctrl_error::GDI_RESOURCE_FAILED, _T("Failed to get device context"));
         return;
     }
     
     if (!bitmap.CreateBitmap(client_rect.right, client_rect.bottom, pDC->GetDeviceCaps(PLANES), 4, nullptr))
     {
         pChart->ReleaseDC(pDC);
-        HandleError(DataListCtrlError::GDI_RESOURCE_FAILED, _T("Failed to create bitmap"));
+        HandleError(data_list_ctrl_error::GDI_RESOURCE_FAILED, _T("Failed to create bitmap"));
         return;
     }
     
@@ -753,7 +753,7 @@ void DataListCtrl_Row_Optimized::CreatePlotBitmap(data_list_ctrl_infos* infos, i
     if (!memDC.CreateCompatibleDC(pDC))
     {
         pChart->ReleaseDC(pDC);
-        HandleError(DataListCtrlError::GDI_RESOURCE_FAILED, _T("Failed to create compatible DC"));
+        HandleError(data_list_ctrl_error::GDI_RESOURCE_FAILED, _T("Failed to create compatible DC"));
         return;
     }
     
@@ -778,14 +778,14 @@ void DataListCtrl_Row_Optimized::CreatePlotBitmap(data_list_ctrl_infos* infos, i
     CDC* pDC = pChart->GetDC();
     if (!pDC)
     {
-        HandleError(DataListCtrlError::GDI_RESOURCE_FAILED, _T("Failed to get device context"));
+        HandleError(data_list_ctrl_error::GDI_RESOURCE_FAILED, _T("Failed to get device context"));
         return;
     }
     
     if (!bitmap.CreateBitmap(client_rect.right, client_rect.bottom, pDC->GetDeviceCaps(PLANES), 4, nullptr))
     {
         pChart->ReleaseDC(pDC);
-        HandleError(DataListCtrlError::GDI_RESOURCE_FAILED, _T("Failed to create bitmap"));
+        HandleError(data_list_ctrl_error::GDI_RESOURCE_FAILED, _T("Failed to create bitmap"));
         return;
     }
     
@@ -793,7 +793,7 @@ void DataListCtrl_Row_Optimized::CreatePlotBitmap(data_list_ctrl_infos* infos, i
     if (!memDC.CreateCompatibleDC(pDC))
     {
         pChart->ReleaseDC(pDC);
-        HandleError(DataListCtrlError::GDI_RESOURCE_FAILED, _T("Failed to create compatible DC"));
+        HandleError(data_list_ctrl_error::GDI_RESOURCE_FAILED, _T("Failed to create compatible DC"));
         return;
     }
     
@@ -836,7 +836,7 @@ bool DataListCtrl_Row_Optimized::IsValidDisplayMode(int mode) const
            mode <= DataListCtrl_ConfigConstants::DISPLAY_MODE_SPIKE;
 }
 
-void DataListCtrl_Row_Optimized::HandleError(DataListCtrlError error, const CString& message)
+void DataListCtrl_Row_Optimized::HandleError(data_list_ctrl_error error, const CString& message)
 {
     LogError(message);
     throw DataListCtrlException(error, message);

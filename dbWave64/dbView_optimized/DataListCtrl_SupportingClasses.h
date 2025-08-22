@@ -23,26 +23,26 @@ class CBrush;
 class CPen;
 
 // Constants namespace
-namespace DataListCtrlConstants
+namespace data_list_ctrl_constants
 {
     // Default values - using definitions from DataListCtrl_Configuration.h
     constexpr int DEFAULT_DISPLAY_MODE = 0;
     constexpr float DEFAULT_TIME_FIRST = 0.0f;
     constexpr float DEFAULT_TIME_LAST = 100.0f;
     constexpr float DEFAULT_MV_SPAN = 1.0f;
-    
+
     // Performance settings
     constexpr size_t DEFAULT_CACHE_SIZE = 100;
     constexpr size_t DEFAULT_BATCH_SIZE = 10;
-    constexpr std::chrono::milliseconds UI_UPDATE_THROTTLE{16}; // ~60 FPS
-    
+    constexpr std::chrono::milliseconds UI_UPDATE_THROTTLE{ 16 }; // ~60 FPS
+
     // Column IDs
     constexpr int COLUMN_INDEX = 0;
     constexpr int COLUMN_TIME = 1;
     constexpr int COLUMN_AMPLITUDE = 2;
     constexpr int COLUMN_FILENAME = 3;
     constexpr int COLUMN_STATUS = 4;
-    
+
     // Image list indices
     constexpr int IMAGE_INDEX_DEFAULT = 0;
     constexpr int IMAGE_INDEX_SELECTED = 1;
@@ -50,11 +50,12 @@ namespace DataListCtrlConstants
 }
 
 // Exception handling
-enum class DataListCtrlError
+enum class data_list_ctrl_error
 {
     SUCCESS,
     INVALID_PARAMETER,
     INVALID_INDEX,
+    INVALID_DATABASE_TABLE,
     MEMORY_ALLOCATION_FAILED,
     GDI_RESOURCE_FAILED,
     UI_UPDATE_FAILED,
@@ -67,19 +68,20 @@ enum class DataListCtrlError
     SERIALIZATION_FAILED,
     WINDOW_CREATION_FAILED,
     FILE_OPEN_FAILED,
-    DATABASE_ACCESS_FAILED
+    DATABASE_ACCESS_FAILED,
+    DATABABASE_LOAD_RECORD_FAILED
 };
 
 class DataListCtrlException : public std::exception
 {
 public:
-    explicit DataListCtrlException(DataListCtrlError error, const CString& message = _T(""));
-    DataListCtrlError GetError() const { return m_error; }
+    explicit DataListCtrlException(data_list_ctrl_error error, const CString& message = _T(""));
+    data_list_ctrl_error GetError() const { return m_error; }
     CString GetMessage() const { return m_message; }
     const char* what() const noexcept override;
-    
+
 private:
-    DataListCtrlError m_error;
+    data_list_ctrl_error m_error;
     CString m_message;
 };
 
@@ -96,7 +98,7 @@ struct DataListCtrlRow
     int displayMode;
     std::chrono::steady_clock::time_point timestamp;
     bool isValid;
-    
+
     DataListCtrlRow()
         : index(0)
         , time(0.0)
@@ -108,7 +110,7 @@ struct DataListCtrlRow
         , isValid(true)
     {
     }
-    
+
     DataListCtrlRow(int idx, double t, double amp, const CString& file, const CString& stat)
         : index(idx)
         , time(t)
@@ -125,93 +127,93 @@ struct DataListCtrlRow
 };
 
 // Cache for row data
-class DataListCtrlCache
+class data_list_ctrl_cache
 {
 public:
-    explicit DataListCtrlCache(size_t maxSize = DataListCtrlConstants::DEFAULT_CACHE_SIZE);
-    ~DataListCtrlCache() = default;
-    
-    void AddRow(int index, const DataListCtrlRow& row);
-    bool GetRow(int index, DataListCtrlRow& row) const;
-    void RemoveRow(int index);
-    void InvalidateCache(int index);  // Alias for RemoveRow for compatibility
-    void SetCachedRow(int index, DataListCtrl_Row_Optimized* row, int displayMode);
-    DataListCtrl_Row_Optimized* GetCachedRow(int index) const;
-    void Clear();
-    size_t GetSize() const;
-    size_t GetMaxSize() const { return m_maxSize; }
-    void SetMaxSize(size_t maxSize);
-    
+    explicit data_list_ctrl_cache(size_t maxSize = data_list_ctrl_constants::DEFAULT_CACHE_SIZE);
+    ~data_list_ctrl_cache() = default;
+
+    void add_row(int index, const DataListCtrlRow& row);
+    bool get_row(int index, DataListCtrlRow& row) const;
+    void remove_row(int index);
+    void invalidate_cache(int index);  // Alias for RemoveRow for compatibility
+    void set_cached_row(int index, DataListCtrl_Row_Optimized* row, int displayMode);
+    DataListCtrl_Row_Optimized* get_cached_row(int index) const;
+    void clear();
+    size_t get_size() const;
+    size_t get_max_size() const { return m_maxSize; }
+    void set_max_size(size_t maxSize);
+
     // Bitmap caching methods (for DataListCtrl_Row_Optimized)
-    CBitmap* GetCachedBitmap(int index, int displayMode);
-    void SetCachedBitmap(int index, std::unique_ptr<CBitmap> bitmap, int displayMode);
-    void ClearExpiredCache();
-    void ClearAll();
-    void EvictOldestIfNeeded();
-    
+    CBitmap* get_cached_bitmap(int index, int displayMode);
+    void set_cached_bitmap(int index, std::unique_ptr<CBitmap> bitmap, int displayMode);
+    void clear_expired_cache();
+    void clear_all();
+    void evict_oldest_if_needed();
+
     // Performance tracking
-    size_t GetHitCount() const { return m_hitCount; }
-    size_t GetMissCount() const { return m_missCount; }
-    double GetHitRatio() const;
-    void ResetStats();
-    
+    size_t get_hit_count() const { return m_hitCount; }
+    size_t get_miss_count() const { return m_missCount; }
+    double get_hit_ratio() const;
+    void reset_stats();
+
 private:
     // Row data cache - store DataListCtrl_Row_Optimized objects
     struct CachedRowData
     {
         std::unique_ptr<DataListCtrl_Row_Optimized> row;
         std::chrono::steady_clock::time_point timestamp;
-        bool isValid;
-        int displayMode;
-        
+        bool is_valid;
+        int display_mode;
+
         CachedRowData()
             : row(nullptr)
             , timestamp(std::chrono::steady_clock::now())
-            , isValid(false)
-            , displayMode(0)
+            , is_valid(false)
+            , display_mode(0)
         {
         }
-        
+
         CachedRowData(std::unique_ptr<DataListCtrl_Row_Optimized> r, int mode)
             : row(std::move(r))
             , timestamp(std::chrono::steady_clock::now())
-            , isValid(true)
-            , displayMode(mode)
+            , is_valid(true)
+            , display_mode(mode)
         {
         }
     };
     std::map<int, CachedRowData> m_cache;
-    
+
     // Bitmap cache (for DataListCtrl_Row_Optimized)
     struct CachedBitmap
     {
         std::unique_ptr<CBitmap> bitmap;
         std::chrono::steady_clock::time_point timestamp;
-        bool isValid;
-        int displayMode;
-        
+        bool is_valid;
+        int display_mode;
+
         // Default constructor required by std::map
         CachedBitmap()
             : bitmap(nullptr)
             , timestamp(std::chrono::steady_clock::now())
-            , isValid(false)
-            , displayMode(0)
+            , is_valid(false)
+            , display_mode(0)
         {
         }
-        
+
         CachedBitmap(std::unique_ptr<CBitmap> bmp, int mode)
             : bitmap(std::move(bmp))
             , timestamp(std::chrono::steady_clock::now())
-            , isValid(true)
-            , displayMode(mode)
+            , is_valid(true)
+            , display_mode(mode)
         {
         }
     };
     std::map<int, CachedBitmap> m_bitmapCache;
-    
+
     size_t m_maxSize;
     mutable std::mutex m_cacheMutex;
-    
+
     // Performance statistics
     mutable std::atomic<size_t> m_hitCount;
     mutable std::atomic<size_t> m_missCount;
@@ -223,27 +225,27 @@ class GdiResourceManager
 public:
     GdiResourceManager();
     ~GdiResourceManager();
-    
+
     // DC management
     CDC* CreateCompatibleDC(CDC* pDC);
     void DeleteDC(CDC* pDC);
-    
+
     // Bitmap management
     CBitmap* CreateBitmap(int width, int height, int planes, int bitsPerPixel, const void* data);
     void DeleteBitmap(CBitmap* pBitmap);
-    
+
     // Brush management
     CBrush* CreateSolidBrush(COLORREF color);
     void DeleteBrush(CBrush* pBrush);
-    
+
     // Pen management
     CPen* CreatePen(int style, int width, COLORREF color);
     void DeletePen(CPen* pPen);
-    
+
     // Image list management
     CImageList* CreateImageList(int width, int height, UINT flags, int initial, int grow);
     void DeleteImageList(CImageList* pImageList);
-    
+
 private:
     std::vector<std::unique_ptr<CDC>> m_dcList;
     std::vector<std::unique_ptr<CBitmap>> m_bitmapList;
@@ -259,30 +261,30 @@ class DataListCtrlPerformanceMonitor
 public:
     DataListCtrlPerformanceMonitor();
     ~DataListCtrlPerformanceMonitor() = default;
-    
+
     void StartOperation(const CString& operationName);
     void EndOperation(const CString& operationName);
     void SetEnabled(bool enabled) { m_enabled = enabled; }
     bool IsEnabled() const { return m_enabled; }
-    
+
     // Performance metrics
     struct Metrics
     {
-        std::chrono::microseconds lastUIUpdateTime{0};
-        std::chrono::microseconds averageUIUpdateTime{0};
+        std::chrono::microseconds lastUIUpdateTime{ 0 };
+        std::chrono::microseconds averageUIUpdateTime{ 0 };
         size_t totalUIUpdates = 0;
         size_t cacheHits = 0;
         size_t cacheMisses = 0;
         size_t rowOperations = 0;
         size_t displayModeChanges = 0;
-        
+
         void Reset();
     };
-    
+
     Metrics GetMetrics() const;
     CString GetPerformanceReport() const;
     void Reset();
-    
+
 private:
     bool m_enabled;
     std::chrono::steady_clock::time_point m_startTime;
@@ -302,8 +304,8 @@ public:
     static bool ValidateDisplayMode(int mode);
     static bool ValidateCacheSize(size_t size);
     static bool ValidateBatchSize(size_t size);
-    
-    static CString GetValidationErrorMessage(DataListCtrlError error);
+
+    static CString GetValidationErrorMessage(data_list_ctrl_error error);
 };
 
 // Row operation manager
@@ -312,30 +314,30 @@ class DataListCtrlRowManager
 public:
     DataListCtrlRowManager();
     ~DataListCtrlRowManager() = default;
-    
+
     // Row operations
     void AddRow(const DataListCtrlRow& row);
     void RemoveRow(int index);
     void UpdateRow(int index, const DataListCtrlRow& row);
     bool GetRow(int index, DataListCtrlRow& row) const;
     void ClearRows();
-    
+
     // Batch operations
     void AddRows(const std::vector<DataListCtrlRow>& rows);
     void RemoveRows(const std::vector<int>& indices);
     void UpdateRows(const std::map<int, DataListCtrlRow>& rowUpdates);
-    
+
     // Query operations
     size_t GetRowCount() const;
     std::vector<DataListCtrlRow> GetVisibleRows() const;
     std::vector<DataListCtrlRow> GetSelectedRows() const;
     std::vector<int> GetRowIndices() const;
-    
+
     // Filtering and sorting
     void SetFilter(std::function<bool(const DataListCtrlRow&)> filter);
     void ClearFilter();
     void SortRows(std::function<bool(const DataListCtrlRow&, const DataListCtrlRow&)> comparator);
-    
+
 private:
     std::vector<DataListCtrlRow> m_rows;
     std::function<bool(const DataListCtrlRow&)> m_filter;
@@ -348,22 +350,22 @@ class DataListCtrlDisplayManager
 public:
     DataListCtrlDisplayManager();
     ~DataListCtrlDisplayManager() = default;
-    
+
     // Display mode management
     void SetDisplayMode(int mode);
     int GetDisplayMode() const { return m_displayMode; }
     bool IsValidDisplayMode(int mode) const;
-    
+
     // Image list management
     void CreateImageList(int width, int height);
     void DestroyImageList();
     CImageList* GetImageList() const { return m_pImageList.get(); }
-    
+
     // Drawing operations
     void DrawRow(CDC* pDC, const DataListCtrlRow& row, const CRect& rect);
     void DrawBackground(CDC* pDC, const CRect& rect);
     void DrawSelection(CDC* pDC, const CRect& rect);
-    
+
     // Color management
     void SetBackgroundColor(COLORREF color);
     void SetTextColor(COLORREF color);
@@ -371,7 +373,7 @@ public:
     COLORREF GetBackgroundColor() const { return m_backgroundColor; }
     COLORREF GetTextColor() const { return m_textColor; }
     COLORREF GetSelectionColor() const { return m_selectionColor; }
-    
+
 private:
     int m_displayMode;
     std::unique_ptr<CImageList> m_pImageList;

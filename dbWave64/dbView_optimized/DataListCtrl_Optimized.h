@@ -123,7 +123,7 @@ protected:
 private:
     // Core data members
     std::vector<std::unique_ptr<DataListCtrl_Row_Optimized>> m_rows_;
-    std::unique_ptr<DataListCtrlCache> m_cache_;
+    std::unique_ptr<data_list_ctrl_cache> m_cache_;
     data_list_ctrl_configuration m_config_;
     data_list_ctrl_infos* m_infos_;
     

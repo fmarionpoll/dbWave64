@@ -17,8 +17,8 @@
 #include "DataListCtrl_Configuration.h"
 
 // Forward declarations for supporting classes
-class DataListCtrlCache;
-enum class DataListCtrlError;
+class data_list_ctrl_cache;
+enum class data_list_ctrl_error;
 
 // Forward declarations
 class AcqDataDoc;
@@ -185,7 +185,7 @@ private:
     mutable std::mutex m_mutex;
     
     // Caching
-    std::unique_ptr<DataListCtrlCache> m_cache;
+    std::unique_ptr<data_list_ctrl_cache> m_cache;
     bool m_cacheEnabled{true};
     
     // Performance monitoring
@@ -228,7 +228,7 @@ private:
     bool IsValidDisplayMode(int mode) const;
     
     // Error handling
-    void HandleError(DataListCtrlError error, const CString& message = _T(""));
+    void HandleError(data_list_ctrl_error error, const CString& message = _T(""));
     void LogError(const CString& message) const;
     
     // Serialization helpers

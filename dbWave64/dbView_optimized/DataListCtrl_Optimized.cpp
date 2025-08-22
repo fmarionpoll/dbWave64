@@ -74,6 +74,7 @@ void DataListCtrl_Optimized::initialize(const data_list_ctrl_configuration& conf
 
         setup_default_configuration();
         setup_virtual_list_control();
+        setup_style();
         initialize_columns();
         setup_image_list();
         create_empty_bitmap();
@@ -966,6 +967,26 @@ void DataListCtrl_Optimized::setup_virtual_list_control()
         {
             ModifyStyle(0, LVS_OWNERDATA);
         }
+    }
+    catch (const std::exception& e)
+    {
+        handle_error(CString(e.what()));
+    }
+}
+
+void DataListCtrl_Optimized::setup_style()
+{
+    try
+    {
+        DWORD currentStyle = GetStyle();
+        if (!(currentStyle & LVS_OWNERDATA))
+        {
+            ModifyStyle(0, LVS_OWNERDATA);
+        }
+        DWORD extendedStyle = GetExtendedStyle()
+            | LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE | LVS_EX_SUBITEMIMAGES;
+        //| LVS_EX_GRIDLINES // when this style is set, data vertical bar is suppressed
+        SetExtendedStyle(extendedStyle);
     }
     catch (const std::exception& e)
     {

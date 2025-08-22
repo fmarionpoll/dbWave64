@@ -144,6 +144,7 @@ private:
     void create_colored_rectangles();
     void setup_default_configuration();
     void setup_virtual_list_control();
+    void setup_style();
     
     // Row management helpers
     void ensure_row_exists(int index);

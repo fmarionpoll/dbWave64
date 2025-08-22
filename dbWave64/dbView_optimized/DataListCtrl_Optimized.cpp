@@ -37,14 +37,28 @@ int g_column_index_[DLC_N_COLUMNS] = {
     DLC_COLUMN_NBSPK, DLC_COLUMN_FLAG
 };
 
+// Message map
+BEGIN_MESSAGE_MAP(DataListCtrl_Optimized, CListCtrl)
+    ON_WM_VSCROLL()
+    ON_WM_HSCROLL()
+    ON_WM_KEYUP()
+    ON_WM_CHAR()
+    ON_WM_KEYDOWN()
+    ON_WM_DESTROY()
+    ON_WM_SIZE()
+    ON_WM_LBUTTONDOWN()
+    ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnGetDisplayInfo)
+END_MESSAGE_MAP()
+
+
 // Simplified implementation - removed complex performance monitoring, thread safety, and async operations
 
 DataListCtrl_Optimized::DataListCtrl_Optimized()
     : m_infos_(nullptr)
     , m_initialized_(false)
     , m_caching_enabled_(true)
-    , m_parent_window_(nullptr)
     , m_current_selection_(-1)
+    , m_parent_window_(nullptr)
 {
     // Initialize with default configuration
     m_config_ = data_list_ctrl_configuration();
@@ -95,7 +109,7 @@ void DataListCtrl_Optimized::initialize(const data_list_ctrl_configuration& conf
     }
 }
 
-void DataListCtrl_Optimized::set_row_count(int count)
+void DataListCtrl_Optimized::set_row_count(const int count)
 {
     try
     {
@@ -440,17 +454,17 @@ void DataListCtrl_Optimized::init_columns(std::vector<int>* width_columns)
     }
 }
 
-void DataListCtrl_Optimized::set_time_intervals(float first, float last)
+void DataListCtrl_Optimized::set_time_intervals(const float first, const float last)
 {
     set_time_span(first, last);
 }
 
-void DataListCtrl_Optimized::set_data_transform(int transform)
+void DataListCtrl_Optimized::set_data_transform(const int transform)
 {
     try
     {
-        auto& displayConfig = m_config_.get_display_config();
-        displayConfig.set_data_transform(transform);
+        auto& display_config = m_config_.get_display_config();
+        display_config.set_data_transform(transform);
         
         if (m_cache_)
         {
@@ -485,12 +499,12 @@ void DataListCtrl_Optimized::set_spike_plot_mode(int mode)
     }
 }
 
-void DataListCtrl_Optimized::set_selected_class(int classIndex)
+void DataListCtrl_Optimized::set_selected_class(const int class_index)
 {
     try
     {
-        auto& displayConfig = m_config_.get_display_config();
-        displayConfig.set_selected_class(classIndex);
+        auto& display_config = m_config_.get_display_config();
+        display_config.set_selected_class(class_index);
         
         if (m_cache_)
         {
@@ -576,24 +590,14 @@ void DataListCtrl_Optimized::fit_columns_to_size(int n_pixels)
         
         // Calculate available width for signal column
         int signal_column_width = n_pixels - fixed_width;
-        
-        // Ensure minimum width for signal column
-        if (signal_column_width < 50)
-            signal_column_width = 50;
+        signal_column_width = (signal_column_width < 50) ? 50 : signal_column_width;
         
         // Only adjust if the new width is different and reasonable
         if (signal_column_width != g_column_width[DLC_COLUMN_CURVE] && signal_column_width > 2)
         {
-            // Update the global array first
             g_column_width[DLC_COLUMN_CURVE] = signal_column_width;
-            
-            // Set the column width in the list control
             SetColumnWidth(DLC_COLUMN_CURVE, signal_column_width);
-            
-            // Update the image list and configuration
             resize_signal_column(signal_column_width);
-            
-            // Save column widths when they change
             save_column_widths();
         }
     }
@@ -783,6 +787,23 @@ void DataListCtrl_Optimized::center_item_in_viewport(int itemIndex)
         handle_error(CString(e.what()));
     }
 }
+
+ChartData* DataListCtrl_Optimized::get_chart_data_of_current_record()
+{
+    const UINT n_selected_items = GetSelectedCount();
+    ChartData* ptr = nullptr;
+
+    // get ptr of first item selected
+    if (n_selected_items > 0)
+    {
+        int n_item = GetNextItem(-1, LVNI_SELECTED);
+        n_item -= GetTopIndex();
+        if (n_item >= 0 && abs(n_item) < m_rows_.size())
+            ptr = m_rows_[n_item]->get_data_window();
+    }
+    return ptr;
+}
+
 
 void DataListCtrl_Optimized::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
 {
@@ -1015,7 +1036,7 @@ void DataListCtrl_Optimized::process_row_update(int index)
     }
 }
 
-void DataListCtrl_Optimized::update_display_info(LV_DISPINFO* pDispInfo)
+void DataListCtrl_Optimized::update_display_info(LV_DISPINFO* p_display_info)
 {
     try
     {
@@ -1025,31 +1046,31 @@ void DataListCtrl_Optimized::update_display_info(LV_DISPINFO* pDispInfo)
         }
         
         // Get current display mode for cache optimization
-        int currentDisplayMode = m_config_.get_display_config().get_display_mode();
+        const int current_display_mode = m_config_.get_display_config().get_display_mode();
         
         // Get visible range with some buffer for smooth scrolling
-        int firstVisible = GetTopIndex();
-        int lastVisible = firstVisible + GetCountPerPage();
-        int itemCount = GetItemCount();
+        const int first_visible = GetTopIndex();
+        const int last_visible = first_visible + GetCountPerPage();
+        const int item_count = GetItemCount();
         
         // Add buffer for smoother scrolling (pre-cache adjacent items)
-        int bufferSize = 5;
-        int startIndex = max(0, firstVisible - bufferSize);
-        int endIndex = min(itemCount - 1, lastVisible + bufferSize);
+        constexpr int buffer_size = 5;
+        const int start_index = max(0, first_visible - buffer_size);
+        const int end_index = min(item_count - 1, last_visible + buffer_size);
         
         // Update cache for visible items plus buffer
-        for (int i = startIndex; i <= endIndex; ++i)
+        for (int i = start_index; i <= end_index; ++i)
         {
             // Only update if not already cached with current display mode
-            auto cachedRow = m_cache_ ? m_cache_->get_cached_row(i) : nullptr;
-            if (!cachedRow)
+            const auto cached_row = m_cache_ ? m_cache_->get_cached_row(i) : nullptr;
+            if (!cached_row)
             {
-                update_cache(i, currentDisplayMode);
+                update_cache(i, current_display_mode);
             }
         }
         
         // Redraw only the actually visible items for better performance
-        RedrawItems(firstVisible, lastVisible);
+        RedrawItems(first_visible, last_visible);
     }
     catch (const std::exception& e)
     {
@@ -1057,11 +1078,11 @@ void DataListCtrl_Optimized::update_display_info(LV_DISPINFO* pDispInfo)
     }
 }
 
-void DataListCtrl_Optimized::handle_display_info_request(LV_DISPINFO* pDispInfo)
+void DataListCtrl_Optimized::handle_display_info_request(LV_DISPINFO* p_display_info)
 {
     try
     {
-        int index = pDispInfo->item.iItem;
+        const int index = p_display_info->item.iItem;
         
         if (!is_valid_index(index))
         {
@@ -1069,7 +1090,7 @@ void DataListCtrl_Optimized::handle_display_info_request(LV_DISPINFO* pDispInfo)
         }
         
         // Handle selection state for virtual list control
-        if (pDispInfo->item.mask & LVIF_STATE)
+        if (p_display_info->item.mask & LVIF_STATE)
         {
             // Get current selection state
             DWORD state = 0;
@@ -1082,19 +1103,19 @@ void DataListCtrl_Optimized::handle_display_info_request(LV_DISPINFO* pDispInfo)
                 stateMask |= LVIS_SELECTED | LVIS_FOCUSED;
             }
             
-            pDispInfo->item.state = state;
-            pDispInfo->item.stateMask = stateMask;
+            p_display_info->item.state = state;
+            p_display_info->item.stateMask = stateMask;
         }
         
         // Get current display mode from configuration
-        int currentDisplayMode = m_config_.get_display_config().get_display_mode();
+        const int current_display_mode = m_config_.get_display_config().get_display_mode();
         
         // Check cache first - use display mode for cache key
-        auto cachedRow = m_cache_ ? m_cache_->get_cached_row(index) : nullptr;
-        if (cachedRow)
+        const auto cached_row = m_cache_ ? m_cache_->get_cached_row(index) : nullptr;
+        if (cached_row)
         {
-            handle_text_display(pDispInfo, cachedRow);
-            handle_image_display(pDispInfo, index, currentDisplayMode);
+            handle_text_display(p_display_info, cached_row);
+            handle_image_display(p_display_info, index, current_display_mode);
             return;
         }
         
@@ -1104,19 +1125,19 @@ void DataListCtrl_Optimized::handle_display_info_request(LV_DISPINFO* pDispInfo)
             const auto pdb_doc = static_cast<ViewdbWave_Optimized*>(m_parent_window_)->GetDocument();
             if (pdb_doc)
             {
-                auto newRow = std::make_unique<DataListCtrl_Row_Optimized>();
-                newRow->set_index(index);
+                const auto new_row = std::make_unique<DataListCtrl_Row_Optimized>();
+                new_row->set_index(index);
                 
-                if (load_row_data_from_database(pdb_doc, index, *newRow))
+                if (load_row_data_from_database(pdb_doc, index, *new_row))
                 {
                     // Cache the row with current display mode
                     if (m_cache_)
                     {
-                        m_cache_->set_cached_row(index, newRow.get(), currentDisplayMode);
+                        m_cache_->set_cached_row(index, new_row.get(), current_display_mode);
                     }
                     
-                    handle_text_display(pDispInfo, newRow.get());
-                    handle_image_display(pDispInfo, index, currentDisplayMode);
+                    handle_text_display(p_display_info, new_row.get());
+                    handle_image_display(p_display_info, index, current_display_mode);
                 }
             }
         }
@@ -1127,9 +1148,9 @@ void DataListCtrl_Optimized::handle_display_info_request(LV_DISPINFO* pDispInfo)
     }
 }
 
-void DataListCtrl_Optimized::handle_text_display(LV_DISPINFO* pDispInfo, DataListCtrl_Row_Optimized* row)
+void DataListCtrl_Optimized::handle_text_display(LV_DISPINFO* p_display_info, const DataListCtrl_Row_Optimized* row)
 {
-    if (!(pDispInfo->item.mask & LVIF_TEXT) || !row)
+    if (!(p_display_info->item.mask & LVIF_TEXT) || !row)
     {
         return;
     }
@@ -1137,7 +1158,7 @@ void DataListCtrl_Optimized::handle_text_display(LV_DISPINFO* pDispInfo, DataLis
     CString cs;
     bool flag = TRUE;
     
-    switch (pDispInfo->item.iSubItem)
+    switch (p_display_info->item.iSubItem)
     {
     case DLC_COLUMN_CURVE: 
         flag = FALSE; // Curve column shows image, not text
@@ -1176,47 +1197,43 @@ void DataListCtrl_Optimized::handle_text_display(LV_DISPINFO* pDispInfo, DataLis
     
     if (flag)
     {
-        _tcscpy_s(pDispInfo->item.pszText, pDispInfo->item.cchTextMax, cs);
+        _tcscpy_s(p_display_info->item.pszText, p_display_info->item.cchTextMax, cs);
     }
 }
 
-void DataListCtrl_Optimized::handle_image_display(LV_DISPINFO* pDispInfo, int index, int displayMode)
+void DataListCtrl_Optimized::handle_image_display(LV_DISPINFO* p_display_info, int index, const int display_mode)
 {
-    if (!(pDispInfo->item.mask & LVIF_IMAGE) || pDispInfo->item.iSubItem != DLC_COLUMN_CURVE)
+    if (!(p_display_info->item.mask & LVIF_IMAGE) || p_display_info->item.iSubItem != DLC_COLUMN_CURVE)
     {
         return;
     }
 
     // For now, create a simple colored rectangle based on display mode
-    // In a full implementation, this would create actual data/spike images
-    switch (displayMode)
+    // TODO: In a full implementation, this would create actual data/spike images
+    switch (display_mode)
     {
-    case 0: // DISPLAY_MODE_EMPTY - grey rectangle
-        pDispInfo->item.iImage = 0; // Use empty bitmap (grey)
-        TRACE(_T("DataListCtrl_Optimized::handle_image_display - Setting grey image (index 0)\n"));
-        break;
     case 1: // DISPLAY_MODE_DATA - show data curve (blue rectangle for now)
-        pDispInfo->item.iImage = 1; // Blue rectangle
+        p_display_info->item.iImage = 1; // Blue rectangle
         TRACE(_T("DataListCtrl_Optimized::handle_image_display - Setting blue image (index 1)\n"));
         break;
     case 2: // DISPLAY_MODE_SPIKES - show spikes (red rectangle for now)
-        pDispInfo->item.iImage = 2; // Red rectangle
+        p_display_info->item.iImage = 2; // Red rectangle
         TRACE(_T("DataListCtrl_Optimized::handle_image_display - Setting red image (index 2)\n"));
         break;
-    default:
-        pDispInfo->item.iImage = 0; // Default to empty
-        TRACE(_T("DataListCtrl_Optimized::handle_image_display - Setting default grey image (index 0)\n"));
+    default: // DISPLAY_MODE_EMPTY - grey rectangle
+        p_display_info->item.iImage = 0; // Default to empty
+        //TRACE(_T("DataListCtrl_Optimized::handle_image_display - Setting default grey image (index 0)\n"));
         break;
     }
 }
 
-void DataListCtrl_Optimized::process_display_mode(int rowIndex, int displayMode)
+void DataListCtrl_Optimized::process_display_mode(const int row_index, int display_mode)
 {
     try
     {
-        ensure_row_exists(rowIndex);
+        ensure_row_exists(row_index);
         
-        if (m_rows_[rowIndex])
+        if (m_rows_[row_index])
         {
             // Process the display mode for the row
             // This would typically involve updating the row's display mode
@@ -1228,7 +1245,7 @@ void DataListCtrl_Optimized::process_display_mode(int rowIndex, int displayMode)
     }
 }
 
-void DataListCtrl_Optimized::update_cache(int index, int displayMode)
+void DataListCtrl_Optimized::update_cache(const int index, const int display_mode)
 {
     try
     {
@@ -1250,13 +1267,13 @@ void DataListCtrl_Optimized::update_cache(int index, int displayMode)
             const auto pdb_doc = static_cast<ViewdbWave_Optimized*>(m_parent_window_)->GetDocument();
             if (pdb_doc)
             {
-                auto newRow = std::make_unique<DataListCtrl_Row_Optimized>();
-                newRow->set_index(index);
+                const auto new_row = std::make_unique<DataListCtrl_Row_Optimized>();
+                new_row->set_index(index);
                 
-                if (load_row_data_from_database(pdb_doc, index, *newRow))
+                if (load_row_data_from_database(pdb_doc, index, *new_row))
                 {
                     // Cache the row with current display mode
-                    m_cache_->set_cached_row(index, newRow.get(), displayMode);
+                    m_cache_->set_cached_row(index, new_row.get(), display_mode);
                 }
             }
         }
@@ -1404,8 +1421,8 @@ void DataListCtrl_Optimized::apply_column_configuration()
         {
             return;
         }
-        
-        auto& columns = m_config_.get_columns();
+
+        const auto& columns = m_config_.get_columns();
         for (size_t i = 0; i < columns.size(); ++i)
         {
             const auto& column = columns[i];
@@ -1512,7 +1529,8 @@ bool DataListCtrl_Optimized::load_row_data_from_database(CdbWaveDoc* pdb_doc, in
 
 void DataListCtrl_Optimized::handle_error(const CString& message)
 {
-    TRACE(_T("DataListCtrl_Optimized::HandleError - %s\n"), message);
+    const CString display_string = _T("DataListCtrl_Optimized::HandleError - ") + message + _T("\n");
+    TRACE(display_string);
     // Simple error handling - just log the error
 }
 
@@ -1568,21 +1586,17 @@ void DataListCtrl_Optimized::setup_default_configuration()
 {
     try
     {
-        // Set default display mode to "no display" (grey rectangle) - mode 0
-        auto& displayConfig = m_config_.get_display_config();
-        displayConfig.set_display_mode(0); // DISPLAY_MODE_EMPTY
-        
-        // Set default time range
-        auto& timeConfig = m_config_.get_time_settings();
-        timeConfig.set_time_span(0.0f, 100.0f);
-        
-        // Set default amplitude span
-        auto& amplitudeConfig = m_config_.get_amplitude_settings();
-        amplitudeConfig.set_mv_span(1.0f);
-        
-        // Set default UI settings
-        auto& uiConfig = m_config_.get_ui_settings();
-        uiConfig.set_display_file_name(false); // Don't display file names by default
+        auto& display_config = m_config_.get_display_config();
+        display_config.set_display_mode(0); // DISPLAY_MODE_EMPTY
+
+        auto& time_config = m_config_.get_time_settings();
+        time_config.set_time_span(0.0f, 12.0f);
+
+        auto& amplitude_config = m_config_.get_amplitude_settings();
+        amplitude_config.set_mv_span(1.0f);
+
+        auto& ui_config = m_config_.get_ui_settings();
+        ui_config.set_display_file_name(false); 
     }
     catch (const std::exception& e)
     {
@@ -1743,15 +1757,3 @@ void DataListCtrl_Optimized::validate_configuration() const
     }
 }
 
-// Message map
-BEGIN_MESSAGE_MAP(DataListCtrl_Optimized, CListCtrl)
-    ON_WM_VSCROLL()
-    ON_WM_HSCROLL()
-    ON_WM_KEYUP()
-    ON_WM_CHAR()
-    ON_WM_KEYDOWN()
-    ON_WM_DESTROY()
-    ON_WM_SIZE()
-    ON_WM_LBUTTONDOWN()
-    ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnGetDisplayInfo)
-END_MESSAGE_MAP()

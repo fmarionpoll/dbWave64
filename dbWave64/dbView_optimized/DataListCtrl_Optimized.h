@@ -66,8 +66,12 @@ public:
     void set_display_file_name(bool display);
     void refresh_display();
     
-    // Selection management
-    void set_current_selection(int record_position);
+    // Chart and data
+   
+    ChartData* get_chart_data_of_current_record();
+    CSpikeDoc* get_visible_rows_spike_doc_at(const int index) { return m_rows_[index]->get_spike_document(); }
+    AcqDataDoc* get_visible_rows_acq_data_doc_at(const int index) { return m_rows_[index]->get_data_document(); }
+
     
     // Configuration
     void set_configuration(const data_list_ctrl_configuration& config);
@@ -83,7 +87,7 @@ public:
     void set_time_intervals(float first, float last);
     void set_data_transform(int transform);
     void set_spike_plot_mode(int mode);
-    void set_selected_class(int classIndex);
+    void set_selected_class(int class_index);
     
     // Signal column adjustment methods (from original DataListCtrl)
     void resize_signal_column(int n_pixels);
@@ -99,6 +103,7 @@ public:
     
     // Selection management
     int get_current_selection() const { return m_current_selection_; }
+    void set_current_selection(int record_position);
     
     // Viewport management
     void center_item_in_viewport(int itemIndex);
@@ -151,14 +156,14 @@ private:
     void process_row_update(int index);
     
     // Display management
-    void update_display_info(LV_DISPINFO* pDispInfo);
-    void handle_display_info_request(LV_DISPINFO* pDispInfo);
-    void handle_text_display(LV_DISPINFO* pDispInfo, DataListCtrl_Row_Optimized* row);
-    void handle_image_display(LV_DISPINFO* pDispInfo, int index, int displayMode);
-    void process_display_mode(int rowIndex, int displayMode);
+    void update_display_info(LV_DISPINFO* p_display_info);
+    void handle_display_info_request(LV_DISPINFO* p_display_info);
+    void handle_text_display(LV_DISPINFO* p_display_info, const DataListCtrl_Row_Optimized* row);
+    void handle_image_display(LV_DISPINFO* p_display_info, int index, int display_mode);
+    void process_display_mode(int row_index, int display_mode);
     
     // Caching helpers
-    void update_cache(int index, int displayMode);
+    void update_cache(int index, int display_mode);
     void invalidate_cache_for_row(int index);
     
     // Error handling

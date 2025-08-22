@@ -1534,6 +1534,19 @@ void DataListCtrl_Optimized::handle_error(const CString& message)
     // Simple error handling - just log the error
 }
 
+int DataListCtrl_Optimized::get_current_selection() const
+{
+    //const { return m_current_selection_; }
+    int n_item = -1;
+    POSITION n_pos = GetFirstSelectedItemPosition();
+    if (n_pos)
+    {
+        n_item = GetNextSelectedItem(n_pos);
+    }
+    return n_item;
+}
+
+
 void DataListCtrl_Optimized::set_current_selection(int record_position)
 {
     try

@@ -67,7 +67,6 @@ public:
     void refresh_display();
     
     // Chart and data
-   
     ChartData* get_chart_data_of_current_record();
     CSpikeDoc* get_visible_rows_spike_doc_at(const int index) { return m_rows_[index]->get_spike_document(); }
     AcqDataDoc* get_visible_rows_acq_data_doc_at(const int index) { return m_rows_[index]->get_data_document(); }
@@ -102,7 +101,7 @@ public:
     int get_display_mode();
     
     // Selection management
-    int get_current_selection() const { return m_current_selection_; }
+    int get_current_selection() const;
     void set_current_selection(int record_position);
     
     // Viewport management
@@ -167,7 +166,7 @@ private:
     void invalidate_cache_for_row(int index);
     
     // Error handling
-    void handle_error(const CString& message = _T(""));
+    static void handle_error(const CString& message = _T(""));
     
     // Utility methods
     bool is_valid_index(int index) const;

@@ -738,7 +738,6 @@ void DataListCtrl_Optimized::OnLButtonDown(UINT nFlags, CPoint point)
                     if (pdb_doc->db_set_current_record_position(itemIndex))
                     {
                         pdb_doc->UpdateAllViews(nullptr, HINT_DOC_MOVE_RECORD);
-
                     }
                 }
             }
@@ -1129,6 +1128,7 @@ void DataListCtrl_Optimized::handle_display_info_request(LV_DISPINFO* p_display_
                 new_row->set_index(index);
                 
                 if (load_row_data_from_database(pdb_doc, index, *new_row))
+                //if (new_row->load_database_record(pdb_doc, index)) // THIS BUGS!!!
                 {
                     // Cache the row with current display mode
                     if (m_cache_)

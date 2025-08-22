@@ -24,7 +24,7 @@ class ViewdbWave_Optimized : public ViewDbTable
 
 public:
     ViewdbWave_Optimized();
-    virtual ~ViewdbWave_Optimized();
+    ~ViewdbWave_Optimized() override;
 
     // Initialization and setup
     void initialize();
@@ -33,12 +33,6 @@ public:
     void initialize_data_list_control();
     void make_controls_stretchable();
 
-    // Document and application integration
-    void SetDocument(CdbWaveDoc* pDoc);
-    void SetApplication(CdbWaveApp* pApp);
-    CdbWaveDoc* GetDocument() const;  // Override to use MFC framework
-    CdbWaveApp* GetApplication() const { return m_pApplication; }
-    
     // Data operations
     void load_data();
     void load_data_from_document(CdbWaveDoc* pDoc);
@@ -64,15 +58,14 @@ public:
 
 protected:
     // MFC overrides
-    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-    virtual void OnInitialUpdate();
-    virtual void DoDataExchange(CDataExchange* pDX);
-    virtual void OnUpdate(CView* p_sender, const LPARAM l_hint, CObject* p_hint);
+    BOOL PreCreateWindow(CREATESTRUCT& cs) override;
+    void OnInitialUpdate() override;
+    void DoDataExchange(CDataExchange* pDX) override;
+    void OnUpdate(CView* p_sender, const LPARAM l_hint, CObject* p_hint) override;
+    void OnActivateView(BOOL b_activate, CView* p_activate_view, CView* p_deactive_view) override;
 
 private:
     // Core components
-    CdbWaveDoc* m_pDocument; 
-    CdbWaveApp* m_pApplication; 
     std::unique_ptr<DataListCtrl_Optimized> m_pDataListCtrl;
     std::unique_ptr<::data_list_ctrl_configuration> m_pConfiguration;
     

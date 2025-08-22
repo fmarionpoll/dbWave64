@@ -1,10 +1,14 @@
 #include "StdAfx.h"
 #include "ViewdbWave_Optimized.h"
 
+#include "ChartData.h"
+#include "ChildFrm.h"
 #include "ViewdbWave_SupportingClasses.h"
 #include "DataListCtrl_Optimized.h"
 #include "DataListCtrl_Configuration.h"
+#include "dbWave.h"
 #include "dbWave_constants.h"
+#include "MainFrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -41,8 +45,6 @@ END_MESSAGE_MAP()
 
 ViewdbWave_Optimized::ViewdbWave_Optimized()
     : ViewDbTable(IDD)
-    , m_pDocument(nullptr)
-    , m_pApplication(nullptr)
     , m_pDataListCtrl(std::make_unique<DataListCtrl_Optimized>())
     , m_pConfiguration(std::make_unique<::data_list_ctrl_configuration>())
     , m_pTimeFirstEdit(std::make_unique<CEditCtrl>())
@@ -90,6 +92,31 @@ void ViewdbWave_Optimized::DoDataExchange(CDataExchange* pDX)
     
     // Note: Button controls will be initialized manually in initialize_controls()
     // to avoid nullptr dereference issues during DoDataExchange
+}
+
+void ViewdbWave_Optimized::OnActivateView(const BOOL b_activate, CView* p_activate_view, CView* p_deactive_view)
+{
+    auto* p_mainframe = static_cast<CMainFrame*>(AfxGetMainWnd());
+    if (b_activate)
+    {
+        // make sure the secondary toolbar is not visible (none is defined for the database)
+        if (p_mainframe->m_p_second_tool_bar != nullptr)
+            p_mainframe->ShowPane(p_mainframe->m_p_second_tool_bar, FALSE, FALSE, TRUE);
+        // load status
+        m_nStatus = static_cast<CChildFrame*>(p_mainframe->MDIGetActive())->m_n_status;
+        p_mainframe->PostMessage(WM_MYMESSAGE, HINT_ACTIVATE_VIEW, reinterpret_cast<LPARAM>(p_activate_view->GetDocument()));
+    }
+    else
+    {
+        ChartData* p_chart_data = m_pDataListCtrl->get_chart_data_of_current_record();
+        if (p_chart_data != nullptr)
+        {
+            static_cast<CdbWaveApp*>(AfxGetApp())->options_view_data.view_data = *p_chart_data->get_scope_parameters();
+        }
+        if (p_activate_view != nullptr)
+            static_cast<CChildFrame*>(p_mainframe->MDIGetActive())->m_n_status = m_nStatus;
+    }
+    ViewDbTable::OnActivateView(b_activate, p_activate_view, p_deactive_view);
 }
 
 void ViewdbWave_Optimized::initialize()
@@ -201,15 +228,9 @@ void ViewdbWave_Optimized::initialize_data_list_control()
 {
     try
     {
-        if (!m_pDataListCtrl)
+        if (!m_pDataListCtrl || !m_pDataListCtrl->GetSafeHwnd())
         {
-            throw std::runtime_error("Data list control not initialized");
-        }
-
-        // Check if the control has a valid HWND before initializing
-        if (!m_pDataListCtrl->GetSafeHwnd())
-        {
-            // Control not ready yet, this is expected during early initialization
+            // Control undefined or not ready yet, this is expected during early initialization
             // The control will be initialized later when the HWND is available
             return;
         }
@@ -235,21 +256,6 @@ void ViewdbWave_Optimized::make_controls_stretchable()
     stretch_.new_prop(IDC_LISTCTRL, XLEQ_XREQ, YTEQ_YBEQ);
     stretch_.new_prop(IDC_TAB1, XLEQ_XREQ, SZEQ_YBEQ);
     b_init_ = TRUE;
-}
-
-void ViewdbWave_Optimized::SetDocument(CdbWaveDoc* pDoc)
-{
-    m_pDocument = pDoc;
-    // Load data immediately if initialized (simplified approach for local database)
-    if (pDoc && m_initialized)
-    {
-        load_data();
-    }
-}
-
-void ViewdbWave_Optimized::SetApplication(CdbWaveApp* pApp)
-{
-    m_pApplication = pApp;  // Simple assignment for raw pointer
 }
 
 void ViewdbWave_Optimized::load_data()
@@ -403,11 +409,7 @@ void ViewdbWave_Optimized::reset_configuration()
 
 BOOL ViewdbWave_Optimized::PreCreateWindow(CREATESTRUCT& cs)
 {
-    if (!ViewDbTable::PreCreateWindow(cs))
-        return FALSE;
-    
-    cs.style |= WS_CLIPCHILDREN;
-    return TRUE;
+    return ViewDbTable::PreCreateWindow(cs);
 }
 
 void ViewdbWave_Optimized::OnInitialUpdate()
@@ -594,9 +596,6 @@ void ViewdbWave_Optimized::OnUpdate(CView* p_sender, const LPARAM l_hint, CObjec
     switch (LOWORD(l_hint))
     {
     case HINT_REQUERY:
-        load_data();
-        break;
-        
     case HINT_DOC_HAS_CHANGED:
         load_data();
         break;
@@ -606,6 +605,8 @@ void ViewdbWave_Optimized::OnUpdate(CView* p_sender, const LPARAM l_hint, CObjec
         break;
         
     case HINT_REPLACE_VIEW:
+        // TODO m_pDataListCtrl->update_cache(-2, -2);
+        // TODO update_display();
         load_data();
         break;
         
@@ -796,13 +797,6 @@ void ViewdbWave_Optimized::apply_configuration_to_controls()
     {
         handle_error(CString(e.what()));
     }
-}
-
-// Complex error handling methods removed - simplified implementation
-
-CdbWaveDoc* ViewdbWave_Optimized::GetDocument() const
-{
-    return static_cast<CdbWaveDoc*>(CDaoRecordView::GetDocument());
 }
 
 // Display mode methods - removed duplicate implementation
@@ -1144,7 +1138,7 @@ void ViewdbWave_Optimized::on_en_change_amplitude_span()
 
 void ViewdbWave_Optimized::on_bn_clicked_check_filename()
 {
-	boolean checked = (IsDlgButtonChecked(IDC_CHECKFILENAME) == BST_CHECKED);
+	const boolean checked = (IsDlgButtonChecked(IDC_CHECKFILENAME) == BST_CHECKED);
     m_pConfiguration->get_ui_settings().set_display_file_name (checked);
     m_pDataListCtrl->set_display_file_name(checked);
     m_pDataListCtrl->refresh_display();
@@ -1182,14 +1176,19 @@ void ViewdbWave_Optimized::on_dbl_clk_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_resul
 
 void ViewdbWave_Optimized::on_click_median_filter()
 {
-    auto& display_settings = m_pConfiguration->get_display_settings();
-	boolean flag = display_settings.get_data_transform() > 0 ? true : false;
-    if (flag == static_cast<CButton*>(GetDlgItem(IDC_FILTERCHECK))->GetCheck())
-        return;
+    const auto& display_settings = m_pConfiguration->get_display_settings();
+	//boolean flag = display_settings.get_data_transform() > 0 ? true : false;
+ //   if (flag == static_cast<CButton*>(GetDlgItem(IDC_FILTERCHECK))->GetCheck())
+ //       return;
 
-    flag = static_cast<CButton*>(GetDlgItem(IDC_FILTERCHECK))->GetCheck();
-    m_pDataListCtrl->set_data_transform(flag? 13:0);
-    m_pDataListCtrl->refresh_display();
+ //   flag = static_cast<CButton*>(GetDlgItem(IDC_FILTERCHECK))->GetCheck();
+ //   m_pDataListCtrl->set_data_transform(flag? 13:0);
+    const boolean flag0 = display_settings.get_data_transform() > 0;
+    const boolean flag1 = (IsDlgButtonChecked(IDC_FILTERCHECK) == BST_CHECKED);
+    if (flag0 == flag1)
+        return;
+    m_pDataListCtrl->set_data_transform(flag1 ? 13 : 0);
+	m_pDataListCtrl->refresh_display();
 }
 
 

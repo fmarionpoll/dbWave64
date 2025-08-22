@@ -85,7 +85,6 @@ public:
     
     // Public interface
     bool load_database_record(CdbWaveDoc* db_wave_doc, int index);
-    void attach_database_record(CdbWaveDoc* db_wave_doc);
     void set_display_parameters(data_list_ctrl_infos* infos, int imageIndex);
     void reset_display_processed();
     
@@ -95,7 +94,6 @@ public:
     // Test-friendly methods
     bool is_display_processed() const { return m_display_processed_; }
     int get_last_display_mode() const { return m_last_display_mode_; }
-    
     
     // Public getter methods for database fields
     int get_index() const { return m_index_; }
@@ -198,8 +196,6 @@ private:
     PerformanceMetrics m_performance_metrics_;
     
     // Core functionality methods
-    void InitializeDisplayComponents(data_list_ctrl_infos* infos, int imageIndex);
-    void ValidateImageIndex(int imageIndex, CdbWaveDoc* pDoc);
     void process_display_mode(data_list_ctrl_infos* infos, int image_index);
     
     // Data window management

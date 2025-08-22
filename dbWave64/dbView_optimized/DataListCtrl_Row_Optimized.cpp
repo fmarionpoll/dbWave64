@@ -314,13 +314,16 @@ void DataListCtrl_Row_Optimized::Serialize(CArchive& ar)
     }
     catch (const CArchiveException& e)
     {
-        CString archiveErrorMsg;
-        e.GetErrorMessage(archiveErrorMsg.GetBuffer(256), 256);
-        archiveErrorMsg.ReleaseBuffer();
+        CString archive_error_msg;
+        e.GetErrorMessage(archive_error_msg.GetBuffer(256), 256);
+        archive_error_msg.ReleaseBuffer();
+        archive_error_msg = _T("Serialization failed: ") + archive_error_msg + _T(" (Error code: ");
         
-        CString errorMessage;
-        errorMessage.Format(_T("Serialization failed: %s (Error code: %d)"), archiveErrorMsg, e.m_cause);
-        throw DataListCtrlException(data_list_ctrl_error::SERIALIZATION_FAILED, errorMessage);
+        CString error_message;
+        error_message.Format(_T("%d)"), e.m_cause);
+        error_message = archive_error_msg + error_message;
+
+        throw DataListCtrlException(data_list_ctrl_error::SERIALIZATION_FAILED, error_message);
     }
 }
 
@@ -846,7 +849,7 @@ void DataListCtrl_Row_Optimized::handle_error(data_list_ctrl_error error, const 
 
 void DataListCtrl_Row_Optimized::log_error(const CString& message) const
 {
-    TRACE(_T("DataListCtrl_Row_Optimized Error: %s\n"), message);
+    TRACE(_T("DataListCtrl_Row_Optimized Error:") + message + _T(" \n"));
 }
 
 // Serialization helpers
@@ -871,11 +874,10 @@ void DataListCtrl_Row_Optimized::serialize_loading(CArchive& ar)
 
 void DataListCtrl_Row_Optimized::serialize_strings(CArchive& ar, bool isStoring)
 {
-    constexpr auto string_count = 8;
-    
-    if (isStoring)
+	if (isStoring)
     {
-        ar << string_count;
+	    constexpr auto string_count = 8;
+	    ar << string_count;
         ar << m_comment_;
         ar << m_data_file_name_;
         ar << m_sensillum_name_;
@@ -919,11 +921,10 @@ void DataListCtrl_Row_Optimized::serialize_strings(CArchive& ar, bool isStoring)
 
 void DataListCtrl_Row_Optimized::serialize_objects(CArchive& ar, bool isStoring)
 {
-    constexpr auto object_count = 3;
-    
-    if (isStoring)
+	if (isStoring)
     {
-        ar << object_count;
+	    constexpr auto object_count = 3;
+	    ar << object_count;
         if (m_p_chart_data_wnd_)
             m_p_chart_data_wnd_->Serialize(ar);
         if (m_p_chart_spike_wnd_)

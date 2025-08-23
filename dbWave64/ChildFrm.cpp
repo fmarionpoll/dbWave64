@@ -1034,7 +1034,7 @@ void CChildFrame::on_tools_import_database()
 	dlg_file.GetOFN().lpstrFilter = _T("Database Files\0*.mdb");
 	dlg_file.GetOFN().lpstrTitle = _T("Select a database to be merged with current database...");
 	constexpr int check_id = 1001;
-	HRESULT b_result = dlg_file.AddCheckButton(check_id, "Copy data files to a new sub-directory", FALSE);
+	HRESULT b_result = dlg_file.AddCheckButton(check_id, _T("Copy data files to a new sub-directory"), FALSE);
 	if (IDOK == dlg_file.DoModal())
 	{
 		BOOL copy_data_to_new_sub_directory;

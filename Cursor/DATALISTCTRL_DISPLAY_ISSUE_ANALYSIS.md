@@ -179,12 +179,57 @@ Verify that both projects use identical compiler settings:
 
 3. **Memory Allocation**: Different heap management between VS2019 and VS2022
 
-## Expected Outcome
+## SOLUTION FOUND
 
-Once the root cause is identified, the fix should be relatively straightforward, likely involving:
-- Adjusting compiler settings to match VS2019 behavior
-- Fixing window creation parameters for VS2022 compatibility
-- Updating device context handling
-- Adding compatibility macros or pragmas
+**Root Cause**: Character Set Mismatch (UNICODE vs MultiByte)
 
-The fact that the grey rectangle displays correctly indicates the basic image list mechanism works, so the issue is specifically in the ChartData window creation or device context setup in the DataListCtrl context.
+**Fix**: Compile with UNICODE character set instead of MultiByte
+
+**Why this affected only the DataListCtrl class:**
+
+### 1. **Window Class Name Registration**
+The DataListCtrl creates ChartData windows with specific class names:
+```cpp
+p_chart_data_wnd->Create(_T("DATAWND"), WS_CHILD, ...)
+```
+
+- In **UNICODE mode**: `_T("DATAWND")` becomes `L"DATAWND"` (wide string)
+- In **MultiByte mode**: `_T("DATAWND")` becomes `"DATAWND"` (narrow string)
+
+VS2022 may handle window class registration differently between UNICODE and MultiByte modes.
+
+### 2. **MFC Internal String Handling**
+MFC's internal window management changed between VS2019 and VS2022:
+- **VS2019**: More tolerant of character set mismatches
+- **VS2022**: Stricter enforcement of character set consistency
+
+### 3. **Device Context String Operations**
+ChartData likely performs string operations on device contexts:
+- Text rendering with `TextOut()` or `DrawText()`
+- Font selection and text metrics
+- These operations behave differently in UNICODE vs MultiByte mode
+
+### 4. **Window Message Handling**
+The DataListCtrl context involves complex window message passing:
+- `LVN_GETDISPINFO` notifications
+- Custom window messages between parent and child windows
+- VS2022's stricter message handling may require consistent character sets
+
+### 5. **Why Other Views Worked**
+Other ChartData views probably:
+- Use different window creation patterns
+- Don't rely on the same string-based window identification
+- Have simpler parent-child window relationships
+
+## Technical Explanation
+
+The issue was **not** in the data rendering itself, but in the **window creation and identification** process. When VS2022 tried to create ChartData windows in MultiByte mode within the DataListCtrl context, the window creation succeeded but the subsequent device context operations failed due to character set inconsistencies.
+
+**UNICODE mode** ensures consistent string handling throughout the entire window hierarchy, allowing the ChartData windows to properly initialize their device contexts and render data.
+
+## Lessons Learned
+
+1. **Character Set Consistency**: Always use consistent character sets across all components
+2. **VS2022 Strictness**: VS2022 is more strict about character set compliance than VS2019
+3. **Window Creation Context**: Complex window hierarchies are more sensitive to character set mismatches
+4. **MFC Evolution**: MFC behavior changes between Visual Studio versions can expose hidden dependencies

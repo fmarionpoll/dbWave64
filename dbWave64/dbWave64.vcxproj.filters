@@ -588,6 +588,9 @@
     <ClCompile Include="RegistryManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="dbView\CGraphImageList.cpp">
+      <Filter>dbView</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AcqDataDoc.h">
@@ -1267,6 +1270,9 @@
     </ClInclude>
     <ClInclude Include="RegistryManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView\CGraphImageList.h">
+      <Filter>dbView</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

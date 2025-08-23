@@ -46,11 +46,6 @@ class DataListCtrl_Row : public CObject
 	void set_display_parameters(DataListCtrlInfos* infos, int i_image);
 
 protected:
-	void display_data_wnd(DataListCtrlInfos* infos, int i_image);
-	void display_spike_wnd(DataListCtrlInfos* infos, int i_image);
-	static void display_empty_wnd(DataListCtrlInfos* infos, int i_image);
-
-	void plot_data(DataListCtrlInfos* infos, int i_image) const;
-	void plot_spikes(DataListCtrlInfos* infos, int i_image) const;
+	// Old display and plot methods removed - replaced by CGraphImageList approach
 
 };

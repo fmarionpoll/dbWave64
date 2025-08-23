@@ -39,6 +39,8 @@ int DataListCtrl::m_column_index_[] = {
 	CTRL_COL_NBSPK, CTRL_COL_FLAG
 };
 
+// Window class registration removed - character set immunity now handled by CGraphImageList
+
 BEGIN_MESSAGE_MAP(DataListCtrl, CListCtrl)
 
 	ON_WM_VSCROLL()

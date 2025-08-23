@@ -21,6 +21,9 @@ public:
 	DataListCtrl();
 	~DataListCtrl() override;
 
+	// Character set immunity handled by CGraphImageList
+
+	// Public methods
 	void init_columns(CUIntArray* width_columns = nullptr);
 	void set_amplitude_span(const float mv_span_new) { infos.mv_span = mv_span_new; }
 	void set_display_file_name(const boolean flag) { infos.b_display_file_name = flag; }
@@ -47,6 +50,12 @@ public:
 	int get_visible_rows_size() const { return rows_.GetSize(); }
 	CSpikeDoc* get_visible_rows_spike_doc_at(const int index) { return rows_[index]->p_spike_doc; }
 
+public:
+	DataListCtrlInfos infos;
+
+private:
+	// No longer needed - character set immunity handled by CGraphImageList
+
 protected:
 	CArray<DataListCtrl_Row*, DataListCtrl_Row*> rows_;
 	static int m_column_width_[N_COLUMNS];
@@ -69,10 +78,6 @@ protected:
 
 	AcqDataDoc* get_visible_rows_acq_data_doc_at(const int index) { return rows_[index]->p_data_doc; }
 
-public:
-	DataListCtrlInfos infos;
-
-protected:
 	void delete_ptr_array();
 	void save_columns_width() const;
 	boolean rows_array_set_size(int rows_count);

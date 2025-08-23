@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 #include "DataListCtrl_Row.h"
+#include "DataListCtrl.h"
+#include "CGraphImageList.h"
 
 #include "ColorNames.h"
 #include "ViewdbWave.h"
@@ -182,180 +184,44 @@ void DataListCtrl_Row::attach_database_record(CdbWaveDoc* db_wave_doc)
 
 void DataListCtrl_Row::set_display_parameters(DataListCtrlInfos* infos, const int i_image)
 {
+	// Use CGraphImageList for character set isolated image generation
 	switch (infos->display_mode)
 	{
-	case 1:
-		display_data_wnd(infos, i_image);
-		break;
-	case 2:
-		display_spike_wnd(infos, i_image);
-		break;
-	default:
-		display_empty_wnd(infos, i_image);
-		break;
-	}
-}
-
-void DataListCtrl_Row::display_data_wnd(DataListCtrlInfos* infos, const int i_image)
-{
-	// create objects if necessary : CLineView and AcqDataDoc
-	if (p_chart_data_wnd == nullptr)
-	{
-		p_chart_data_wnd = new ChartData;
-		ASSERT(p_chart_data_wnd != NULL);
-		p_chart_data_wnd->Create(_T("DATAWND"), WS_CHILD, 
-			CRect(0, 0, infos->image_width, infos->image_height), 
-			infos->parent, i_image * 100);
-		p_chart_data_wnd->set_b_use_dib(FALSE);
-	}
-	p_chart_data_wnd->set_string(cs_comment);
-
-	// open data document
-	if (p_data_doc == nullptr)
-	{
-		p_data_doc = new AcqDataDoc;
-		ASSERT(p_data_doc != NULL);
-	}
-
-	if (cs_datafile_name.IsEmpty() || !p_data_doc->open_document(cs_datafile_name))
-	{
-		p_chart_data_wnd->remove_all_channel_list_items();
-		auto comment = _T("File name: ") + cs_datafile_name;
-		comment += _T(" -- data not available");
-		p_chart_data_wnd->set_string(comment);
-	}
-	else
-	{
-		if (cs_n_spikes.IsEmpty())
-			p_chart_data_wnd->get_scope_parameters()->cr_scope_fill = col_light_grey; 
-		else
-			p_chart_data_wnd->get_scope_parameters()->cr_scope_fill = col_white; 
-
-		p_data_doc->read_data_infos();
-		cs_comment = p_data_doc->get_wave_format()->get_comments(_T(" "));
-		p_chart_data_wnd->attach_data_file(p_data_doc);
-		p_chart_data_wnd->load_all_channels(infos->data_transform);
-		p_chart_data_wnd->load_data_within_window(infos->b_set_time_span, infos->t_first, infos->t_last);
-		p_chart_data_wnd->adjust_gain(infos->b_set_mv_span, infos->mv_span);
-
-		p_data_doc->acq_close_file();
-	}
-	plot_data(infos, i_image);
-}
-
-void DataListCtrl_Row::plot_data(DataListCtrlInfos* infos, const int i_image) const
-{
-	p_chart_data_wnd->set_bottom_comment(infos->b_display_file_name, cs_datafile_name);
-	CRect client_rect;
-	p_chart_data_wnd->GetClientRect(&client_rect);
-
-	const auto p_dc = p_chart_data_wnd->GetDC();
-	CDC mem_dc;
-	VERIFY(mem_dc.CreateCompatibleDC(p_dc));
-
-	CBitmap bitmap_plot;
-	if (!bitmap_plot.CreateBitmap(client_rect.right, client_rect.bottom, p_dc->GetDeviceCaps(PLANES),
-		p_dc->GetDeviceCaps(BITSPIXEL), nullptr)) 
-	{
-		TRACE("Failed to create bitmap: %dx%d, planes=%d, bits=%d\n",
-			client_rect.right, client_rect.bottom,
-			p_dc->GetDeviceCaps(PLANES), p_dc->GetDeviceCaps(BITSPIXEL));
-		return;
-	}
-
-	mem_dc.SelectObject(&bitmap_plot);
-	mem_dc.SetMapMode(p_dc->GetMapMode());
-
-	p_chart_data_wnd->plot_data_to_dc(&mem_dc);
-
-	infos->image_list.Replace(i_image, &bitmap_plot, nullptr);
-}
-
-void DataListCtrl_Row::display_spike_wnd(DataListCtrlInfos* infos, const int i_image)
-{
-	// create spike window and spike document if necessary
-	if (p_chart_spike_wnd == nullptr)
-	{
-		p_chart_spike_wnd = new ChartSpikeBar;
-		ASSERT(p_chart_spike_wnd != NULL);
-		p_chart_spike_wnd->Create(_T("SPKWND"), WS_CHILD, CRect(0, 0, infos->image_width, infos->image_height), infos->parent, index * 1000);
-		p_chart_spike_wnd->set_b_use_dib(FALSE);
-		p_chart_spike_wnd->set_display_all_files(false);
-	}
-
-	// open spike document
-	if (p_spike_doc == nullptr)
-	{
-		p_spike_doc = new CSpikeDoc;
-		ASSERT(p_spike_doc != NULL);
-	}
-
-	if (cs_spike_file_name.IsEmpty() || !p_spike_doc->OnOpenDocument(cs_spike_file_name))
-	{
-		infos->image_list.Replace(i_image, infos->p_empty_bitmap, nullptr);
-	}
-	else
-	{
-		const auto p_parent0 = static_cast<ViewdbWave*>(infos->parent->GetParent());
-		int i_tab = p_parent0->spk_list_tab_ctrl.GetCurSel();
-		if (i_tab < 0)
-			i_tab = 0;
-		const auto p_spk_list = p_spike_doc->set_index_current_spike_list(i_tab);
-
-		p_chart_spike_wnd->set_source_data(p_spk_list, p_parent0->GetDocument());
-		p_chart_spike_wnd->set_spike_doc(p_spike_doc);
-		p_chart_spike_wnd->set_plot_mode(infos->spike_plot_mode, infos->selected_class);
-
-		long l_first = 0;
-		auto l_last = p_spike_doc->get_acq_size();
-		if (infos->b_set_time_span)
+	case 1: // Data
 		{
-			const auto sampling_rate = p_spike_doc->get_acq_rate();
-			l_first = static_cast<long>(infos->t_first * sampling_rate);
-			l_last = static_cast<long>(infos->t_last * sampling_rate);
+			CBitmap* pBitmap = CGraphImageList::GenerateDataImage(
+				infos->image_width, infos->image_height,
+				cs_datafile_name, *infos);
+			infos->image_list.Replace(i_image, pBitmap, nullptr);
+			delete pBitmap;
 		}
-		p_chart_spike_wnd->set_time_intervals(l_first, l_last);
-
-		if (infos->b_set_mv_span)
+		break;
+	case 2: // Spike
 		{
-			const auto volts_per_bin = p_spk_list->get_acq_volts_per_bin();
-			const auto y_we = static_cast<int>(infos->mv_span / 1000.f / volts_per_bin);
-			const auto y_wo = p_spk_list->get_acq_bin_zero();
-			p_chart_spike_wnd->set_yw_ext_org(y_we, y_wo);
+			CBitmap* pBitmap = CGraphImageList::GenerateSpikeImage(
+				infos->image_width, infos->image_height,
+				cs_spike_file_name, *infos);
+			infos->image_list.Replace(i_image, pBitmap, nullptr);
+			delete pBitmap;
 		}
-
-		plot_spikes(infos, i_image);
+		break;
+	default: // Empty
+		{
+			CBitmap* pBitmap = CGraphImageList::GenerateEmptyImage(
+				infos->image_width, infos->image_height);
+			infos->image_list.Replace(i_image, pBitmap, nullptr);
+			delete pBitmap;
+		}
+		break;
 	}
 }
 
-void DataListCtrl_Row::plot_spikes(DataListCtrlInfos* infos, const int i_image) const
-{
-	p_chart_spike_wnd->set_bottom_comment(infos->b_display_file_name, cs_spike_file_name);
+// Old display_data_wnd method removed - replaced by CGraphImageList approach
 
-	CRect client_rect;
-	p_chart_spike_wnd->GetClientRect(&client_rect);
-	client_rect.DeflateRect(2, 2);
-	client_rect.OffsetRect(1, 1);
+// Old plot_data method removed - replaced by CGraphImageList approach
 
-	const auto p_dc = p_chart_spike_wnd->GetDC();
-	CDC mem_dc;
-	VERIFY(mem_dc.CreateCompatibleDC(p_dc));
+// Old display_spike_wnd method removed - replaced by CGraphImageList approach
 
-	CBitmap bitmap_plot;
-	bitmap_plot.CreateBitmap(client_rect.right,
-		client_rect.bottom,
-		p_dc->GetDeviceCaps(PLANES),
-		p_dc->GetDeviceCaps(BITSPIXEL),
-		nullptr);
-	mem_dc.SelectObject(&bitmap_plot);
-	mem_dc.SetMapMode(p_dc->GetMapMode());
+// Old plot_spikes method removed - replaced by CGraphImageList approach
 
-	p_chart_spike_wnd->plot_data_to_dc(&mem_dc);
-
-	infos->image_list.Replace(i_image, &bitmap_plot, nullptr);
-}
-
-void DataListCtrl_Row::display_empty_wnd(DataListCtrlInfos* infos, const int i_image)
-{
-	infos->image_list.Replace(i_image, infos->p_empty_bitmap, nullptr);
-}
+// Old display_empty_wnd method removed - replaced by CGraphImageList approach

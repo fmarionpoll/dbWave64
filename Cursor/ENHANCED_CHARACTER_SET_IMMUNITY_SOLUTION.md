@@ -100,3 +100,4 @@ This approach provides a good foundation for Linux migration because:
 1. The character set context management can be abstracted
 2. Window class registration can be replaced with platform-specific alternatives
 3. The core logic remains independent of Windows-specific character set handling
+

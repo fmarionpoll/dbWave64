@@ -226,3 +226,4 @@ private:
 - [ ] No memory leaks
 - [ ] Window class registration works properly
 - [ ] Debugging tools can identify windows correctly
+

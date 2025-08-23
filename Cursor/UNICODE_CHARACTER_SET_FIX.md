@@ -85,3 +85,4 @@ This type of issue can occur in:
 - [x] Grey rectangle fallback still works
 - [x] Other ChartData views continue to work
 - [x] No regression in other functionality
+

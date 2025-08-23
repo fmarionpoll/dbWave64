@@ -17,8 +17,6 @@ class DataListCtrl_Row : public CObject
 	BOOL b_changed {false};
 	WORD w_version {0};
 	BOOL b_init {false};
-	BOOL display_processed {false};
-	int last_display_mode {-1};
 
 	int record_id{ 0 };
 	int index {0};
@@ -45,16 +43,14 @@ class DataListCtrl_Row : public CObject
 	void Serialize(CArchive& ar) override;
 
 	void attach_database_record(CdbWaveDoc* db_wave_doc);
-	void set_display_parameters(data_list_ctrl_infos* infos, int i_image);
-	void reset_display_processed();
+	void set_display_parameters(DataListCtrlInfos* infos, int i_image);
 
 protected:
-	void display_data_wnd(data_list_ctrl_infos* infos, int i_image);
-	void display_spike_wnd(data_list_ctrl_infos* infos, int i_image);
-	void display_empty_wnd(data_list_ctrl_infos* infos, int i_image);
-	void print_filename_on_rectangle(const data_list_ctrl_infos* infos, CDC& mem_dc);
+	void display_data_wnd(DataListCtrlInfos* infos, int i_image);
+	void display_spike_wnd(DataListCtrlInfos* infos, int i_image);
+	static void display_empty_wnd(DataListCtrlInfos* infos, int i_image);
 
-	void plot_data(data_list_ctrl_infos* infos, int i_image) const;
-	void plot_spikes(data_list_ctrl_infos* infos, int i_image) const;
+	void plot_data(DataListCtrlInfos* infos, int i_image) const;
+	void plot_spikes(DataListCtrlInfos* infos, int i_image) const;
 
 };

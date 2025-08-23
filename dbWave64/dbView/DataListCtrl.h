@@ -31,7 +31,7 @@ public:
 	}
 	void set_timespan_adjust_mode(const boolean flag) { infos.b_set_time_span = flag; }
 	void set_amplitude_adjust_mode(const boolean flag) { infos.b_set_mv_span = flag; }
-	void set_display_mode(const int i_mode);
+	void set_display_mode(const int i_mode) { infos.display_mode = i_mode; }
 	void update_cache(int index_first, int index_last);
 	void set_transform_mode(const int i_mode) { infos.data_transform = i_mode; }
 	void set_spike_plot_mode(const int spike_plot_mode_new, const int i_class)
@@ -70,7 +70,7 @@ protected:
 	AcqDataDoc* get_visible_rows_acq_data_doc_at(const int index) { return rows_[index]->p_data_doc; }
 
 public:
-	data_list_ctrl_infos infos;
+	DataListCtrlInfos infos;
 
 protected:
 	void delete_ptr_array();

@@ -170,7 +170,7 @@ private:
     
     // Utility methods
     bool is_valid_index(int index) const;
-    bool is_valid_display_mode(int mode) const;
+    static bool is_valid_display_mode(int mode);
     void validate_configuration() const;
     
     // Column management

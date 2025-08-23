@@ -132,6 +132,11 @@ public:
 	static int find_color_index(COLORREF color_ref);
 
 	void set_string(const CString& cs) { cs_empty_ = cs; }
+	void set_bottom_comment(const BOOL flag, const CString& cs)
+	{
+		cs_bottom_comment = cs;
+		b_bottom_comment = flag;
+	}
 	void set_b_use_dib(BOOL b_set_plot); // use DIB or not
 	void set_display_area_size(int cx, int cy); // set size of the display area
 

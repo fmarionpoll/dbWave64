@@ -876,7 +876,7 @@ void DataListCtrl_Optimized::create_colored_rectangles()
         {
             width = 300; // Default width for curve column
         }
-        const int height = 16;
+        constexpr int height = 16;
         
         TRACE(_T("DataListCtrl_Optimized::create_colored_rectangles - Creating rectangles with size %dx%d\n"), width, height);
         
@@ -1711,9 +1711,7 @@ void DataListCtrl_Optimized::setup_image_list()
         
         // Create colored rectangles for different display modes
         create_colored_rectangles();
-        
-        // Always try to set the image list - don't check for failure here
-        SetImageList(m_image_list_.get(), LVSIL_SMALL);
+		SetImageList(m_image_list_.get(), LVSIL_SMALL);
         TRACE(_T("DataListCtrl_Optimized::setup_image_list - Image list set\n"));
         
         // Force a refresh to ensure the image list is properly applied
@@ -1757,7 +1755,7 @@ bool DataListCtrl_Optimized::is_valid_index(int index) const
     return index >= 0 && index < itemCount;
 }
 
-bool DataListCtrl_Optimized::is_valid_display_mode(int mode) const
+bool DataListCtrl_Optimized::is_valid_display_mode(int mode)
 {
     return mode >= 0 && mode <= 2; // Assuming 0-2 are valid display modes
 }

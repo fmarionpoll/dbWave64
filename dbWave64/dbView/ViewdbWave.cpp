@@ -44,6 +44,7 @@ BEGIN_MESSAGE_MAP(ViewdbWave, ViewDbTable)
 	ON_BN_CLICKED(IDC_CHECK1, &ViewdbWave::on_bn_clicked_check1)
 	ON_BN_CLICKED(IDC_RADIOALLCLASSES, &ViewdbWave::on_bn_clicked_radio_all_classes)
 	ON_BN_CLICKED(IDC_RADIOONECLASS, &ViewdbWave::on_bn_clicked_radio_one_class)
+	
 
 	ON_NOTIFY(HDN_ENDTRACK, 0, &ViewdbWave::on_hdn_end_track_list_ctrl)
 	ON_NOTIFY(LVN_COLUMNCLICK, IDC_LISTCTRL, &ViewdbWave::on_lvn_column_click_list_ctrl)
@@ -172,13 +173,12 @@ void ViewdbWave::display_data()
 	GetDlgItem(IDC_RADIOONECLASS)->EnableWindow(FALSE);
 	GetDlgItem(IDC_SPIKECLASS)->EnableWindow(FALSE);
 	GetDlgItem(IDC_FILTERCHECK)->EnableWindow(TRUE);
-	//m_options_view_data_->display_mode = 1;
-	//m_data_list_ctrl.set_display_mode(m_options_view_data_->display_mode);
+	m_options_view_data_->display_mode = 1;
+	m_data_list_ctrl.set_display_mode(m_options_view_data_->display_mode);
 
 	static_cast<CButton*>(GetDlgItem(IDC_FILTERCHECK))->SetCheck(m_options_view_data_->b_filter_dat);
 	m_data_transform_ = m_options_view_data_->b_filter_dat ? 13 : 0;
 	m_data_list_ctrl.set_transform_mode(m_data_transform_);
-
 	spk_list_tab_ctrl.ShowWindow(SW_HIDE);
 }
 
@@ -194,9 +194,8 @@ void ViewdbWave::display_spikes()
 	GetDlgItem(IDC_SPIKECLASS)->EnableWindow(TRUE);
 
 	// display all spike classes
-	//m_options_view_data_->display_mode = 2;
-	//m_data_list_ctrl.set_display_mode(m_options_view_data_->display_mode);
-
+	m_options_view_data_->display_mode = 2;
+	m_data_list_ctrl.set_display_mode(m_options_view_data_->display_mode);
 	if (m_options_view_data_->b_display_all_classes)
 	{
 		static_cast<CButton*>(GetDlgItem(IDC_RADIOALLCLASSES))->SetCheck(BST_CHECKED);
@@ -211,8 +210,6 @@ void ViewdbWave::display_spikes()
 		mm_spike_class_.EnableWindow(TRUE);
 		m_data_list_ctrl.set_spike_plot_mode(PLOT_ONE_CLASS_ONLY, m_spike_class_);
 	}
-
-	spk_list_tab_ctrl.ShowWindow(SW_SHOW);
 }
 
 void ViewdbWave::display_nothing()
@@ -226,9 +223,8 @@ void ViewdbWave::display_nothing()
 	GetDlgItem(IDC_RADIOONECLASS)->EnableWindow(FALSE);
 	GetDlgItem(IDC_SPIKECLASS)->EnableWindow(FALSE);
 
-	//m_options_view_data_->display_mode = 0;
-	//m_data_list_ctrl.set_display_mode(m_options_view_data_->display_mode);
-
+	m_options_view_data_->display_mode = 0;
+	m_data_list_ctrl.set_display_mode(m_options_view_data_->display_mode);
 	spk_list_tab_ctrl.ShowWindow(SW_HIDE);
 }
 
@@ -524,7 +520,7 @@ void ViewdbWave::on_bn_clicked_display_spikes()
 	if (n_rows > 0)
 	{
 		const auto p_spk_doc = m_data_list_ctrl.get_visible_rows_spike_doc_at(0);
-		if (p_spk_doc != nullptr && p_spk_doc->get_spike_list_size() > 1)
+		if (p_spk_doc->get_spike_list_size() > 1)
 		{
 			spk_list_tab_ctrl.init_ctrl_tab_from_spike_doc(p_spk_doc);
 			spk_list_tab_ctrl.ShowWindow(SW_SHOW);
@@ -538,8 +534,6 @@ void ViewdbWave::on_bn_clicked_display_spikes()
 void ViewdbWave::on_bn_clicked_display_nothing()
 {
 	display_nothing();
-	// The force_red_rectangle_display() is already called in display_nothing()
-	// but let's also call refresh_display() to ensure everything is updated
 	m_data_list_ctrl.refresh_display();
 }
 

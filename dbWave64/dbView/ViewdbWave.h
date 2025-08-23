@@ -69,8 +69,8 @@ public:
 	afx_msg void on_en_change_amplitude_span();
 	afx_msg void on_bn_clicked_check_filename();
 	afx_msg void on_hdn_end_track_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_result);
-	afx_msg void on_bn_clicked_check1();
 	afx_msg void on_bn_clicked_check2();
+	afx_msg void on_bn_clicked_check1();
 	afx_msg void on_bn_clicked_radio_all_classes();
 	afx_msg void on_bn_clicked_radio_one_class();
 	afx_msg void on_en_change_spike_class();

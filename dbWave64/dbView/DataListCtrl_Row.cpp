@@ -7,7 +7,6 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-#include <map>
 
 
 IMPLEMENT_SERIAL(DataListCtrl_Row, CObject, 0)
@@ -181,40 +180,8 @@ void DataListCtrl_Row::attach_database_record(CdbWaveDoc* db_wave_doc)
 	}
 }
 
-void DataListCtrl_Row::set_display_parameters(data_list_ctrl_infos* infos, const int i_image)
+void DataListCtrl_Row::set_display_parameters(DataListCtrlInfos* infos, const int i_image)
 {
-	static int call_count = 0;
-	call_count++;
-
-	// Check if display mode has changed - if so, we need to reprocess
-	if (last_display_mode != infos->display_mode)
-	{
-		display_processed = false;
-	}
-
-	// Prevent duplicate processing using instance flag
-	if (display_processed)
-	{
-		return;
-	}
-
-	display_processed = true;
-	last_display_mode = infos->display_mode;
-
-	// Validate image index against database records
-	const auto pdb_doc = static_cast<ViewdbWave*>(infos->parent->GetParent())->GetDocument();
-	if (pdb_doc != nullptr)
-	{
-		const int db_record_count = pdb_doc->db_get_records_count();
-		
-		if (i_image >= db_record_count)
-		{
-			TRACE("DEBUG: set_display_parameters() - Invalid image index %d >= %d\n", 
-				i_image, db_record_count);
-			return; // Skip plotting for invalid indices
-		}
-	}
-
 	switch (infos->display_mode)
 	{
 	case 1:
@@ -229,26 +196,16 @@ void DataListCtrl_Row::set_display_parameters(data_list_ctrl_infos* infos, const
 	}
 }
 
-void DataListCtrl_Row::display_data_wnd(data_list_ctrl_infos* infos, const int i_image)
+void DataListCtrl_Row::display_data_wnd(DataListCtrlInfos* infos, const int i_image)
 {
-	// create objects if necessary
+	// create objects if necessary : CLineView and AcqDataDoc
 	if (p_chart_data_wnd == nullptr)
 	{
 		p_chart_data_wnd = new ChartData;
 		ASSERT(p_chart_data_wnd != NULL);
-
-		const BOOL create_result = p_chart_data_wnd->Create(_T("DATAWND"), 
-			WS_CHILD, // Remove WS_VISIBLE - these windows should be invisible
+		p_chart_data_wnd->Create(_T("DATAWND"), WS_CHILD, 
 			CRect(0, 0, infos->image_width, infos->image_height), 
 			infos->parent, i_image * 100);
-			
-		if (!create_result)
-		{
-			delete p_chart_data_wnd;
-			p_chart_data_wnd = nullptr;
-			return;
-		}
-		
 		p_chart_data_wnd->set_b_use_dib(FALSE);
 	}
 	p_chart_data_wnd->set_string(cs_comment);
@@ -286,79 +243,36 @@ void DataListCtrl_Row::display_data_wnd(data_list_ctrl_infos* infos, const int i
 	plot_data(infos, i_image);
 }
 
-void DataListCtrl_Row::plot_data(data_list_ctrl_infos* infos, const int i_image) const
+void DataListCtrl_Row::plot_data(DataListCtrlInfos* infos, const int i_image) const
 {
-	p_chart_data_wnd->set_values_for_bottom_comment(infos->b_display_file_name, cs_datafile_name);
+	p_chart_data_wnd->set_bottom_comment(infos->b_display_file_name, cs_datafile_name);
 	CRect client_rect;
 	p_chart_data_wnd->GetClientRect(&client_rect);
-	const auto p_dc = p_chart_data_wnd->GetDC();
-	if (!p_dc)
-	{
-		TRACE("DEBUG: plot_data() - Failed to get DC for image %d\n", i_image);
-		return;
-	}
 
+	const auto p_dc = p_chart_data_wnd->GetDC();
 	CDC mem_dc;
-	if (!mem_dc.CreateCompatibleDC(p_dc))
-	{
-		p_chart_data_wnd->ReleaseDC(p_dc);
-		return;
-	}
+	VERIFY(mem_dc.CreateCompatibleDC(p_dc));
 
 	CBitmap bitmap_plot;
-	if (!bitmap_plot.CreateBitmap(client_rect.right, client_rect.bottom,
-		p_dc->GetDeviceCaps(PLANES),
-		4, nullptr))
-	{
-		p_chart_data_wnd->ReleaseDC(p_dc);
-		return;
-	}
+	bitmap_plot.CreateBitmap(client_rect.right, client_rect.bottom, p_dc->GetDeviceCaps(PLANES),
+		p_dc->GetDeviceCaps(BITSPIXEL), nullptr);
 
 	mem_dc.SelectObject(&bitmap_plot);
 	mem_dc.SetMapMode(p_dc->GetMapMode());
 
-	// Ensure window is properly initialized before plotting
-	if (!p_chart_data_wnd->GetSafeHwnd())
-	{
-		TRACE("DEBUG: plot_data() - Window handle is invalid for image %d\n", i_image);
-		return;
-	}
-
 	p_chart_data_wnd->plot_data_to_dc(&mem_dc);
-	BOOL flag = infos->image_list.Replace(i_image, &bitmap_plot, nullptr);
-	//if (!flag)
-	//{
-	//	TRACE("DEBUG: plot_data() - Failed to replace image %d in image list\n", i_image);
-	//}
-	//else
-	//{
-	//	TRACE("DEBUG: plot_data() - Successfully replaced image %d in image list\n", i_image);
-	//}
-	
-	p_chart_data_wnd->ReleaseDC(p_dc);
+
+	infos->image_list.Replace(i_image, &bitmap_plot, nullptr);
 }
 
-void DataListCtrl_Row::display_spike_wnd(data_list_ctrl_infos* infos, const int i_image)
+void DataListCtrl_Row::display_spike_wnd(DataListCtrlInfos* infos, const int i_image)
 {
 	// create spike window and spike document if necessary
 	if (p_chart_spike_wnd == nullptr)
 	{
 		p_chart_spike_wnd = new ChartSpikeBar;
 		ASSERT(p_chart_spike_wnd != NULL);
-
-		const BOOL create_result = p_chart_spike_wnd->Create(_T("SPKWND"), 
-			WS_CHILD, // Remove WS_VISIBLE - these windows should be invisible
-			CRect(0, 0, infos->image_width, infos->image_height), 
-			infos->parent, index * 1000);
-			
-		if (!create_result)
-		{
-			TRACE("DEBUG: Failed to create ChartSpikeBar window for image %d\n", i_image);
-			delete p_chart_spike_wnd;
-			p_chart_spike_wnd = nullptr;
-			return;
-		}
-		
+		p_chart_spike_wnd->Create(_T("SPKWND"), WS_CHILD, CRect(0, 0, infos->image_width, infos->image_height), infos->parent, index * 1000);
 		p_chart_spike_wnd->set_b_use_dib(FALSE);
 		p_chart_spike_wnd->set_display_all_files(false);
 	}
@@ -370,51 +284,47 @@ void DataListCtrl_Row::display_spike_wnd(data_list_ctrl_infos* infos, const int 
 		ASSERT(p_spike_doc != NULL);
 	}
 
-	if (cs_spike_file_name.IsEmpty())
+	if (cs_spike_file_name.IsEmpty() || !p_spike_doc->OnOpenDocument(cs_spike_file_name))
 	{
 		infos->image_list.Replace(i_image, infos->p_empty_bitmap, nullptr);
-		return;
 	}
-
-	if (!p_spike_doc->OnOpenDocument(cs_spike_file_name))
+	else
 	{
-		infos->image_list.Replace(i_image, infos->p_empty_bitmap, nullptr);
-		return;
+		const auto p_parent0 = static_cast<ViewdbWave*>(infos->parent->GetParent());
+		int i_tab = p_parent0->spk_list_tab_ctrl.GetCurSel();
+		if (i_tab < 0)
+			i_tab = 0;
+		const auto p_spk_list = p_spike_doc->set_index_current_spike_list(i_tab);
+
+		p_chart_spike_wnd->set_source_data(p_spk_list, p_parent0->GetDocument());
+		p_chart_spike_wnd->set_spike_doc(p_spike_doc);
+		p_chart_spike_wnd->set_plot_mode(infos->spike_plot_mode, infos->selected_class);
+
+		long l_first = 0;
+		auto l_last = p_spike_doc->get_acq_size();
+		if (infos->b_set_time_span)
+		{
+			const auto sampling_rate = p_spike_doc->get_acq_rate();
+			l_first = static_cast<long>(infos->t_first * sampling_rate);
+			l_last = static_cast<long>(infos->t_last * sampling_rate);
+		}
+		p_chart_spike_wnd->set_time_intervals(l_first, l_last);
+
+		if (infos->b_set_mv_span)
+		{
+			const auto volts_per_bin = p_spk_list->get_acq_volts_per_bin();
+			const auto y_we = static_cast<int>(infos->mv_span / 1000.f / volts_per_bin);
+			const auto y_wo = p_spk_list->get_acq_bin_zero();
+			p_chart_spike_wnd->set_yw_ext_org(y_we, y_wo);
+		}
+
+		plot_spikes(infos, i_image);
 	}
-
-	const auto p_parent0 = static_cast<ViewdbWave*>(infos->parent->GetParent());
-	const int i = p_parent0->spk_list_tab_ctrl.GetCurSel();
-	const int i_tab = i < 0 ? 0 : i;
-	const auto p_spk_list = p_spike_doc->set_index_current_spike_list(i_tab);
-
-	p_chart_spike_wnd->set_source_data(p_spk_list, p_parent0->GetDocument());
-	p_chart_spike_wnd->set_spike_doc(p_spike_doc);
-	p_chart_spike_wnd->set_plot_mode(infos->spike_plot_mode, infos->selected_class);
-
-	long l_first = 0;
-	auto l_last = p_spike_doc->get_acq_size();
-	if (infos->b_set_time_span)
-	{
-		const auto sampling_rate = p_spike_doc->get_acq_rate();
-		l_first = static_cast<long>(infos->t_first * sampling_rate);
-		l_last = static_cast<long>(infos->t_last * sampling_rate);
-	}
-	p_chart_spike_wnd->set_time_intervals(l_first, l_last);
-
-	if (infos->b_set_mv_span)
-	{
-		const auto volts_per_bin = p_spk_list->get_acq_volts_per_bin();
-		const auto y_we = static_cast<int>(infos->mv_span / 1000.f / volts_per_bin);
-		const auto y_wo = p_spk_list->get_acq_bin_zero();
-		p_chart_spike_wnd->set_yw_ext_org(y_we, y_wo);
-	}
-
-	plot_spikes(infos, i_image);
 }
 
-void DataListCtrl_Row::plot_spikes(data_list_ctrl_infos* infos, const int i_image) const
+void DataListCtrl_Row::plot_spikes(DataListCtrlInfos* infos, const int i_image) const
 {
-	p_chart_spike_wnd->set_values_for_bottom_comment(infos->b_display_file_name, cs_spike_file_name);
+	p_chart_spike_wnd->set_bottom_comment(infos->b_display_file_name, cs_spike_file_name);
 
 	CRect client_rect;
 	p_chart_spike_wnd->GetClientRect(&client_rect);
@@ -426,134 +336,20 @@ void DataListCtrl_Row::plot_spikes(data_list_ctrl_infos* infos, const int i_imag
 	VERIFY(mem_dc.CreateCompatibleDC(p_dc));
 
 	CBitmap bitmap_plot;
-	if (!bitmap_plot.CreateBitmap(client_rect.right,
+	bitmap_plot.CreateBitmap(client_rect.right,
 		client_rect.bottom,
 		p_dc->GetDeviceCaps(PLANES),
-		4,
-		nullptr))
-	{
-		return;
-	}
+		p_dc->GetDeviceCaps(BITSPIXEL),
+		nullptr);
 	mem_dc.SelectObject(&bitmap_plot);
 	mem_dc.SetMapMode(p_dc->GetMapMode());
 
 	p_chart_spike_wnd->plot_data_to_dc(&mem_dc);
 
-	const BOOL flag = infos->image_list.Replace(i_image, &bitmap_plot, nullptr);
-	//if (!flag)
-	//{
-	//	TRACE("DEBUG: plot_spikes() - Successfully replaced image %d in image list\n", i_image);
-	//}
-	//else
-	//{
-	//	TRACE("DEBUG: plot_spikes() - Failed to replace image %d in image list\n", i_image);
-	//}
+	infos->image_list.Replace(i_image, &bitmap_plot, nullptr);
 }
 
-void DataListCtrl_Row::display_empty_wnd(data_list_ctrl_infos* infos, const int i_image)
+void DataListCtrl_Row::display_empty_wnd(DataListCtrlInfos* infos, const int i_image)
 {
-	// Create a custom bitmap with light grey rectangle and filename
-	CBitmap custom_bitmap;
-	CWindowDC dc(infos->parent);
-	CDC mem_dc;
-	if (!mem_dc.CreateCompatibleDC(&dc))
-	{
-		TRACE("DEBUG: display_empty_wnd() - Failed to create compatible DC for image %d\n", i_image);
-		return;
-	}
-
-	if (!custom_bitmap.CreateBitmap(infos->image_width, infos->image_height,
-		dc.GetDeviceCaps(PLANES), 
-		dc.GetDeviceCaps(BITSPIXEL), nullptr))
-	{
-		TRACE("DEBUG: display_empty_wnd() - Failed to create custom bitmap for image %d\n", i_image);
-		return;
-	}
-	
-	mem_dc.SelectObject(&custom_bitmap);
-	mem_dc.SetMapMode(dc.GetMapMode());
-
-	// Fill with light grey color
-	CBrush brush(RGB(192, 192, 192)); // Light grey
-	mem_dc.SelectObject(&brush);
-	CPen pen;
-	pen.CreatePen(PS_SOLID, 1, RGB(0, 0, 0)); // Black border
-	mem_dc.SelectObject(&pen);
-	
-	const auto rect_data = CRect(0, 0, infos->image_width, infos->image_height);
-	mem_dc.Rectangle(&rect_data);
-	
-	print_filename_on_rectangle(infos, mem_dc);
-	
-	// Replace the image with the custom bitmap
-	const BOOL flag = infos->image_list.Replace(i_image, &custom_bitmap, nullptr);
-	//if (flag) {
-	//	TRACE("DEBUG: display_empty_wnd() - Successfully replaced image %d with light grey rectangle and filename\n",i_image);
-	//}
-	//else
-	//{
-	//	TRACE("DEBUG: display_empty_wnd() - Failed to replace image %d in image list\n", i_image);
-	//	
-	//	// Try to add the image if replace fails
-	//	if (infos->image_list.Add(&custom_bitmap, nullptr) == i_image)
-	//	{
-	//		TRACE("DEBUG: display_empty_wnd() - Successfully added light grey rectangle with filename as image %d\n", i_image);
-	//	}
-	//	else
-	//	{
-	//		TRACE("DEBUG: display_empty_wnd() - Failed to add light grey rectangle with filename as image %d\n", i_image);
-	//	}
-	//}
-}
-
-void DataListCtrl_Row::print_filename_on_rectangle(const data_list_ctrl_infos* infos, CDC& mem_dc)
-{
-	// Draw filename text on the bitmap
-	mem_dc.SetTextColor(RGB(0, 0, 0)); // Black text
-	mem_dc.SetBkMode(TRANSPARENT);
-
-	// Create a font for the text
-	CFont font;
-	font.CreateFont(10, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
-		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-		DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, _T("Arial"));
-
-	CFont* pOldFont = mem_dc.SelectObject(&font);
-
-	// Get the filename to display
-	CString filename = cs_datafile_name;
-	if (filename.IsEmpty())
-	{
-		filename = _T("No file");
-	}
-	else
-	{
-		// Extract just the filename without path
-		int lastSlash = filename.ReverseFind('\\');
-		if (lastSlash >= 0)
-		{
-			filename = filename.Mid(lastSlash + 1);
-		}
-	}
-
-	// Truncate filename if too long
-	if (filename.GetLength() > 20)
-	{
-		filename = filename.Left(17) + _T("...");
-	}
-
-	// Draw the text centered on the rectangle
-	CSize textSize = mem_dc.GetTextExtent(filename);
-	int x = (infos->image_width - textSize.cx) / 2;
-	int y = (infos->image_height - textSize.cy) / 2;
-	mem_dc.TextOut(x, y, filename);
-
-	// Restore the old font
-	mem_dc.SelectObject(pOldFont);
-}
-
-void DataListCtrl_Row::reset_display_processed()
-{
-	display_processed = false;
-	last_display_mode = -1;  // Reset to invalid mode to force reprocessing
+	infos->image_list.Replace(i_image, infos->p_empty_bitmap, nullptr);
 }

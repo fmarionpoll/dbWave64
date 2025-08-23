@@ -7,6 +7,7 @@
 #include "DataListCtrl_Row.h"
 #include "ViewdbWave.h"
 
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -50,8 +51,7 @@ BEGIN_MESSAGE_MAP(DataListCtrl, CListCtrl)
 END_MESSAGE_MAP()
 
 DataListCtrl::DataListCtrl()
-{
-}
+= default;
 
 DataListCtrl::~DataListCtrl()
 {
@@ -95,6 +95,7 @@ boolean DataListCtrl::rows_array_set_size(const int rows_count)
 		return b_forced_update;
 
 	// if cache size decreases, just delete extra rows
+	infos.image_list.SetImageCount(rows_count);
 	if (rows_.GetSize() > rows_count)
 	{
 		for (auto i = rows_.GetSize() - 1; i >= rows_count; i--)
@@ -109,7 +110,7 @@ boolean DataListCtrl::rows_array_set_size(const int rows_count)
 		rows_.SetSize(rows_count);
 		auto index = 0;
 		if (size_before_change > 0)
-			index = rows_.GetAt(size_before_change - 1)->index + 1;
+			index = rows_.GetAt(size_before_change - 1)->index +1;
 		for (auto i = size_before_change; i < rows_count; i++)
 		{
 			auto* row = new DataListCtrl_Row;
@@ -141,23 +142,12 @@ void DataListCtrl::init_columns(CUIntArray* width_columns)
 	}
 
 	infos.image_width = m_column_width_[CTRL_COL_CURVE];
-	
-	// Create image list with proper parameters
-	if (!infos.image_list.Create(infos.image_width, infos.image_height, ILC_COLOR4, 10, 10))
-	{
-		//TRACE("DEBUG: init_columns() - Failed to create image list\n");
-		return;
-	}
-	
+	infos.image_list.Create(infos.image_width, infos.image_height, ILC_COLOR4, 10, 10);
 	SetImageList(&infos.image_list, LVSIL_SMALL);
-	build_empty_bitmap(true);
 }
 
 void DataListCtrl::on_get_display_info(NMHDR* p_nmhdr, LRESULT* p_result)
 {
-	static int display_info_count = 0;
-	display_info_count++;
-
 	auto first_array = 0;
 	auto last_array = 0;
 	if (rows_.GetSize() > 0)
@@ -187,9 +177,8 @@ void DataListCtrl::on_get_display_info(NMHDR* p_nmhdr, LRESULT* p_result)
 		first_array = last_array - GetCountPerPage() + 1;
 		update_cache(first_array, last_array);
 	}
-	else if (rows_.GetSize() == 0) {
+	else if (rows_.GetSize() == 0)
 		update_cache(first_array, last_array);
-	}
 
 	// now, the requested item is in the cache
 	// get data from database
@@ -198,8 +187,10 @@ void DataListCtrl::on_get_display_info(NMHDR* p_nmhdr, LRESULT* p_result)
 		return;
 
 	const int i_first_visible = rows_.GetAt(0)->index;
-	const int i = item_index - i_first_visible;
-	const auto i_cache_index = i > (rows_.GetSize() - 1) ? rows_.GetSize() - 1 : i;
+	auto i_cache_index = item_index - i_first_visible;
+	if (i_cache_index > (rows_.GetSize() - 1))
+		i_cache_index = rows_.GetSize() - 1;
+
 	const auto* row = rows_.GetAt(i_cache_index);
 
 	if (item->mask & LVIF_TEXT) //valid text buffer?
@@ -237,9 +228,7 @@ void DataListCtrl::on_get_display_info(NMHDR* p_nmhdr, LRESULT* p_result)
 
 	// display images
 	if (item->mask & LVIF_IMAGE && item->iSubItem == CTRL_COL_CURVE)
-	{
 		item->iImage = i_cache_index;
-	}
 }
 
 void DataListCtrl::set_current_selection(const int record_position)
@@ -268,22 +257,18 @@ void DataListCtrl::set_current_selection(const int record_position)
 int DataListCtrl::cache_adjust_boundaries(int& index_first, int& index_last) const
 {
 	const int inb_visible = index_last - index_first + 1;
-
-	// Fix negative index_first
 	if (index_first < 0)
 	{
 		index_first = 0;
 		index_last = inb_visible - 1;
 	}
 
-	// Fix out-of-bounds index_last
 	if (index_last < 0 || index_last >= GetItemCount())
 	{
 		index_last = GetItemCount() - 1;
-		index_first = max(0, index_last - inb_visible + 1); 
+		index_first = index_last - inb_visible + 1;
 	}
-
-	return index_last - index_first + 1;
+	return inb_visible;
 }
 
 void DataListCtrl::cache_shift_rows_positions(const int source1, const int dest1, int rows_count_to_exchange, const int delta)
@@ -308,72 +293,32 @@ void DataListCtrl::cache_shift_rows_positions(const int source1, const int dest1
 
 void DataListCtrl::cache_build_rows(const int new1, const int index_first, int n_rows_to_build, CdbWaveDoc* db_wave_doc)
 {
-	// Reset display processed flags for all rows
-	for (int i = 0; i < rows_.GetSize(); i++)
-	{
-		if (rows_.GetAt(i) != nullptr)
-		{
-			rows_.GetAt(i)->reset_display_processed();
-		}
-	}
-
-	// Validate and correct invalid inputs
-	const int corrected_index_first = max(0, index_first);
-	int corrected_n_rows = n_rows_to_build;
-
-	if (index_first < 0)
-	{
-		corrected_n_rows = min(n_rows_to_build, db_wave_doc->db_get_records_count());
-	}
 	build_empty_bitmap();
 
 	infos.parent = this;
 	int image_index = new1;
-	while (corrected_n_rows > 0)
+	while (n_rows_to_build > 0)
 	{
 		const auto row = rows_.GetAt(image_index);
-		row->index = image_index + corrected_index_first;
-
+		row->index = image_index + index_first;
 		row->attach_database_record(db_wave_doc);
 		row->set_display_parameters(&infos, image_index);
 
 		image_index++;
-		corrected_n_rows--;
+		n_rows_to_build--;
 	}
 }
 
 void DataListCtrl::update_cache(int index_first, int index_last)
 {
-	static int update_count = 0;
-	update_count++;
-
 	const auto rows_count = cache_adjust_boundaries(index_first, index_last);
-
-	// Get database record count first
-	const auto db_wave_doc = static_cast<ViewdbWave*>(GetParent())->GetDocument();
-	const int db_record_count = (db_wave_doc != nullptr) ? db_wave_doc->db_get_records_count() : 0;
-
-	// Ensure empty bitmap is created
-	build_empty_bitmap(true);
-
-	// Set image list size to database record count BEFORE building cache
-	if (infos.image_list.GetImageCount() != db_record_count)
-	{
-		infos.image_list.SetImageCount(db_record_count);
-	}
-
 	const auto b_forced_update = rows_array_set_size(rows_count);
-	
-	// Reset image list if it's too large or invalid
-	if (infos.image_list.GetImageCount() > db_record_count || infos.image_list.GetImageCount() <= 0)
-	{
-		infos.image_list.DeleteImageList();
-		infos.image_list.Create(infos.image_width, infos.image_height, ILC_COLOR4, db_record_count, 1);
-		infos.image_list.SetImageCount(db_record_count);
-	}
+	const auto db_wave_doc = static_cast<ViewdbWave*>(GetParent())->GetDocument();
+	if (db_wave_doc == nullptr)
+		return;
 
 	// which update is necessary?
-	const int index_current_file = (db_wave_doc != nullptr) ? db_wave_doc->db_get_current_record_position() : -1;
+	const int index_current_file = db_wave_doc->db_get_current_record_position();
 
 	// set conditions for out of range (renew all items)
 	auto n_rows_to_build = rows_.GetSize(); 
@@ -419,12 +364,11 @@ void DataListCtrl::update_cache(int index_first, int index_last)
 	// restore document conditions
 	if (index_current_file >= 0) 
 	{
-		db_wave_doc->db_set_current_record_position(index_current_file);
-		//BOOL b_success = db_wave_doc->db_set_current_record_position(index_current_file);
-		//{
+		BOOL b_success = db_wave_doc->db_set_current_record_position(index_current_file);
+		{
 			//db_wave_doc->open_current_data_file();
 			//db_wave_doc->open_current_spike_file();
-		//}
+		}
 	}
 }
 
@@ -438,73 +382,44 @@ void DataListCtrl::build_empty_bitmap(const boolean b_forced_update)
 	infos.p_empty_bitmap = new CBitmap;
 	CWindowDC dc(this);
 	CDC mem_dc;
-	if (!mem_dc.CreateCompatibleDC(&dc))
-	{
-		//TRACE("DEBUG: build_empty_bitmap() - Failed to create compatible DC\n");
-		return;
-	}
+	VERIFY(mem_dc.CreateCompatibleDC(&dc));
 
-	if (!infos.p_empty_bitmap->CreateBitmap(infos.image_width, infos.image_height,
+	infos.p_empty_bitmap->CreateBitmap(infos.image_width, infos.image_height,
 		dc.GetDeviceCaps(PLANES), 
-		dc.GetDeviceCaps(BITSPIXEL), nullptr))
-	{
-		//TRACE("DEBUG: build_empty_bitmap() - Failed to create bitmap\n");
-		return;
-	}
-	
+		dc.GetDeviceCaps(BITSPIXEL), nullptr);
 	mem_dc.SelectObject(infos.p_empty_bitmap);
 	mem_dc.SetMapMode(dc.GetMapMode());
 
-	// Fill with red color
-	CBrush brush(RGB(255, 0, 0)); // Pure red
+	CBrush brush(col_silver); 
 	mem_dc.SelectObject(&brush);
 	CPen pen;
-	pen.CreatePen(PS_SOLID, 1, col_black); 
+	pen.CreatePen(PS_SOLID, 1, col_black);
 	mem_dc.SelectObject(&pen);
-	
-	const auto rect_data = CRect(0, 0, infos.image_width, infos.image_height);
+	const auto rect_data = CRect(1, 0, infos.image_width, infos.image_height);
 	mem_dc.Rectangle(&rect_data);
-
 }
 
 void DataListCtrl::refresh_display()
 {
 	if (rows_.GetSize() == NULL)
-	{
-		//TRACE("DEBUG: refresh_display() - No rows to refresh\n");
 		return;
-	}
 
 	const int first_row = rows_.GetAt(0)->index;
 	const int last_row = rows_.GetAt(rows_.GetUpperBound())->index;
-	
-	//TRACE("DEBUG: refresh_display() - Refreshing rows %d to %d (display_mode: %d)\n", 
-		//first_row, last_row, infos.display_mode);
-	
-	// Force rebuild of empty bitmap
 	build_empty_bitmap(true);
 
 	const auto n_rows = rows_.GetSize();
 	infos.parent = this;
-	
-	// Reset all rows to force reprocessing
 	for (auto image_index = 0; image_index < n_rows; image_index++)
 	{
 		auto* row = rows_.GetAt(image_index);
 		if (row == nullptr)
 			continue;
-		
-		// Force reprocessing by resetting the display processed flag
-		row->reset_display_processed();
 		row->set_display_parameters(&infos, image_index);
 	}
-	
-	// Force redraw of the list control
 	RedrawItems(first_row, last_row);
 	Invalidate();
 	UpdateWindow();
-	
-	//TRACE("DEBUG: refresh_display() - Refresh completed\n");
 }
 
 void DataListCtrl::OnVScroll(const UINT n_sb_code, const UINT n_pos, CScrollBar* p_scroll_bar)
@@ -549,12 +464,12 @@ void DataListCtrl::OnKeyUp(UINT n_char, UINT n_rep_cnt, UINT n_flags)
 ChartData* DataListCtrl::get_chart_data_of_current_record()
 {
 	const UINT n_selected_items = GetSelectedCount();
+	int n_item = -1;
 	ChartData* ptr = nullptr;
 
 	// get ptr of first item selected
 	if (n_selected_items > 0)
 	{
-		int n_item = -1;
 		n_item = GetNextItem(n_item, LVNI_SELECTED);
 		ASSERT(n_item != -1);
 		n_item -= GetTopIndex();
@@ -580,18 +495,6 @@ void DataListCtrl::resize_signal_column(const int n_pixels)
 		SAFE_DELETE(ptr->p_chart_spike_wnd)
 	}
 	refresh_display();
-}
-
-void DataListCtrl::set_display_mode(const int i_mode)
-{
-	//TRACE("DEBUG: set_display_mode() - Changing from %d to %d\n", infos.display_mode, i_mode);
-	infos.display_mode = i_mode;
-	
-	//// Force refresh when display mode changes
-	//if (rows_.GetSize() > 0)
-	//{
-	//	refresh_display();
-	//}
 }
 
 void DataListCtrl::fit_columns_to_size(const int n_pixels)

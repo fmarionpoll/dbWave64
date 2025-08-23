@@ -254,8 +254,14 @@ void DataListCtrl_Row::plot_data(DataListCtrlInfos* infos, const int i_image) co
 	VERIFY(mem_dc.CreateCompatibleDC(p_dc));
 
 	CBitmap bitmap_plot;
-	bitmap_plot.CreateBitmap(client_rect.right, client_rect.bottom, p_dc->GetDeviceCaps(PLANES),
-		p_dc->GetDeviceCaps(BITSPIXEL), nullptr);
+	if (!bitmap_plot.CreateBitmap(client_rect.right, client_rect.bottom, p_dc->GetDeviceCaps(PLANES),
+		p_dc->GetDeviceCaps(BITSPIXEL), nullptr)) 
+	{
+		TRACE("Failed to create bitmap: %dx%d, planes=%d, bits=%d\n",
+			client_rect.right, client_rect.bottom,
+			p_dc->GetDeviceCaps(PLANES), p_dc->GetDeviceCaps(BITSPIXEL));
+		return;
+	}
 
 	mem_dc.SelectObject(&bitmap_plot);
 	mem_dc.SetMapMode(p_dc->GetMapMode());

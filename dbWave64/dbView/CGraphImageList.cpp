@@ -13,69 +13,93 @@
 CBitmap* CGraphImageList::GenerateDataImage(int width, int height, CString& dataFileName, const DataListCtrlInfos& infos)
 {
     TRACE(_T("CGraphImageList::GenerateDataImage\n"));
-    // Create bitmap and memory DC
-    CBitmap* pBitmap = new CBitmap;
-    CDC memDC;
-    CDC* pScreenDC = CDC::FromHandle(::GetDC(nullptr));
+    // Set up static data for wrapper function
+    s_pDataFileName = &dataFileName;
+    s_pInfos = &infos;
     
-    VERIFY(memDC.CreateCompatibleDC(pScreenDC));
+    return GenerateImageWithRenderer(width, height, RenderDataWrapper);
+}
+
+// Common bitmap creation and setup methods
+CBitmap* CGraphImageList::CreateBitmap(int width, int height, CDC* pScreenDC)
+{
+    CBitmap* pBitmap = new CBitmap;
     VERIFY(pBitmap->CreateBitmap(width, height, 
                                 pScreenDC->GetDeviceCaps(PLANES),
                                 pScreenDC->GetDeviceCaps(BITSPIXEL), nullptr));
-    
+    return pBitmap;
+}
+
+void CGraphImageList::SetupMemoryDC(CDC& memDC, CBitmap* pBitmap, CDC* pScreenDC)
+{
+    VERIFY(memDC.CreateCompatibleDC(pScreenDC));
     memDC.SelectObject(pBitmap);
     memDC.SetMapMode(pScreenDC->GetMapMode());
+}
+
+CBitmap* CGraphImageList::GenerateImageWithRenderer(int width, int height, void (*renderFunction)(CDC*))
+{
+    // Create bitmap and memory DC
+    CDC* pScreenDC = CDC::FromHandle(::GetDC(nullptr));
+    CBitmap* pBitmap = CreateBitmap(width, height, pScreenDC);
     
-    // Render the data image
-    render_data_to_dc(&memDC, dataFileName, infos);
+    CDC memDC;
+    SetupMemoryDC(memDC, pBitmap, pScreenDC);
     
+    // Render using the provided function
+    renderFunction(&memDC);
+    
+    // Cleanup
     ::ReleaseDC(nullptr, pScreenDC->GetSafeHdc());
     return pBitmap;
+}
+
+// Static data for wrapper functions
+CString* CGraphImageList::s_pDataFileName = nullptr;
+CString* CGraphImageList::s_pSpikeFileName = nullptr;
+const DataListCtrlInfos* CGraphImageList::s_pInfos = nullptr;
+int CGraphImageList::s_width = 0;
+int CGraphImageList::s_height = 0;
+
+// Wrapper functions for rendering
+void CGraphImageList::RenderDataWrapper(CDC* pDC)
+{
+    if (s_pDataFileName && s_pInfos)
+    {
+        render_data_to_dc(pDC, *s_pDataFileName, *s_pInfos);
+    }
+}
+
+void CGraphImageList::RenderSpikeWrapper(CDC* pDC)
+{
+    if (s_pSpikeFileName && s_pInfos)
+    {
+        render_spike_to_dc(pDC, *s_pSpikeFileName, *s_pInfos);
+    }
+}
+
+void CGraphImageList::RenderEmptyWrapper(CDC* pDC)
+{
+    render_empty_to_dc(pDC, s_width, s_height);
 }
 
 CBitmap* CGraphImageList::GenerateSpikeImage(int width, int height, CString& spikeFileName, const DataListCtrlInfos& infos)
 {
     TRACE(_T("CGraphImageList::GenerateSpikeImage\n"));
-    // Create bitmap and memory DC
-    CBitmap* pBitmap = new CBitmap;
-    CDC memDC;
-    CDC* pScreenDC = CDC::FromHandle(::GetDC(nullptr));
+    // Set up static data for wrapper function
+    s_pSpikeFileName = &spikeFileName;
+    s_pInfos = &infos;
     
-    VERIFY(memDC.CreateCompatibleDC(pScreenDC));
-    VERIFY(pBitmap->CreateBitmap(width, height, 
-                                pScreenDC->GetDeviceCaps(PLANES),
-                                pScreenDC->GetDeviceCaps(BITSPIXEL), nullptr));
-    
-    memDC.SelectObject(pBitmap);
-    memDC.SetMapMode(pScreenDC->GetMapMode());
-    
-    // Render the spike image
-    render_spike_to_dc(&memDC, spikeFileName, infos);
-    
-    ::ReleaseDC(nullptr, pScreenDC->GetSafeHdc());
-    return pBitmap;
+    return GenerateImageWithRenderer(width, height, RenderSpikeWrapper);
 }
 
 CBitmap* CGraphImageList::GenerateEmptyImage(int width, int height)
 {
-    // Create bitmap and memory DC
-    const auto p_bitmap = new CBitmap;
-    CDC mem_dc;
-    CDC* p_screen_dc = CDC::FromHandle(::GetDC(nullptr));
+    // Set up static data for wrapper function
+    s_width = width;
+    s_height = height;
     
-    VERIFY(mem_dc.CreateCompatibleDC(p_screen_dc));
-    VERIFY(p_bitmap->CreateBitmap(width, height, 
-                                p_screen_dc->GetDeviceCaps(PLANES),
-                                p_screen_dc->GetDeviceCaps(BITSPIXEL), nullptr));
-    
-    mem_dc.SelectObject(p_bitmap);
-    mem_dc.SetMapMode(p_screen_dc->GetMapMode());
-    
-    // Render the empty image
-    render_empty_to_dc(&mem_dc, width, height);
-    
-    ::ReleaseDC(nullptr, p_screen_dc->GetSafeHdc());
-    return p_bitmap;
+    return GenerateImageWithRenderer(width, height, RenderEmptyWrapper);
 }
 
 void CGraphImageList::render_error_message(CDC* pDC, const DataListCtrlInfos& infos, const CString& message)
@@ -199,10 +223,8 @@ void CGraphImageList::render_empty_to_dc(CDC* pDC, int width, int height)
 
 CBitmap* CGraphImageList::BuildEmptyBitmap(int width, int height, CDC* pDC)
 {
-    // Create bitmap and memory DC
-    CBitmap* pBitmap = new CBitmap;
-    CDC memDC;
     CDC* pScreenDC = nullptr;
+    bool needCleanup = false;
     
     if (pDC)
     {
@@ -213,21 +235,20 @@ CBitmap* CGraphImageList::BuildEmptyBitmap(int width, int height, CDC* pDC)
     {
         // Create screen DC if none provided
         pScreenDC = CDC::FromHandle(::GetDC(nullptr));
+        needCleanup = true;
     }
     
-    VERIFY(memDC.CreateCompatibleDC(pScreenDC));
-    VERIFY(pBitmap->CreateBitmap(width, height, 
-                                pScreenDC->GetDeviceCaps(PLANES),
-                                pScreenDC->GetDeviceCaps(BITSPIXEL), nullptr));
+    // Create bitmap and memory DC
+    CBitmap* pBitmap = CreateBitmap(width, height, pScreenDC);
     
-    memDC.SelectObject(pBitmap);
-    memDC.SetMapMode(pScreenDC->GetMapMode());
+    CDC memDC;
+    SetupMemoryDC(memDC, pBitmap, pScreenDC);
     
     // Render the empty image
     render_empty_to_dc(&memDC, width, height);
     
     // Clean up screen DC if we created it
-    if (!pDC)
+    if (needCleanup)
     {
         ::ReleaseDC(nullptr, pScreenDC->GetSafeHdc());
     }

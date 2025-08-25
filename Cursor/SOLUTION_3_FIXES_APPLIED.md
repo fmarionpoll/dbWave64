@@ -100,3 +100,4 @@ delete pTempChart;
 4. If issues persist, check for any remaining MFC framework dependencies
 
 
+

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DataListCtrl_Infos.h"
+#include <functional>
 
 // Forward declarations
 class CDC;
@@ -21,6 +22,23 @@ public:
     static CBitmap* BuildEmptyBitmap(int width, int height, CDC* pDC = nullptr);
 
 private:
+    // Common bitmap creation and setup methods
+    static CBitmap* CreateBitmap(int width, int height, CDC* pScreenDC);
+    static void SetupMemoryDC(CDC& memDC, CBitmap* pBitmap, CDC* pScreenDC);
+    static CBitmap* GenerateImageWithRenderer(int width, int height, void (*renderFunction)(CDC*));
+    
+    // Wrapper functions for rendering (to avoid lambda functions)
+    static void RenderDataWrapper(CDC* pDC);
+    static void RenderSpikeWrapper(CDC* pDC);
+    static void RenderEmptyWrapper(CDC* pDC);
+    
+    // Static data for wrapper functions
+    static CString* s_pDataFileName;
+    static CString* s_pSpikeFileName;
+    static const DataListCtrlInfos* s_pInfos;
+    static int s_width;
+    static int s_height;
+    
     // Character set isolated rendering methods
     static void render_empty_to_dc(CDC* pDC, int width, int height);
     

@@ -78,3 +78,4 @@ The persistent document objects (`p_spike_doc`, `p_chart_spike_wnd`) are working
 The spike file detection issue has been **completely resolved**. The application is now functioning correctly and properly detecting and opening spike files. The root cause was a simple syntax error (missing closing brace) that was preventing proper compilation and potentially causing runtime issues.
 
 The enhanced debugging confirms that the spike file detection logic is working as intended, and users should now see proper spike data displays in the application interface.
+

@@ -10,10 +10,9 @@
 #define new DEBUG_NEW
 #endif
 
-CBitmap* CGraphImageList::GenerateDataImage(int width, int height, 
-                                           CString& dataFileName, 
-                                           const DataListCtrlInfos& infos)
+CBitmap* CGraphImageList::GenerateDataImage(int width, int height, CString& dataFileName, const DataListCtrlInfos& infos)
 {
+    TRACE(_T("CGraphImageList::GenerateDataImage\n"));
     // Create bitmap and memory DC
     CBitmap* pBitmap = new CBitmap;
     CDC memDC;
@@ -28,16 +27,15 @@ CBitmap* CGraphImageList::GenerateDataImage(int width, int height,
     memDC.SetMapMode(pScreenDC->GetMapMode());
     
     // Render the data image
-    RenderDataToDC(&memDC, dataFileName, infos);
+    render_data_to_dc(&memDC, dataFileName, infos);
     
     ::ReleaseDC(nullptr, pScreenDC->GetSafeHdc());
     return pBitmap;
 }
 
-CBitmap* CGraphImageList::GenerateSpikeImage(int width, int height,
-                                            CString& spikeFileName,
-                                            const DataListCtrlInfos& infos)
+CBitmap* CGraphImageList::GenerateSpikeImage(int width, int height, CString& spikeFileName, const DataListCtrlInfos& infos)
 {
+    TRACE(_T("CGraphImageList::GenerateSpikeImage\n"));
     // Create bitmap and memory DC
     CBitmap* pBitmap = new CBitmap;
     CDC memDC;
@@ -52,7 +50,7 @@ CBitmap* CGraphImageList::GenerateSpikeImage(int width, int height,
     memDC.SetMapMode(pScreenDC->GetMapMode());
     
     // Render the spike image
-    RenderSpikeToDC(&memDC, spikeFileName, infos);
+    render_spike_to_dc(&memDC, spikeFileName, infos);
     
     ::ReleaseDC(nullptr, pScreenDC->GetSafeHdc());
     return pBitmap;
@@ -61,80 +59,72 @@ CBitmap* CGraphImageList::GenerateSpikeImage(int width, int height,
 CBitmap* CGraphImageList::GenerateEmptyImage(int width, int height)
 {
     // Create bitmap and memory DC
-    CBitmap* pBitmap = new CBitmap;
-    CDC memDC;
-    CDC* pScreenDC = CDC::FromHandle(::GetDC(nullptr));
+    const auto p_bitmap = new CBitmap;
+    CDC mem_dc;
+    CDC* p_screen_dc = CDC::FromHandle(::GetDC(nullptr));
     
-    VERIFY(memDC.CreateCompatibleDC(pScreenDC));
-    VERIFY(pBitmap->CreateBitmap(width, height, 
-                                pScreenDC->GetDeviceCaps(PLANES),
-                                pScreenDC->GetDeviceCaps(BITSPIXEL), nullptr));
+    VERIFY(mem_dc.CreateCompatibleDC(p_screen_dc));
+    VERIFY(p_bitmap->CreateBitmap(width, height, 
+                                p_screen_dc->GetDeviceCaps(PLANES),
+                                p_screen_dc->GetDeviceCaps(BITSPIXEL), nullptr));
     
-    memDC.SelectObject(pBitmap);
-    memDC.SetMapMode(pScreenDC->GetMapMode());
+    mem_dc.SelectObject(p_bitmap);
+    mem_dc.SetMapMode(p_screen_dc->GetMapMode());
     
     // Render the empty image
-    RenderEmptyToDC(&memDC, width, height);
+    render_empty_to_dc(&mem_dc, width, height);
     
-    ::ReleaseDC(nullptr, pScreenDC->GetSafeHdc());
-    return pBitmap;
+    ::ReleaseDC(nullptr, p_screen_dc->GetSafeHdc());
+    return p_bitmap;
 }
 
-void CGraphImageList::RenderDataToDC(CDC* pDC, CString& dataFileName, 
+void CGraphImageList::render_error_message(CDC* pDC, const DataListCtrlInfos& infos, const CString& message)
+{
+	constexpr COLORREF background = col_gray;
+    pDC->FillSolidRect(0, 0, infos.image_width, infos.image_height, background);
+    CRect rect(0, 0, infos.image_width, infos.image_height);
+    pDC->SetTextColor(col_white);
+    pDC->SetBkColor(background);
+    pDC->DrawText(message, &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+    return;
+}
+
+void CGraphImageList::render_data_to_dc(CDC* pDC, CString& dataFileName, 
                                     const DataListCtrlInfos& infos)
 {
+    TRACE(_T("CGraphImageList::render_data_to_dc\n"));
     if (dataFileName.IsEmpty())
     {
-        // Render "no data" message
-        pDC->SetBkColor(col_silver);
-        pDC->SetTextColor(col_black);
-        pDC->FillSolidRect(0, 0, infos.image_width, infos.image_height, col_silver);
-        
         CString message = _T("No data file");
-        CRect rect(0, 0, infos.image_width, infos.image_height);
-        pDC->DrawText(message, &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+        render_error_message(pDC, infos, message);
         return;
     }
-    
-    // Create document object dynamically (like original code)
-    AcqDataDoc* pDataDoc = new AcqDataDoc;
+
+    auto pDataDoc = new AcqDataDoc;
     if (!pDataDoc)
         return;
     
-    if (LoadDataDocument(dataFileName, pDataDoc))
+    if (load_data_document(dataFileName, pDataDoc))
     {
-        RenderDataPlot(pDC, pDataDoc, infos);
+        render_data_plot(pDC, pDataDoc, infos);
     }
     else
     {
-        // Render error message
-        pDC->SetBkColor(col_silver);
-        pDC->SetTextColor(col_red);
-        pDC->FillSolidRect(0, 0, infos.image_width, infos.image_height, col_silver);
-        
         CString message = _T("Data file error");
-        CRect rect(0, 0, infos.image_width, infos.image_height);
-        pDC->DrawText(message, &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+        render_error_message(pDC, infos, message);
     }
     
     // Clean up
     delete pDataDoc;
 }
 
-void CGraphImageList::RenderSpikeToDC(CDC* pDC, CString& spikeFileName,
+void CGraphImageList::render_spike_to_dc(CDC* pDC, CString& spikeFileName,
                                      const DataListCtrlInfos& infos)
 {
     if (spikeFileName.IsEmpty())
     {
-        // Render "no spike data" message
-        pDC->SetBkColor(col_silver);
-        pDC->SetTextColor(col_black);
-        pDC->FillSolidRect(0, 0, infos.image_width, infos.image_height, col_silver);
-        
         CString message = _T("No spike file");
-        CRect rect(0, 0, infos.image_width, infos.image_height);
-        pDC->DrawText(message, &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
-        return;
+        return render_error_message(pDC, infos, message);
     }
     
     // Try to render spike data, but fall back to error message if it fails
@@ -144,8 +134,8 @@ void CGraphImageList::RenderSpikeToDC(CDC* pDC, CString& spikeFileName,
     CSpikeDoc* pSpikeDoc = nullptr;
     try {
         pSpikeDoc = new CSpikeDoc;
-        if (pSpikeDoc && LoadSpikeDocument(spikeFileName, pSpikeDoc)) {
-            RenderSpikePlot(pDC, pSpikeDoc, infos);
+        if (pSpikeDoc && load_spike_document(spikeFileName, pSpikeDoc)) {
+            render_spike_plot(pDC, pSpikeDoc, infos);
             renderSuccess = true;
         }
     } catch (...) {
@@ -190,7 +180,7 @@ void CGraphImageList::RenderSpikeToDC(CDC* pDC, CString& spikeFileName,
     }
 }
 
-void CGraphImageList::RenderEmptyToDC(CDC* pDC, int width, int height)
+void CGraphImageList::render_empty_to_dc(CDC* pDC, int width, int height)
 {
     // Render grey rectangle (same as original empty bitmap)
     pDC->SetBkColor(col_silver);
@@ -207,8 +197,47 @@ void CGraphImageList::RenderEmptyToDC(CDC* pDC, int width, int height)
     pDC->SelectObject(pOldPen);
 }
 
-bool CGraphImageList::LoadDataDocument(CString& dataFileName, AcqDataDoc* pDataDoc)
+CBitmap* CGraphImageList::BuildEmptyBitmap(int width, int height, CDC* pDC)
 {
+    // Create bitmap and memory DC
+    CBitmap* pBitmap = new CBitmap;
+    CDC memDC;
+    CDC* pScreenDC = nullptr;
+    
+    if (pDC)
+    {
+        // Use provided DC if available
+        pScreenDC = pDC;
+    }
+    else
+    {
+        // Create screen DC if none provided
+        pScreenDC = CDC::FromHandle(::GetDC(nullptr));
+    }
+    
+    VERIFY(memDC.CreateCompatibleDC(pScreenDC));
+    VERIFY(pBitmap->CreateBitmap(width, height, 
+                                pScreenDC->GetDeviceCaps(PLANES),
+                                pScreenDC->GetDeviceCaps(BITSPIXEL), nullptr));
+    
+    memDC.SelectObject(pBitmap);
+    memDC.SetMapMode(pScreenDC->GetMapMode());
+    
+    // Render the empty image
+    render_empty_to_dc(&memDC, width, height);
+    
+    // Clean up screen DC if we created it
+    if (!pDC)
+    {
+        ::ReleaseDC(nullptr, pScreenDC->GetSafeHdc());
+    }
+    
+    return pBitmap;
+}
+
+bool CGraphImageList::load_data_document(CString& dataFileName, AcqDataDoc* pDataDoc)
+{
+    TRACE(_T("CGraphImageList::load_data_document\n"));
     if (!pDataDoc || dataFileName.IsEmpty())
         return false;
     
@@ -216,7 +245,7 @@ bool CGraphImageList::LoadDataDocument(CString& dataFileName, AcqDataDoc* pDataD
     return pDataDoc->open_document(dataFileName);
 }
 
-void CGraphImageList::RenderDataPlot(CDC* pDC, AcqDataDoc* pDataDoc, 
+void CGraphImageList::render_data_plot(CDC* pDC, AcqDataDoc* pDataDoc, 
                                     const DataListCtrlInfos& infos)
 {
     if (!pDataDoc || !pDC)
@@ -281,7 +310,7 @@ void CGraphImageList::RenderDataPlot(CDC* pDC, AcqDataDoc* pDataDoc,
     delete pTempChart;
 }
 
-bool CGraphImageList::LoadSpikeDocument(CString& spikeFileName, CSpikeDoc* pSpikeDoc)
+bool CGraphImageList::load_spike_document(CString& spikeFileName, CSpikeDoc* pSpikeDoc)
 {
     if (!pSpikeDoc || spikeFileName.IsEmpty())
         return false;
@@ -290,7 +319,7 @@ bool CGraphImageList::LoadSpikeDocument(CString& spikeFileName, CSpikeDoc* pSpik
     return pSpikeDoc->OnOpenDocument(spikeFileName);
 }
 
-void CGraphImageList::RenderSpikePlot(CDC* pDC, CSpikeDoc* pSpikeDoc,
+void CGraphImageList::render_spike_plot(CDC* pDC, CSpikeDoc* pSpikeDoc,
                                      const DataListCtrlInfos& infos)
 {
     if (!pSpikeDoc || !pDC)

@@ -3,6 +3,7 @@
 
 #include "ColorNames.h"
 #include "ViewdbWave.h"
+#include "CGraphImageList.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -21,11 +22,14 @@ DataListCtrl_Row::DataListCtrl_Row(const int i)
 
 DataListCtrl_Row::~DataListCtrl_Row()
 {
+	// Clean up persistent objects (no longer used with CGraphImageList approach)
 	delete p_chart_data_wnd;
 	delete p_chart_spike_wnd;
 	
 	SAFE_DELETE(p_data_doc)
 	SAFE_DELETE(p_spike_doc)
+	
+	// Clear string members
 	cs_comment.Empty();
 	cs_datafile_name.Empty();
 	cs_spike_file_name.Empty();
@@ -148,9 +152,6 @@ void DataListCtrl_Row::attach_database_record(CdbWaveDoc* db_wave_doc)
 	}
 	cs_datafile_name = db_wave_doc->db_get_current_dat_file_name(TRUE);
 	cs_spike_file_name = db_wave_doc->db_get_current_spk_file_name(TRUE);
-	
-	TRACE(_T("DataListCtrl_Row::attach_database_record - Data file: '%s'\n"), cs_datafile_name);
-	TRACE(_T("DataListCtrl_Row::attach_database_record - Spike file: '%s'\n"), cs_spike_file_name);
 	const auto database = db_wave_doc->db_table;
 
 	DB_ITEMDESC desc;
@@ -185,20 +186,38 @@ void DataListCtrl_Row::attach_database_record(CdbWaveDoc* db_wave_doc)
 
 void DataListCtrl_Row::set_display_parameters(DataListCtrlInfos* infos, const int i_image)
 {
+	CBitmap* pBitmap = nullptr;
+	
 	switch (infos->display_mode)
 	{
 	case 1:
-		// Use persistent data document and chart window
-		display_data_wnd(infos, i_image);
+		// Generate data image using CGraphImageList
+		pBitmap = CGraphImageList::GenerateDataImage(
+			infos->image_width, infos->image_height, 
+			cs_datafile_name, *infos);
 		break;
 	case 2:
-		// Use persistent spike document and chart window
-		display_spike_wnd(infos, i_image);
+		// Generate spike image using CGraphImageList
+		pBitmap = CGraphImageList::GenerateSpikeImage(
+			infos->image_width, infos->image_height, 
+			cs_spike_file_name, *infos);
 		break;
 	default:
-		// Generate empty image
-		display_empty_wnd(infos, i_image);
+		// Generate empty image using CGraphImageList
+		pBitmap = CGraphImageList::GenerateEmptyImage(
+			infos->image_width, infos->image_height);
 		break;
+	}
+	
+	if (pBitmap)
+	{
+		infos->image_list.Replace(i_image, pBitmap, nullptr);
+		delete pBitmap; // Clean up the bitmap
+	}
+	else
+	{
+		// Fallback to empty bitmap if generation fails
+		infos->image_list.Replace(i_image, infos->p_empty_bitmap, nullptr);
 	}
 }
 
@@ -228,13 +247,6 @@ void DataListCtrl_Row::display_data_wnd(DataListCtrlInfos* infos, const int i_im
 	{
 		p_data_doc = new AcqDataDoc;
 		ASSERT(p_data_doc != NULL);
-	}
-	
-	// If the document is already open with a different file, close it first
-	if (!p_data_doc->GetPathName().IsEmpty() && p_data_doc->GetPathName() != cs_datafile_name)
-	{
-		TRACE(_T("DataListCtrl_Row::display_data_wnd - Closing previous data document: '%s'\n"), p_data_doc->GetPathName());
-		p_data_doc->OnCloseDocument();
 	}
 
 	if (cs_datafile_name.IsEmpty() || !p_data_doc->open_document(cs_datafile_name))
@@ -282,54 +294,26 @@ void DataListCtrl_Row::display_spike_wnd(DataListCtrlInfos* infos, const int i_i
 		p_spike_doc = new CSpikeDoc;
 		ASSERT(p_spike_doc != NULL);
 	}
-	
-	// If the document is already open with a different file, close it first
-	CString currentPath = p_spike_doc->GetPathName();
-	TRACE(_T("DataListCtrl_Row::display_spike_wnd - Current document path: '%s'\n"), currentPath);
-	
-	if (!currentPath.IsEmpty() && currentPath != cs_spike_file_name)
-	{
-		TRACE(_T("DataListCtrl_Row::display_spike_wnd - Closing previous spike document: '%s'\n"), currentPath);
-		p_spike_doc->OnCloseDocument();
-	}
 
-	TRACE(_T("DataListCtrl_Row::display_spike_wnd - Spike file name: '%s'\n"), cs_spike_file_name);
-	
-	if (cs_spike_file_name.IsEmpty())
+	if (cs_spike_file_name.IsEmpty() || !p_spike_doc->OnOpenDocument(cs_spike_file_name))
 	{
-		TRACE(_T("DataListCtrl_Row::display_spike_wnd - Spike file name is empty\n"));
 		infos->image_list.Replace(i_image, infos->p_empty_bitmap, nullptr);
 	}
 	else
 	{
-		TRACE(_T("DataListCtrl_Row::display_spike_wnd - Attempting to open spike document: '%s'\n"), cs_spike_file_name);
-		if (!p_spike_doc->OnOpenDocument(cs_spike_file_name))
-		{
-			TRACE(_T("DataListCtrl_Row::display_spike_wnd - Failed to open spike document: '%s'\n"), cs_spike_file_name);
-			infos->image_list.Replace(i_image, infos->p_empty_bitmap, nullptr);
-		}
-		else
-		{
-			TRACE(_T("DataListCtrl_Row::display_spike_wnd - Successfully opened spike document: '%s'\n"), cs_spike_file_name);
-			
-			// Set up the spike chart with the persistent document
-			p_chart_spike_wnd->set_spike_doc(p_spike_doc);
-			SpikeList* p_spike_list = p_spike_doc->get_spike_list_current();
-			p_chart_spike_wnd->set_spike_list(p_spike_list);
-			TRACE(_T("DataListCtrl_Row::display_spike_wnd - Spike list has %d spikes\n"), 
-				p_spike_list ? p_spike_list->get_spikes_count() : 0);
-			p_chart_spike_wnd->set_plot_mode(infos->spike_plot_mode, infos->selected_class);
+		// Set up the spike chart with the persistent document
+		p_chart_spike_wnd->set_spike_doc(p_spike_doc);
+		p_chart_spike_wnd->set_plot_mode(infos->spike_plot_mode, infos->selected_class);
 
-			// Set time intervals if needed
-			if (infos->b_set_time_span)
-			{
-				long l_first = static_cast<long>(infos->t_first * p_spike_doc->get_acq_rate());
-				long l_last = static_cast<long>(infos->t_last * p_spike_doc->get_acq_rate());
-				p_chart_spike_wnd->set_time_intervals(l_first, l_last);
-			}
-
-			plot_spikes(infos, i_image);
+		// Set time intervals if needed
+		if (infos->b_set_time_span)
+		{
+			long l_first = static_cast<long>(infos->t_first * p_spike_doc->get_acq_rate());
+			long l_last = static_cast<long>(infos->t_last * p_spike_doc->get_acq_rate());
+			p_chart_spike_wnd->set_time_intervals(l_first, l_last);
 		}
+
+		plot_spikes(infos, i_image);
 	}
 }
 

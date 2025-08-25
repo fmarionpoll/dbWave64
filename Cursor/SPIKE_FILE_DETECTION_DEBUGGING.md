@@ -164,3 +164,4 @@ DataListCtrl_Row::display_spike_wnd - Spike file name: 'C:\path\to\new.spk'
 4. **Debugging Information**: Detailed logging for troubleshooting
 
 This debugging approach will help identify the exact cause of the spike file detection issue and guide the implementation of the appropriate fix.
+

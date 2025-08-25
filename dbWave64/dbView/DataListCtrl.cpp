@@ -6,6 +6,7 @@
 
 #include "DataListCtrl_Row.h"
 #include "ViewdbWave.h"
+#include "CGraphImageList.h"
 
 
 #ifdef _DEBUG
@@ -381,24 +382,9 @@ void DataListCtrl::build_empty_bitmap(const boolean b_forced_update)
 
 	SAFE_DELETE(infos.p_empty_bitmap)
 
-	infos.p_empty_bitmap = new CBitmap;
+	// Use CGraphImageList to build the empty bitmap
 	CWindowDC dc(this);
-	CDC mem_dc;
-	VERIFY(mem_dc.CreateCompatibleDC(&dc));
-
-	infos.p_empty_bitmap->CreateBitmap(infos.image_width, infos.image_height,
-		dc.GetDeviceCaps(PLANES), 
-		dc.GetDeviceCaps(BITSPIXEL), nullptr);
-	mem_dc.SelectObject(infos.p_empty_bitmap);
-	mem_dc.SetMapMode(dc.GetMapMode());
-
-	CBrush brush(col_silver); 
-	mem_dc.SelectObject(&brush);
-	CPen pen;
-	pen.CreatePen(PS_SOLID, 1, col_black);
-	mem_dc.SelectObject(&pen);
-	const auto rect_data = CRect(1, 0, infos.image_width, infos.image_height);
-	mem_dc.Rectangle(&rect_data);
+	infos.p_empty_bitmap = CGraphImageList::BuildEmptyBitmap(infos.image_width, infos.image_height, &dc);
 }
 
 void DataListCtrl::refresh_display()

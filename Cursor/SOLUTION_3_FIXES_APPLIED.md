@@ -99,3 +99,4 @@ delete pTempChart;
 3. Verify that data and spike images display correctly
 4. If issues persist, check for any remaining MFC framework dependencies
 
+

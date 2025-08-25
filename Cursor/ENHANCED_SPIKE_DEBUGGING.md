@@ -127,3 +127,4 @@ DataListCtrl_Row::display_spike_wnd - Attempting to open spike document: 'c:\use
 - Check MFC document lifecycle management
 
 This enhanced debugging will provide clear visibility into exactly what's happening during the spike file opening process.
+

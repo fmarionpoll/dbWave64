@@ -486,56 +486,11 @@
     <ClCompile Include="Excel\excel9.cpp">
       <Filter>excel</Filter>
     </ClCompile>
-    <ClCompile Include="data_acquisition\DataTranslation_AD.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\CyberAmp.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="ADAcqDataDoc.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\DataTranslation_DA.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\dtacq32.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\dtplot32.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\ViewADcontinuous.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\DlgADExperiment.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\DlgADInputParms.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\DlgADIntervals.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\DlgDAChannels.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\DlgDAOutputsParms.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\DlgDataTranslationBoard.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\DlgEditDAMseq.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
     <ClCompile Include="GridCtrl\GridComboEdit.cpp">
       <Filter>Grid</Filter>
     </ClCompile>
     <ClCompile Include="GridCtrl\InPlaceEdit.cpp">
       <Filter>Grid</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\USBPxxS1.cpp">
-      <Filter>data_acquisition</Filter>
     </ClCompile>
     <ClCompile Include="Controls\QuadStateTree.cpp">
       <Filter>customctrl</Filter>
@@ -543,17 +498,11 @@
     <ClCompile Include="Controls\ScrollBarEx.cpp">
       <Filter>customctrl</Filter>
     </ClCompile>
-    <ClCompile Include="data_acquisition\USBPxxPARAMETERS.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
     <ClCompile Include="Controls\Ruler.cpp">
       <Filter>customctrl</Filter>
     </ClCompile>
     <ClCompile Include="Controls\RulerBar.cpp">
       <Filter>customctrl</Filter>
-    </ClCompile>
-    <ClCompile Include="ChartDataAD.cpp">
-      <Filter>data_acquisition</Filter>
     </ClCompile>
     <ClCompile Include="dbView_optimized\DataListCtrl_Configuration.cpp">
       <Filter>dbView_optimized</Filter>
@@ -590,6 +539,9 @@
     </ClCompile>
     <ClCompile Include="dbView\CGraphImageList.cpp">
       <Filter>dbView</Filter>
+    </ClCompile>
+    <ClCompile Include="ADAcqDataDoc.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1136,21 +1088,6 @@
     <ClInclude Include="Excel\excel9.h">
       <Filter>excel</Filter>
     </ClInclude>
-    <ClInclude Include="data_acquisition\DataTranslation_AD.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\DataTranslation_DA.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="CDTBoardParameters.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="ChartDataAD.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\CyberAmp.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
     <ClInclude Include="datafile_ASD.h">
       <Filter>data_files</Filter>
     </ClInclude>
@@ -1175,41 +1112,14 @@
     <ClInclude Include="dataheader_Atlab.H">
       <Filter>data_files</Filter>
     </ClInclude>
-    <ClInclude Include="data_acquisition\DlgADExperiment.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\DlgADInputParms.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\DlgADIntervals.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\dtacq32.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\dtplot32.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
     <ClInclude Include="GridCtrl\InPlaceEdit.h">
       <Filter>Grid</Filter>
     </ClInclude>
     <ClInclude Include="GridCtrl\GridComboEdit.h">
       <Filter>Grid</Filter>
     </ClInclude>
-    <ClInclude Include="ImportAlligatorDefinitions.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
     <ClInclude Include="ImportExcelDefinitions.h">
       <Filter>excel</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\DlgDAChannels.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\DlgDAOutputsParms.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\DlgEditDAMseq.h">
-      <Filter>data_acquisition</Filter>
     </ClInclude>
     <ClInclude Include="Controls\QuadStateTree.h">
       <Filter>customctrl</Filter>
@@ -1222,15 +1132,6 @@
     </ClInclude>
     <ClInclude Include="Controls\ScrollBarEx.h">
       <Filter>customctrl</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\USBPxxS1.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\USBPxxPARAMETERS.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\ViewADcontinuous.h">
-      <Filter>data_acquisition</Filter>
     </ClInclude>
     <ClInclude Include="dbView_optimized\DataListCtrl_Configuration.h">
       <Filter>dbView_optimized</Filter>

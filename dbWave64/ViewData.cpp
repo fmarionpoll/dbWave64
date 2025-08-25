@@ -5,11 +5,11 @@
 #include "ChartData.h"
 #include "Editctrl.h"
 #include "dbWaveDoc.h"
-#include "data_acquisition/DlgADIntervals.h"
 #include "MeasureProperties.h"
 #include "Controls/RulerBar.h"
 #include "DlgdbEditRecord.h"
-#include "data_acquisition/DlgADInputParms.h"
+//#include "data_acquisition/DlgADIntervals.h"
+//#include "data_acquisition/DlgADInputParms.h"
 #include "ViewData.h"
 
 #include "NiceUnit.h"
@@ -389,25 +389,27 @@ void ViewData::on_update_edit_copy(CCmdUI* p_cmd_ui)
 
 void ViewData::adc_on_hardware_channels_dlg() 
 {
-	DlgADInputs dlg;
-	dlg.m_pw_format = m_p_dat_->get_wave_format();
-	dlg.m_pch_array = m_p_dat_->get_wave_channels_array();
-	if (IDOK == dlg.DoModal())
-	{
-		if(m_p_dat_->acq_save_data_descriptors())
-			m_p_dat_->SetModifiedFlag(TRUE);
-	}
+	// TODO - make it independent of the acquisition dlls
+	//DlgADInputs dlg;
+	//dlg.m_pw_format = m_p_dat_->get_wave_format();
+	//dlg.m_pch_array = m_p_dat_->get_wave_channels_array();
+	//if (IDOK == dlg.DoModal())
+	//{
+	//	if(m_p_dat_->acq_save_data_descriptors())
+	//		m_p_dat_->SetModifiedFlag(TRUE);
+	//}
 }
 
 void ViewData::adc_on_hardware_intervals_dlg() 
 {
-	DlgADIntervals dlg;
-	dlg.m_p_wave_format = m_p_dat_->get_wave_format();
-	if (IDOK == dlg.DoModal())
-	{
-		if (m_p_dat_->acq_save_data_descriptors())
-			m_p_dat_->SetModifiedFlag(TRUE);
-	}
+	// TODO - make it independent of the acquisition dlls
+	//DlgADIntervals dlg;
+	//dlg.m_p_wave_format = m_p_dat_->get_wave_format();
+	//if (IDOK == dlg.DoModal())
+	//{
+	//	if (m_p_dat_->acq_save_data_descriptors())
+	//		m_p_dat_->SetModifiedFlag(TRUE);
+	//}
 }
 
 void ViewData::chain_dialog(const WORD i_id)

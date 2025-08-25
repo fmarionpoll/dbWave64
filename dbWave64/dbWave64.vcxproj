@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ADAcqDataDoc.cpp" />
     <ClCompile Include="chanlistitem.cpp" />
     <ClCompile Include="DatabaseUtils.cpp" />
     <ClCompile Include="dbView\CGraphImageList.cpp" />
@@ -34,9 +35,7 @@
     <ClCompile Include="AcqWaveChan.cpp" />
     <ClCompile Include="AcqWaveChanArray.cpp" />
     <ClCompile Include="AcqWaveFormat.cpp" />
-    <ClCompile Include="ADAcqDataDoc.cpp" />
     <ClCompile Include="ChartData.cpp" />
-    <ClCompile Include="ChartDataAD.cpp" />
     <ClCompile Include="ChartSpike.cpp" />
     <ClCompile Include="ChartSpikeBar.cpp" />
     <ClCompile Include="ChartSpikeHist.cpp" />
@@ -66,8 +65,6 @@
     <ClCompile Include="DlgChartProps.cpp" />
     <ClCompile Include="DlgConfirmSave.cpp" />
     <ClCompile Include="DlgCopyAs.cpp" />
-    <ClCompile Include="data_acquisition\DlgDAChannels.cpp" />
-    <ClCompile Include="data_acquisition\DlgDAOutputsParms.cpp" />
     <ClCompile Include="DlgDataComments.cpp" />
     <ClCompile Include="DlgDataSeries.cpp" />
     <ClCompile Include="DlgDataSeriesFormat.cpp" />
@@ -103,19 +100,6 @@
     <ClCompile Include="DlgSpikeEdit.cpp" />
     <ClCompile Include="DlgTransferFiles.cpp" />
     <ClCompile Include="DlgXYParameters.cpp" />
-    <ClCompile Include="data_acquisition\CyberAmp.cpp" />
-    <ClCompile Include="data_acquisition\DataTranslation_AD.cpp" />
-    <ClCompile Include="data_acquisition\DataTranslation_DA.cpp" />
-    <ClCompile Include="data_acquisition\DlgADExperiment.cpp" />
-    <ClCompile Include="data_acquisition\DlgADInputParms.cpp" />
-    <ClCompile Include="data_acquisition\DlgADIntervals.cpp" />
-    <ClCompile Include="data_acquisition\DlgDataTranslationBoard.cpp" />
-    <ClCompile Include="data_acquisition\DlgEditDAMseq.cpp" />
-    <ClCompile Include="data_acquisition\dtacq32.cpp" />
-    <ClCompile Include="data_acquisition\dtplot32.cpp" />
-    <ClCompile Include="data_acquisition\USBPxxPARAMETERS.cpp" />
-    <ClCompile Include="data_acquisition\USBPxxS1.cpp" />
-    <ClCompile Include="data_acquisition\ViewADcontinuous.cpp" />
     <ClCompile Include="Editctrl.cpp" />
     <ClCompile Include="Excel\excel9.cpp" />
     <ClCompile Include="FilenameCleanupUtils.cpp" />
@@ -207,10 +191,8 @@
     <ClInclude Include="AcqWaveFormat.h" />
     <ClInclude Include="ADAcqDataDoc.h" />
     <ClInclude Include="CApplication.h" />
-    <ClInclude Include="CDTBoardParameters.h" />
     <ClInclude Include="chanlistitem.h" />
     <ClInclude Include="ChartData.h" />
-    <ClInclude Include="ChartDataAD.h" />
     <ClInclude Include="ChartSpike.h" />
     <ClInclude Include="ChartSpikeBar.h" />
     <ClInclude Include="ChartSpikeHist.h" />
@@ -284,8 +266,6 @@
     <ClInclude Include="DlgChartProps.h" />
     <ClInclude Include="DlgConfirmSave.h" />
     <ClInclude Include="DlgCopyAs.h" />
-    <ClInclude Include="data_acquisition\DlgDAChannels.h" />
-    <ClInclude Include="data_acquisition\DlgDAOutputsParms.h" />
     <ClInclude Include="DlgDataComments.h" />
     <ClInclude Include="DlgDataSeries.h" />
     <ClInclude Include="DlgDataSeriesFormat.h" />
@@ -321,19 +301,7 @@
     <ClInclude Include="DlgSpikeEdit.h" />
     <ClInclude Include="DlgTransferFiles.h" />
     <ClInclude Include="DlgXYParameters.h" />
-    <ClInclude Include="data_acquisition\CyberAmp.h" />
-    <ClInclude Include="data_acquisition\DataTranslation_AD.h" />
-    <ClInclude Include="data_acquisition\DataTranslation_DA.h" />
-    <ClInclude Include="data_acquisition\DlgADExperiment.h" />
-    <ClInclude Include="data_acquisition\DlgADInputParms.h" />
-    <ClInclude Include="data_acquisition\DlgADIntervals.h" />
     <ClInclude Include="data_acquisition\DlgDataTranslationBoard.h" />
-    <ClInclude Include="data_acquisition\DlgEditDAMseq.h" />
-    <ClInclude Include="data_acquisition\dtacq32.h" />
-    <ClInclude Include="data_acquisition\dtplot32.h" />
-    <ClInclude Include="data_acquisition\USBPxxPARAMETERS.h" />
-    <ClInclude Include="data_acquisition\USBPxxS1.h" />
-    <ClInclude Include="data_acquisition\ViewADcontinuous.h" />
     <ClInclude Include="Editctrl.h" />
     <ClInclude Include="Envelope.h" />
     <ClInclude Include="Excel\excel9.h" />
@@ -356,7 +324,6 @@
     <ClInclude Include="GridCtrl\GridTitleTip.h" />
     <ClInclude Include="GridCtrl\GridURLCell.h" />
     <ClInclude Include="GridCtrl\MemDC.h" />
-    <ClInclude Include="ImportAlligatorDefinitions.h" />
     <ClInclude Include="ImportExcelDefinitions.h" />
     <ClInclude Include="IntervalPoints.h" />
     <ClInclude Include="Intervals.h" />

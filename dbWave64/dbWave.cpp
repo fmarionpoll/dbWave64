@@ -120,6 +120,7 @@ BOOL CdbWaveApp::InitInstance()
 	// Register the application's document templates.  Document templates
 	//  serve as the connection between documents, frame windows and views.
 
+	// ---------------------------------------------
 	m_db_wave_view_template = new CdbMultiDocTemplate(IDR_DBWAVETYPE,
 	                                                RUNTIME_CLASS(CdbWaveDoc),
 	                                                RUNTIME_CLASS(CChildFrame), // custom MDI child frame
@@ -128,6 +129,7 @@ BOOL CdbWaveApp::InitInstance()
 	AddDocTemplate(m_db_wave_view_template);
 	h_menu_db_view = m_db_wave_view_template->m_hMenuShared;
 
+	// ---------------------------------------------
 	m_db_wave_view2_template = new CdbMultiDocTemplate(IDR_DBWAVETYPE2,
 		RUNTIME_CLASS(CdbWaveDoc),
 		RUNTIME_CLASS(CChildFrame), // custom MDI child frame
@@ -145,16 +147,18 @@ BOOL CdbWaveApp::InitInstance()
 	AddDocTemplate(m_data_view_template);
 	h_menu_data_view = m_data_view_template->m_hMenuShared;
 
+	// ---------------------------------------------
 	// continuous A/D view with data translation card
-	m_ad_view_template = new CdbMultiDocTemplate(IDR_DBDATATYPE,
-	                                            RUNTIME_CLASS(CdbWaveDoc),
-	                                            RUNTIME_CLASS(CChildFrame), // multi-file MDI child frame
-	                                            RUNTIME_CLASS(ViewADcontinuous)); // AD view
-	ASSERT(m_ad_view_template != NULL);
-	m_ad_view_template->SetContainerInfo(IDR_DBWAVETYPE_CNTR_IP);
-	AddDocTemplate(m_ad_view_template);
-	h_menu_acq_view = m_ad_view_template->m_hMenuShared;
+	//m_ad_view_template = new CdbMultiDocTemplate(IDR_DBDATATYPE,
+	//                                            RUNTIME_CLASS(CdbWaveDoc),
+	//                                            RUNTIME_CLASS(CChildFrame), // multi-file MDI child frame
+	//                                            RUNTIME_CLASS(ViewADcontinuous)); // AD view
+	//ASSERT(m_ad_view_template != NULL);
+	//m_ad_view_template->SetContainerInfo(IDR_DBWAVETYPE_CNTR_IP);
+	//AddDocTemplate(m_ad_view_template);
+	//h_menu_acq_view = m_ad_view_template->m_hMenuShared;
 
+	// ---------------------------------------------
 	m_spike_view_template = new CdbMultiDocTemplate(IDR_DBSPIKETYPE,
 	                                               RUNTIME_CLASS(CdbWaveDoc),
 	                                               RUNTIME_CLASS(CChildFrame), // custom MDI child frame
@@ -163,6 +167,7 @@ BOOL CdbWaveApp::InitInstance()
 	AddDocTemplate(m_spike_view_template);
 	h_menu_spike_view = m_spike_view_template->m_hMenuShared;
 
+	// ---------------------------------------------
 	m_note_view_template = new CdbMultiDocTemplate(IDR_PROJECTTYPE,
 	                                              RUNTIME_CLASS(CNoteDoc),
 	                                              RUNTIME_CLASS(CMDIChildWndEx), // standard MDI child frame

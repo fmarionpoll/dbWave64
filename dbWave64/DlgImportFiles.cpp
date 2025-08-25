@@ -7,7 +7,7 @@
 
 #include "dataheader_Atlab.H"
 #include "dbWaveDoc.h"
-#include "DlgADExperiment.h"
+//#include "data_acquisition/DlgADExperiment.h"
 #include "DlgADInputParms.h"
 
 #ifdef _DEBUG
@@ -408,56 +408,58 @@ Emergency_exit:
 
 BOOL DlgImportFiles::get_experiment_parameters(const AcqDataDoc* p_to) const
 {
-	DlgADExperiment dlg; 
-	dlg.m_b_filename = FALSE; 
-	auto p_app = static_cast<CdbWaveApp*>(AfxGetApp());
-	options_input* pacqD = &(p_app->options_acq_data);
-	dlg.options_input = pacqD;
-	dlg.p_db_doc = m_pdb_doc;
-	const BOOL flag = dlg.DoModal();
-	if (IDOK == flag)
-	{
-		CWaveFormat* pwFTo = p_to->get_wave_format();
-		const CWaveFormat* pwFDlg = &pacqD->wave_format;
+	// TODO - make it independent of acquisition hardware
+	//DlgADExperiment dlg; 
+	//dlg.m_b_filename = FALSE; 
+	//auto p_app = static_cast<CdbWaveApp*>(AfxGetApp());
+	//options_input* pacqD = &(p_app->options_acq_data);
+	//dlg.options_input = pacqD;
+	//dlg.p_db_doc = m_pdb_doc;
+	//const BOOL flag = dlg.DoModal();
+	//if (IDOK == flag)
+	//{
+	//	CWaveFormat* pwFTo = p_to->get_wave_format();
+	//	const CWaveFormat* pwFDlg = &pacqD->wave_format;
 
-		pwFTo->cs_ad_card_name = pwFDlg->cs_ad_card_name;
-		pwFTo->cs_comment = pwFDlg->cs_comment;
-		pwFTo->cs_stimulus = pwFDlg->cs_stimulus;
-		pwFTo->cs_concentration = pwFDlg->cs_concentration;
-		pwFTo->cs_insect_name = pwFDlg->cs_insect_name;
-		pwFTo->cs_location = pwFDlg->cs_location;
-		pwFTo->cs_sensillum = pwFDlg->cs_sensillum;
-		pwFTo->cs_strain = pwFDlg->cs_strain;
-		pwFTo->cs_operator = pwFDlg->cs_operator;
-		pwFTo->cs_more_comment = pwFDlg->cs_more_comment;
-		pwFTo->cs_stimulus2 = pwFDlg->cs_stimulus2;
-		pwFTo->cs_concentration2 = pwFDlg->cs_concentration2;
-		pwFTo->cs_sex = pwFDlg->cs_sex;
-		pwFTo->insect_id = pwFDlg->insect_id;
-		pwFTo->sensillum_id = pwFDlg->sensillum_id;
-		return TRUE;
-	}
+	//	pwFTo->cs_ad_card_name = pwFDlg->cs_ad_card_name;
+	//	pwFTo->cs_comment = pwFDlg->cs_comment;
+	//	pwFTo->cs_stimulus = pwFDlg->cs_stimulus;
+	//	pwFTo->cs_concentration = pwFDlg->cs_concentration;
+	//	pwFTo->cs_insect_name = pwFDlg->cs_insect_name;
+	//	pwFTo->cs_location = pwFDlg->cs_location;
+	//	pwFTo->cs_sensillum = pwFDlg->cs_sensillum;
+	//	pwFTo->cs_strain = pwFDlg->cs_strain;
+	//	pwFTo->cs_operator = pwFDlg->cs_operator;
+	//	pwFTo->cs_more_comment = pwFDlg->cs_more_comment;
+	//	pwFTo->cs_stimulus2 = pwFDlg->cs_stimulus2;
+	//	pwFTo->cs_concentration2 = pwFDlg->cs_concentration2;
+	//	pwFTo->cs_sex = pwFDlg->cs_sex;
+	//	pwFTo->insect_id = pwFDlg->insect_id;
+	//	pwFTo->sensillum_id = pwFDlg->sensillum_id;
+	//	return TRUE;
+	//}
 	return FALSE;
 }
 
 BOOL DlgImportFiles::get_acquisition_parameters(const AcqDataDoc* p_to)
 {
-	DlgADInputs dlg2;
-	dlg2.m_pw_format = p_to->get_wave_format();
-	dlg2.m_pch_array = p_to->get_wave_channels_array();
+	// TODO - make it independent of acquisition hardware
+	//DlgADInputs dlg2;
+	//dlg2.m_pw_format = p_to->get_wave_format();
+	//dlg2.m_pch_array = p_to->get_wave_channels_array();
 
-	// invoke dialog box
-	const BOOL flag = dlg2.DoModal();
-	if (IDOK == flag)
-	{
-		for (int i = 0; i < m_scan_count_; i++)
-		{
-			const CWaveChan* p_channel = (p_to->get_wave_channels_array())->get_p_channel(i);
-			m_x_inst_gain_ = p_channel->am_gaintotal;
-			m_d_span_[i] = 20000. / m_x_inst_gain_; // span= 20 V max to min
-			m_d_bin_val_[i] = m_d_span_[i] / 65536.; // divide voltage span into 2exp16 bins
-		}
-		return TRUE;
-	}
+	//// invoke dialog box
+	//const BOOL flag = dlg2.DoModal();
+	//if (IDOK == flag)
+	//{
+	//	for (int i = 0; i < m_scan_count_; i++)
+	//	{
+	//		const CWaveChan* p_channel = (p_to->get_wave_channels_array())->get_p_channel(i);
+	//		m_x_inst_gain_ = p_channel->am_gaintotal;
+	//		m_d_span_[i] = 20000. / m_x_inst_gain_; // span= 20 V max to min
+	//		m_d_bin_val_[i] = m_d_span_[i] / 65536.; // divide voltage span into 2exp16 bins
+	//	}
+	//	return TRUE;
+	//}
 	return FALSE;
 }

@@ -32,7 +32,7 @@
 #include "CWorksheets.h"
 #include "DlgTransferFiles.h"
 #include "DlgExportData.h"
-#include "data_acquisition/ViewADcontinuous.h"
+//#include "data_acquisition/ViewADcontinuous.h"
 
 #include "ViewSpikeSort.h"
 #include "ViewSpikeDetect.h"
@@ -385,10 +385,10 @@ void CChildFrame::replace_view_index(UINT n_id)
 		if (!p_db_wave_doc->db_get_current_spk_file_name(TRUE).IsEmpty())
 			replace_view(RUNTIME_CLASS(ViewSpikeHist), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_spike_view);
 		break;
-	case ID_VIEW_ACQUIRE_DATA:
-		replace_view(RUNTIME_CLASS(ViewADcontinuous), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_data_view);
-		b_active_panes = FALSE;
-		break;
+	//case ID_VIEW_ACQUIRE_DATA:
+	//	replace_view(RUNTIME_CLASS(ViewADcontinuous), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_data_view);
+	//	b_active_panes = FALSE;
+	//	break;
 
 	default:
 		n_id = 0;

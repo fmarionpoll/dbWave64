@@ -1,6 +1,8 @@
-# dbWave
+# dbWave64
 
-**dbwave** is a program routinely used in our laboratory to acquire and analyze extracellular data from olfactory and taste sensilla of insects. 
+**dbWave64** is meant  to migrate dbWave2 (32bits) to 64 bits with access to a SQLlite database (instead of 32 bits Access database) and to provide access to hardware (data acquisition, filtering via connected amplifiers, waveform output) through plugins. It will also include tests. One option is to replace MFC by Qt to make it run under different platforms, including Linux. The migration process is ongoing.  
+
+**dbwave2** is a program routinely used in our laboratory to acquire and analyze extracellular data from olfactory and taste sensilla of insects. 
 During an experimental session, it collects data and stores them on disk, along with information describing the experiment.
 After the experiment, recordings are displayed and analyzed interactively, to detect and sort spikes, and to export data and the results under different formats. 
 

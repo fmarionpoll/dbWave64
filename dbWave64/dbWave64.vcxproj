@@ -523,7 +523,7 @@
     <OutDir>.\Debug\</OutDir>
     <IntDir>.\Debug\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\fred\source\repos\dbwave64\dbWave64\include\office;C:\Users\fred\source\repos\dbwave64\dbWave64\include\CED\win32;C:\Users\fred\source\repos\dbwave64\dbWave64\include\Alligator\win32;C:\Users\fred\source\repos\dbwave64\dbWave64\include\DataTranslation;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\include\Data Translation;$(ProjectDir)\include\Alligator\win32;$(ProjectDir)\include\CED\win32;$(ProjectDir)\include\office;$(IncludePath)</IncludePath>
     <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

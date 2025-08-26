@@ -4,11 +4,9 @@ VisualStudioVersion = 17.14.36408.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dbWave64", "dbWave64\dbWave64.vcxproj", "{7BC96351-C033-4F7B-B77C-93054AA5D31A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dbWave64_Tests0", "dbWave64_Tests\dbWave64_Tests.vcxproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dbWave64_Tests", "dbWave64_Tests\dbWave64_Tests.vcxproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "dbWave64_setup", "dbWave64_setup\dbWave64_setup.vdproj", "{971CB863-3931-41F6-A8A0-9B3B4267CCF5}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "..\dbwave64_Tests\test\test.vcxproj", "{2239D6F3-CDF6-496E-AD7F-4D090F608F2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,14 +40,6 @@ Global
 		{971CB863-3931-41F6-A8A0-9B3B4267CCF5}.Release|x64.Build.0 = Release
 		{971CB863-3931-41F6-A8A0-9B3B4267CCF5}.Release|x86.ActiveCfg = Release
 		{971CB863-3931-41F6-A8A0-9B3B4267CCF5}.Release|x86.Build.0 = Release
-		{2239D6F3-CDF6-496E-AD7F-4D090F608F2D}.Debug|x64.ActiveCfg = Debug|x64
-		{2239D6F3-CDF6-496E-AD7F-4D090F608F2D}.Debug|x64.Build.0 = Debug|x64
-		{2239D6F3-CDF6-496E-AD7F-4D090F608F2D}.Debug|x86.ActiveCfg = Debug|Win32
-		{2239D6F3-CDF6-496E-AD7F-4D090F608F2D}.Debug|x86.Build.0 = Debug|Win32
-		{2239D6F3-CDF6-496E-AD7F-4D090F608F2D}.Release|x64.ActiveCfg = Release|x64
-		{2239D6F3-CDF6-496E-AD7F-4D090F608F2D}.Release|x64.Build.0 = Release|x64
-		{2239D6F3-CDF6-496E-AD7F-4D090F608F2D}.Release|x86.ActiveCfg = Release|Win32
-		{2239D6F3-CDF6-496E-AD7F-4D090F608F2D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

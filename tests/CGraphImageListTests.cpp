@@ -1,4 +1,4 @@
-#include "CGraphImageListGoogleTest.h"
+#include "CGraphImageListTests.h"
 #include <afxwin.h>
 #include <afxext.h>
 #include <gdiplus.h>
@@ -282,4 +282,3 @@ CDC* TestHelpers::CreateCompatibleDC()
     pDC->CreateCompatibleDC(NULL);
     return pDC;
 }
-

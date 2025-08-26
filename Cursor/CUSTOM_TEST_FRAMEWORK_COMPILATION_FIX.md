@@ -117,3 +117,4 @@ int main(int argc, char** argv)
 - **Performance metrics** - Detailed timing and memory usage data
 - **Comprehensive coverage** - Tests for all image generation scenarios
 
+

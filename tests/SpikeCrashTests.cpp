@@ -1,13 +1,11 @@
-#pragma once
+#include "CGraphImageListTests.h"
 
-#include "CGraphImageListGoogleTest.h"
-
-// Critical spike image tests for crash debugging using Google Test
-class CGraphImageListSpikeTests : public CGraphImageListTestBase
+// Critical spike crash debugging tests
+class SpikeCrashTests : public CGraphImageListTestBase
 {
 public:
     // Test spike image generation with valid file
-    TEST_F(CGraphImageListSpikeTests, GenerateSpikeImage_ValidFile)
+    TEST_F(SpikeCrashTests, GenerateSpikeImage_ValidFile)
     {
         std::cout << "Testing spike image generation with valid file..." << std::endl;
         
@@ -28,7 +26,7 @@ public:
     }
     
     // Critical crash investigation test
-    TEST_F(CGraphImageListSpikeTests, GenerateSpikeImage_CrashInvestigation)
+    TEST_F(SpikeCrashTests, GenerateSpikeImage_CrashInvestigation)
     {
         std::cout << "=== CRITICAL: Spike crash investigation test ===" << std::endl;
         
@@ -60,7 +58,7 @@ public:
     }
     
     // Test spike image generation with corrupted file
-    TEST_F(CGraphImageListSpikeTests, GenerateSpikeImage_CorruptedFile)
+    TEST_F(SpikeCrashTests, GenerateSpikeImage_CorruptedFile)
     {
         std::cout << "Testing spike image generation with corrupted file..." << std::endl;
         
@@ -79,7 +77,7 @@ public:
     }
     
     // Test spike image generation with large file
-    TEST_F(CGraphImageListSpikeTests, GenerateSpikeImage_LargeFile)
+    TEST_F(SpikeCrashTests, GenerateSpikeImage_LargeFile)
     {
         std::cout << "Testing spike image generation with large file..." << std::endl;
         
@@ -98,7 +96,7 @@ public:
     }
     
     // Test spike image generation with empty file
-    TEST_F(CGraphImageListSpikeTests, GenerateSpikeImage_EmptyFile)
+    TEST_F(SpikeCrashTests, GenerateSpikeImage_EmptyFile)
     {
         std::cout << "Testing spike image generation with empty file..." << std::endl;
         
@@ -117,7 +115,7 @@ public:
     }
     
     // Test spike image generation with nonexistent file
-    TEST_F(CGraphImageListSpikeTests, GenerateSpikeImage_NonexistentFile)
+    TEST_F(SpikeCrashTests, GenerateSpikeImage_NonexistentFile)
     {
         std::cout << "Testing spike image generation with nonexistent file..." << std::endl;
         
@@ -135,7 +133,7 @@ public:
     }
     
     // Test spike document loading specifically
-    TEST_F(CGraphImageListSpikeTests, GenerateSpikeImage_SpikeDocumentLoading)
+    TEST_F(SpikeCrashTests, GenerateSpikeImage_SpikeDocumentLoading)
     {
         std::cout << "Testing spike document loading..." << std::endl;
         
@@ -153,7 +151,7 @@ public:
     }
     
     // Test spike rendering specifically
-    TEST_F(CGraphImageListSpikeTests, GenerateSpikeImage_SpikeRendering)
+    TEST_F(SpikeCrashTests, GenerateSpikeImage_SpikeRendering)
     {
         std::cout << "Testing spike rendering..." << std::endl;
         
@@ -177,7 +175,7 @@ public:
     }
     
     // Test spike memory allocation
-    TEST_F(CGraphImageListSpikeTests, GenerateSpikeImage_SpikeMemoryAllocation)
+    TEST_F(SpikeCrashTests, GenerateSpikeImage_SpikeMemoryAllocation)
     {
         std::cout << "Testing spike memory allocation..." << std::endl;
         
@@ -205,7 +203,7 @@ public:
     }
     
     // Test spike invalid data handling
-    TEST_F(CGraphImageListSpikeTests, GenerateSpikeImage_SpikeInvalidData)
+    TEST_F(SpikeCrashTests, GenerateSpikeImage_SpikeInvalidData)
     {
         std::cout << "Testing spike invalid data handling..." << std::endl;
         
@@ -217,8 +215,8 @@ public:
             // CGraphImageList::ProcessSpikeData(pInfos, nullptr);
             
             std::cout << "Testing with invalid dimensions..." << std::endl;
-            pInfos->width = -1;
-            pInfos->height = -1;
+            pInfos->image_width = -1;
+            pInfos->image_height = -1;
             // CGraphImageList::ProcessSpikeData(pInfos, nullptr);
             
             std::cout << "Spike invalid data handling completed successfully" << std::endl;
@@ -228,7 +226,7 @@ public:
     }
     
     // Stress test for spike processing
-    TEST_F(CGraphImageListSpikeTests, GenerateSpikeImage_StressTest)
+    TEST_F(SpikeCrashTests, GenerateSpikeImage_StressTest)
     {
         std::cout << "Running spike processing stress test..." << std::endl;
         

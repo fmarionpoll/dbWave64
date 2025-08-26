@@ -44,8 +44,8 @@ DataListCtrlInfos* CGraphImageListTestBase::CreateTestInfos(int width, int heigh
 {
     DataListCtrlInfos* pInfos = new DataListCtrlInfos();
     // Initialize with test data
-    pInfos->width = width;
-    pInfos->height = height;
+    pInfos->image_width = width;
+    pInfos->image_height = height;
     return pInfos;
 }
 
@@ -282,3 +282,4 @@ CDC* TestHelpers::CreateCompatibleDC()
     pDC->CreateCompatibleDC(NULL);
     return pDC;
 }
+

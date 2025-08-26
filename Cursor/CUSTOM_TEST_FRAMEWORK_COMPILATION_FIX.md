@@ -116,3 +116,4 @@ int main(int argc, char** argv)
 - **Spike crash isolation** - Critical tests for debugging the known crash issue
 - **Performance metrics** - Detailed timing and memory usage data
 - **Comprehensive coverage** - Tests for all image generation scenarios
+

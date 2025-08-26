@@ -336,3 +336,4 @@ CDC* TestHelpers::CreateCompatibleDC()
     return pDC;
 }
 
+

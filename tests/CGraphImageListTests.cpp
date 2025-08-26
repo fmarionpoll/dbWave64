@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "CGraphImageListTests.h"
 #include <afxwin.h>
 #include <afxext.h>
@@ -46,6 +47,18 @@ DataListCtrlInfos* CGraphImageListTestBase::CreateTestInfos(int width, int heigh
     // Initialize with test data
     pInfos->image_width = width;
     pInfos->image_height = height;
+    pInfos->parent = nullptr;
+    pInfos->p_empty_bitmap = nullptr;
+    pInfos->data_transform = 0;
+    pInfos->display_mode = 1;
+    pInfos->spike_plot_mode = PLOT_BLACK;
+    pInfos->selected_class = 0;
+    pInfos->t_first = 0.0f;
+    pInfos->t_last = 0.0f;
+    pInfos->mv_span = 0.0f;
+    pInfos->b_set_time_span = false;
+    pInfos->b_set_mv_span = false;
+    pInfos->b_display_file_name = false;
     return pInfos;
 }
 
@@ -196,6 +209,59 @@ CString TestDataFixture::CreateEmptySpikeFile()
         
         file.close();
         createdFiles.push_back(fullPath);
+        return fullPath;
+    }
+    
+    return _T("");
+}
+
+CString CGraphImageListTestBase::CreateEmptySpikeFile()
+{
+    CString filename = _T("test_data\\empty_spike_test.spk");
+    CString fullPath = _T("test_data\\") + filename;
+    
+    // Create directory if it doesn't exist
+    CreateDirectory(_T("test_data"), NULL);
+    
+    std::ofstream file(fullPath, std::ios::binary);
+    if (file.is_open())
+    {
+        // Create an empty file
+        file.close();
+        return fullPath;
+    }
+    
+    return _T("");
+}
+
+CString CGraphImageListTestBase::CreateLargeSpikeFile()
+{
+    CString filename = _T("test_data\\large_spike_test.spk");
+    CString fullPath = _T("test_data\\") + filename;
+    
+    // Create directory if it doesn't exist
+    CreateDirectory(_T("test_data"), NULL);
+    
+    std::ofstream file(fullPath, std::ios::binary);
+    if (file.is_open())
+    {
+        // Write a larger spike file with more data
+        int header[] = { 0x12345678, 1000, 0, 0 }; // 1000 spikes
+        file.write(reinterpret_cast<const char*>(header), sizeof(header));
+        
+        // Write some spike data
+        for (int i = 0; i < 1000; ++i)
+        {
+            float time = static_cast<float>(i) * 0.001f;
+            float amplitude = static_cast<float>(i % 100) * 0.1f;
+            int class_id = i % 5;
+            
+            file.write(reinterpret_cast<const char*>(&time), sizeof(float));
+            file.write(reinterpret_cast<const char*>(&amplitude), sizeof(float));
+            file.write(reinterpret_cast<const char*>(&class_id), sizeof(int));
+        }
+        
+        file.close();
         return fullPath;
     }
     

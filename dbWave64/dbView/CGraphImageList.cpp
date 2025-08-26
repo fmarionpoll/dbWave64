@@ -1,4 +1,5 @@
 #include "StdAfx.h"
+
 #include "CGraphImageList.h"
 #include "ColorNames.h"
 #include <../ChartData.h>

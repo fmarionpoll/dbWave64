@@ -1,258 +1,324 @@
+#include "pch.h"
 #include "CGraphImageListTests.h"
 
-// Critical spike crash debugging tests
-class SpikeCrashTests : public CGraphImageListTestBase
+// Spike crash debugging tests for CGraphImageList using Google Test
+
+// Test spike image generation with valid spike file
+TEST_F(CGraphImageListTestBase, SpikeCrash_ValidSpikeFile)
 {
-public:
-    // Test spike image generation with valid file
-    TEST_F(SpikeCrashTests, GenerateSpikeImage_ValidFile)
-    {
-        std::cout << "Testing spike image generation with valid file..." << std::endl;
-        
-        // Create test spike file
-        CString spikeFile = CreateTestSpikeFile();
-        ASSERT_FALSE(spikeFile.IsEmpty()) << "Failed to create test spike file";
-        
-        // Create test infos
-        DataListCtrlInfos* pInfos = CreateTestInfos(100, 200);
-        ASSERT_NE(pInfos, nullptr) << "Failed to create test infos";
-        
-        ASSERT_NO_CRASH({
-            // CGraphImageList::GenerateSpikeImage(pInfos, spikeFile);
-            std::cout << "Valid spike file processing completed successfully" << std::endl;
-        });
-        
-        delete pInfos;
-    }
+    std::cout << "Testing spike image generation with valid spike file..." << std::endl;
     
-    // Critical crash investigation test
-    TEST_F(SpikeCrashTests, GenerateSpikeImage_CrashInvestigation)
+    // Create test spike file
+    CString spikeFile = CreateTestSpikeFile();
+    ASSERT_FALSE(spikeFile.IsEmpty()) << "Failed to create test spike file";
+    
+    // Create test infos
+    DataListCtrlInfos* pInfos = CreateTestInfos(640, 480);
+    ASSERT_NE(pInfos, nullptr) << "Failed to create test infos";
+    
+            ASSERT_NO_CRASH({
+            // Call the actual CGraphImageList method - THIS IS THE CRITICAL TEST FOR YOUR CRASH!
+            CBitmap* pBitmap = CGraphImageList::GenerateSpikeImage(pInfos->image_width, pInfos->image_height, spikeFile, *pInfos);
+            ASSERT_NE(pBitmap, nullptr) << "Failed to generate spike image with valid file";
+            std::cout << "Spike image generation with valid file completed" << std::endl;
+            delete pBitmap;
+        });
+    
+    delete pInfos;
+}
+
+// Test spike image generation with corrupted spike file
+TEST_F(CGraphImageListTestBase, SpikeCrash_CorruptedSpikeFile)
+{
+    std::cout << "Testing spike image generation with corrupted spike file..." << std::endl;
+    
+    // Create corrupted spike file
+    CString corruptedFile = CreateCorruptedSpikeFile();
+    ASSERT_FALSE(corruptedFile.IsEmpty()) << "Failed to create corrupted spike file";
+    
+    DataListCtrlInfos* pInfos = CreateTestInfos(640, 480);
+    ASSERT_NE(pInfos, nullptr) << "Failed to create test infos";
+    
+            ASSERT_NO_CRASH({
+            // Call the actual CGraphImageList method
+            CBitmap* pBitmap = CGraphImageList::GenerateSpikeImage(pInfos->image_width, pInfos->image_height, corruptedFile, *pInfos);
+            // This might return nullptr for corrupted file, which is acceptable
+            std::cout << "Spike image generation with corrupted file completed" << std::endl;
+            if (pBitmap) delete pBitmap;
+        });
+    
+    delete pInfos;
+}
+
+// Test spike image generation with empty spike file
+TEST_F(CGraphImageListTestBase, SpikeCrash_EmptySpikeFile)
+{
+    std::cout << "Testing spike image generation with empty spike file..." << std::endl;
+    
+    // Create empty spike file
+    CString emptyFile = CreateEmptySpikeFile();
+    ASSERT_FALSE(emptyFile.IsEmpty()) << "Failed to create empty spike file";
+    
+    DataListCtrlInfos* pInfos = CreateTestInfos(640, 480);
+    ASSERT_NE(pInfos, nullptr) << "Failed to create test infos";
+    
+            ASSERT_NO_CRASH({
+            // Call the actual CGraphImageList method
+            CBitmap* pBitmap = CGraphImageList::GenerateSpikeImage(pInfos->image_width, pInfos->image_height, emptyFile, *pInfos);
+            // This might return nullptr for empty file, which is acceptable
+            std::cout << "Spike image generation with empty file completed" << std::endl;
+            if (pBitmap) delete pBitmap;
+        });
+    
+    delete pInfos;
+}
+
+// Test spike image generation with large spike file
+TEST_F(CGraphImageListTestBase, SpikeCrash_LargeSpikeFile)
+{
+    std::cout << "Testing spike image generation with large spike file..." << std::endl;
+    
+    // Create large spike file
+    CString largeFile = CreateLargeSpikeFile();
+    ASSERT_FALSE(largeFile.IsEmpty()) << "Failed to create large spike file";
+    
+    DataListCtrlInfos* pInfos = CreateTestInfos(640, 480);
+    ASSERT_NE(pInfos, nullptr) << "Failed to create test infos";
+    
+            ASSERT_NO_CRASH({
+            // Call the actual CGraphImageList method
+            CBitmap* pBitmap = CGraphImageList::GenerateSpikeImage(pInfos->image_width, pInfos->image_height, largeFile, *pInfos);
+            ASSERT_NE(pBitmap, nullptr) << "Failed to generate spike image with large file";
+            std::cout << "Spike image generation with large file completed" << std::endl;
+            delete pBitmap;
+        });
+    
+    delete pInfos;
+}
+
+// Test spike image generation with different spike plot modes
+TEST_F(CGraphImageListTestBase, SpikeCrash_DifferentSpikePlotModes)
+{
+    std::cout << "Testing spike image generation with different spike plot modes..." << std::endl;
+    
+    CString spikeFile = CreateTestSpikeFile();
+    ASSERT_FALSE(spikeFile.IsEmpty()) << "Failed to create test spike file";
+    
+    // Test different spike plot modes
+    std::vector<int> plotModes = {PLOT_BLACK, PLOT_ONE_CLASS_ONLY, PLOT_ONE_CLASS, PLOT_CLASS_COLORS, PLOT_SINGLE_SPIKE};
+    
+    for (int mode : plotModes)
     {
-        std::cout << "=== CRITICAL: Spike crash investigation test ===" << std::endl;
-        
-        // Create test spike file (similar to the one causing crashes)
-        CString spikeFile = CreateTestSpikeFile();
-        ASSERT_FALSE(spikeFile.IsEmpty()) << "Failed to create test spike file";
-        
         DataListCtrlInfos* pInfos = CreateTestInfos(640, 480);
-        ASSERT_NE(pInfos, nullptr) << "Failed to create test infos";
+        ASSERT_NE(pInfos, nullptr) << "Failed to create test infos for mode " << mode;
         
-        // Test with detailed logging for crash investigation
+        pInfos->spike_plot_mode = mode;
+        
         ASSERT_NO_CRASH({
-            std::cout << "Step 1: Loading spike file..." << std::endl;
-            // CGraphImageList::LoadSpikeFile(spikeFile);
-            
-            std::cout << "Step 2: Processing spike data..." << std::endl;
-            // CGraphImageList::ProcessSpikeData(pInfos);
-            
-            std::cout << "Step 3: Generating spike image..." << std::endl;
-            // CGraphImageList::GenerateSpikeImage(pInfos, spikeFile);
-            
-            std::cout << "Step 4: Rendering spike image..." << std::endl;
-            // CGraphImageList::RenderSpikeImage(pInfos);
-            
-            std::cout << "CRITICAL: All spike processing steps completed without crash!" << std::endl;
+            // Call the actual CGraphImageList method
+            CBitmap* pBitmap = CGraphImageList::GenerateSpikeImage(pInfos->image_width, pInfos->image_height, spikeFile, *pInfos);
+            ASSERT_NE(pBitmap, nullptr) << "Failed to generate spike image with plot mode " << mode;
+            std::cout << "Spike image generation with plot mode " << mode << " completed" << std::endl;
+            delete pBitmap;
         });
         
         delete pInfos;
     }
+}
+
+// Test spike image generation with different selected classes
+TEST_F(CGraphImageListTestBase, SpikeCrash_DifferentSelectedClasses)
+{
+    std::cout << "Testing spike image generation with different selected classes..." << std::endl;
     
-    // Test spike image generation with corrupted file
-    TEST_F(SpikeCrashTests, GenerateSpikeImage_CorruptedFile)
+    CString spikeFile = CreateTestSpikeFile();
+    ASSERT_FALSE(spikeFile.IsEmpty()) << "Failed to create test spike file";
+    
+    // Test different selected classes
+    for (int selectedClass = 0; selectedClass < 5; ++selectedClass)
     {
-        std::cout << "Testing spike image generation with corrupted file..." << std::endl;
+        DataListCtrlInfos* pInfos = CreateTestInfos(640, 480);
+        ASSERT_NE(pInfos, nullptr) << "Failed to create test infos for class " << selectedClass;
         
-        CString corruptedFile = CreateCorruptedSpikeFile();
-        ASSERT_FALSE(corruptedFile.IsEmpty()) << "Failed to create corrupted spike file";
-        
-        DataListCtrlInfos* pInfos = CreateTestInfos(100, 200);
-        ASSERT_NE(pInfos, nullptr) << "Failed to create test infos";
+        pInfos->selected_class = selectedClass;
         
         ASSERT_NO_CRASH({
-            // CGraphImageList::GenerateSpikeImage(pInfos, corruptedFile);
-            std::cout << "Corrupted file handling completed successfully" << std::endl;
+            // Call the actual CGraphImageList method
+            CBitmap* pBitmap = CGraphImageList::GenerateSpikeImage(pInfos->image_width, pInfos->image_height, spikeFile, *pInfos);
+            ASSERT_NE(pBitmap, nullptr) << "Failed to generate spike image with selected class " << selectedClass;
+            std::cout << "Spike image generation with selected class " << selectedClass << " completed" << std::endl;
+            delete pBitmap;
         });
         
         delete pInfos;
     }
+}
+
+// Test spike image generation with null pointer
+TEST_F(CGraphImageListTestBase, SpikeCrash_NullPointer)
+{
+    std::cout << "Testing spike image generation with null pointer..." << std::endl;
     
-    // Test spike image generation with large file
-    TEST_F(SpikeCrashTests, GenerateSpikeImage_LargeFile)
-    {
-        std::cout << "Testing spike image generation with large file..." << std::endl;
-        
-        CString largeFile = TestDataFixture::CreateLargeSpikeFile();
-        ASSERT_FALSE(largeFile.IsEmpty()) << "Failed to create large spike file";
-        
-        DataListCtrlInfos* pInfos = CreateTestInfos(1920, 1080);
-        ASSERT_NE(pInfos, nullptr) << "Failed to create test infos";
-        
-        ASSERT_NO_CRASH({
-            // CGraphImageList::GenerateSpikeImage(pInfos, largeFile);
-            std::cout << "Large file processing completed successfully" << std::endl;
+    CString spikeFile = CreateTestSpikeFile();
+    ASSERT_FALSE(spikeFile.IsEmpty()) << "Failed to create test spike file";
+    
+    ASSERT_NO_CRASH({
+        // Test with null pointer (should handle gracefully)
+        CBitmap* pBitmap = CGraphImageList::GenerateSpikeImage(0, 0, spikeFile, DataListCtrlInfos());
+        // This might return nullptr for zero dimensions, which is acceptable
+        std::cout << "Spike image generation with null pointer completed" << std::endl;
+        if (pBitmap) delete pBitmap;
+    });
+}
+
+// Test spike image generation with invalid file path
+TEST_F(CGraphImageListTestBase, SpikeCrash_InvalidFilePath)
+{
+    std::cout << "Testing spike image generation with invalid file path..." << std::endl;
+    
+    DataListCtrlInfos* pInfos = CreateTestInfos(640, 480);
+    ASSERT_NE(pInfos, nullptr) << "Failed to create test infos";
+    
+    CString invalidFile = _T("non_existent_spike_file.spk");
+    
+            ASSERT_NO_CRASH({
+            // Call the actual CGraphImageList method
+            CBitmap* pBitmap = CGraphImageList::GenerateSpikeImage(pInfos->image_width, pInfos->image_height, invalidFile, *pInfos);
+            // This might return nullptr for invalid file, which is acceptable
+            std::cout << "Spike image generation with invalid file path completed" << std::endl;
+            if (pBitmap) delete pBitmap;
         });
-        
-        delete pInfos;
-    }
     
-    // Test spike image generation with empty file
-    TEST_F(SpikeCrashTests, GenerateSpikeImage_EmptyFile)
-    {
-        std::cout << "Testing spike image generation with empty file..." << std::endl;
-        
-        CString emptyFile = TestDataFixture::CreateEmptySpikeFile();
-        ASSERT_FALSE(emptyFile.IsEmpty()) << "Failed to create empty spike file";
-        
-        DataListCtrlInfos* pInfos = CreateTestInfos(100, 100);
-        ASSERT_NE(pInfos, nullptr) << "Failed to create test infos";
-        
-        ASSERT_NO_CRASH({
-            // CGraphImageList::GenerateSpikeImage(pInfos, emptyFile);
-            std::cout << "Empty file handling completed successfully" << std::endl;
+    delete pInfos;
+}
+
+// Test spike image generation with zero dimensions
+TEST_F(CGraphImageListTestBase, SpikeCrash_ZeroDimensions)
+{
+    std::cout << "Testing spike image generation with zero dimensions..." << std::endl;
+    
+    CString spikeFile = CreateTestSpikeFile();
+    ASSERT_FALSE(spikeFile.IsEmpty()) << "Failed to create test spike file";
+    
+    DataListCtrlInfos* pInfos = CreateTestInfos(0, 0);
+    ASSERT_NE(pInfos, nullptr) << "Failed to create test infos";
+    
+            ASSERT_NO_CRASH({
+            // Call the actual CGraphImageList method
+            CBitmap* pBitmap = CGraphImageList::GenerateSpikeImage(pInfos->image_width, pInfos->image_height, spikeFile, *pInfos);
+            // This might return nullptr for zero dimensions, which is acceptable
+            std::cout << "Spike image generation with zero dimensions completed" << std::endl;
+            if (pBitmap) delete pBitmap;
         });
-        
-        delete pInfos;
-    }
     
-    // Test spike image generation with nonexistent file
-    TEST_F(SpikeCrashTests, GenerateSpikeImage_NonexistentFile)
-    {
-        std::cout << "Testing spike image generation with nonexistent file..." << std::endl;
-        
-        CString nonexistentFile = _T("nonexistent_file.spk");
-        
-        DataListCtrlInfos* pInfos = CreateTestInfos(100, 100);
-        ASSERT_NE(pInfos, nullptr) << "Failed to create test infos";
-        
-        ASSERT_NO_CRASH({
-            // CGraphImageList::GenerateSpikeImage(pInfos, nonexistentFile);
-            std::cout << "Nonexistent file handling completed successfully" << std::endl;
+    delete pInfos;
+}
+
+// Test spike image generation with negative dimensions
+TEST_F(CGraphImageListTestBase, SpikeCrash_NegativeDimensions)
+{
+    std::cout << "Testing spike image generation with negative dimensions..." << std::endl;
+    
+    CString spikeFile = CreateTestSpikeFile();
+    ASSERT_FALSE(spikeFile.IsEmpty()) << "Failed to create test spike file";
+    
+    DataListCtrlInfos* pInfos = CreateTestInfos(-100, -200);
+    ASSERT_NE(pInfos, nullptr) << "Failed to create test infos";
+    
+            ASSERT_NO_CRASH({
+            // Call the actual CGraphImageList method
+            CBitmap* pBitmap = CGraphImageList::GenerateSpikeImage(pInfos->image_width, pInfos->image_height, spikeFile, *pInfos);
+            // This might return nullptr for negative dimensions, which is acceptable
+            std::cout << "Spike image generation with negative dimensions completed" << std::endl;
+            if (pBitmap) delete pBitmap;
         });
-        
-        delete pInfos;
-    }
     
-    // Test spike document loading specifically
-    TEST_F(SpikeCrashTests, GenerateSpikeImage_SpikeDocumentLoading)
+    delete pInfos;
+}
+
+// Test spike image generation with very large dimensions
+TEST_F(CGraphImageListTestBase, SpikeCrash_VeryLargeDimensions)
+{
+    std::cout << "Testing spike image generation with very large dimensions..." << std::endl;
+    
+    CString spikeFile = CreateTestSpikeFile();
+    ASSERT_FALSE(spikeFile.IsEmpty()) << "Failed to create test spike file";
+    
+    DataListCtrlInfos* pInfos = CreateTestInfos(4096, 4096);
+    ASSERT_NE(pInfos, nullptr) << "Failed to create test infos";
+    
+            ASSERT_NO_CRASH({
+            // Call the actual CGraphImageList method
+            CBitmap* pBitmap = CGraphImageList::GenerateSpikeImage(pInfos->image_width, pInfos->image_height, spikeFile, *pInfos);
+            ASSERT_NE(pBitmap, nullptr) << "Failed to generate spike image with very large dimensions";
+            std::cout << "Spike image generation with very large dimensions completed" << std::endl;
+            delete pBitmap;
+        });
+    
+    delete pInfos;
+}
+
+// Test spike image generation with multiple files
+TEST_F(CGraphImageListTestBase, SpikeCrash_MultipleFiles)
+{
+    std::cout << "Testing spike image generation with multiple files..." << std::endl;
+    
+    std::vector<CString> spikeFiles;
+    
+    // Create multiple spike files
+    for (int i = 0; i < 3; ++i)
     {
-        std::cout << "Testing spike document loading..." << std::endl;
-        
         CString spikeFile = CreateTestSpikeFile();
-        ASSERT_FALSE(spikeFile.IsEmpty()) << "Failed to create test spike file";
-        
-        ASSERT_NO_CRASH({
-            std::cout << "Loading spike document..." << std::endl;
-            // CSpikeDocument* pDoc = CSpikeDocument::LoadFromFile(spikeFile);
-            // ASSERT_NE(pDoc, nullptr) << "Failed to load spike document";
-            
-            std::cout << "Spike document loaded successfully" << std::endl;
-            // delete pDoc;
-        });
+        ASSERT_FALSE(spikeFile.IsEmpty()) << "Failed to create spike file " << i;
+        spikeFiles.push_back(spikeFile);
     }
     
-    // Test spike rendering specifically
-    TEST_F(SpikeCrashTests, GenerateSpikeImage_SpikeRendering)
-    {
-        std::cout << "Testing spike rendering..." << std::endl;
-        
-        DataListCtrlInfos* pInfos = CreateTestInfos(640, 480);
-        ASSERT_NE(pInfos, nullptr) << "Failed to create test infos";
-        
-        ASSERT_NO_CRASH({
-            std::cout << "Creating spike renderer..." << std::endl;
-            // CSpikeRenderer* pRenderer = new CSpikeRenderer();
-            
-            std::cout << "Rendering spike data..." << std::endl;
-            // CBitmap* pBitmap = pRenderer->RenderSpikeData(pInfos);
-            // ASSERT_NE(pBitmap, nullptr) << "Failed to render spike data";
-            
-            std::cout << "Spike rendering completed successfully" << std::endl;
-            // delete pBitmap;
-            // delete pRenderer;
-        });
-        
-        delete pInfos;
-    }
+    DataListCtrlInfos* pInfos = CreateTestInfos(640, 480);
+    ASSERT_NE(pInfos, nullptr) << "Failed to create test infos";
     
-    // Test spike memory allocation
-    TEST_F(SpikeCrashTests, GenerateSpikeImage_SpikeMemoryAllocation)
-    {
-        std::cout << "Testing spike memory allocation..." << std::endl;
-        
-        CString spikeFile = CreateTestSpikeFile();
-        ASSERT_FALSE(spikeFile.IsEmpty()) << "Failed to create test spike file";
-        
-        DataListCtrlInfos* pInfos = CreateTestInfos(640, 480);
-        ASSERT_NE(pInfos, nullptr) << "Failed to create test infos";
-        
-        ASSERT_NO_CRASH({
-            std::cout << "Allocating spike memory..." << std::endl;
-            // void* pSpikeData = malloc(1024 * 1024); // 1MB allocation
-            // ASSERT_NE(pSpikeData, nullptr) << "Failed to allocate spike memory";
-            
-            std::cout << "Processing spike data..." << std::endl;
-            // CGraphImageList::ProcessSpikeData(pInfos, pSpikeData);
-            
-            std::cout << "Freeing spike memory..." << std::endl;
-            // free(pSpikeData);
-            
-            std::cout << "Spike memory allocation test completed successfully" << std::endl;
-        });
-        
-        delete pInfos;
-    }
-    
-    // Test spike invalid data handling
-    TEST_F(SpikeCrashTests, GenerateSpikeImage_SpikeInvalidData)
-    {
-        std::cout << "Testing spike invalid data handling..." << std::endl;
-        
-        DataListCtrlInfos* pInfos = CreateTestInfos(100, 100);
-        ASSERT_NE(pInfos, nullptr) << "Failed to create test infos";
-        
-        ASSERT_NO_CRASH({
-            std::cout << "Testing with null data..." << std::endl;
-            // CGraphImageList::ProcessSpikeData(pInfos, nullptr);
-            
-            std::cout << "Testing with invalid dimensions..." << std::endl;
-            pInfos->image_width = -1;
-            pInfos->image_height = -1;
-            // CGraphImageList::ProcessSpikeData(pInfos, nullptr);
-            
-            std::cout << "Spike invalid data handling completed successfully" << std::endl;
-        });
-        
-        delete pInfos;
-    }
-    
-    // Stress test for spike processing
-    TEST_F(SpikeCrashTests, GenerateSpikeImage_StressTest)
-    {
-        std::cout << "Running spike processing stress test..." << std::endl;
-        
-        // Create multiple spike files
-        std::vector<CString> spikeFiles;
-        for (int i = 0; i < 5; ++i)
-        {
-            CString spikeFile = CreateTestSpikeFile();
-            ASSERT_FALSE(spikeFile.IsEmpty()) << "Failed to create spike file " << i;
-            spikeFiles.push_back(spikeFile);
-        }
-        
-        DataListCtrlInfos* pInfos = CreateTestInfos(640, 480);
-        ASSERT_NE(pInfos, nullptr) << "Failed to create test infos";
-        
-        ASSERT_NO_CRASH({
-            // Process multiple spike files in sequence
+    // Process multiple files
             for (size_t i = 0; i < spikeFiles.size(); ++i)
-            {
-                std::cout << "Processing spike file " << i << "..." << std::endl;
-                // CGraphImageList::GenerateSpikeImage(pInfos, spikeFiles[i]);
-            }
-            
-            std::cout << "Spike stress test completed successfully" << std::endl;
+        {
+            ASSERT_NO_CRASH({
+                // Call the actual CGraphImageList method
+                CBitmap* pBitmap = CGraphImageList::GenerateSpikeImage(pInfos->image_width, pInfos->image_height, spikeFiles[i], *pInfos);
+                ASSERT_NE(pBitmap, nullptr) << "Failed to process spike file " << i;
+                std::cout << "Processed spike file " << i << " successfully" << std::endl;
+                delete pBitmap;
+            });
+        }
+    
+    delete pInfos;
+}
+
+// Test spike image generation stress test
+TEST_F(CGraphImageListTestBase, SpikeCrash_StressTest)
+{
+    std::cout << "Running spike image generation stress test..." << std::endl;
+    
+    CString spikeFile = CreateTestSpikeFile();
+    ASSERT_FALSE(spikeFile.IsEmpty()) << "Failed to create test spike file";
+    
+    // Run multiple iterations to stress test
+    for (int i = 0; i < 10; ++i)
+    {
+        DataListCtrlInfos* pInfos = CreateTestInfos(640, 480);
+        ASSERT_NE(pInfos, nullptr) << "Failed to create test infos for iteration " << i;
+        
+        // Vary parameters for stress testing
+        pInfos->spike_plot_mode = i % 5;
+        pInfos->selected_class = i % 3;
+        pInfos->image_width = 640 + (i * 10);
+        pInfos->image_height = 480 + (i * 10);
+        
+        ASSERT_NO_CRASH({
+            // Call the actual CGraphImageList method
+            CBitmap* pBitmap = CGraphImageList::GenerateSpikeImage(pInfos->image_width, pInfos->image_height, spikeFile, *pInfos);
+            ASSERT_NE(pBitmap, nullptr) << "Failed to generate spike image in stress test iteration " << i;
+            std::cout << "Stress test iteration " << i << " completed" << std::endl;
+            delete pBitmap;
         });
         
         delete pInfos;
     }
-};
+}

@@ -1,0 +1,585 @@
+1>BasicFunctionalityTests.cpp
+1>_WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(9,5): error C2504: 'BasicFunctionalityTests': base class undefined
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(9,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(9,5): error C3254: 'BasicFunctionalityTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(9,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(28,5): error C2504: 'BasicFunctionalityTests': base class undefined
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(28,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(28,5): error C3254: 'BasicFunctionalityTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(28,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(28,5): error C2535: 'void BasicFunctionalityTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(9,5):
+1>    see declaration of 'BasicFunctionalityTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(44,5): error C2504: 'BasicFunctionalityTests': base class undefined
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(44,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(44,5): error C3254: 'BasicFunctionalityTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(44,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(44,5): error C2535: 'void BasicFunctionalityTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(9,5):
+1>    see declaration of 'BasicFunctionalityTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(60,5): error C2504: 'BasicFunctionalityTests': base class undefined
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(60,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(60,5): error C3254: 'BasicFunctionalityTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(60,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(60,5): error C2535: 'void BasicFunctionalityTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(9,5):
+1>    see declaration of 'BasicFunctionalityTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(76,5): error C2504: 'BasicFunctionalityTests': base class undefined
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(76,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(76,5): error C3254: 'BasicFunctionalityTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(76,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(76,5): error C2535: 'void BasicFunctionalityTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(9,5):
+1>    see declaration of 'BasicFunctionalityTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(107,5): error C2504: 'BasicFunctionalityTests': base class undefined
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(107,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(107,5): error C3254: 'BasicFunctionalityTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(107,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(107,5): error C2535: 'void BasicFunctionalityTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(9,5):
+1>    see declaration of 'BasicFunctionalityTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(24,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(40,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(56,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(72,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(102,13): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\BasicFunctionalityTests.cpp(122,13): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/BasicFunctionalityTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>CGraphImageListTests.cpp
+1>_WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+1>C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.cpp(46,54): error C2027: use of undefined type 'DataListCtrlInfos'
+1>(compiling source file '/CGraphImageListTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.cpp(48,5): error C2027: use of undefined type 'DataListCtrlInfos'
+1>(compiling source file '/CGraphImageListTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.cpp(49,5): error C2027: use of undefined type 'DataListCtrlInfos'
+1>(compiling source file '/CGraphImageListTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.cpp(135,26): warning C4838: conversion from 'unsigned int' to 'int' requires a narrowing conversion
+1>(compiling source file '/CGraphImageListTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.cpp(141,35): warning C4838: conversion from 'int' to 'char' requires a narrowing conversion
+1>(compiling source file '/CGraphImageListTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.cpp(141,35): warning C4309: 'initializing': truncation of constant value
+1>(compiling source file '/CGraphImageListTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.cpp(141,47): warning C4838: conversion from 'int' to 'char' requires a narrowing conversion
+1>(compiling source file '/CGraphImageListTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.cpp(141,47): warning C4309: 'initializing': truncation of constant value
+1>(compiling source file '/CGraphImageListTests.cpp')
+1>C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\filesystem(12): warning STL4038: The contents of <filesystem> are available only with C++17 or later.
+1>DataImageTests.cpp
+1>_WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(9,5): error C2504: 'DataImageTests': base class undefined
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(9,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(9,5): error C3254: 'DataImageTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(9,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(30,5): error C2504: 'DataImageTests': base class undefined
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(30,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(30,5): error C3254: 'DataImageTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(30,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(30,5): error C2535: 'void DataImageTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/DataImageTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(9,5):
+1>    see declaration of 'DataImageTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(48,5): error C2504: 'DataImageTests': base class undefined
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(48,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(48,5): error C3254: 'DataImageTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(48,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(48,5): error C2535: 'void DataImageTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/DataImageTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(9,5):
+1>    see declaration of 'DataImageTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(72,5): error C2504: 'DataImageTests': base class undefined
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(72,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(72,5): error C3254: 'DataImageTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(72,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(72,5): error C2535: 'void DataImageTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/DataImageTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(9,5):
+1>    see declaration of 'DataImageTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(102,5): error C2504: 'DataImageTests': base class undefined
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(102,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(102,5): error C3254: 'DataImageTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(102,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(102,5): error C2535: 'void DataImageTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/DataImageTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(9,5):
+1>    see declaration of 'DataImageTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(135,5): error C2504: 'DataImageTests': base class undefined
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(135,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(135,5): error C3254: 'DataImageTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(135,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(135,5): error C2535: 'void DataImageTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/DataImageTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(9,5):
+1>    see declaration of 'DataImageTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(162,5): error C2504: 'DataImageTests': base class undefined
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(162,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(162,5): error C3254: 'DataImageTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(162,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(162,5): error C2535: 'void DataImageTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/DataImageTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(9,5):
+1>    see declaration of 'DataImageTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(191,5): error C2504: 'DataImageTests': base class undefined
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(191,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(191,5): error C3254: 'DataImageTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(191,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(191,5): error C2535: 'void DataImageTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/DataImageTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(9,5):
+1>    see declaration of 'DataImageTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(218,5): error C2504: 'DataImageTests': base class undefined
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(218,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(218,5): error C3254: 'DataImageTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(218,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(218,5): error C2535: 'void DataImageTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/DataImageTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(9,5):
+1>    see declaration of 'DataImageTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(26,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/DataImageTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(44,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/DataImageTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(67,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/DataImageTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(84,38): warning C4838: conversion from 'int' to 'char' requires a narrowing conversion
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(84,38): warning C4309: 'initializing': truncation of constant value
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(84,50): warning C4838: conversion from 'int' to 'char' requires a narrowing conversion
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(84,50): warning C4309: 'initializing': truncation of constant value
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(84,62): warning C4838: conversion from 'int' to 'char' requires a narrowing conversion
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(84,62): warning C4309: 'initializing': truncation of constant value
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(84,68): warning C4838: conversion from 'int' to 'char' requires a narrowing conversion
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(84,68): warning C4309: 'initializing': truncation of constant value
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(84,74): warning C4838: conversion from 'int' to 'char' requires a narrowing conversion
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(84,74): warning C4309: 'initializing': truncation of constant value
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(84,80): warning C4838: conversion from 'int' to 'char' requires a narrowing conversion
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(84,80): warning C4309: 'initializing': truncation of constant value
+1>(compiling source file '/DataImageTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(97,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/DataImageTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(130,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/DataImageTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(157,13): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/DataImageTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(187,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/DataImageTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(214,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/DataImageTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\DataImageTests.cpp(241,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/DataImageTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>PerformanceTests.cpp
+1>_WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(9,5): error C2504: 'PerformanceTests': base class undefined
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(9,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(9,5): error C3254: 'PerformanceTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(9,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(33,5): error C2504: 'PerformanceTests': base class undefined
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(33,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(33,5): error C3254: 'PerformanceTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(33,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(33,5): error C2535: 'void PerformanceTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/PerformanceTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(9,5):
+1>    see declaration of 'PerformanceTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(60,5): error C2504: 'PerformanceTests': base class undefined
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(60,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(60,5): error C3254: 'PerformanceTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(60,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(60,5): error C2535: 'void PerformanceTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/PerformanceTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(9,5):
+1>    see declaration of 'PerformanceTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(87,5): error C2504: 'PerformanceTests': base class undefined
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(87,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(87,5): error C3254: 'PerformanceTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(87,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(87,5): error C2535: 'void PerformanceTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/PerformanceTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(9,5):
+1>    see declaration of 'PerformanceTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(118,5): error C2504: 'PerformanceTests': base class undefined
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(118,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(118,5): error C3254: 'PerformanceTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(118,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(118,5): error C2535: 'void PerformanceTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/PerformanceTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(9,5):
+1>    see declaration of 'PerformanceTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(142,5): error C2504: 'PerformanceTests': base class undefined
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(142,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(142,5): error C3254: 'PerformanceTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(142,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(142,5): error C2535: 'void PerformanceTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/PerformanceTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(9,5):
+1>    see declaration of 'PerformanceTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(182,5): error C2504: 'PerformanceTests': base class undefined
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(182,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(182,5): error C3254: 'PerformanceTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(182,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(182,5): error C2535: 'void PerformanceTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/PerformanceTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(9,5):
+1>    see declaration of 'PerformanceTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(219,5): error C2504: 'PerformanceTests': base class undefined
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(219,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(219,5): error C3254: 'PerformanceTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(219,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/PerformanceTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(219,5): error C2535: 'void PerformanceTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/PerformanceTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(9,5):
+1>    see declaration of 'PerformanceTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(29,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/PerformanceTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(56,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/PerformanceTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(83,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/PerformanceTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(113,13): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/PerformanceTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(138,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/PerformanceTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(177,13): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/PerformanceTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(215,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/PerformanceTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\PerformanceTests.cpp(257,13): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/PerformanceTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>SpikeCrashTests.cpp
+1>_WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(9,5): error C2504: 'SpikeCrashTests': base class undefined
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(9,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(9,5): error C3254: 'SpikeCrashTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(9,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(30,5): error C2504: 'SpikeCrashTests': base class undefined
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(30,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(30,5): error C3254: 'SpikeCrashTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(30,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(30,5): error C2535: 'void SpikeCrashTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(9,5):
+1>    see declaration of 'SpikeCrashTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(62,5): error C2504: 'SpikeCrashTests': base class undefined
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(62,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(62,5): error C3254: 'SpikeCrashTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(62,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(62,5): error C2535: 'void SpikeCrashTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(9,5):
+1>    see declaration of 'SpikeCrashTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(81,5): error C2504: 'SpikeCrashTests': base class undefined
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(81,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(81,5): error C3254: 'SpikeCrashTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(81,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(81,5): error C2535: 'void SpikeCrashTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(9,5):
+1>    see declaration of 'SpikeCrashTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(100,5): error C2504: 'SpikeCrashTests': base class undefined
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(100,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(100,5): error C3254: 'SpikeCrashTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(100,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(100,5): error C2535: 'void SpikeCrashTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(9,5):
+1>    see declaration of 'SpikeCrashTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(119,5): error C2504: 'SpikeCrashTests': base class undefined
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(119,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(119,5): error C3254: 'SpikeCrashTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(119,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(119,5): error C2535: 'void SpikeCrashTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(9,5):
+1>    see declaration of 'SpikeCrashTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(137,5): error C2504: 'SpikeCrashTests': base class undefined
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(137,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(137,5): error C3254: 'SpikeCrashTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(137,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(137,5): error C2535: 'void SpikeCrashTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(9,5):
+1>    see declaration of 'SpikeCrashTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(155,5): error C2504: 'SpikeCrashTests': base class undefined
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(155,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(155,5): error C3254: 'SpikeCrashTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(155,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(155,5): error C2535: 'void SpikeCrashTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(9,5):
+1>    see declaration of 'SpikeCrashTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(179,5): error C2504: 'SpikeCrashTests': base class undefined
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(179,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(179,5): error C3254: 'SpikeCrashTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(179,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(179,5): error C2535: 'void SpikeCrashTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(9,5):
+1>    see declaration of 'SpikeCrashTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(207,5): error C2504: 'SpikeCrashTests': base class undefined
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(207,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(207,5): error C3254: 'SpikeCrashTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(207,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(207,5): error C2535: 'void SpikeCrashTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(9,5):
+1>    see declaration of 'SpikeCrashTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(230,5): error C2504: 'SpikeCrashTests': base class undefined
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(230,5): error C2838: 'test_info_': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(230,5): error C3254: 'SpikeCrashTests': class contains explicit override 'TestBody' but does not derive from an interface that contains the function declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(230,5): error C2838: 'TestBody': illegal qualified name in member declaration
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(230,5): error C2535: 'void SpikeCrashTests::TestBody(void)': member function already defined or declared
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(9,5):
+1>    see declaration of 'SpikeCrashTests::TestBody'
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(26,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(58,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(77,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(96,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(115,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(133,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(175,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(203,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(214,9): error C2027: use of undefined type 'DataListCtrlInfos'
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(226,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'
+1>C:\Users\fred\source\repos\dbwave64\tests\SpikeCrashTests.cpp(257,9): warning C4150: deletion of pointer to incomplete type 'DataListCtrlInfos'; no destructor called
+1>(compiling source file '/SpikeCrashTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\tests\CGraphImageListTests.h(15,7):
+1>    see declaration of 'DataListCtrlInfos'

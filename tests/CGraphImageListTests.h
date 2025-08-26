@@ -8,11 +8,13 @@
 #include <string>
 #include <fstream>
 #include <chrono>
+#include "../dbWave64/dbView/DataListCtrl_Infos.h"
+#include "../dbWave64/ChartWnd.h"
+#include "../dbWave64/dbView/CGraphImageList.h"
 
 // Forward declarations
 class CBitmap;
 class CDC;
-class DataListCtrlInfos;
 
 // Base test class for CGraphImageList tests
 class CGraphImageListTestBase : public ::testing::Test
@@ -37,6 +39,8 @@ protected:
     CString CreateTestDataFile();
     CString CreateTestSpikeFile();
     CString CreateCorruptedSpikeFile();
+    CString CreateEmptySpikeFile();
+    CString CreateLargeSpikeFile();
     void CleanupTestFiles();
     DataListCtrlInfos* CreateTestInfos(int width, int height);
     void AddTestMessage(const std::string& message);

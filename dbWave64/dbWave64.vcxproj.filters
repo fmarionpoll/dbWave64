@@ -35,7 +35,7 @@
       <UniqueIdentifier>{9778a89c-052a-484f-a397-469f57498dc5}</UniqueIdentifier>
     </Filter>
     <Filter Include="dbView2">
-      <UniqueIdentifier>{a2a4ddbe-1ae1-4156-b78a-8dbe48b7c142}</UniqueIdentifier>
+      <UniqueIdentifier>{f53f0aee-0a89-4763-a0fd-03154abdb25a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -516,20 +516,20 @@
     <ClCompile Include="dbView\ViewdbWave.cpp">
       <Filter>dbView</Filter>
     </ClCompile>
-    <ClCompile Include="dbView2\DataListCtrl2.cpp">
-      <Filter>dbView</Filter>
-    </ClCompile>
-    <ClCompile Include="dbView2\ViewdbWave2.cpp">
-      <Filter>dbView</Filter>
-    </ClCompile>
-    <ClCompile Include="dbView2\ViewdbWave2Init.cpp">
-      <Filter>dbView</Filter>
-    </ClCompile>
     <ClCompile Include="RegistryManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ADAcqDataDoc.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbView2\DataListCtrl2.cpp">
+      <Filter>dbView2</Filter>
+    </ClCompile>
+    <ClCompile Include="dbView2\ViewdbWave2.cpp">
+      <Filter>dbView2</Filter>
+    </ClCompile>
+    <ClCompile Include="dbView2\ViewdbWave2Init.cpp">
+      <Filter>dbView2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1139,26 +1139,26 @@
     <ClInclude Include="dbView2\DisplaySettings.h">
       <Filter>dbView</Filter>
     </ClInclude>
-    <ClInclude Include="dbView2\DbWaveDataProvider.h">
-      <Filter>dbView</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView2\RowCache.h">
-      <Filter>dbView</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView2\Renderers.h">
-      <Filter>dbView</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView2\Adapters.h">
-      <Filter>dbView</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView2\DataListCtrl2.h">
-      <Filter>dbView</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView2\ViewdbWave2.h">
-      <Filter>dbView</Filter>
-    </ClInclude>
     <ClInclude Include="RegistryManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView2\DataListCtrl2.h">
+      <Filter>dbView2</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView2\Adapters.h">
+      <Filter>dbView2</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView2\DbWaveDataProvider.h">
+      <Filter>dbView2</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView2\Renderers.h">
+      <Filter>dbView2</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView2\RowCache.h">
+      <Filter>dbView2</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView2\ViewdbWave2.h">
+      <Filter>dbView2</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

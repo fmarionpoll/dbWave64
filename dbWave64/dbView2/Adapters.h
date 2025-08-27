@@ -67,36 +67,90 @@ private:
 class ChartDataRendererAdapter : public IDataRenderer
 {
 public:
-	CBitmap createBitmap(const DisplaySettings& settings, const RowMeta& meta) override
+	void renderBitmap(const DisplaySettings& settings, const RowMeta& meta, CBitmap& out_bitmap) override
 	{
-		CBitmap bitmap_plot;
 		CWindowDC screenDC(nullptr);
 		CDC mem_dc;
 		VERIFY(mem_dc.CreateCompatibleDC(&screenDC));
-		bitmap_plot.CreateBitmap(settings.image_width, settings.image_height,
+		out_bitmap.CreateBitmap(settings.image_width, settings.image_height,
 			screenDC.GetDeviceCaps(PLANES), screenDC.GetDeviceCaps(BITSPIXEL), nullptr);
-		mem_dc.SelectObject(&bitmap_plot);
+		mem_dc.SelectObject(&out_bitmap);
 		mem_dc.FillSolidRect(0, 0, settings.image_width, settings.image_height, RGB(255, 255, 255));
-		mem_dc.TextOut(2, 2, meta.cs_datafile_name);
-		return bitmap_plot;
+
+		ChartData chart;
+		chart.set_b_use_dib(FALSE);
+		chart.set_display_area_size(settings.image_width, settings.image_height);
+
+		AcqDataDoc data_doc;
+		CString dat_path = meta.cs_datafile_name;
+		if (dat_path.IsEmpty() || !data_doc.open_document(dat_path))
+		{
+			CString comment = _T("File name: ") + meta.cs_datafile_name + _T(" -- data not available");
+			chart.set_string(comment);
+			chart.plot_data_to_dc(&mem_dc);
+			return;
+		}
+
+		chart.attach_data_file(&data_doc);
+		chart.load_all_channels(static_cast<int>(settings.data_transform));
+		chart.load_data_within_window(settings.b_set_time_span, settings.t_first, settings.t_last);
+		chart.adjust_gain(settings.b_set_mv_span, settings.mv_span);
+		chart.set_bottom_comment(settings.b_display_file_name, meta.cs_datafile_name);
+
+		chart.plot_data_to_dc(&mem_dc);
+		data_doc.acq_close_file();
 	}
 };
 
 class ChartSpikeRendererAdapter : public ISpikeRenderer
 {
 public:
-	CBitmap createBitmap(const DisplaySettings& settings, const RowMeta& meta) override
+	void renderBitmap(const DisplaySettings& settings, const RowMeta& meta, CBitmap& out_bitmap) override
 	{
-		CBitmap bitmap_plot;
 		CWindowDC screenDC(nullptr);
 		CDC mem_dc;
 		VERIFY(mem_dc.CreateCompatibleDC(&screenDC));
-		bitmap_plot.CreateBitmap(settings.image_width, settings.image_height,
+		out_bitmap.CreateBitmap(settings.image_width, settings.image_height,
 			screenDC.GetDeviceCaps(PLANES), screenDC.GetDeviceCaps(BITSPIXEL), nullptr);
-		mem_dc.SelectObject(&bitmap_plot);
+		mem_dc.SelectObject(&out_bitmap);
 		mem_dc.FillSolidRect(0, 0, settings.image_width, settings.image_height, RGB(235, 235, 235));
-		mem_dc.TextOut(2, 2, meta.cs_spike_file_name);
-		return bitmap_plot;
+
+		CSpikeDoc spike_doc;
+		if (meta.cs_spike_file_name.IsEmpty() || !spike_doc.OnOpenDocument(meta.cs_spike_file_name))
+		{
+			return;
+		}
+
+		ChartSpikeBar chart;
+		chart.set_b_use_dib(FALSE);
+		chart.set_display_area_size(settings.image_width, settings.image_height);
+
+		SpikeList* p_spk_list = spike_doc.set_index_current_spike_list(0);
+		chart.set_source_data(p_spk_list, nullptr);
+		chart.set_spike_doc(&spike_doc);
+
+		chart.set_plot_mode(static_cast<int>(settings.spike_plot_mode == SpikePlotMode::AllClasses ? PLOT_BLACK : PLOT_ONE_CLASS_ONLY), settings.selected_class);
+
+		long l_first = 0;
+		long l_last = spike_doc.get_acq_size();
+		if (settings.b_set_time_span)
+		{
+			const auto sampling_rate = spike_doc.get_acq_rate();
+			l_first = static_cast<long>(settings.t_first * sampling_rate);
+			l_last = static_cast<long>(settings.t_last * sampling_rate);
+		}
+		chart.set_time_intervals(l_first, l_last);
+
+		if (settings.b_set_mv_span)
+		{
+			const auto volts_per_bin = p_spk_list->get_acq_volts_per_bin();
+			const auto y_we = static_cast<int>(settings.mv_span / 1000.f / volts_per_bin);
+			const auto y_wo = p_spk_list->get_acq_bin_zero();
+			chart.set_yw_ext_org(y_we, y_wo);
+		}
+
+		chart.set_bottom_comment(settings.b_display_file_name, meta.cs_spike_file_name);
+		chart.plot_data_to_dc(&mem_dc);
 	}
 };
 

@@ -1,4 +1,5 @@
 #pragma once
+#include "Spikedoc.h"
 
 class SpikeListTabCtrl : public CTabCtrl
 {

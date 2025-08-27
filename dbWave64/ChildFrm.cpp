@@ -47,7 +47,7 @@
 #include "DlgLoadSaveOptions.h"
 #include "DlgPrintMargins.h"
 #include "FilenameCleanupUtils.h"
-#include "dbView_optimized/ViewdbWave_Optimized.h"
+#include "dbView2/ViewdbWave2.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -358,7 +358,7 @@ void CChildFrame::replace_view_index(UINT n_id)
 		replace_view(RUNTIME_CLASS(ViewdbWave), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_db_view);
 		break;
 	case ID_VIEW_DATABASE2:
-		replace_view(RUNTIME_CLASS(ViewdbWave_Optimized), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_db_view2);
+		replace_view(RUNTIME_CLASS(ViewdbWave2), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_db_view2);
 		break;
 
 	case ID_VIEW_DATA_FILE:

@@ -12,6 +12,7 @@ IMPLEMENT_DYNCREATE(ViewdbWave2, ViewDbTable)
 
 BEGIN_MESSAGE_MAP(ViewdbWave2, ViewDbTable)
 	ON_WM_SIZE()
+	ON_NOTIFY(HDN_ENDTRACK, 0, &ViewdbWave2::on_hdn_end_track_list_ctrl)
 END_MESSAGE_MAP()
 
 ViewdbWave2::ViewdbWave2() : ViewDbTable(IDD)
@@ -58,6 +59,14 @@ void ViewdbWave2::OnSize(const UINT n_type, const int cx, const int cy)
 		m_data_list_ctrl_.GetClientRect(&rect);
 		m_data_list_ctrl_.fit_columns_to_size(rect.Width());
 	}
+}
+
+void ViewdbWave2::on_hdn_end_track_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_result)
+{
+	const auto p_hdr = reinterpret_cast<LPNMHEADER>(p_nmhdr);
+	if (p_hdr->iItem == CTRL2_COL_CURVE)
+		m_data_list_ctrl_.resize_signal_column(p_hdr->pitem->cxy);
+	*p_result = 0;
 }
 
 

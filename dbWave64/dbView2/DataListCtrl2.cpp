@@ -31,6 +31,7 @@ BEGIN_MESSAGE_MAP(DataListCtrl2, CListCtrl)
 	ON_WM_VSCROLL()
 	ON_NOTIFY_REFLECT(LVN_GETDISPINFO, on_get_display_info)
 	ON_WM_DESTROY()
+    ON_NOTIFY(HDN_ENDTRACK, 0, on_hdn_endtrack)
 END_MESSAGE_MAP()
 
 DataListCtrl2::DataListCtrl2()
@@ -44,6 +45,9 @@ DataListCtrl2::~DataListCtrl2()
 		delete cache_;
 	if (p_empty_bitmap_ != nullptr)
 		delete p_empty_bitmap_;
+	SAFE_DELETE(provider_)
+	SAFE_DELETE(data_renderer_)
+	SAFE_DELETE(spike_renderer_)
 }
 
 void DataListCtrl2::init(IDbWaveDataProvider* provider,
@@ -98,6 +102,14 @@ void DataListCtrl2::OnDestroy()
 	save_columns_width();
 }
 
+void DataListCtrl2::on_hdn_endtrack(NMHDR* p_nmhdr, LRESULT* p_result)
+{
+	const auto p_hdr = reinterpret_cast<LPNMHEADER>(p_nmhdr);
+	if (p_hdr->iItem == CTRL2_COL_CURVE)
+		resize_signal_column(p_hdr->pitem->cxy);
+	*p_result = 0;
+}
+
 void DataListCtrl2::build_empty_bitmap(const boolean force_update)
 {
 	if (p_empty_bitmap_ != nullptr && !force_update)
@@ -148,11 +160,15 @@ void DataListCtrl2::update_images()
 		{
 		case DisplayMode::Data:
 			if (data_renderer_)
-				bmp = data_renderer_->createBitmap(settings_, meta);
+			{
+				data_renderer_->renderBitmap(settings_, meta, bmp);
+			}
 			break;
 		case DisplayMode::Spikes:
 			if (spike_renderer_)
-				bmp = spike_renderer_->createBitmap(settings_, meta);
+			{
+				spike_renderer_->renderBitmap(settings_, meta, bmp);
+			}
 			break;
 		default:
 			break;

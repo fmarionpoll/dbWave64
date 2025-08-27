@@ -39,6 +39,7 @@ protected:
 	afx_msg void on_get_display_info(NMHDR* p_nmhdr, LRESULT* p_result);
 	afx_msg void OnVScroll(UINT n_sb_code, UINT n_pos, CScrollBar* p_scroll_bar);
 	afx_msg void OnDestroy();
+	afx_msg void on_hdn_endtrack(NMHDR* p_nmhdr, LRESULT* p_result);
 
 private:
 	void build_empty_bitmap(boolean force_update = FALSE);

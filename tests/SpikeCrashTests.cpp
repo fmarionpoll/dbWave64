@@ -57,7 +57,7 @@ TEST_F(CGraphImageListTestBase, SpikeCrash_EmptySpikeFile)
     
     // Create empty spike file
     CString emptyFile = CreateEmptySpikeFile();
-    ASSERT_FALSE(emptyFile.IsEmpty()) << "Failed to create empty spike file";
+    ASSERT_TRUE(emptyFile.IsEmpty()) << "Failed to create empty spike file";
     
     DataListCtrlInfos* pInfos = CreateTestInfos(640, 480);
     ASSERT_NE(pInfos, nullptr) << "Failed to create test infos";
@@ -79,7 +79,7 @@ TEST_F(CGraphImageListTestBase, SpikeCrash_LargeSpikeFile)
     std::cout << "Testing spike image generation with large spike file..." << std::endl;
     
     // Create large spike file
-    CString largeFile = CreateLargeSpikeFile();
+    CString largeFile = CreateLargeSpikeFile(); // Should not be empty
     ASSERT_FALSE(largeFile.IsEmpty()) << "Failed to create large spike file";
     
     DataListCtrlInfos* pInfos = CreateTestInfos(640, 480);

@@ -3,7 +3,6 @@
 
 #include "ColorNames.h"
 #include "ViewdbWave.h"
-#include "CGraphImageList.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -22,15 +21,12 @@ DataListCtrl_Row::DataListCtrl_Row(const int i)
 
 DataListCtrl_Row::~DataListCtrl_Row()
 {
-	// Clean up persistent objects (no longer used with CGraphImageList approach)
 	delete p_chart_data_wnd;
 	delete p_chart_spike_wnd;
-	
+
 	SAFE_DELETE(p_data_doc)
-	SAFE_DELETE(p_spike_doc)
-	
-	// Clear string members
-	cs_comment.Empty();
+		SAFE_DELETE(p_spike_doc)
+		cs_comment.Empty();
 	cs_datafile_name.Empty();
 	cs_spike_file_name.Empty();
 	cs_sensillum_name.Empty();
@@ -138,7 +134,7 @@ void DataListCtrl_Row::Serialize(CArchive& ar)
 		object_count--;
 		p_chart_spike_wnd->Serialize(ar);;
 		object_count--;
-		if (object_count > 0) 
+		if (object_count > 0)
 			ar >> insect_id;
 	}
 }
@@ -186,63 +182,35 @@ void DataListCtrl_Row::attach_database_record(CdbWaveDoc* db_wave_doc)
 
 void DataListCtrl_Row::set_display_parameters(DataListCtrlInfos* infos, const int i_image)
 {
-	CBitmap* pBitmap = nullptr;
-	
 	switch (infos->display_mode)
 	{
 	case 1:
-		// Generate data image using CGraphImageList
-		pBitmap = CGraphImageList::GenerateDataImage(
-			infos->image_width, infos->image_height, 
-			cs_datafile_name, *infos);
+		display_data_wnd(infos, i_image);
 		break;
 	case 2:
-		// Generate spike image using CGraphImageList
-		pBitmap = CGraphImageList::GenerateSpikeImage(
-			infos->image_width, infos->image_height, 
-			cs_spike_file_name, *infos);
+		display_spike_wnd(infos, i_image);
 		break;
 	default:
-		// Generate empty image using CGraphImageList
-		pBitmap = CGraphImageList::GenerateEmptyImage(
-			infos->image_width, infos->image_height);
+		display_empty_wnd(infos, i_image);
 		break;
-	}
-	
-	if (pBitmap)
-	{
-		infos->image_list.Replace(i_image, pBitmap, nullptr);
-		delete pBitmap; // Clean up the bitmap
-	}
-	else
-	{
-		// Fallback to empty bitmap if generation fails
-		infos->image_list.Replace(i_image, infos->p_empty_bitmap, nullptr);
 	}
 }
 
 void DataListCtrl_Row::display_data_wnd(DataListCtrlInfos* infos, const int i_image)
 {
-	// Create data window and data document if necessary
+	// create objects if necessary : CLineView and AcqDataDoc
 	if (p_chart_data_wnd == nullptr)
 	{
 		p_chart_data_wnd = new ChartData;
 		ASSERT(p_chart_data_wnd != NULL);
-		
-		if (!p_chart_data_wnd->Create(_T("DATAWND"), WS_CHILD,
-									CRect(0, 0, infos->image_width, infos->image_height),
-									infos->parent, i_image * 100))
-		{
-			TRACE(_T("DataListCtrl_Row::display_data_wnd - ChartData window creation failed\n"));
-			delete p_chart_data_wnd;
-			p_chart_data_wnd = nullptr;
-			return;
-		}
-		
+		p_chart_data_wnd->Create(_T("DATAWND"), WS_CHILD,
+			CRect(0, 0, infos->image_width, infos->image_height),
+			infos->parent, i_image * 100);
 		p_chart_data_wnd->set_b_use_dib(FALSE);
 	}
+	p_chart_data_wnd->set_string(cs_comment);
 
-	// Create data document if necessary
+	// open data document
 	if (p_data_doc == nullptr)
 	{
 		p_data_doc = new AcqDataDoc;
@@ -251,44 +219,65 @@ void DataListCtrl_Row::display_data_wnd(DataListCtrlInfos* infos, const int i_im
 
 	if (cs_datafile_name.IsEmpty() || !p_data_doc->open_document(cs_datafile_name))
 	{
-		infos->image_list.Replace(i_image, infos->p_empty_bitmap, nullptr);
+		p_chart_data_wnd->remove_all_channel_list_items();
+		auto comment = _T("File name: ") + cs_datafile_name;
+		comment += _T(" -- data not available");
+		p_chart_data_wnd->set_string(comment);
 	}
 	else
 	{
+		if (cs_n_spikes.IsEmpty())
+			p_chart_data_wnd->get_scope_parameters()->cr_scope_fill = col_light_grey;
+		else
+			p_chart_data_wnd->get_scope_parameters()->cr_scope_fill = col_white;
+
 		p_data_doc->read_data_infos();
+		cs_comment = p_data_doc->get_wave_format()->get_comments(_T(" "));
 		p_chart_data_wnd->attach_data_file(p_data_doc);
 		p_chart_data_wnd->load_all_channels(infos->data_transform);
 		p_chart_data_wnd->load_data_within_window(infos->b_set_time_span, infos->t_first, infos->t_last);
 		p_chart_data_wnd->adjust_gain(infos->b_set_mv_span, infos->mv_span);
-		
+
 		p_data_doc->acq_close_file();
-		plot_data(infos, i_image);
 	}
+	plot_data(infos, i_image);
+}
+
+void DataListCtrl_Row::plot_data(DataListCtrlInfos* infos, const int i_image) const
+{
+	p_chart_data_wnd->set_bottom_comment(infos->b_display_file_name, cs_datafile_name);
+	CRect client_rect;
+	p_chart_data_wnd->GetClientRect(&client_rect);
+
+	const auto p_dc = p_chart_data_wnd->GetDC();
+	CDC mem_dc;
+	VERIFY(mem_dc.CreateCompatibleDC(p_dc));
+
+	CBitmap bitmap_plot;
+	bitmap_plot.CreateBitmap(client_rect.right, client_rect.bottom, p_dc->GetDeviceCaps(PLANES),
+		p_dc->GetDeviceCaps(BITSPIXEL), nullptr);
+
+	mem_dc.SelectObject(&bitmap_plot);
+	mem_dc.SetMapMode(p_dc->GetMapMode());
+
+	p_chart_data_wnd->plot_data_to_dc(&mem_dc);
+
+	infos->image_list.Replace(i_image, &bitmap_plot, nullptr);
 }
 
 void DataListCtrl_Row::display_spike_wnd(DataListCtrlInfos* infos, const int i_image)
 {
-	// Create spike window and spike document if necessary
+	// create spike window and spike document if necessary
 	if (p_chart_spike_wnd == nullptr)
 	{
 		p_chart_spike_wnd = new ChartSpikeBar;
 		ASSERT(p_chart_spike_wnd != NULL);
-
-		if (!p_chart_spike_wnd->Create(_T("SPKWND"), WS_CHILD,
-			CRect(0, 0, infos->image_width, infos->image_height),
-			infos->parent, index * 1000))
-		{
-			TRACE(_T("DataListCtrl_Row::display_spike_wnd - ChartSpikeBar window creation failed\n"));
-			delete p_chart_spike_wnd;
-			p_chart_spike_wnd = nullptr;
-			return;
-		}
-
+		p_chart_spike_wnd->Create(_T("SPKWND"), WS_CHILD, CRect(0, 0, infos->image_width, infos->image_height), infos->parent, index * 1000);
 		p_chart_spike_wnd->set_b_use_dib(FALSE);
 		p_chart_spike_wnd->set_display_all_files(false);
 	}
 
-	// Create spike document if necessary
+	// open spike document
 	if (p_spike_doc == nullptr)
 	{
 		p_spike_doc = new CSpikeDoc;
@@ -307,18 +296,17 @@ void DataListCtrl_Row::display_spike_wnd(DataListCtrlInfos* infos, const int i_i
 			i_tab = 0;
 		const auto p_spk_list = p_spike_doc->set_index_current_spike_list(i_tab);
 
-		// Set up the spike chart with the persistent document
 		p_chart_spike_wnd->set_source_data(p_spk_list, p_parent0->GetDocument());
 		p_chart_spike_wnd->set_spike_doc(p_spike_doc);
 		p_chart_spike_wnd->set_plot_mode(infos->spike_plot_mode, infos->selected_class);
 
-		// Set time intervals if needed
 		long l_first = 0;
 		auto l_last = p_spike_doc->get_acq_size();
 		if (infos->b_set_time_span)
 		{
-			l_first = static_cast<long>(infos->t_first * p_spike_doc->get_acq_rate());
-			l_last = static_cast<long>(infos->t_last * p_spike_doc->get_acq_rate());
+			const auto sampling_rate = p_spike_doc->get_acq_rate();
+			l_first = static_cast<long>(infos->t_first * sampling_rate);
+			l_last = static_cast<long>(infos->t_last * sampling_rate);
 		}
 		p_chart_spike_wnd->set_time_intervals(l_first, l_last);
 
@@ -332,61 +320,10 @@ void DataListCtrl_Row::display_spike_wnd(DataListCtrlInfos* infos, const int i_i
 
 		plot_spikes(infos, i_image);
 	}
-	
-}
-
-void DataListCtrl_Row::display_empty_wnd(DataListCtrlInfos* infos, const int i_image)
-{
-	infos->image_list.Replace(i_image, infos->p_empty_bitmap, nullptr);
-}
-
-void DataListCtrl_Row::plot_data(DataListCtrlInfos* infos, const int i_image) const
-{
-	if (!p_chart_data_wnd || !p_chart_data_wnd->GetSafeHwnd())
-	{
-		// Window is not valid, use empty bitmap
-		infos->image_list.Replace(i_image, infos->p_empty_bitmap, nullptr);
-		return;
-	}
-
-	p_chart_data_wnd->set_bottom_comment(infos->b_display_file_name, cs_datafile_name);
-
-	CRect client_rect;
-	p_chart_data_wnd->GetClientRect(&client_rect);
-	client_rect.DeflateRect(2, 2);
-	client_rect.OffsetRect(1, 1);
-
-	CDC* p_dc = p_chart_data_wnd->GetDC();
-	if (!p_dc)
-	{
-		infos->image_list.Replace(i_image, infos->p_empty_bitmap, nullptr);
-		return;
-	}
-
-	CDC mem_dc;
-	VERIFY(mem_dc.CreateCompatibleDC(p_dc));
-
-	CBitmap bitmap_plot;
-	bitmap_plot.CreateBitmap(client_rect.right, client_rect.bottom, p_dc->GetDeviceCaps(PLANES),
-		p_dc->GetDeviceCaps(BITSPIXEL), nullptr);
-
-	mem_dc.SelectObject(&bitmap_plot);
-	mem_dc.SetMapMode(p_dc->GetMapMode());
-
-	p_chart_data_wnd->plot_data_to_dc(&mem_dc);
-
-	infos->image_list.Replace(i_image, &bitmap_plot, nullptr);
 }
 
 void DataListCtrl_Row::plot_spikes(DataListCtrlInfos* infos, const int i_image) const
 {
-	if (!p_chart_spike_wnd || !p_chart_spike_wnd->GetSafeHwnd())
-	{
-		// Window is not valid, use empty bitmap
-		infos->image_list.Replace(i_image, infos->p_empty_bitmap, nullptr);
-		return;
-	}
-
 	p_chart_spike_wnd->set_bottom_comment(infos->b_display_file_name, cs_spike_file_name);
 
 	CRect client_rect;
@@ -394,13 +331,7 @@ void DataListCtrl_Row::plot_spikes(DataListCtrlInfos* infos, const int i_image) 
 	client_rect.DeflateRect(2, 2);
 	client_rect.OffsetRect(1, 1);
 
-	CDC* p_dc = p_chart_spike_wnd->GetDC();
-	if (!p_dc)
-	{
-		infos->image_list.Replace(i_image, infos->p_empty_bitmap, nullptr);
-		return;
-	}
-
+	const auto p_dc = p_chart_spike_wnd->GetDC();
 	CDC mem_dc;
 	VERIFY(mem_dc.CreateCompatibleDC(p_dc));
 
@@ -418,8 +349,7 @@ void DataListCtrl_Row::plot_spikes(DataListCtrlInfos* infos, const int i_image) 
 	infos->image_list.Replace(i_image, &bitmap_plot, nullptr);
 }
 
-
-
-
-
-
+void DataListCtrl_Row::display_empty_wnd(DataListCtrlInfos* infos, const int i_image)
+{
+	infos->image_list.Replace(i_image, infos->p_empty_bitmap, nullptr);
+}

@@ -6,7 +6,6 @@
 
 #include "DataListCtrl_Row.h"
 #include "ViewdbWave.h"
-#include "CGraphImageList.h"
 
 
 #ifdef _DEBUG
@@ -39,8 +38,6 @@ int DataListCtrl::m_column_index_[] = {
 	CTRL_COL_STIM1, CTRL_COL_CONC1, CTRL_COL_STIM2, CTRL_COL_CONC2,
 	CTRL_COL_NBSPK, CTRL_COL_FLAG
 };
-
-// Window class registration removed - character set immunity now handled by CGraphImageList
 
 BEGIN_MESSAGE_MAP(DataListCtrl, CListCtrl)
 
@@ -113,7 +110,7 @@ boolean DataListCtrl::rows_array_set_size(const int rows_count)
 		rows_.SetSize(rows_count);
 		auto index = 0;
 		if (size_before_change > 0)
-			index = rows_.GetAt(size_before_change - 1)->index +1;
+			index = rows_.GetAt(size_before_change - 1)->index + 1;
 		for (auto i = size_before_change; i < rows_count; i++)
 		{
 			auto* row = new DataListCtrl_Row;
@@ -324,7 +321,7 @@ void DataListCtrl::update_cache(int index_first, int index_last)
 	const int index_current_file = db_wave_doc->db_get_current_record_position();
 
 	// set conditions for out of range (renew all items)
-	auto n_rows_to_build = rows_.GetSize(); 
+	auto n_rows_to_build = rows_.GetSize();
 	auto new1 = 0;
 	auto rows_index_first = 0;
 	if (rows_.GetSize() > 0)
@@ -359,13 +356,13 @@ void DataListCtrl::update_cache(int index_first, int index_last)
 			new1 = 0;
 		}
 
-		cache_shift_rows_positions( source1, dest1, n_rows_to_shift,   delta);
+		cache_shift_rows_positions(source1, dest1, n_rows_to_shift, delta);
 	}
 
 	cache_build_rows(new1, index_first, n_rows_to_build, db_wave_doc);
 
 	// restore document conditions
-	if (index_current_file >= 0) 
+	if (index_current_file >= 0)
 	{
 		BOOL b_success = db_wave_doc->db_set_current_record_position(index_current_file);
 		{
@@ -382,9 +379,24 @@ void DataListCtrl::build_empty_bitmap(const boolean b_forced_update)
 
 	SAFE_DELETE(infos.p_empty_bitmap)
 
-	// Use CGraphImageList to build the empty bitmap
+		infos.p_empty_bitmap = new CBitmap;
 	CWindowDC dc(this);
-	infos.p_empty_bitmap = CGraphImageList::BuildEmptyBitmap(infos.image_width, infos.image_height, &dc);
+	CDC mem_dc;
+	VERIFY(mem_dc.CreateCompatibleDC(&dc));
+
+	infos.p_empty_bitmap->CreateBitmap(infos.image_width, infos.image_height,
+		dc.GetDeviceCaps(PLANES),
+		dc.GetDeviceCaps(BITSPIXEL), nullptr);
+	mem_dc.SelectObject(infos.p_empty_bitmap);
+	mem_dc.SetMapMode(dc.GetMapMode());
+
+	CBrush brush(col_silver);
+	mem_dc.SelectObject(&brush);
+	CPen pen;
+	pen.CreatePen(PS_SOLID, 1, col_black);
+	mem_dc.SelectObject(&pen);
+	const auto rect_data = CRect(1, 0, infos.image_width, infos.image_height);
+	mem_dc.Rectangle(&rect_data);
 }
 
 void DataListCtrl::refresh_display()
@@ -430,10 +442,10 @@ void DataListCtrl::OnKeyUp(UINT n_char, UINT n_rep_cnt, UINT n_flags)
 {
 	switch (n_char)
 	{
-	case VK_PRIOR: 
+	case VK_PRIOR:
 		SendMessage(WM_VSCROLL, SB_PAGEUP, NULL);
 		break;
-	case VK_NEXT: 
+	case VK_NEXT:
 		SendMessage(WM_VSCROLL, SB_PAGEDOWN, NULL);
 		break;
 	case VK_UP:
@@ -480,7 +492,7 @@ void DataListCtrl::resize_signal_column(const int n_pixels)
 	{
 		auto* ptr = rows_.GetAt(i);
 		SAFE_DELETE(ptr->p_chart_data_wnd)
-		SAFE_DELETE(ptr->p_chart_spike_wnd)
+			SAFE_DELETE(ptr->p_chart_spike_wnd)
 	}
 	refresh_display();
 }

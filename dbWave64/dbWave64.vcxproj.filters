@@ -504,24 +504,6 @@
     <ClCompile Include="Controls\RulerBar.cpp">
       <Filter>customctrl</Filter>
     </ClCompile>
-    <ClCompile Include="dbView_optimized\DataListCtrl_Configuration.cpp">
-      <Filter>dbView_optimized</Filter>
-    </ClCompile>
-    <ClCompile Include="dbView_optimized\DataListCtrl_Optimized.cpp">
-      <Filter>dbView_optimized</Filter>
-    </ClCompile>
-    <ClCompile Include="dbView_optimized\DataListCtrl_Row_Optimized.cpp">
-      <Filter>dbView_optimized</Filter>
-    </ClCompile>
-    <ClCompile Include="dbView_optimized\DataListCtrl_SupportingClasses.cpp">
-      <Filter>dbView_optimized</Filter>
-    </ClCompile>
-    <ClCompile Include="dbView_optimized\ViewdbWave_Optimized.cpp">
-      <Filter>dbView_optimized</Filter>
-    </ClCompile>
-    <ClCompile Include="dbView_optimized\ViewdbWave_SupportingClasses.cpp">
-      <Filter>dbView_optimized</Filter>
-    </ClCompile>
     <ClCompile Include="DatabaseUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -536,9 +518,6 @@
     </ClCompile>
     <ClCompile Include="RegistryManager.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dbView\CGraphImageList.cpp">
-      <Filter>dbView</Filter>
     </ClCompile>
     <ClCompile Include="ADAcqDataDoc.cpp">
       <Filter>Source Files</Filter>
@@ -1133,24 +1112,6 @@
     <ClInclude Include="Controls\ScrollBarEx.h">
       <Filter>customctrl</Filter>
     </ClInclude>
-    <ClInclude Include="dbView_optimized\DataListCtrl_Configuration.h">
-      <Filter>dbView_optimized</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView_optimized\DataListCtrl_Optimized.h">
-      <Filter>dbView_optimized</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView_optimized\DataListCtrl_Row_Optimized.h">
-      <Filter>dbView_optimized</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView_optimized\DataListCtrl_SupportingClasses.h">
-      <Filter>dbView_optimized</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView_optimized\ViewdbWave_Optimized.h">
-      <Filter>dbView_optimized</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView_optimized\ViewdbWave_SupportingClasses.h">
-      <Filter>dbView_optimized</Filter>
-    </ClInclude>
     <ClInclude Include="DatabaseUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1166,14 +1127,8 @@
     <ClInclude Include="dbView\ViewdbWave.h">
       <Filter>dbView</Filter>
     </ClInclude>
-    <ClInclude Include="dbView_optimized\DataListCtrl_Optimized_Infos.h">
-      <Filter>dbView_optimized</Filter>
-    </ClInclude>
     <ClInclude Include="RegistryManager.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView\CGraphImageList.h">
-      <Filter>dbView</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

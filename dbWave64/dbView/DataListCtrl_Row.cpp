@@ -273,17 +273,17 @@ void DataListCtrl_Row::display_spike_wnd(DataListCtrlInfos* infos, const int i_i
 	{
 		p_chart_spike_wnd = new ChartSpikeBar;
 		ASSERT(p_chart_spike_wnd != NULL);
-		
+
 		if (!p_chart_spike_wnd->Create(_T("SPKWND"), WS_CHILD,
-									CRect(0, 0, infos->image_width, infos->image_height),
-									infos->parent, index * 1000))
+			CRect(0, 0, infos->image_width, infos->image_height),
+			infos->parent, index * 1000))
 		{
 			TRACE(_T("DataListCtrl_Row::display_spike_wnd - ChartSpikeBar window creation failed\n"));
 			delete p_chart_spike_wnd;
 			p_chart_spike_wnd = nullptr;
 			return;
 		}
-		
+
 		p_chart_spike_wnd->set_b_use_dib(FALSE);
 		p_chart_spike_wnd->set_display_all_files(false);
 	}
@@ -301,20 +301,38 @@ void DataListCtrl_Row::display_spike_wnd(DataListCtrlInfos* infos, const int i_i
 	}
 	else
 	{
+		const auto p_parent0 = static_cast<ViewdbWave*>(infos->parent->GetParent());
+		int i_tab = p_parent0->spk_list_tab_ctrl.GetCurSel();
+		if (i_tab < 0)
+			i_tab = 0;
+		const auto p_spk_list = p_spike_doc->set_index_current_spike_list(i_tab);
+
 		// Set up the spike chart with the persistent document
+		p_chart_spike_wnd->set_source_data(p_spk_list, p_parent0->GetDocument());
 		p_chart_spike_wnd->set_spike_doc(p_spike_doc);
 		p_chart_spike_wnd->set_plot_mode(infos->spike_plot_mode, infos->selected_class);
 
 		// Set time intervals if needed
+		long l_first = 0;
+		auto l_last = p_spike_doc->get_acq_size();
 		if (infos->b_set_time_span)
 		{
-			long l_first = static_cast<long>(infos->t_first * p_spike_doc->get_acq_rate());
-			long l_last = static_cast<long>(infos->t_last * p_spike_doc->get_acq_rate());
-			p_chart_spike_wnd->set_time_intervals(l_first, l_last);
+			l_first = static_cast<long>(infos->t_first * p_spike_doc->get_acq_rate());
+			l_last = static_cast<long>(infos->t_last * p_spike_doc->get_acq_rate());
+		}
+		p_chart_spike_wnd->set_time_intervals(l_first, l_last);
+
+		if (infos->b_set_mv_span)
+		{
+			const auto volts_per_bin = p_spk_list->get_acq_volts_per_bin();
+			const auto y_we = static_cast<int>(infos->mv_span / 1000.f / volts_per_bin);
+			const auto y_wo = p_spk_list->get_acq_bin_zero();
+			p_chart_spike_wnd->set_yw_ext_org(y_we, y_wo);
 		}
 
 		plot_spikes(infos, i_image);
 	}
+	
 }
 
 void DataListCtrl_Row::display_empty_wnd(DataListCtrlInfos* infos, const int i_image)

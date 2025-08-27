@@ -515,12 +515,12 @@ void ViewdbWave::on_bn_clicked_display_spikes()
 	display_spikes();
 	m_data_list_ctrl.refresh_display();
 
-	// update tab control
+	 //update tab control
 	const int n_rows = m_data_list_ctrl.get_visible_rows_size();
 	if (n_rows > 0)
 	{
 		const auto p_spk_doc = m_data_list_ctrl.get_visible_rows_spike_doc_at(0);
-		if (p_spk_doc->get_spike_list_size() > 1)
+		if (p_spk_doc != nullptr && p_spk_doc->get_spike_list_size() > 1)
 		{
 			spk_list_tab_ctrl.init_ctrl_tab_from_spike_doc(p_spk_doc);
 			spk_list_tab_ctrl.ShowWindow(SW_SHOW);

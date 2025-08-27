@@ -17,6 +17,9 @@
     <ClCompile Include="dbView\DataListCtrl.cpp" />
     <ClCompile Include="dbView\DataListCtrl_Row.cpp" />
     <ClCompile Include="dbView\ViewdbWave.cpp" />
+    <ClCompile Include="dbView2\DataListCtrl2.cpp" />
+    <ClCompile Include="dbView2\ViewdbWave2.cpp" />
+    <ClCompile Include="dbView2\ViewdbWave2Init.cpp" />
     <ClCompile Include="dbWaveDoc.cpp" />
     <ClCompile Include="Envelope.cpp" />
     <ClCompile Include="RegistryManager.cpp" />
@@ -202,6 +205,13 @@
     <ClInclude Include="dbView\DataListCtrl_Infos.h" />
     <ClInclude Include="dbView\DataListCtrl_Row.h" />
     <ClInclude Include="dbView\ViewdbWave.h" />
+    <ClInclude Include="dbView2\Adapters.h" />
+    <ClInclude Include="dbView2\DataListCtrl2.h" />
+    <ClInclude Include="dbView2\DbWaveDataProvider.h" />
+    <ClInclude Include="dbView2\DisplaySettings.h" />
+    <ClInclude Include="dbView2\Renderers.h" />
+    <ClInclude Include="dbView2\RowCache.h" />
+    <ClInclude Include="dbView2\ViewdbWave2.h" />
     <ClInclude Include="GridCtrl\GridComboEdit.h" />
     <ClInclude Include="GridCtrl\InPlaceEdit.h" />
     <ClInclude Include="CPivotCache.h" />

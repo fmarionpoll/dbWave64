@@ -31,11 +31,11 @@
     <Filter Include="data_acquisition">
       <UniqueIdentifier>{a0adc36c-523d-4f57-8985-d3579a79e9f6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="dbView_optimized">
-      <UniqueIdentifier>{a2a4ddbe-1ae1-4156-b78a-8dbe48b7c142}</UniqueIdentifier>
-    </Filter>
     <Filter Include="dbView">
       <UniqueIdentifier>{9778a89c-052a-484f-a397-469f57498dc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dbView2">
+      <UniqueIdentifier>{a2a4ddbe-1ae1-4156-b78a-8dbe48b7c142}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -514,6 +514,15 @@
       <Filter>dbView</Filter>
     </ClCompile>
     <ClCompile Include="dbView\ViewdbWave.cpp">
+      <Filter>dbView</Filter>
+    </ClCompile>
+    <ClCompile Include="dbView2\DataListCtrl2.cpp">
+      <Filter>dbView</Filter>
+    </ClCompile>
+    <ClCompile Include="dbView2\ViewdbWave2.cpp">
+      <Filter>dbView</Filter>
+    </ClCompile>
+    <ClCompile Include="dbView2\ViewdbWave2Init.cpp">
       <Filter>dbView</Filter>
     </ClCompile>
     <ClCompile Include="RegistryManager.cpp">
@@ -1125,6 +1134,27 @@
       <Filter>dbView</Filter>
     </ClInclude>
     <ClInclude Include="dbView\ViewdbWave.h">
+      <Filter>dbView</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView2\DisplaySettings.h">
+      <Filter>dbView</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView2\DbWaveDataProvider.h">
+      <Filter>dbView</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView2\RowCache.h">
+      <Filter>dbView</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView2\Renderers.h">
+      <Filter>dbView</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView2\Adapters.h">
+      <Filter>dbView</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView2\DataListCtrl2.h">
+      <Filter>dbView</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView2\ViewdbWave2.h">
       <Filter>dbView</Filter>
     </ClInclude>
     <ClInclude Include="RegistryManager.h">

@@ -30,6 +30,7 @@ public:
 		ISpikeRenderer* spikeRenderer,
 		CUIntArray* width_columns = nullptr);
 	void init_columns(CUIntArray* width_columns = nullptr);
+
 	// DisplaySettings setters
 	void set_amplitude_span(const float mv_span_new) { settings_.mv_span = mv_span_new; }
 	void set_display_file_name(const boolean flag) { settings_.b_display_file_name = flag; }
@@ -39,7 +40,17 @@ public:
 	void set_display_mode(const DisplayMode mode) { settings_.display_mode = mode; }
 	void set_transform_mode(const DataTransform mode) { settings_.data_transform = mode; }
 	void set_spike_plot_mode(const SpikePlotMode mode, const int i_class) { settings_.spike_plot_mode = mode; settings_.selected_class = i_class; }
-	void setVisibleRange(int first, int last);
+	void set_visible_range(int first, int last);
+
+	float get_amplitude_span() { return settings_.mv_span; }
+	boolean get_display_file_name() { return settings_.b_display_file_name; }
+	boolean get_timespan_adjust_mode() { return settings_.b_set_time_span; }
+	boolean get_amplitude_adjust_mode() { return settings_.b_set_mv_span; }
+	DisplayMode get_display_mode() { return settings_.display_mode; }
+	DataTransform get_transform_mode() { return settings_.data_transform; }
+	SpikePlotMode get_spike_plot_mode() { return settings_.spike_plot_mode; }
+
+
 	void refresh_display();
 	void fit_columns_to_size(int n_pixels);
 	void resize_signal_column(int n_pixels);

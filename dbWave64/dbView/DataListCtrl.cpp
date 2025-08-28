@@ -133,7 +133,7 @@ void DataListCtrl::build_empty_bitmap(const boolean force_update)
 	mem_dc.Rectangle(&rect_data);
 }
 
-void DataListCtrl::setVisibleRange(int first, int last)
+void DataListCtrl::set_visible_range(int first, int last)
 {
 	if (cache_ == nullptr)
 		return;
@@ -202,17 +202,17 @@ void DataListCtrl::on_get_display_info(NMHDR* p_nmhdr, LRESULT* p_result)
 		{
 			int first = item_index;
 			int last = first + GetCountPerPage() - 1;
-			setVisibleRange(first, last);
+			set_visible_range(first, last);
 		}
 		else if (item_index > last_cache)
 		{
 			int last = item_index;
 			int first = last - GetCountPerPage() + 1;
-			setVisibleRange(first, last);
+			set_visible_range(first, last);
 		}
 		else if (cache_->getSize() == 0)
 		{
-			setVisibleRange(0, GetCountPerPage() - 1);
+			set_visible_range(0, GetCountPerPage() - 1);
 		}
 	}
 

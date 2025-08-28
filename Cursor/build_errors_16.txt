@@ -1,0 +1,66 @@
+1>------ Build started: Project: tests, Configuration: Debug Win32 ------
+1>RendererAdaptersTests.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\Spikedoc.h(61,23): error C2061: syntax error: identifier 'CSharedFile'
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\Spikedoc.h(62,38): error C2061: syntax error: identifier 'CSharedFile'
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\Spikedoc.h(64,38): error C2061: syntax error: identifier 'CSharedFile'
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\Spikedoc.h(65,31): error C2061: syntax error: identifier 'CSharedFile'
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\Spikedoc.h(66,28): error C2061: syntax error: identifier 'CSharedFile'
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\Spikedoc.h(67,31): error C2061: syntax error: identifier 'CSharedFile'
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\Spikedoc.h(68,26): error C2061: syntax error: identifier 'CSharedFile'
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\Spikedoc.h(69,41): error C2061: syntax error: identifier 'CSharedFile'
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\Spikedoc.h(70,27): error C2061: syntax error: identifier 'CSharedFile'
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\Spikedoc.h(71,38): error C2061: syntax error: identifier 'CSharedFile'
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\Spikedoc.h(71,7): error C2535: 'void CSpikeDoc::export_spk_amplitude_histogram(void)': member function already defined or declared
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\Spikedoc.h(62,7):
+1>    see declaration of 'CSpikeDoc::export_spk_amplitude_histogram'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\Spikedoc.h(72,31): error C2061: syntax error: identifier 'CSharedFile'
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\Spikedoc.h(72,7): error C2535: 'void CSpikeDoc::export_spk_average_wave(void)': member function already defined or declared
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\Spikedoc.h(67,7):
+1>    see declaration of 'CSpikeDoc::export_spk_average_wave'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\Spikedoc.h(73,23): error C2061: syntax error: identifier 'CSharedFile'
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\Spikedoc.h(73,7): error C2535: 'void CSpikeDoc::export_spk_psth(void)': member function already defined or declared
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\Spikedoc.h(61,7):
+1>    see declaration of 'CSpikeDoc::export_spk_psth'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\Spikedoc.h(74,28): error C2061: syntax error: identifier 'CSharedFile'
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\Spikedoc.h(74,7): error C2535: 'void CSpikeDoc::export_spk_latencies(void)': member function already defined or declared
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\Spikedoc.h(66,7):
+1>    see declaration of 'CSpikeDoc::export_spk_latencies'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.h(22,27): error C2504: 'COleDocument': base class undefined
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.h(88,34): error C2061: syntax error: identifier 'CSharedFile'
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.h(89,31): error C2061: syntax error: identifier 'CSharedFile'
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.h(91,30): error C2061: syntax error: identifier 'CSharedFile'
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.h(109,39): error C2061: syntax error: identifier 'CSharedFile'
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.h(110,71): error C2061: syntax error: identifier 'CSharedFile'
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.h(116,20): error C2143: syntax error: missing ';' before '*'
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.h(116,9): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.h(116,105): error C2238: unexpected token(s) preceding ';'
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.h(179,2): error C3668: 'CdbWaveDoc::GetMessageMap': method with override specifier 'override' did not override any base class methods
+1>(compiling source file '/RendererAdaptersTests.cpp')
+1>Done building project "tests.vcxproj" -- FAILED.
+========== Build: 0 succeeded, 1 failed, 1 up-to-date, 0 skipped ==========

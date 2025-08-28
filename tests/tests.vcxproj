@@ -112,23 +112,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CGraphImageListTests.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BasicFunctionalityTests.cpp" />
-    <ClCompile Include="CGraphImageListTests.cpp" />
-    <ClCompile Include="DataImageTests.cpp" />
-    <ClCompile Include="PerformanceTests.cpp" />
-    <ClCompile Include="SpikeCrashTests.cpp" />
     <ClCompile Include="test.cpp" />
-    <ClCompile Include="CGraphImageListMock.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="RowCacheTests.cpp" />
+    <ClCompile Include="RendererAdaptersTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\dbWave64\dbWave64.vcxproj">

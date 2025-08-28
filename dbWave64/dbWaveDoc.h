@@ -129,17 +129,17 @@ protected:
 public:
 	static CdbWaveDoc* get_active_mdi_document();
 
-	void	Serialize(CArchive& ar) override;
-	BOOL	OnNewDocument() override;
-	BOOL	OnOpenDocument(LPCTSTR lpsz_path_name) override;
-	BOOL	OnSaveDocument(LPCTSTR lpsz_path_name) override;
-	HMENU	GetDefaultMenu() override; // get menu depending on state
+	void	Serialize(CArchive& ar) ;
+	BOOL	OnNewDocument() ;
+	BOOL	OnOpenDocument(LPCTSTR lpsz_path_name) ;
+	BOOL	OnSaveDocument(LPCTSTR lpsz_path_name) ;
+	HMENU	GetDefaultMenu() ; // get menu depending on state
 	void	update_all_views_db_wave(CView* p_sender, LPARAM l_hint, CObject* p_hint);
 
-	~CdbWaveDoc() override;
+	~CdbWaveDoc() ;
 #ifdef _DEBUG
-	void AssertValid() const override;
-	void Dump(CDumpContext& dc) const override;
+	void AssertValid() const ;
+	void Dump(CDumpContext& dc) const ;
 #endif
 
 	// DAO database functions

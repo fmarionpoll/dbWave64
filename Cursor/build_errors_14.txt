@@ -1,0 +1,476 @@
+1>------ Build started: Project: dbWave64, Configuration: Debug Win32 ------
+1>DataListCtrl2.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\Renderers.h(31,3): error C2280: 'CBitmap::CBitmap(const CBitmap &)': attempting to reference a deleted function
+1>(compiling source file '/dbView2/DataListCtrl2.cpp')
+1>    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\atlmfc\include\afxwin.h(486,1):
+1>    compiler has generated 'CBitmap::CBitmap' here
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\DataListCtrl2.cpp(34,5): error C2065: 'on_hdn_endtrack': undeclared identifier
+1>(compiling source file '/dbView2/DataListCtrl2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\DataListCtrl2.cpp(30,1): error C2737: '_messageEntries': const object must be initialized
+1>(compiling source file '/dbView2/DataListCtrl2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\DataListCtrl2.cpp(105,21): error C2039: 'on_hdn_endtrack': is not a member of 'DataListCtrl2'
+1>(compiling source file '/dbView2/DataListCtrl2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\DataListCtrl2.h(21,7):
+1>    see declaration of 'DataListCtrl2'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\DataListCtrl2.cpp(109,3): error C3861: 'resize_signal_column': identifier not found
+1>(compiling source file '/dbView2/DataListCtrl2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\DataListCtrl2.cpp(164,21): error C2039: 'renderBitmap': is not a member of 'IDataRenderer'
+1>(compiling source file '/dbView2/DataListCtrl2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\Renderers.h(7,7):
+1>    see declaration of 'IDataRenderer'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\DataListCtrl2.cpp(170,22): error C2039: 'renderBitmap': is not a member of 'ISpikeRenderer'
+1>(compiling source file '/dbView2/DataListCtrl2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\Renderers.h(14,7):
+1>    see declaration of 'ISpikeRenderer'
+1>ViewdbWave2.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\Renderers.h(31,3): error C2280: 'CBitmap::CBitmap(const CBitmap &)': attempting to reference a deleted function
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\atlmfc\include\afxwin.h(486,1):
+1>    compiler has generated 'CBitmap::CBitmap' here
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(15,2): error C2039: 'on_hdn_end_track_list_ctrl': is not a member of 'ViewdbWave2'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.h(6,7):
+1>    see declaration of 'ViewdbWave2'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(15,2): error C2065: 'on_hdn_end_track_list_ctrl': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(16,2): error C2039: 'on_bn_clicked_data': is not a member of 'ViewdbWave2'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.h(6,7):
+1>    see declaration of 'ViewdbWave2'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(16,2): error C2065: 'on_bn_clicked_data': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(17,2): error C2039: 'on_bn_clicked_display_spikes': is not a member of 'ViewdbWave2'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.h(6,7):
+1>    see declaration of 'ViewdbWave2'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(17,2): error C2065: 'on_bn_clicked_display_spikes': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(18,2): error C2039: 'on_bn_clicked_display_nothing': is not a member of 'ViewdbWave2'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.h(6,7):
+1>    see declaration of 'ViewdbWave2'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(18,2): error C2065: 'on_bn_clicked_display_nothing': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(19,2): error C2039: 'on_en_change_time_first': is not a member of 'ViewdbWave2'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.h(6,7):
+1>    see declaration of 'ViewdbWave2'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(19,2): error C2065: 'on_en_change_time_first': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(20,2): error C2039: 'on_en_change_time_last': is not a member of 'ViewdbWave2'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.h(6,7):
+1>    see declaration of 'ViewdbWave2'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(20,2): error C2065: 'on_en_change_time_last': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(21,2): error C2039: 'on_en_change_amplitude_span': is not a member of 'ViewdbWave2'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.h(6,7):
+1>    see declaration of 'ViewdbWave2'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(21,2): error C2065: 'on_en_change_amplitude_span': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(22,2): error C2039: 'on_en_change_spike_class': is not a member of 'ViewdbWave2'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.h(6,7):
+1>    see declaration of 'ViewdbWave2'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(22,2): error C2065: 'on_en_change_spike_class': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(23,2): error C2039: 'on_bn_clicked_check_filename': is not a member of 'ViewdbWave2'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.h(6,7):
+1>    see declaration of 'ViewdbWave2'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(23,2): error C2065: 'on_bn_clicked_check_filename': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(24,2): error C2039: 'on_click_median_filter': is not a member of 'ViewdbWave2'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.h(6,7):
+1>    see declaration of 'ViewdbWave2'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(24,2): error C2065: 'on_click_median_filter': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(25,2): error C2039: 'on_bn_clicked_check2': is not a member of 'ViewdbWave2'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.h(6,7):
+1>    see declaration of 'ViewdbWave2'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(25,2): error C2065: 'on_bn_clicked_check2': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(26,2): error C2039: 'on_bn_clicked_check1': is not a member of 'ViewdbWave2'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.h(6,7):
+1>    see declaration of 'ViewdbWave2'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(26,2): error C2065: 'on_bn_clicked_check1': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(27,2): error C2039: 'on_bn_clicked_radio_all_classes': is not a member of 'ViewdbWave2'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.h(6,7):
+1>    see declaration of 'ViewdbWave2'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(27,2): error C2065: 'on_bn_clicked_radio_all_classes': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(28,2): error C2039: 'on_bn_clicked_radio_one_class': is not a member of 'ViewdbWave2'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.h(6,7):
+1>    see declaration of 'ViewdbWave2'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(28,2): error C2065: 'on_bn_clicked_radio_one_class': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(13,1): error C2737: '_messageEntries': const object must be initialized
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(78,2): error C3861: 'on_bn_clicked_data': identifier not found
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(92,19): error C2039: 'on_hdn_end_track_list_ctrl': is not a member of 'ViewdbWave2'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.h(6,7):
+1>    see declaration of 'ViewdbWave2'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(96,3): error C2065: 'm_data_list_ctrl_': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(100,19): error C2039: 'on_bn_clicked_data': is not a member of 'ViewdbWave2'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.h(6,7):
+1>    see declaration of 'ViewdbWave2'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(102,24): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(102,24):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(102,2): error C2440: 'static_cast': cannot convert from '_T' to 'CButton *'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(102,2): error C2440:         with
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(102,2): error C2440:         [
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(102,2): error C2440:             _T=HWND
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(102,2): error C2440:         ]
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(102,2):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(103,24): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(103,24):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(103,2): error C2440: 'static_cast': cannot convert from '_T' to 'CButton *'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(103,2): error C2440:         with
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(103,2): error C2440:         [
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(103,2): error C2440:             _T=HWND
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(103,2): error C2440:         ]
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(103,2):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(104,24): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(104,24):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(104,2): error C2440: 'static_cast': cannot convert from '_T' to 'CButton *'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(104,2): error C2440:         with
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(104,2): error C2440:         [
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(104,2): error C2440:             _T=HWND
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(104,2): error C2440:         ]
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(104,2):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(106,2): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(106,2):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(106,35): error C2039: 'EnableWindow': is not a member of 'HWND__'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\windef.h(39,1):
+1>    see declaration of 'HWND__'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(107,2): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(107,2):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(107,33): error C2039: 'EnableWindow': is not a member of 'HWND__'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\windef.h(39,1):
+1>    see declaration of 'HWND__'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(108,2): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(108,2):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(108,30): error C2039: 'EnableWindow': is not a member of 'HWND__'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\windef.h(39,1):
+1>    see declaration of 'HWND__'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(109,2): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(109,2):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(109,31): error C2039: 'EnableWindow': is not a member of 'HWND__'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\windef.h(39,1):
+1>    see declaration of 'HWND__'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(111,2): error C2065: 'm_data_list_ctrl_': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(112,50): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(112,50):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(112,28): error C2440: 'static_cast': cannot convert from '_T' to 'CButton *'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(112,28): error C2440:         with
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(112,28): error C2440:         [
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(112,28): error C2440:             _T=HWND
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(112,28): error C2440:         ]
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(112,28):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(112,13): error C2737: 'b_filter_dat': const object must be initialized
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(113,2): error C2065: 'm_data_list_ctrl_': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(114,2): error C2065: 'm_data_list_ctrl_': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(117,19): error C2039: 'on_bn_clicked_display_spikes': is not a member of 'ViewdbWave2'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.h(6,7):
+1>    see declaration of 'ViewdbWave2'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(119,24): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(119,24):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(119,2): error C2440: 'static_cast': cannot convert from '_T' to 'CButton *'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(119,2): error C2440:         with
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(119,2): error C2440:         [
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(119,2): error C2440:             _T=HWND
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(119,2): error C2440:         ]
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(119,2):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(120,24): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(120,24):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(120,2): error C2440: 'static_cast': cannot convert from '_T' to 'CButton *'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(120,2): error C2440:         with
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(120,2): error C2440:         [
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(120,2): error C2440:             _T=HWND
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(120,2): error C2440:         ]
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(120,2):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(121,24): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(121,24):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(121,2): error C2440: 'static_cast': cannot convert from '_T' to 'CButton *'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(121,2): error C2440:         with
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(121,2): error C2440:         [
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(121,2): error C2440:             _T=HWND
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(121,2): error C2440:         ]
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(121,2):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(123,2): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(123,2):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(123,31): error C2039: 'EnableWindow': is not a member of 'HWND__'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\windef.h(39,1):
+1>    see declaration of 'HWND__'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(124,2): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(124,2):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(124,35): error C2039: 'EnableWindow': is not a member of 'HWND__'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\windef.h(39,1):
+1>    see declaration of 'HWND__'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(125,2): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(125,2):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(125,33): error C2039: 'EnableWindow': is not a member of 'HWND__'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\windef.h(39,1):
+1>    see declaration of 'HWND__'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(126,2): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(126,2):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(126,30): error C2039: 'EnableWindow': is not a member of 'HWND__'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\windef.h(39,1):
+1>    see declaration of 'HWND__'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(128,2): error C2065: 'm_data_list_ctrl_': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(129,49): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(129,49):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(129,27): error C2440: 'static_cast': cannot convert from '_T' to 'CButton *'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(129,27): error C2440:         with
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(129,27): error C2440:         [
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(129,27): error C2440:             _T=HWND
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(129,27): error C2440:         ]
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(129,27):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(129,13): error C2737: 'all_classes': const object must be initialized
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(130,2): error C2065: 'm_data_list_ctrl_': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(130,107): error C2065: 'm_spike_class_': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(131,2): error C2065: 'm_data_list_ctrl_': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(134,19): error C2039: 'on_bn_clicked_display_nothing': is not a member of 'ViewdbWave2'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.h(6,7):
+1>    see declaration of 'ViewdbWave2'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(136,24): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(136,24):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(136,2): error C2440: 'static_cast': cannot convert from '_T' to 'CButton *'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(136,2): error C2440:         with
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(136,2): error C2440:         [
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(136,2): error C2440:             _T=HWND
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(136,2): error C2440:         ]
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(136,2):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(137,24): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(137,24):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(137,2): error C2440: 'static_cast': cannot convert from '_T' to 'CButton *'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(137,2): error C2440:         with
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(137,2): error C2440:         [
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(137,2): error C2440:             _T=HWND
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(137,2): error C2440:         ]
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(137,2):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(138,24): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(138,24):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(138,2): error C2440: 'static_cast': cannot convert from '_T' to 'CButton *'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(138,2): error C2440:         with
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(138,2): error C2440:         [
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(138,2): error C2440:             _T=HWND
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(138,2): error C2440:         ]
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(138,2):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(140,2): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(140,2):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(140,31): error C2039: 'EnableWindow': is not a member of 'HWND__'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\windef.h(39,1):
+1>    see declaration of 'HWND__'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(141,2): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(141,2):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(141,35): error C2039: 'EnableWindow': is not a member of 'HWND__'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\windef.h(39,1):
+1>    see declaration of 'HWND__'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(142,2): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(142,2):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(142,33): error C2039: 'EnableWindow': is not a member of 'HWND__'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\windef.h(39,1):
+1>    see declaration of 'HWND__'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(143,2): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(143,2):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(143,30): error C2039: 'EnableWindow': is not a member of 'HWND__'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\windef.h(39,1):
+1>    see declaration of 'HWND__'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(145,2): error C2065: 'm_data_list_ctrl_': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(146,2): error C2065: 'm_data_list_ctrl_': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(149,19): error C2039: 'on_en_change_time_first': is not a member of 'ViewdbWave2'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.h(6,7):
+1>    see declaration of 'ViewdbWave2'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(151,15): error C2660: 'GetDlgItem': function does not take 1 arguments
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winuser.h(5151,1):
+1>    see declaration of 'GetDlgItem'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(151,15):
+1>    while trying to match the argument list '(int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(151,42): error C2039: 'GetWindowTextW': is not a member of 'HWND__'
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\windef.h(39,1):
+1>    see declaration of 'HWND__'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(151,62): error C2065: 'm_time_first_': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(152,2): error C2065: 'm_data_list_ctrl_': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(152,39): error C2065: 'm_time_first_': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(152,54): error C2065: 'm_time_last_': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(153,2): error C2065: 'm_data_list_ctrl_': undeclared identifier
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(153,2): error C1003: error count exceeds 100; stopping compilation
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>ViewdbWave2Init.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\Renderers.h(31,3): error C2280: 'CBitmap::CBitmap(const CBitmap &)': attempting to reference a deleted function
+1>(compiling source file '/dbView2/ViewdbWave2Init.cpp')
+1>    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\atlmfc\include\afxwin.h(486,1):
+1>    compiler has generated 'CBitmap::CBitmap' here
+1>ChildFrm.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\Renderers.h(31,3): error C2280: 'CBitmap::CBitmap(const CBitmap &)': attempting to reference a deleted function
+1>(compiling source file '/ChildFrm.cpp')
+1>    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\atlmfc\include\afxwin.h(486,1):
+1>    compiler has generated 'CBitmap::CBitmap' here
+1>dbWave.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\Renderers.h(31,3): error C2280: 'CBitmap::CBitmap(const CBitmap &)': attempting to reference a deleted function
+1>(compiling source file '/dbWave.cpp')
+1>    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\atlmfc\include\afxwin.h(486,1):
+1>    compiler has generated 'CBitmap::CBitmap' here
+1>Generating Code...
+1>Done building project "dbWave64.vcxproj" -- FAILED.
+========== Build: 0 succeeded, 1 failed, 0 up-to-date, 0 skipped ==========
+========== Build completed at 8:42 and took 02.801 seconds ==========

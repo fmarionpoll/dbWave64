@@ -1,0 +1,66 @@
+1>------ Build started: Project: dbWave64, Configuration: Debug Win32 ------
+1>DataListCtrl2.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\DataListCtrl2.cpp(34,5): error C2065: 'on_hdn_endtrack': undeclared identifier
+1>(compiling source file '/dbView2/DataListCtrl2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\DataListCtrl2.cpp(30,1): error C2737: '_messageEntries': const object must be initialized
+1>(compiling source file '/dbView2/DataListCtrl2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\DataListCtrl2.cpp(105,21): error C2039: 'on_hdn_endtrack': is not a member of 'DataListCtrl2'
+1>(compiling source file '/dbView2/DataListCtrl2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\DataListCtrl2.h(21,7):
+1>    see declaration of 'DataListCtrl2'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\DataListCtrl2.cpp(109,3): error C3861: 'resize_signal_column': identifier not found
+1>(compiling source file '/dbView2/DataListCtrl2.cpp')
+1>ViewdbWave2.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\Adapters.h(70,10): error C3668: 'ChartDataRendererAdapter::createBitmap': method with override specifier 'override' did not override any base class methods
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\Adapters.h(88,10): error C3668: 'ChartSpikeRendererAdapter::createBitmap': method with override specifier 'override' did not override any base class methods
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(60,28): error C2259: 'ChartDataRendererAdapter': cannot instantiate abstract class
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\Adapters.h(67,7):
+1>    see declaration of 'ChartDataRendererAdapter'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(60,28):
+1>    due to following members:
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(60,28):
+1>    'void IDataRenderer::renderBitmap(const DisplaySettings &,const RowMeta &,CBitmap &)': is abstract
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\Renderers.h(11,15):
+1>    see declaration of 'IDataRenderer::renderBitmap'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(60,52): error C2259: 'ChartDataRendererAdapter': cannot instantiate abstract class
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\Adapters.h(67,7):
+1>    see declaration of 'ChartDataRendererAdapter'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(60,52):
+1>    due to following members:
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(60,52):
+1>    'void IDataRenderer::renderBitmap(const DisplaySettings &,const RowMeta &,CBitmap &)': is abstract
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\Renderers.h(11,15):
+1>    see declaration of 'IDataRenderer::renderBitmap'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(61,29): error C2259: 'ChartSpikeRendererAdapter': cannot instantiate abstract class
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\Adapters.h(85,7):
+1>    see declaration of 'ChartSpikeRendererAdapter'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(61,29):
+1>    due to following members:
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(61,29):
+1>    'void ISpikeRenderer::renderBitmap(const DisplaySettings &,const RowMeta &,CBitmap &)': is abstract
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\Renderers.h(18,15):
+1>    see declaration of 'ISpikeRenderer::renderBitmap'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(61,54): error C2259: 'ChartSpikeRendererAdapter': cannot instantiate abstract class
+1>(compiling source file '/dbView2/ViewdbWave2.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\Adapters.h(85,7):
+1>    see declaration of 'ChartSpikeRendererAdapter'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(61,54):
+1>    due to following members:
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\ViewdbWave2.cpp(61,54):
+1>    'void ISpikeRenderer::renderBitmap(const DisplaySettings &,const RowMeta &,CBitmap &)': is abstract
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\Renderers.h(18,15):
+1>    see declaration of 'ISpikeRenderer::renderBitmap'
+1>ViewdbWave2Init.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\Adapters.h(70,10): error C3668: 'ChartDataRendererAdapter::createBitmap': method with override specifier 'override' did not override any base class methods
+1>(compiling source file '/dbView2/ViewdbWave2Init.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbView2\Adapters.h(88,10): error C3668: 'ChartSpikeRendererAdapter::createBitmap': method with override specifier 'override' did not override any base class methods
+1>(compiling source file '/dbView2/ViewdbWave2Init.cpp')
+1>ChildFrm.cpp
+1>dbWave.cpp
+1>Generating Code...
+1>Done building project "dbWave64.vcxproj" -- FAILED.

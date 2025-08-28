@@ -31,9 +31,6 @@
     <Filter Include="dbView">
       <UniqueIdentifier>{9778a89c-052a-484f-a397-469f57498dc5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="dbView2">
-      <UniqueIdentifier>{f53f0aee-0a89-4763-a0fd-03154abdb25a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Chart">
       <UniqueIdentifier>{e82a5829-f735-443a-8991-d898d91f8328}</UniqueIdentifier>
     </Filter>
@@ -483,29 +480,11 @@
     <ClCompile Include="DatabaseUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dbView\DataListCtrl_Row.cpp">
-      <Filter>dbView</Filter>
-    </ClCompile>
-    <ClCompile Include="dbView\DataListCtrl.cpp">
-      <Filter>dbView</Filter>
-    </ClCompile>
-    <ClCompile Include="dbView\ViewdbWave.cpp">
-      <Filter>dbView</Filter>
-    </ClCompile>
     <ClCompile Include="RegistryManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ADAcqDataDoc.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dbView2\DataListCtrl2.cpp">
-      <Filter>dbView2</Filter>
-    </ClCompile>
-    <ClCompile Include="dbView2\ViewdbWave2.cpp">
-      <Filter>dbView2</Filter>
-    </ClCompile>
-    <ClCompile Include="dbView2\ViewdbWave2Init.cpp">
-      <Filter>dbView2</Filter>
     </ClCompile>
     <ClCompile Include="Chart\ChartData.cpp">
       <Filter>Chart</Filter>
@@ -533,6 +512,15 @@
     </ClCompile>
     <ClCompile Include="Chart\ChartWnd.cpp">
       <Filter>Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="dbView\DataListCtrl.cpp">
+      <Filter>dbView</Filter>
+    </ClCompile>
+    <ClCompile Include="dbView\ViewdbWave.cpp">
+      <Filter>dbView</Filter>
+    </ClCompile>
+    <ClCompile Include="dbView\ViewdbWaveInit.cpp">
+      <Filter>dbView</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1103,41 +1091,8 @@
     <ClInclude Include="DatabaseUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dbView\DataListCtrl_Row.h">
-      <Filter>dbView</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView\DataListCtrl.h">
-      <Filter>dbView</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView\DataListCtrl_Infos.h">
-      <Filter>dbView</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView\ViewdbWave.h">
-      <Filter>dbView</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView2\DisplaySettings.h">
-      <Filter>dbView</Filter>
-    </ClInclude>
     <ClInclude Include="RegistryManager.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView2\DataListCtrl2.h">
-      <Filter>dbView2</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView2\Adapters.h">
-      <Filter>dbView2</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView2\DbWaveDataProvider.h">
-      <Filter>dbView2</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView2\Renderers.h">
-      <Filter>dbView2</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView2\RowCache.h">
-      <Filter>dbView2</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView2\ViewdbWave2.h">
-      <Filter>dbView2</Filter>
     </ClInclude>
     <ClInclude Include="Chart\ChartWnd.h">
       <Filter>Chart</Filter>
@@ -1165,6 +1120,27 @@
     </ClInclude>
     <ClInclude Include="Chart\ChartSpikeXY.h">
       <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView\Adapters.h">
+      <Filter>dbView</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView\DbWaveDataProvider.h">
+      <Filter>dbView</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView\DisplaySettings.h">
+      <Filter>dbView</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView\Renderers.h">
+      <Filter>dbView</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView\RowCache.h">
+      <Filter>dbView</Filter>
+    </ClInclude>
+    <ClInclude Include="dbView\ViewdbWave.h">
+      <Filter>dbView</Filter>
+    </ClInclude>
+    <ClInclude Include="DataListCtrl.h">
+      <Filter>dbView</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

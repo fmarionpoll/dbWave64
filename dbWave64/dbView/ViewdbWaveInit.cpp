@@ -1,9 +1,9 @@
 #include "StdAfx.h"
-#include "ViewdbWave2.h"
+#include "ViewdbWave.h"
 #include "Adapters.h"
 #include "dbWaveDoc.h"
 
-void InitViewdbWave2(ViewdbWave2* view)
+void InitViewdbWave(ViewdbWave* view)
 {
 	// Placeholder for future initialization using provider/renderer adapters.
 }

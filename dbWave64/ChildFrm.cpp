@@ -47,7 +47,7 @@
 #include "DlgLoadSaveOptions.h"
 #include "DlgPrintMargins.h"
 #include "FilenameCleanupUtils.h"
-#include "dbView2/ViewdbWave2.h"
+#include "dbView/ViewdbWave.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -68,8 +68,8 @@ BEGIN_MESSAGE_MAP(CChildFrame, CMDIChildWndEx)
 	ON_COMMAND(ID_OPTIONS_LOAD_SAVE_OPTIONS, &CChildFrame::on_options_load_save_options)
 	ON_MESSAGE(WM_MYMESSAGE, &CChildFrame::on_my_message)
 	ON_WM_CREATE()
-	ON_COMMAND_RANGE(ID_VIEW_DATABASE, ID_VIEW_DATABASE2, &CChildFrame::replace_view_index) //ID_VIEW_ACQUIRE_DATA, &CChildFrame::replace_view_index)
-	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_DATABASE, ID_VIEW_DATABASE2, &CChildFrame::on_update_view_menu) // ID_VIEW_ACQUIRE_DATA, &CChildFrame::on_update_view_menu)
+	ON_COMMAND_RANGE(ID_VIEW_DATABASE, ID_VIEW_ACQUIRE_DATA, &CChildFrame::replace_view_index) //ID_VIEW_ACQUIRE_DATA, &CChildFrame::replace_view_index)
+	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_DATABASE, ID_VIEW_ACQUIRE_DATA, &CChildFrame::on_update_view_menu) // ID_VIEW_ACQUIRE_DATA, &CChildFrame::on_update_view_menu)
 
 	ON_COMMAND(ID_TOOLS_EXPORT_DATA_COMMENTS, &CChildFrame::on_tools_export_data_comments)
 	ON_COMMAND(ID_TOOLS_EXPORT_DATA_AS_TEXT, &CChildFrame::on_tools_export_data_as_text)
@@ -356,9 +356,6 @@ void CChildFrame::replace_view_index(UINT n_id)
 	{
 	case ID_VIEW_DATABASE:
 		replace_view(RUNTIME_CLASS(ViewdbWave), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_db_view);
-		break;
-	case ID_VIEW_DATABASE2:
-		replace_view(RUNTIME_CLASS(ViewdbWave2), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_db_view2);
 		break;
 
 	case ID_VIEW_DATA_FILE:

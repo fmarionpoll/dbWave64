@@ -1,15 +1,14 @@
 #pragma once
-#include "ChartSpikeBar.h"
-#include "ChartSpikeHist.h"
-#include "ChartSpikeShape.h"
-#include "ChartSpikeXY.h"
+#include "chart/ChartSpikeBar.h"
+#include "chart/ChartSpikeHist.h"
+#include "chart/ChartSpikeShape.h"
+#include "chart/ChartSpikeXY.h"
 #include "SpikeClassGrid.h"
 #include "ViewDbTable.h"
 #include "Editctrl.h"
 #include "Controls/ScrollBarEx.h"
 #include "options_spk_classification.h"
-#include "SpikeClassGridList.h"
-#include "SpikeClassGridToolBar.h"
+
 
 
 class ViewSpikeSort : public ViewDbTable

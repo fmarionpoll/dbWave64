@@ -17,7 +17,6 @@ protected:
 	void DoDataExchange(CDataExchange* p_dx) override;
 	void OnInitialUpdate() override;
 	void OnSize(UINT n_type, int cx, int cy);
-	afx_msg void on_hdn_end_track_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_result);
 
 protected:
 	DECLARE_MESSAGE_MAP()

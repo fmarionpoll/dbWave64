@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "ChartData.h"
+#include "chart/ChartData.h"
 #include "Ruler.h"
 #include "Controls/RulerBar.h"
 #include <cmath>

@@ -2,9 +2,9 @@
 #include "dbWaveDoc.h"
 #include "AcqDataDoc.h"
 #include "Editctrl.h"
-#include "ChartWnd.h"
-#include "ChartData.h"
-#include "ChartSpikeShape.h"
+#include "chart/ChartWnd.h"
+#include "chart/ChartData.h"
+#include "chart/ChartSpikeShape.h"
 #include "DlgSpikeEdit.h"
 
 #include "ColorNames.h"

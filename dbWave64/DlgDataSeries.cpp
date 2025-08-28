@@ -1,7 +1,7 @@
 
 
 #include "StdAfx.h"
-#include "ChartData.h"
+#include "chart/ChartData.h"
 #include "resource.h"
 #include "DlgDataSeries.h"
 

@@ -1,7 +1,7 @@
 // TODO : measure data and output to note_doc_view
 
 #include "StdAfx.h"
-#include "ChartWnd.h"
+#include "chart/ChartWnd.h"
 
 #include "dbWaveDoc.h"
 #include "resource.h"

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ChartData.h"
-#include "ChartSpikeShape.h"
+#include "chart/ChartData.h"
+#include "chart/ChartSpikeShape.h"
 
 class DlgSpikeEdit : public CDialog
 {

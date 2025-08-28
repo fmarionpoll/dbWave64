@@ -8,16 +8,28 @@ class IDataRenderer
 {
 public:
 	virtual ~IDataRenderer() = default;
-	virtual void renderBitmap(const DisplaySettings& settings, const RowMeta& meta, CBitmap& out_bitmap) = 0;
+	virtual CBitmap createBitmap(const DisplaySettings& settings, const RowMeta& meta) = 0;
 };
 
 class ISpikeRenderer
 {
 public:
 	virtual ~ISpikeRenderer() = default;
-	virtual void renderBitmap(const DisplaySettings& settings, const RowMeta& meta, CBitmap& out_bitmap) = 0;
+	virtual CBitmap createBitmap(const DisplaySettings& settings, const RowMeta& meta) = 0;
 };
 
-// EmptyBitmapRenderer removed: prefer caller-managed CBitmap lifecycle
+class EmptyBitmapRenderer
+{
+public:
+	static CBitmap create(const int width, const int height)
+	{
+		CBitmap bmp;
+		CDC dc;
+		CWindowDC screenDC(nullptr);
+		dc.CreateCompatibleDC(&screenDC);
+		bmp.CreateBitmap(width, height, screenDC.GetDeviceCaps(PLANES), screenDC.GetDeviceCaps(BITSPIXEL), nullptr);
+		return bmp;
+	}
+};
 
 

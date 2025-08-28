@@ -1,6 +1,6 @@
 #include "StdAfx.h"
-#include "ChartWnd.h"
-#include "ChartData.h"
+#include "chart/ChartWnd.h"
+#include "chart/ChartData.h"
 #include "DlgDataSeriesFormat.h"
 
 #ifdef _DEBUG

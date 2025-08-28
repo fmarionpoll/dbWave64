@@ -16,9 +16,6 @@
     <Filter Include="excel">
       <UniqueIdentifier>{48ba7e11-5241-4c95-826f-78ce13f1aee5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="displayctrls">
-      <UniqueIdentifier>{49e81a0a-caf5-4f23-913c-5dc6cded6820}</UniqueIdentifier>
-    </Filter>
     <Filter Include="customctrl">
       <UniqueIdentifier>{caaa5830-8837-406f-a8ee-5db580987832}</UniqueIdentifier>
     </Filter>
@@ -37,6 +34,9 @@
     <Filter Include="dbView2">
       <UniqueIdentifier>{f53f0aee-0a89-4763-a0fd-03154abdb25a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Chart">
+      <UniqueIdentifier>{e82a5829-f735-443a-8991-d898d91f8328}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AcqDataDoc.cpp">
@@ -49,30 +49,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AcqWaveFormat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ChartData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ChartSpike.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ChartSpikeBar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ChartSpikeHist.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ChartSpikeHistVert.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ChartSpikeShape.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ChartSpikeXY.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ChartWnd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ChildFrm.cpp">
@@ -531,6 +507,33 @@
     <ClCompile Include="dbView2\ViewdbWave2Init.cpp">
       <Filter>dbView2</Filter>
     </ClCompile>
+    <ClCompile Include="Chart\ChartData.cpp">
+      <Filter>Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="Chart\ChartDataAD.cpp">
+      <Filter>Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="Chart\ChartSpike.cpp">
+      <Filter>Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="Chart\ChartSpikeBar.cpp">
+      <Filter>Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="Chart\ChartSpikeHist.cpp">
+      <Filter>Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="Chart\ChartSpikeHistVert.cpp">
+      <Filter>Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="Chart\ChartSpikeShape.cpp">
+      <Filter>Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="Chart\ChartSpikeXY.cpp">
+      <Filter>Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="Chart\ChartWnd.cpp">
+      <Filter>Chart</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AcqDataDoc.h">
@@ -552,30 +555,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="chanlistitem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ChartData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ChartSpike.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ChartSpikeBar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ChartSpikeHist.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ChartSpikeHistVert.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ChartSpikeShape.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ChartSpikeXY.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ChartWnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ChildFrm.h">
@@ -1159,6 +1138,33 @@
     </ClInclude>
     <ClInclude Include="dbView2\ViewdbWave2.h">
       <Filter>dbView2</Filter>
+    </ClInclude>
+    <ClInclude Include="Chart\ChartWnd.h">
+      <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="Chart\ChartData.h">
+      <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="Chart\ChartDataAD.h">
+      <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="Chart\ChartSpike.h">
+      <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="Chart\ChartSpikeBar.h">
+      <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="Chart\ChartSpikeHist.h">
+      <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="Chart\ChartSpikeHistVert.h">
+      <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="Chart\ChartSpikeShape.h">
+      <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="Chart\ChartSpikeXY.h">
+      <Filter>Chart</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

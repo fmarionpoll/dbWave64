@@ -1,5 +1,5 @@
 #pragma once
-#include "ChartData.h"
+#include "chart/ChartData.h"
 
 class DlgDataSeries : public CDialog
 {

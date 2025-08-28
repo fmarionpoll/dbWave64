@@ -1,10 +1,9 @@
 // TODO : measure data and output to notedocview
 
 #include "StdAfx.h"
-#include "ChartWnd.h"
-#include "ChartData.h"
+#include "chart/ChartWnd.h"
+#include "chart/ChartData.h"
 #include "Editctrl.h"
-//#include "NoteDoc.h"
 #include "dbWaveDoc.h"
 #include "resource.h"
 #include "MeasureVTtagsPage.h"

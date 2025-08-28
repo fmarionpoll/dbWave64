@@ -2,9 +2,7 @@
 //
 
 #include "StdAfx.h"
-//#include "Cscale.h"
-//#include "chart.h"
-#include "ChartData.h"
+#include "chart/ChartData.h"
 
 #include "resource.h"
 #include "DlgDataViewOrdinates.h"

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Spikedoc.h"
-#include "ChartData.h"
-#include "ChartSpikeBar.h"
+#include "chart/ChartData.h"
+#include "chart/ChartSpikeBar.h"
 #include "DataListCtrl_Infos.h"
 
 

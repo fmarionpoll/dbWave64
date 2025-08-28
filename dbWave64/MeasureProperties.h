@@ -1,6 +1,6 @@
 #pragma once
 #include "dbWaveDoc.h"
-#include "chartdata.h"
+#include "chart/chartdata.h"
 #include "MeasureHZtagsPage.h"
 #include "MeasureOptionsPage.h"
 #include "MeasureResultsPage.h"

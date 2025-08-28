@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "ChartData.h"
+#include "chart/ChartData.h"
 #include "SpikeDetectArray.h"
 
 

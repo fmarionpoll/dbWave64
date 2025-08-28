@@ -9,7 +9,7 @@
 #include "StdAfx.h"
 
 //#include "resource.h"
-#include "ChartWnd.h"
+#include "chart/ChartWnd.h"
 #include "TemplateWnd.h"
 #include <math.h>
 

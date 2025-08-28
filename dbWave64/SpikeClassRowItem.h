@@ -1,8 +1,8 @@
 #pragma once
 #include <afx.h>
 
-#include "ChartSpikeBar.h"
-#include "ChartSpikeShape.h"
+#include "chart/ChartSpikeBar.h"
+#include "chart/ChartSpikeShape.h"
 #include "SpikeClassListBoxContext.h"
 
 class SpikeClassRowItem : public CWnd

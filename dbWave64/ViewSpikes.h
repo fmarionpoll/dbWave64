@@ -3,7 +3,7 @@
 #include "SpikeClassListBox.h"
 #include "Controls/ScrollBarEx.h"
 #include "ViewDbTable.h"
-#include "ChartData.h"
+#include "chart/ChartData.h"
 #include "Editctrl.h"
 #include "OPTIONS_MEASURE.h"
 #include "options_spk_classification.h"

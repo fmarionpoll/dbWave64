@@ -1,7 +1,7 @@
 #pragma once
-#include "ChartData.h"
-#include "ChartSpikeBar.h"
-#include "ChartSpikeShape.h"
+#include "chart/ChartData.h"
+#include "chart/ChartSpikeBar.h"
+#include "chart/ChartSpikeShape.h"
 #include "Controls/RulerBar.h"
 #include "Controls/ScrollBarEx.h"
 #include "./Controls/cdxCRotBevelLine.h"

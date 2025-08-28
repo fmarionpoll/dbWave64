@@ -2,7 +2,7 @@
 
 #include "AcqDataDoc.h"
 #include "afxcolorbutton.h"
-#include "ChartData.h"
+#include "chart/ChartData.h"
 
 
 class DlgDataSeriesFormat : public CDialog

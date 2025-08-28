@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "SpikeClassGridProperty.h"
 
-#include "ChartWnd.h"
+#include "chart/ChartWnd.h"
 #include "SpikeClassProperties.h"
 
 SpikeClassGridProperty::SpikeClassGridProperty(const CString& str_name, const COleVariant& var_value,

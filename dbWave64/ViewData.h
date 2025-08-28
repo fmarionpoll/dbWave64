@@ -3,7 +3,7 @@
 #include "Controls/RulerBar.h"
 #include "Controls/ScrollBarEx.h"
 #include "afxwin.h"
-#include "ChartData.h"
+#include "chart/ChartData.h"
 #include "Editctrl.h"
 #include "ViewDbTable.h"
 

@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "dbWave.h"
-#include "ChartWnd.h"
+#include "chart/ChartWnd.h"
 #include "Editctrl.h"
 #include "dbWaveDoc.h"
 #include "Spikedoc.h"

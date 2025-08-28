@@ -4,7 +4,7 @@
 #include "StdAfx.h"
 #include "Editctrl.h"
 #include "resource.h"
-#include "ChartWnd.h"
+#include "chart/ChartWnd.h"
 //#include "Editctrl.h"
 #include "DlgChartProps.h"
 

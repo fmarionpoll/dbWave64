@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ChartWnd.h"
+#include "chart/ChartWnd.h"
 #if !defined mytype
 #define mytype	double
 #endif

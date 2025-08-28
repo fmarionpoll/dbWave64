@@ -8,7 +8,7 @@
 #include "dbWaveDoc.h"
 
 #include "MainFrm.h"
-#include "ChartData.h"
+#include "chart/ChartData.h"
 #include "dbView/ViewdbWave.h"
 #include "ViewData.h"
 #include "NoteDoc.h"

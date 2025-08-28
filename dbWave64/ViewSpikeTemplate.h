@@ -1,5 +1,5 @@
 #pragma once
-#include "ChartSpikeShape.h"
+#include "chart/ChartSpikeShape.h"
 #include "ViewDbTable.h"
 #include "Editctrl.h"
 #include "OPTIONS_MEASURE.h"

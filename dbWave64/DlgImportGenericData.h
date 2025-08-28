@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Editctrl.h"
-#include "ChartData.h"
+#include "chart/ChartData.h"
 #include "AcqDataDoc.h"
 #include "options_import.h"
 

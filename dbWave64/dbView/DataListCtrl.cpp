@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 
 #include "DataListCtrl.h"
-#include <../ChartData.h>
+#include <../chart/ChartData.h>
 #include <../ViewDbTable.h>
 
 #include "DataListCtrl_Row.h"

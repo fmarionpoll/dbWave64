@@ -20,8 +20,6 @@ protected:
 	void OnSize(UINT n_type, int cx, int cy);
 	void OnUpdate(CView* p_sender, LPARAM l_hint, CObject* p_hint) override;
 	void OnActivateView(BOOL b_activate, CView* p_activate_view, CView* p_deactive_view) override;
-	void save_controls_state();
-	void restore_controls_state();
 	afx_msg void on_hdn_end_track_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_result);
 	afx_msg void on_bn_clicked_data();
 	afx_msg void on_bn_clicked_display_spikes();
@@ -43,6 +41,9 @@ protected:
 
 protected:
 	DECLARE_MESSAGE_MAP()
+	void save_controls_state();
+	void restore_controls_state();
+
 
 private:
 	DataListCtrl m_data_list_ctrl_;

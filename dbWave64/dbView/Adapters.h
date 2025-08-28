@@ -15,12 +15,12 @@ class DbWaveDocProviderAdapter : public IDbWaveDataProvider
 public:
 	explicit DbWaveDocProviderAdapter(CdbWaveDoc* doc) : doc_(doc) {}
 
-	int getRecordsCount() const override
+	int get_records_count() const override
 	{
 		return doc_ ? doc_->db_get_records_count() : 0;
 	}
 
-	RowMeta getRowMeta(const int index) override
+	RowMeta get_row_meta(const int index) override
 	{
 		RowMeta m;
 		if (doc_ == nullptr)
@@ -77,11 +77,11 @@ class ChartDataRendererAdapter : public IDataRenderer
 public:
 	void renderBitmap(const DisplaySettings& settings, const RowMeta& meta, CBitmap& out_bitmap) override
 	{
-		CWindowDC screenDC(nullptr);
+		CWindowDC screen_dc(nullptr);
 		CDC mem_dc;
-		VERIFY(mem_dc.CreateCompatibleDC(&screenDC));
+		VERIFY(mem_dc.CreateCompatibleDC(&screen_dc));
 		out_bitmap.CreateBitmap(settings.image_width, settings.image_height,
-			screenDC.GetDeviceCaps(PLANES), screenDC.GetDeviceCaps(BITSPIXEL), nullptr);
+			screen_dc.GetDeviceCaps(PLANES), screen_dc.GetDeviceCaps(BITSPIXEL), nullptr);
 		mem_dc.SelectObject(&out_bitmap);
 		mem_dc.FillSolidRect(0, 0, settings.image_width, settings.image_height, RGB(255, 255, 255));
 
@@ -93,7 +93,7 @@ public:
 		CString dat_path = meta.cs_datafile_name;
 		if (dat_path.IsEmpty() || !data_doc.open_document(dat_path))
 		{
-			CString comment = _T("File name: ") + meta.cs_datafile_name + _T(" -- data not available");
+			const CString comment = _T("File name: ") + meta.cs_datafile_name + _T(" -- data not available");
 			chart.set_string(comment);
 			chart.plot_data_to_dc(&mem_dc);
 			return;

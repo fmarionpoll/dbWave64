@@ -22,8 +22,8 @@ class IDbWaveDataProvider
 {
 public:
 	virtual ~IDbWaveDataProvider() = default;
-	virtual int getRecordsCount() const = 0;
-	virtual RowMeta getRowMeta(int index) = 0;
+	virtual int get_records_count() const = 0;
+	virtual RowMeta get_row_meta(int index) = 0;
 };
 
 

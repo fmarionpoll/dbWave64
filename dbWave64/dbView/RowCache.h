@@ -92,7 +92,7 @@ public:
 			}
 			else
 			{
-				new_rows[static_cast<size_t>(i)] = provider_->getRowMeta(global_index);
+				new_rows[static_cast<size_t>(i)] = provider_->get_row_meta(global_index);
 			}
 		}
 

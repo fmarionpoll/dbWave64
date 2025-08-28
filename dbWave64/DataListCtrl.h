@@ -42,13 +42,13 @@ public:
 	void set_spike_plot_mode(const SpikePlotMode mode, const int i_class) { settings_.spike_plot_mode = mode; settings_.selected_class = i_class; }
 	void set_visible_range(int first, int last);
 
-	float get_amplitude_span() { return settings_.mv_span; }
-	boolean get_display_file_name() { return settings_.b_display_file_name; }
-	boolean get_timespan_adjust_mode() { return settings_.b_set_time_span; }
-	boolean get_amplitude_adjust_mode() { return settings_.b_set_mv_span; }
-	DisplayMode get_display_mode() { return settings_.display_mode; }
-	DataTransform get_transform_mode() { return settings_.data_transform; }
-	SpikePlotMode get_spike_plot_mode() { return settings_.spike_plot_mode; }
+	float get_amplitude_span() const { return settings_.mv_span; }
+	boolean get_display_file_name() const { return settings_.b_display_file_name; }
+	boolean get_timespan_adjust_mode() const { return settings_.b_set_time_span; }
+	boolean get_amplitude_adjust_mode() const { return settings_.b_set_mv_span; }
+	DisplayMode get_display_mode() const { return settings_.display_mode; }
+	DataTransform get_transform_mode() const { return settings_.data_transform; }
+	SpikePlotMode get_spike_plot_mode() const { return settings_.spike_plot_mode; }
 
 
 	void refresh_display();

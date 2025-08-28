@@ -170,11 +170,7 @@ void ViewdbWave::OnUpdate(CView* p_sender, const LPARAM l_hint, CObject* p_hint)
 	break;
 
 	case HINT_REPLACE_VIEW:
-		m_data_list_ctrl_.set_visible_range(0, m_data_list_ctrl_.GetCountPerPage() - 1);
-		break;
-
 	case HINT_REQUERY:
-		// fallthrough
 	case HINT_DOC_HAS_CHANGED:
 		m_data_list_ctrl_.set_visible_range(0, m_data_list_ctrl_.GetCountPerPage() - 1);
 		break;
@@ -188,9 +184,7 @@ void ViewdbWave::OnUpdate(CView* p_sender, const LPARAM l_hint, CObject* p_hint)
 void ViewdbWave::delete_records()
 {
 	// save index current file
-	auto current_index = GetDocument()->db_get_current_record_position() - 1;
-	if (current_index < 0)
-		current_index = 0;
+	const auto current_index =max( GetDocument()->db_get_current_record_position() - 1, 0);
 
 	// loop on C_data_list_ctrl to delete all selected items
 	const auto pdb_doc = GetDocument();
@@ -234,15 +228,15 @@ void ViewdbWave::OnActivateView(const BOOL b_activate, CView* p_activate_view, C
 {
 	if (b_activate)
 	{
+		restore_controls_state();
+
 		const auto db_wave_doc = GetDocument();
 		const int current_index = db_wave_doc->db_get_current_record_position();
 		if (current_index >= 0)
 		{
 			// compute a centered visible range around the current record
-			int per_page = m_data_list_ctrl_.GetCountPerPage();
-			if (per_page < 1) per_page = 1;
-			int first = current_index - per_page / 2;
-			if (first < 0) first = 0;
+			const int per_page = max(m_data_list_ctrl_.GetCountPerPage(), 1);
+			int first = max(current_index - per_page / 2, 0) ;
 			int last = first + per_page - 1;
 			const int total = db_wave_doc->db_get_records_count();
 			if (last >= total) { last = total - 1; int recomputedFirst = last - per_page + 1; if (recomputedFirst < 0) recomputedFirst = 0; first = recomputedFirst; }
@@ -256,8 +250,6 @@ void ViewdbWave::OnActivateView(const BOOL b_activate, CView* p_activate_view, C
 				m_data_list_ctrl_.EnsureVisible(current_index, FALSE);
 			}
 		}
-
-		restore_controls_state();
 	}
 	else
 	{
@@ -290,46 +282,54 @@ void ViewdbWave::restore_controls_state()
 	const ViewdbWaveState state = *GetDocument()->get_prop_sheet_state();
 	if (state.primed)
 	{
-		m_time_first_ = state.t_first;
-		m_time_last_ = state.t_last;
-		m_amplitude_span_ = state.mv_span;
-		m_spike_class_ = state.spike_class;
-		UpdateData(FALSE);
-		m_data_list_ctrl_.set_display_mode(state.display_mode);
-		m_data_list_ctrl_.set_display_file_name(static_cast<boolean>(state.b_display_file_name));
-		m_data_list_ctrl_.set_transform_mode(state.b_filter_dat ? DataTransform::MedianFilter : DataTransform::None);
-		m_data_list_ctrl_.set_time_intervals(m_time_first_, m_time_last_);
-		m_data_list_ctrl_.set_amplitude_span(m_amplitude_span_);
-		if (state.b_all_classes)
-			m_data_list_ctrl_.set_spike_plot_mode(SpikePlotMode::AllClasses, m_spike_class_);
-		else
-			m_data_list_ctrl_.set_spike_plot_mode(SpikePlotMode::OneClass, m_spike_class_);
-		switch (state.display_mode)
-		{
-		case DisplayMode::Data:
-			on_bn_clicked_data();
-			break;
-		case DisplayMode::Spikes:
-			on_bn_clicked_display_spikes();
-			break;
-		case DisplayMode::None:
-			on_bn_clicked_display_nothing();
-			break;
-		}
+		// display file name
 		const BOOL show = state.b_display_file_name;
 		CheckDlgButton(IDC_CHECKFILENAME, show ? BST_CHECKED : BST_UNCHECKED);
-		m_data_list_ctrl_.set_display_file_name(show);
+		m_data_list_ctrl_.set_display_file_name(static_cast<boolean>(show));
+
+		// filter
 		const BOOL b_filter_dat = state.b_filter_dat;
 		CheckDlgButton(IDC_FILTERCHECK, b_filter_dat ? BST_CHECKED : BST_UNCHECKED);
 		m_data_list_ctrl_.set_transform_mode(b_filter_dat ? DataTransform::MedianFilter : DataTransform::None);
+
+		// time span
 		const BOOL b_set_time_span = state.b_set_time_span;
 		CheckDlgButton(IDC_CHECK1, b_set_time_span ? BST_CHECKED : BST_UNCHECKED);
 		GetDlgItem(IDC_TIMEFIRST)->EnableWindow(b_set_time_span);
 		GetDlgItem(IDC_TIMELAST)->EnableWindow(b_set_time_span);
-		m_data_list_ctrl_.set_timespan_adjust_mode(b_set_time_span);
+		m_time_first_ = state.t_first;
+		m_time_last_ = state.t_last;
+		m_data_list_ctrl_.set_timespan_adjust_mode(static_cast<boolean>(b_set_time_span));
+		m_data_list_ctrl_.set_time_intervals(m_time_first_, m_time_last_);
+
+		// amplitude span
 		const BOOL b_set_mv_span = state.b_set_mv_span;
 		CheckDlgButton(IDC_CHECK2, b_set_mv_span ? BST_CHECKED : BST_UNCHECKED);
 		GetDlgItem(IDC_AMPLITUDESPAN)->EnableWindow(b_set_mv_span);
+		m_data_list_ctrl_.set_amplitude_adjust_mode(static_cast<boolean>(b_set_mv_span));
+		m_amplitude_span_ = state.mv_span;
+		m_data_list_ctrl_.set_amplitude_span(m_amplitude_span_);
+
+		// enable/disable controls according to display mode
+		m_spike_class_ = state.spike_class;
+		if (state.display_mode == DisplayMode::Data)
+			on_bn_clicked_data();
+		else if (state.display_mode == DisplayMode::Spikes)
+			on_bn_clicked_display_spikes();
+		else
+			on_bn_clicked_display_nothing();
+
+		// update buttons for spike plot mode
+		if (state.b_all_classes)
+		{
+			CheckDlgButton(IDC_RADIOALLCLASSES, BST_CHECKED);
+			m_data_list_ctrl_.set_spike_plot_mode(SpikePlotMode::AllClasses, m_spike_class_);
+		}
+		else {
+			CheckDlgButton(IDC_RADIOONECLASS, BST_CHECKED);
+			m_data_list_ctrl_.set_spike_plot_mode(SpikePlotMode::OneClass, m_spike_class_);
+			
+		}
 
 		UpdateData(FALSE);
 	}
@@ -444,7 +444,7 @@ void ViewdbWave::on_en_change_spike_class()
 void ViewdbWave::on_bn_clicked_check_filename()
 {
 	const BOOL show = (IsDlgButtonChecked(IDC_CHECKFILENAME) == BST_CHECKED);
-	m_data_list_ctrl_.set_display_file_name(show);
+	m_data_list_ctrl_.set_display_file_name(static_cast<boolean>(show));
 	m_data_list_ctrl_.refresh_display();
 }
 
@@ -458,7 +458,7 @@ void ViewdbWave::on_click_median_filter()
 void ViewdbWave::on_bn_clicked_check2()
 {
 	const BOOL on = (IsDlgButtonChecked(IDC_CHECK2) == BST_CHECKED);
-	m_data_list_ctrl_.set_amplitude_adjust_mode(on);
+	m_data_list_ctrl_.set_amplitude_adjust_mode(static_cast<boolean>(on));
 	GetDlgItem(IDC_AMPLITUDESPAN)->EnableWindow(on);
 	m_data_list_ctrl_.refresh_display();
 }
@@ -466,7 +466,7 @@ void ViewdbWave::on_bn_clicked_check2()
 void ViewdbWave::on_bn_clicked_check1()
 {
 	const BOOL on = (IsDlgButtonChecked(IDC_CHECK1) == BST_CHECKED);
-	m_data_list_ctrl_.set_timespan_adjust_mode(on);
+	m_data_list_ctrl_.set_timespan_adjust_mode(static_cast<boolean>(on));
 	GetDlgItem(IDC_TIMEFIRST)->EnableWindow(on);
 	GetDlgItem(IDC_TIMELAST)->EnableWindow(on);
 	m_data_list_ctrl_.refresh_display();

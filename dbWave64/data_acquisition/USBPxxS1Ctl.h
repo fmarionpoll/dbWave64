@@ -2,6 +2,8 @@
 
 #pragma once
 #include <objbase.h>
+
+#include "AcqWaveChan.h"
 #include "ImportAlligatorDefinitions.h"
 #include "USBPxxPARAMETERS.h"
 //#import "./include/Alligator/win32/USBPxxS1COM.dll" 

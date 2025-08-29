@@ -9,7 +9,7 @@
 #include "DlgADExperiment.h"
 #include "dtacq32.h"
 
-#include "ChartData.h"
+#include "chart/ChartData.h"
 #include "data_acquisition/ViewADcontinuous.h"
 #include "ChildFrm.h"
 #include "dbWave.h"

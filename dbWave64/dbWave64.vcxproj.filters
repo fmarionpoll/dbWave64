@@ -438,24 +438,6 @@
     <ClCompile Include="TemplateWnd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="datafile_ASD.cpp">
-      <Filter>data_files</Filter>
-    </ClCompile>
-    <ClCompile Include="datafile_Atlab.cpp">
-      <Filter>data_files</Filter>
-    </ClCompile>
-    <ClCompile Include="datafile_Awave.cpp">
-      <Filter>data_files</Filter>
-    </ClCompile>
-    <ClCompile Include="datafile_CEDSpike2.cpp">
-      <Filter>data_files</Filter>
-    </ClCompile>
-    <ClCompile Include="datafile_X.cpp">
-      <Filter>data_files</Filter>
-    </ClCompile>
-    <ClCompile Include="datafile_mcid.cpp">
-      <Filter>data_files</Filter>
-    </ClCompile>
     <ClCompile Include="Excel\excel9.cpp">
       <Filter>excel</Filter>
     </ClCompile>
@@ -522,6 +504,72 @@
     <ClCompile Include="dbView\ViewdbWaveInit.cpp">
       <Filter>dbView</Filter>
     </ClCompile>
+    <ClCompile Include="data_file\datafile_ASD.cpp">
+      <Filter>data_files</Filter>
+    </ClCompile>
+    <ClCompile Include="data_file\datafile_Atlab.cpp">
+      <Filter>data_files</Filter>
+    </ClCompile>
+    <ClCompile Include="data_file\datafile_Awave.cpp">
+      <Filter>data_files</Filter>
+    </ClCompile>
+    <ClCompile Include="data_file\datafile_CEDSpike2.cpp">
+      <Filter>data_files</Filter>
+    </ClCompile>
+    <ClCompile Include="data_file\datafile_mcid.cpp">
+      <Filter>data_files</Filter>
+    </ClCompile>
+    <ClCompile Include="data_file\datafile_X.cpp">
+      <Filter>data_files</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\CyberAmp.cpp">
+      <Filter>data_acquisition</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\DataTranslation_AD.cpp">
+      <Filter>data_acquisition</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\DataTranslation_DA.cpp">
+      <Filter>data_acquisition</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\DlgADExperiment.cpp">
+      <Filter>data_acquisition</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\DlgADInputParms.cpp">
+      <Filter>data_acquisition</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\DlgADIntervals.cpp">
+      <Filter>data_acquisition</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\DlgDAChannels.cpp">
+      <Filter>data_acquisition</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\DlgDAOutputsParms.cpp">
+      <Filter>data_acquisition</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\DlgEditDAMseq.cpp">
+      <Filter>data_acquisition</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\dtacq32.cpp">
+      <Filter>data_acquisition</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\dtplot32.cpp">
+      <Filter>data_acquisition</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\USBPxxPARAMETERS.cpp">
+      <Filter>data_acquisition</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\USBPxxS1.cpp">
+      <Filter>data_acquisition</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\USBPxxS1Ctl.cpp">
+      <Filter>data_acquisition</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\ViewAdcontinuous.cpp">
+      <Filter>data_acquisition</Filter>
+    </ClCompile>
+    <ClCompile Include="data_acquisition\DlgDataTranslationBoard.cpp">
+      <Filter>data_acquisition</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AcqDataDoc.h">
@@ -537,9 +585,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ADAcqDataDoc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="chanlistitem.h">
@@ -1019,62 +1064,17 @@
     <ClInclude Include="CPivotTables.h">
       <Filter>excel</Filter>
     </ClInclude>
-    <ClInclude Include="CWorkbook.h">
-      <Filter>excel</Filter>
-    </ClInclude>
-    <ClInclude Include="CWorkbooks.h">
-      <Filter>excel</Filter>
-    </ClInclude>
-    <ClInclude Include="CWorksheet.h">
-      <Filter>excel</Filter>
-    </ClInclude>
-    <ClInclude Include="CWorksheetFunction.h">
-      <Filter>excel</Filter>
-    </ClInclude>
-    <ClInclude Include="CWorksheets.h">
-      <Filter>excel</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\DlgDataTranslationBoard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Controls\Scale.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Excel\excel9.h">
       <Filter>excel</Filter>
     </ClInclude>
-    <ClInclude Include="datafile_ASD.h">
-      <Filter>data_files</Filter>
-    </ClInclude>
-    <ClInclude Include="datafile_Atlab.h">
-      <Filter>data_files</Filter>
-    </ClInclude>
-    <ClInclude Include="datafile_Awave.h">
-      <Filter>data_files</Filter>
-    </ClInclude>
-    <ClInclude Include="datafile_CEDSpike2.h">
-      <Filter>data_files</Filter>
-    </ClInclude>
-    <ClInclude Include="datafile_mcid.h">
-      <Filter>data_files</Filter>
-    </ClInclude>
-    <ClInclude Include="datafile_X.h">
-      <Filter>data_files</Filter>
-    </ClInclude>
-    <ClInclude Include="dataheader_Asyst.H">
-      <Filter>data_files</Filter>
-    </ClInclude>
-    <ClInclude Include="dataheader_Atlab.H">
-      <Filter>data_files</Filter>
-    </ClInclude>
     <ClInclude Include="GridCtrl\InPlaceEdit.h">
       <Filter>Grid</Filter>
     </ClInclude>
     <ClInclude Include="GridCtrl\GridComboEdit.h">
       <Filter>Grid</Filter>
-    </ClInclude>
-    <ClInclude Include="ImportExcelDefinitions.h">
-      <Filter>excel</Filter>
     </ClInclude>
     <ClInclude Include="Controls\QuadStateTree.h">
       <Filter>customctrl</Filter>
@@ -1141,6 +1141,102 @@
     </ClInclude>
     <ClInclude Include="DataListCtrl.h">
       <Filter>dbView</Filter>
+    </ClInclude>
+    <ClInclude Include="data_file\datafile_ASD.h">
+      <Filter>data_files</Filter>
+    </ClInclude>
+    <ClInclude Include="data_file\datafile_Atlab.h">
+      <Filter>data_files</Filter>
+    </ClInclude>
+    <ClInclude Include="data_file\datafile_Awave.h">
+      <Filter>data_files</Filter>
+    </ClInclude>
+    <ClInclude Include="data_file\datafile_CEDSpike2.h">
+      <Filter>data_files</Filter>
+    </ClInclude>
+    <ClInclude Include="data_file\datafile_mcid.h">
+      <Filter>data_files</Filter>
+    </ClInclude>
+    <ClInclude Include="data_file\datafile_X.h">
+      <Filter>data_files</Filter>
+    </ClInclude>
+    <ClInclude Include="data_file\dataheader_Asyst.H">
+      <Filter>data_files</Filter>
+    </ClInclude>
+    <ClInclude Include="data_file\dataheader_Atlab.H">
+      <Filter>data_files</Filter>
+    </ClInclude>
+    <ClInclude Include="Excel\CApplication.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="Excel\CWorkbook.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="Excel\CWorkbooks.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="Excel\CWorksheet.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="Excel\CWorksheetFunction.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="Excel\CWorksheets.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="Excel\ImportExcelDefinitions.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\CDTBoardParameters.h">
+      <Filter>data_acquisition</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\CyberAmp.h">
+      <Filter>data_acquisition</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\DataTranslation_AD.h">
+      <Filter>data_acquisition</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\DataTranslation_DA.h">
+      <Filter>data_acquisition</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\DlgADExperiment.h">
+      <Filter>data_acquisition</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\DlgADInputParms.h">
+      <Filter>data_acquisition</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\DlgADIntervals.h">
+      <Filter>data_acquisition</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\DlgDAChannels.h">
+      <Filter>data_acquisition</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\DlgDAOutputsParms.h">
+      <Filter>data_acquisition</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\DlgDataTranslationBoard.h">
+      <Filter>data_acquisition</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\DlgEditDAMseq.h">
+      <Filter>data_acquisition</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\dtacq32.h">
+      <Filter>data_acquisition</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\dtplot32.h">
+      <Filter>data_acquisition</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\USBPxxPARAMETERS.h">
+      <Filter>data_acquisition</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\USBPxxS1.h">
+      <Filter>data_acquisition</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\USBPxxS1Ctl.h">
+      <Filter>data_acquisition</Filter>
+    </ClInclude>
+    <ClInclude Include="data_acquisition\ViewADcontinuous.h">
+      <Filter>data_acquisition</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

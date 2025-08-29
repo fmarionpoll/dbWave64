@@ -3,12 +3,12 @@
 #include "AcqDataDoc.h"
 
 #include "ADAcqDataDoc.h"
-#include "datafile_Atlab.h"
-#include "datafile_ASD.h"
-#include "datafile_mcid.h"
-#include "datafile_CEDSpike2.h"
+#include "data_file/datafile_Atlab.h"
+#include "data_file/datafile_ASD.h"
+#include "data_file/datafile_mcid.h"
+#include "data_file/datafile_CEDSpike2.h"
 #include "DlgImportGenericData.h"
-#include "datafile_Awave.h"
+#include "data_file/datafile_Awave.h"
 #include "dbWave.h"
 
 #ifdef _DEBUG

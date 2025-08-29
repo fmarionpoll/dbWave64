@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ADAcqDataDoc.h"
 
-#include "datafile_Awave.h"
+#include "data_file/datafile_Awave.h"
 
 BOOL ADAcqDataDoc::AcqDoc_DataAppendStop() const
 {

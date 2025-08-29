@@ -3,8 +3,7 @@
 #include "StdAfx.h"
 #include "USBPxxS1Ctl.h"
 
-
-
+#include "AcqWaveChan.h"
 
 
 int		CUSBPxxS1Ctl::allig_Gain[] = { 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000 };

@@ -10,7 +10,7 @@ auto constexpr MAX_BUFFER_LENGTH_AS_BYTES = 614400;
 // with a multiple of 1024 =  614400
 
 #include "WaveBuf.h"
-#include "datafile_X.h"
+#include "data_file/datafile_X.h"
 #include "options_view_data.h"
 
 class AcqDataDoc : public CDocument

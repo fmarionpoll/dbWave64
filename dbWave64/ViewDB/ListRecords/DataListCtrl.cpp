@@ -2,7 +2,7 @@
 
 #include "DataListCtrl.h"
 
-#include "ViewDbTable.h"
+#include "ViewDB/ViewDbTable.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

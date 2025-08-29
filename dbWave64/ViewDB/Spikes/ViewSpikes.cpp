@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "ViewSpikes.h"
+#include "ViewDB/Spikes/ViewSpikes.h"
 
 #include <strsafe.h>
 #include <cmath>

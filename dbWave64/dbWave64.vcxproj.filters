@@ -28,11 +28,41 @@
     <Filter Include="data_acquisition">
       <UniqueIdentifier>{a0adc36c-523d-4f57-8985-d3579a79e9f6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="dbView">
-      <UniqueIdentifier>{9778a89c-052a-484f-a397-469f57498dc5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Chart">
       <UniqueIdentifier>{e82a5829-f735-443a-8991-d898d91f8328}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewDB">
+      <UniqueIdentifier>{dcc9a32a-52a6-42b5-b3c1-a56aba50d8c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewDB\PanelFilter">
+      <UniqueIdentifier>{f2f51fd6-03b2-4b47-8d6f-d3ecc13a5820}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewDB\ListRecords">
+      <UniqueIdentifier>{ef970d32-5699-4b80-94ff-eb3f35b3c65e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewDB\Data">
+      <UniqueIdentifier>{8363d05a-5e4f-4d3b-a370-f417c0f8dd2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewDB\Histograms">
+      <UniqueIdentifier>{e9d5dd1a-d02c-4449-9d59-5b9085fa01f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewDB\DetectSpikes">
+      <UniqueIdentifier>{c601b87d-259e-4e09-8e3c-d54a152e3572}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewDB\PanelProperties">
+      <UniqueIdentifier>{3ed39f3b-decf-4fb4-92ad-3e1798a1791d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewDB\SpikeSort">
+      <UniqueIdentifier>{e18e52d0-f16b-4c69-be57-88be0407ccae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewDB\Spikes">
+      <UniqueIdentifier>{ec56acc7-28b2-4595-ab7f-d883f81455fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewDB\Templates">
+      <UniqueIdentifier>{60fedae4-e59a-4290-9f57-cbfbeeb18a23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewText">
+      <UniqueIdentifier>{71e079b0-72ae-4680-83d8-1b5294ebbce2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -270,18 +300,6 @@
     <ClCompile Include="output_parameters.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PaneldbFilter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PaneldbFilterToolBar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PaneldbProperties.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PaneldbPropertiesToolBar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Spike.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -343,30 +361,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Taglist.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewDbTable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewNotedoc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewSpikeDetect.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewSpikeHist.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewSpikes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewSpikeSort.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewSpikeTemplate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WaveBuf.cpp">
@@ -495,15 +489,6 @@
     <ClCompile Include="Chart\ChartWnd.cpp">
       <Filter>Chart</Filter>
     </ClCompile>
-    <ClCompile Include="dbView\DataListCtrl.cpp">
-      <Filter>dbView</Filter>
-    </ClCompile>
-    <ClCompile Include="dbView\ViewdbWave.cpp">
-      <Filter>dbView</Filter>
-    </ClCompile>
-    <ClCompile Include="dbView\ViewdbWaveInit.cpp">
-      <Filter>dbView</Filter>
-    </ClCompile>
     <ClCompile Include="data_file\datafile_ASD.cpp">
       <Filter>data_files</Filter>
     </ClCompile>
@@ -569,6 +554,51 @@
     </ClCompile>
     <ClCompile Include="data_acquisition\DlgDataTranslationBoard.cpp">
       <Filter>data_acquisition</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\PanelFilter\PaneldbFilter.cpp">
+      <Filter>ViewDB\PanelFilter</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\PanelFilter\PaneldbFilterToolBar.cpp">
+      <Filter>ViewDB\PanelFilter</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\ListRecords\DataListCtrl.cpp">
+      <Filter>ViewDB\ListRecords</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\ListRecords\ViewdbWave.cpp">
+      <Filter>ViewDB\ListRecords</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\ListRecords\ViewdbWaveInit.cpp">
+      <Filter>ViewDB\ListRecords</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\Data\ViewData.cpp">
+      <Filter>ViewDB\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\Histograms\ViewSpikeHist.cpp">
+      <Filter>ViewDB\Histograms</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\DetectSpikes\ViewSpikeDetect.cpp">
+      <Filter>ViewDB\DetectSpikes</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\PanelProperties\PaneldbProperties.cpp">
+      <Filter>ViewDB\PanelProperties</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\PanelProperties\PaneldbPropertiesToolBar.cpp">
+      <Filter>ViewDB\PanelProperties</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\SpikeSort\ViewSpikeSort.cpp">
+      <Filter>ViewDB\SpikeSort</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\Spikes\ViewSpikes.cpp">
+      <Filter>ViewDB\Spikes</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\Templates\ViewSpikeTemplate.cpp">
+      <Filter>ViewDB\Templates</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewText\ViewNotedoc.cpp">
+      <Filter>ViewText</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\ViewDbTable.cpp">
+      <Filter>ViewDB</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -842,18 +872,6 @@
     <ClInclude Include="output_parameters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PaneldbFilter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PaneldbFilterToolBar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PaneldbProperties.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PaneldbPropertiesToolBar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -927,33 +945,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TemplateWnd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewDbTable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewdbWave.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewNotedoc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewSpikeDetect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewSpikeHist.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewSpikes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewSpikeSort.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewSpikeTemplate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WaveBuf.h">
@@ -1121,27 +1112,6 @@
     <ClInclude Include="Chart\ChartSpikeXY.h">
       <Filter>Chart</Filter>
     </ClInclude>
-    <ClInclude Include="dbView\Adapters.h">
-      <Filter>dbView</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView\DbWaveDataProvider.h">
-      <Filter>dbView</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView\DisplaySettings.h">
-      <Filter>dbView</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView\Renderers.h">
-      <Filter>dbView</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView\RowCache.h">
-      <Filter>dbView</Filter>
-    </ClInclude>
-    <ClInclude Include="dbView\ViewdbWave.h">
-      <Filter>dbView</Filter>
-    </ClInclude>
-    <ClInclude Include="DataListCtrl.h">
-      <Filter>dbView</Filter>
-    </ClInclude>
     <ClInclude Include="data_file\datafile_ASD.h">
       <Filter>data_files</Filter>
     </ClInclude>
@@ -1237,6 +1207,63 @@
     </ClInclude>
     <ClInclude Include="data_acquisition\ViewADcontinuous.h">
       <Filter>data_acquisition</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\PanelFilter\PaneldbFilter.h">
+      <Filter>ViewDB\PanelFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\PanelFilter\PaneldbFilterToolBar.h">
+      <Filter>ViewDB\PanelFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\ListRecords\Adapters.h">
+      <Filter>ViewDB\ListRecords</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\ListRecords\DataListCtrl.h">
+      <Filter>ViewDB\ListRecords</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\ListRecords\DbWaveDataProvider.h">
+      <Filter>ViewDB\ListRecords</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\ListRecords\DisplaySettings.h">
+      <Filter>ViewDB\ListRecords</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\ListRecords\Renderers.h">
+      <Filter>ViewDB\ListRecords</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\ListRecords\RowCache.h">
+      <Filter>ViewDB\ListRecords</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\ListRecords\ViewdbWave.h">
+      <Filter>ViewDB\ListRecords</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\Data\ViewData.h">
+      <Filter>ViewDB\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\Histograms\ViewSpikeHist.h">
+      <Filter>ViewDB\Histograms</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\DetectSpikes\ViewSpikeDetect.h">
+      <Filter>ViewDB\DetectSpikes</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\PanelProperties\PaneldbProperties.h">
+      <Filter>ViewDB\PanelProperties</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\PanelProperties\PaneldbPropertiesToolBar.h">
+      <Filter>ViewDB\PanelProperties</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\SpikeSort\ViewSpikeSort.h">
+      <Filter>ViewDB\SpikeSort</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\Spikes\ViewSpikes.h">
+      <Filter>ViewDB\Spikes</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\Templates\ViewSpikeTemplate.h">
+      <Filter>ViewDB\Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewText\ViewNotedoc.h">
+      <Filter>ViewText</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\ViewDbTable.h">
+      <Filter>ViewDB</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

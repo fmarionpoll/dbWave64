@@ -9,10 +9,8 @@
 
 #include "MainFrm.h"
 #include "chart/ChartData.h"
-#include "dbView/ViewdbWave.h"
-#include "ViewData.h"
+#include "ViewDB/ListRecords/ViewdbWave.h"
 #include "NoteDoc.h"
-#include "ViewNotedoc.h"
 
 #include "DlgFindFiles.h"
 #include "DlgProgress.h"
@@ -34,11 +32,7 @@
 #include "DlgExportData.h"
 //#include "data_acquisition/ViewADcontinuous.h"
 
-#include "ViewSpikeSort.h"
-#include "ViewSpikeDetect.h"
-#include "ViewSpikes.h"
-#include "ViewSpikeTemplate.h"
-#include "ViewSpikeHist.h"
+
 #include "ChildFrm.h"
 
 #include "DlgBrowseFile.h"
@@ -47,7 +41,13 @@
 #include "DlgLoadSaveOptions.h"
 #include "DlgPrintMargins.h"
 #include "FilenameCleanupUtils.h"
-#include "dbView/ViewdbWave.h"
+#include "ViewDB/Data/ViewData.h"
+#include "ViewDB/DetectSpikes/ViewSpikeDetect.h"
+#include "ViewDB/Histograms/ViewSpikeHist.h"
+#include "ViewDB/Spikes/ViewSpikes.h"
+#include "ViewDB/SpikeSort/ViewSpikeSort.h"
+#include "ViewDB/Templates/ViewSpikeTemplate.h"
+#include "ViewText/ViewNotedoc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

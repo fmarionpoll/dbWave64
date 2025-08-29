@@ -1,5 +1,5 @@
 #pragma once
-#include "ViewDbTable.h"
+#include "ViewDB/ViewDbTable.h"
 #include "StretchControls.h"
 
 class ViewSpikeHist : public ViewDbTable

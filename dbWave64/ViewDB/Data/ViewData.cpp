@@ -10,7 +10,7 @@
 #include "DlgdbEditRecord.h"
 //#include "data_acquisition/DlgADIntervals.h"
 //#include "data_acquisition/DlgADInputParms.h"
-#include "ViewData.h"
+#include "ViewDB/Data/ViewData.h"
 
 #include "NiceUnit.h"
 #include "DlgCopyAs.h"

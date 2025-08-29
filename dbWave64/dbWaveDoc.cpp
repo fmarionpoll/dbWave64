@@ -7,7 +7,7 @@
 #include "DlgdbNewFileDuplicate.h"
 #include "DlgProgress.h"
 #include "NoteDoc.h"
-#include "ViewNotedoc.h"
+#include "ViewText/ViewNotedoc.h"
 #include "dbWave_constants.h"
 #include "MainFrm.h"
 

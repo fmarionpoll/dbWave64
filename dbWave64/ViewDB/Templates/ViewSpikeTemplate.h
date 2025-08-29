@@ -1,6 +1,6 @@
 #pragma once
 #include "chart/ChartSpikeShape.h"
-#include "ViewDbTable.h"
+#include "ViewDB/ViewDbTable.h"
 #include "Editctrl.h"
 #include "OPTIONS_MEASURE.h"
 #include "options_spk_classification.h"

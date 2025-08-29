@@ -6,7 +6,7 @@
 #define new DEBUG_NEW
 #endif
 #include "ColorNames.h"
-#include "ViewDbTable.h"
+#include "ViewDB/ViewDbTable.h"
 #include "dbWave.h"
 #include "dbWave_constants.h"
 

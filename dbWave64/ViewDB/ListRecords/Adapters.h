@@ -4,11 +4,9 @@
 #include "DisplaySettings.h"
 #include "Renderers.h"
 #include "dbWaveDoc.h"
-
-#ifndef DBVIEW2_TEST
 #include "Chart/ChartData.h"
 #include "Chart/ChartSpikeBar.h"
-#endif
+
 
 class DbWaveDocProviderAdapter : public IDbWaveDataProvider
 {
@@ -69,8 +67,6 @@ public:
 private:
 	CdbWaveDoc* doc_ { nullptr };
 };
-
-#ifndef DBVIEW2_TEST
 
 class ChartDataRendererAdapter : public IDataRenderer
 {
@@ -164,41 +160,6 @@ private:
 	CdbWaveDoc* db_doc_ { nullptr };
 };
 
-#else // DBVIEW2_TEST
 
-class ChartDataRendererAdapter : public IDataRenderer
-{
-public:
-	void renderBitmap(const DisplaySettings& settings, const RowMeta& meta, CBitmap& out_bitmap) override
-	{
-		CWindowDC screenDC(nullptr);
-		CDC mem_dc;
-		VERIFY(mem_dc.CreateCompatibleDC(&screenDC));
-		out_bitmap.CreateBitmap(settings.image_width, settings.image_height,
-			screenDC.GetDeviceCaps(PLANES), screenDC.GetDeviceCaps(BITSPIXEL), nullptr);
-		mem_dc.SelectObject(&out_bitmap);
-		mem_dc.FillSolidRect(0, 0, settings.image_width, settings.image_height, RGB(255, 255, 255));
-		mem_dc.TextOut(2, 2, meta.cs_datafile_name);
-	}
-};
-
-class ChartSpikeRendererAdapter : public ISpikeRenderer
-{
-public:
-	explicit ChartSpikeRendererAdapter(CdbWaveDoc* /*db_doc*/) {}
-	void renderBitmap(const DisplaySettings& settings, const RowMeta& meta, CBitmap& out_bitmap) override
-	{
-		CWindowDC screenDC(nullptr);
-		CDC mem_dc;
-		VERIFY(mem_dc.CreateCompatibleDC(&screenDC));
-		out_bitmap.CreateBitmap(settings.image_width, settings.image_height,
-			screenDC.GetDeviceCaps(PLANES), screenDC.GetDeviceCaps(BITSPIXEL), nullptr);
-		mem_dc.SelectObject(&out_bitmap);
-		mem_dc.FillSolidRect(0, 0, settings.image_width, settings.image_height, RGB(235, 235, 235));
-		mem_dc.TextOut(2, 2, meta.cs_spike_file_name);
-	}
-};
-
-#endif // DBVIEW2_TEST
 
 

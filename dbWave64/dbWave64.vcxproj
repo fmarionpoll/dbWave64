@@ -45,9 +45,6 @@
     <ClCompile Include="data_file\datafile_CEDSpike2.cpp" />
     <ClCompile Include="data_file\datafile_mcid.cpp" />
     <ClCompile Include="data_file\datafile_X.cpp" />
-    <ClCompile Include="dbView\DataListCtrl.cpp" />
-    <ClCompile Include="dbView\ViewdbWave.cpp" />
-    <ClCompile Include="dbView\ViewdbWaveInit.cpp" />
     <ClCompile Include="dbWaveDoc.cpp" />
     <ClCompile Include="Envelope.cpp" />
     <ClCompile Include="RegistryManager.cpp" />
@@ -152,10 +149,6 @@
     <ClCompile Include="OPTIONS_VIEW_DATA.cpp" />
     <ClCompile Include="options_view_spikes.cpp" />
     <ClCompile Include="output_parameters.cpp" />
-    <ClCompile Include="PaneldbFilter.cpp" />
-    <ClCompile Include="PaneldbFilterToolBar.cpp" />
-    <ClCompile Include="PaneldbProperties.cpp" />
-    <ClCompile Include="PaneldbPropertiesToolBar.cpp" />
     <ClCompile Include="Controls\QuadStateTree.cpp" />
     <ClCompile Include="Controls\Ruler.cpp" />
     <ClCompile Include="Controls\RulerBar.cpp" />
@@ -184,14 +177,21 @@
     <ClCompile Include="Taglist.cpp" />
     <ClCompile Include="TemplateListWnd.cpp" />
     <ClCompile Include="TemplateWnd.cpp" />
-    <ClCompile Include="ViewData.cpp" />
-    <ClCompile Include="ViewDbTable.cpp" />
-    <ClCompile Include="ViewNotedoc.cpp" />
-    <ClCompile Include="ViewSpikeDetect.cpp" />
-    <ClCompile Include="ViewSpikeHist.cpp" />
-    <ClCompile Include="ViewSpikes.cpp" />
-    <ClCompile Include="ViewSpikeSort.cpp" />
-    <ClCompile Include="ViewSpikeTemplate.cpp" />
+    <ClCompile Include="ViewDB\Data\ViewData.cpp" />
+    <ClCompile Include="ViewDB\DetectSpikes\ViewSpikeDetect.cpp" />
+    <ClCompile Include="ViewDB\Histograms\ViewSpikeHist.cpp" />
+    <ClCompile Include="ViewDB\ListRecords\DataListCtrl.cpp" />
+    <ClCompile Include="ViewDB\ListRecords\ViewdbWave.cpp" />
+    <ClCompile Include="ViewDB\ListRecords\ViewdbWaveInit.cpp" />
+    <ClCompile Include="ViewDB\PanelFilter\PaneldbFilter.cpp" />
+    <ClCompile Include="ViewDB\PanelFilter\PaneldbFilterToolBar.cpp" />
+    <ClCompile Include="ViewDB\PanelProperties\PaneldbProperties.cpp" />
+    <ClCompile Include="ViewDB\PanelProperties\PaneldbPropertiesToolBar.cpp" />
+    <ClCompile Include="ViewDB\SpikeSort\ViewSpikeSort.cpp" />
+    <ClCompile Include="ViewDB\Spikes\ViewSpikes.cpp" />
+    <ClCompile Include="ViewDB\Templates\ViewSpikeTemplate.cpp" />
+    <ClCompile Include="ViewDB\ViewDbTable.cpp" />
+    <ClCompile Include="ViewText\ViewNotedoc.cpp" />
     <ClCompile Include="WaveBuf.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -215,7 +215,6 @@
     <ClInclude Include="Controls\cdxCRot90DC.h" />
     <ClInclude Include="Controls\cdxCRotBevelLine.h" />
     <ClInclude Include="DatabaseUtils.h" />
-    <ClInclude Include="DataListCtrl.h" />
     <ClInclude Include="data_acquisition\CDTBoardParameters.h" />
     <ClInclude Include="data_acquisition\CyberAmp.h" />
     <ClInclude Include="data_acquisition\DataTranslation_AD.h" />
@@ -240,12 +239,6 @@
     <ClInclude Include="data_file\datafile_X.h" />
     <ClInclude Include="data_file\dataheader_Asyst.H" />
     <ClInclude Include="data_file\dataheader_Atlab.H" />
-    <ClInclude Include="dbView\Adapters.h" />
-    <ClInclude Include="dbView\DbWaveDataProvider.h" />
-    <ClInclude Include="dbView\DisplaySettings.h" />
-    <ClInclude Include="dbView\Renderers.h" />
-    <ClInclude Include="dbView\RowCache.h" />
-    <ClInclude Include="dbView\ViewdbWave.h" />
     <ClInclude Include="Excel\CApplication.h" />
     <ClInclude Include="Excel\CWorkbook.h" />
     <ClInclude Include="Excel\CWorkbooks.h" />
@@ -372,10 +365,6 @@
     <ClInclude Include="options_view_spikes.h" />
     <ClInclude Include="OutlookBar.h" />
     <ClInclude Include="output_parameters.h" />
-    <ClInclude Include="PaneldbFilter.h" />
-    <ClInclude Include="PaneldbFilterToolBar.h" />
-    <ClInclude Include="PaneldbProperties.h" />
-    <ClInclude Include="PaneldbPropertiesToolBar.h" />
     <ClInclude Include="Controls\QuadStateTree.h" />
     <ClInclude Include="RegistryManager.h" />
     <ClInclude Include="resource.h" />
@@ -407,15 +396,25 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TemplateListWnd.h" />
     <ClInclude Include="TemplateWnd.h" />
-    <ClInclude Include="ViewData.h" />
-    <ClInclude Include="ViewDbTable.h" />
-    <ClInclude Include="ViewdbWave.h" />
-    <ClInclude Include="ViewNotedoc.h" />
-    <ClInclude Include="ViewSpikeDetect.h" />
-    <ClInclude Include="ViewSpikeHist.h" />
-    <ClInclude Include="ViewSpikes.h" />
-    <ClInclude Include="ViewSpikeSort.h" />
-    <ClInclude Include="ViewSpikeTemplate.h" />
+    <ClInclude Include="ViewDB\Data\ViewData.h" />
+    <ClInclude Include="ViewDB\DetectSpikes\ViewSpikeDetect.h" />
+    <ClInclude Include="ViewDB\Histograms\ViewSpikeHist.h" />
+    <ClInclude Include="ViewDB\ListRecords\Adapters.h" />
+    <ClInclude Include="ViewDB\ListRecords\DataListCtrl.h" />
+    <ClInclude Include="ViewDB\ListRecords\DbWaveDataProvider.h" />
+    <ClInclude Include="ViewDB\ListRecords\DisplaySettings.h" />
+    <ClInclude Include="ViewDB\ListRecords\Renderers.h" />
+    <ClInclude Include="ViewDB\ListRecords\RowCache.h" />
+    <ClInclude Include="ViewDB\ListRecords\ViewdbWave.h" />
+    <ClInclude Include="ViewDB\PanelFilter\PaneldbFilter.h" />
+    <ClInclude Include="ViewDB\PanelFilter\PaneldbFilterToolBar.h" />
+    <ClInclude Include="ViewDB\PanelProperties\PaneldbProperties.h" />
+    <ClInclude Include="ViewDB\PanelProperties\PaneldbPropertiesToolBar.h" />
+    <ClInclude Include="ViewDB\SpikeSort\ViewSpikeSort.h" />
+    <ClInclude Include="ViewDB\Spikes\ViewSpikes.h" />
+    <ClInclude Include="ViewDB\Templates\ViewSpikeTemplate.h" />
+    <ClInclude Include="ViewDB\ViewDbTable.h" />
+    <ClInclude Include="ViewText\ViewNotedoc.h" />
     <ClInclude Include="WaveBuf.h" />
   </ItemGroup>
   <ItemGroup>

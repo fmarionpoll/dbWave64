@@ -14,7 +14,7 @@
 #include "USBPxxS1Ctl.h"
 #include "options_input.h"
 #include "options_output.h"
-#include "ViewDbTable.h"
+#include "ViewDB/ViewDbTable.h"
 
 
 class ViewADcontinuous : public ViewDbTable

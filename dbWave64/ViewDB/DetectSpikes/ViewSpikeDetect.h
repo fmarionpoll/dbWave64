@@ -5,7 +5,7 @@
 #include "Controls/RulerBar.h"
 #include "Controls/ScrollBarEx.h"
 #include "./Controls/cdxCRotBevelLine.h"
-#include "ViewDbTable.h"
+#include "ViewDB/ViewDbTable.h"
 #include "Editctrl.h"
 
 

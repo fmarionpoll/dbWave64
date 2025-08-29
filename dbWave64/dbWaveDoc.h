@@ -7,7 +7,7 @@
 #include "AcqDataDoc.h"
 #include "dbWave_structures.h"
 #include "db_spike.h"
-#include "dbView/DisplaySettings.h"
+#include "ViewDB/ListRecords/DisplaySettings.h"
 
 struct source_data
 {

@@ -5,7 +5,7 @@
 #include "afxwin.h"
 #include "chart/ChartData.h"
 #include "Editctrl.h"
-#include "ViewDbTable.h"
+#include "ViewDB/ViewDbTable.h"
 
 
 class ViewData : public ViewDbTable

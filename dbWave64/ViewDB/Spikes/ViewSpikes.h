@@ -2,7 +2,7 @@
 
 #include "SpikeClassListBox.h"
 #include "Controls/ScrollBarEx.h"
-#include "ViewDbTable.h"
+#include "ViewDB/ViewDbTable.h"
 #include "chart/ChartData.h"
 #include "Editctrl.h"
 #include "OPTIONS_MEASURE.h"

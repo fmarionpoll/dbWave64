@@ -1,8 +1,8 @@
 #pragma once
 
 #include "dbWaveDoc.h"
-#include "PaneldbFilter.h"
-#include "PaneldbProperties.h"
+#include "ViewDB/PanelFilter/PaneldbFilter.h"
+#include "ViewDB/PanelProperties/PaneldbProperties.h"
 
 class CMainFrame : public CMDIFrameWndEx
 {

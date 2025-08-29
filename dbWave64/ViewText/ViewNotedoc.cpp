@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "resource.h"
 #include "NoteDoc.h"
-#include "ViewNotedoc.h"
+#include "ViewText/ViewNotedoc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -5,7 +5,6 @@
 #include "DlgProgress.h"
 #include "DlgSpikeEdit.h"
 #include "MainFrm.h"
-#include "ViewSpikeDetect.h"
 #include "DatabaseUtils.h"
 
 

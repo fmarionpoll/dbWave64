@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ViewDbTable.h"
+#include "ViewDB/ViewDbTable.h"
 #include "DataListCtrl.h"
-#include "dbView/DisplaySettings.h"
+#include "ViewDB/ListRecords/DisplaySettings.h"
 
 struct ViewdbWaveState {
 	boolean primed = false;
@@ -58,10 +58,10 @@ protected:
 	DECLARE_MESSAGE_MAP()
 	void save_controls_state();
 	void restore_controls_state();
-
+	void set_display_mode(DisplayMode mode);
 
 private:
-	DataListCtrl m_data_list_ctrl_;
+	DataListCtrl m_list_ctrl_;
 	// cached UI values
 	float m_time_first_  {0.f};
 	float m_time_last_   {0.f};

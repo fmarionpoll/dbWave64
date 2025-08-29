@@ -11,6 +11,9 @@
 
 IMPLEMENT_DYNCREATE(ViewdbWave, ViewDbTable)
 
+// Static session-level state for this view
+ViewdbWaveState ViewdbWave::s_view_state_ {};
+
 BEGIN_MESSAGE_MAP(ViewdbWave, ViewDbTable)
 	ON_WM_SIZE()
 
@@ -104,18 +107,49 @@ void ViewdbWave::OnInitialUpdate()
 	const int n_records = db_wave_doc->db_get_records_count();
 	m_data_list_ctrl_.SetItemCountEx(n_records);
 	const int per_page = m_data_list_ctrl_.GetCountPerPage();
-	m_data_list_ctrl_.set_visible_range(0, per_page - 1);
+	const int current_index = db_wave_doc->db_get_current_record_position();
+	if (current_index >= 0 && n_records > 0)
+	{
+		const int page = max(m_data_list_ctrl_.GetCountPerPage(), 1);
+		int first = max(current_index - page / 2, 0);
+		int last = first + page - 1;
+		if (last >= n_records)
+		{
+			last = n_records - 1;
+			int recomputedFirst = last - page + 1;
+			if (recomputedFirst < 0) recomputedFirst = 0;
+			first = recomputedFirst;
+		}
+		m_data_list_ctrl_.set_visible_range(first, last);
+		if (current_index < m_data_list_ctrl_.GetItemCount())
+		{
+			m_data_list_ctrl_.SetItemState(current_index, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+			m_data_list_ctrl_.EnsureVisible(current_index, FALSE);
+		}
+	}
+	else
+	{
+		m_data_list_ctrl_.set_visible_range(0, per_page - 1);
+	}
 
 	// initialize controls state similar to ViewdbWave
-	CheckDlgButton(IDC_CHECKFILENAME, BST_UNCHECKED);
-	CheckDlgButton(IDC_CHECK1, BST_UNCHECKED);
-	GetDlgItem(IDC_TIMEFIRST)->EnableWindow(FALSE);
-	GetDlgItem(IDC_TIMELAST)->EnableWindow(FALSE);
-	CheckDlgButton(IDC_CHECK2, BST_UNCHECKED);
-	GetDlgItem(IDC_AMPLITUDESPAN)->EnableWindow(FALSE);
+	if (s_view_state_.primed)
+	{
+		// Apply session state immediately to avoid flashing defaults
+		restore_controls_state();
+	}
+	else
+	{
+		CheckDlgButton(IDC_CHECKFILENAME, BST_UNCHECKED);
+		CheckDlgButton(IDC_CHECK1, BST_UNCHECKED);
+		GetDlgItem(IDC_TIMEFIRST)->EnableWindow(FALSE);
+		GetDlgItem(IDC_TIMELAST)->EnableWindow(FALSE);
+		CheckDlgButton(IDC_CHECK2, BST_UNCHECKED);
+		GetDlgItem(IDC_AMPLITUDESPAN)->EnableWindow(FALSE);
 
-	// default to data
-	on_bn_clicked_data();
+		// default to data
+		on_bn_clicked_data();
+	}
 }
 
 void ViewdbWave::OnUpdate(CView* p_sender, const LPARAM l_hint, CObject* p_hint)
@@ -261,7 +295,6 @@ void ViewdbWave::OnActivateView(const BOOL b_activate, CView* p_activate_view, C
 void ViewdbWave::save_controls_state()
 {
 	UpdateData(TRUE);
-	const auto db_wave_doc = GetDocument();
 	ViewdbWaveState state;
 	state.primed = true;
 	state.display_mode = m_data_list_ctrl_.get_display_mode();
@@ -274,12 +307,12 @@ void ViewdbWave::save_controls_state()
 	state.mv_span = m_amplitude_span_;
 	state.b_all_classes = m_data_list_ctrl_.get_spike_plot_mode() == SpikePlotMode::AllClasses;
 	state.spike_class = m_spike_class_;
-	db_wave_doc->set_prop_sheet_state(state);
+	s_view_state_ = state;
 }
 
 void ViewdbWave::restore_controls_state()
 {
-	const ViewdbWaveState state = *GetDocument()->get_prop_sheet_state();
+	const ViewdbWaveState state = s_view_state_;
 	if (state.primed)
 	{
 		// display file name

@@ -2,6 +2,21 @@
 
 #include "ViewDbTable.h"
 #include "DataListCtrl.h"
+#include "dbView/DisplaySettings.h"
+
+struct ViewdbWaveState {
+	boolean primed = false;
+	DisplayMode display_mode;
+	BOOL b_display_file_name;
+	BOOL b_filter_dat;
+	BOOL b_set_time_span;
+	float t_first;
+	float t_last;
+	BOOL b_set_mv_span;
+	float mv_span;
+	BOOL b_all_classes;
+	int spike_class;
+};
 
 class ViewdbWave : public ViewDbTable
 {
@@ -53,6 +68,7 @@ private:
 	float m_amplitude_span_ {0.f};
 	int m_spike_class_ {0};
 	CUIntArray m_columns_width_;
+	static ViewdbWaveState s_view_state_;
 };
 
 

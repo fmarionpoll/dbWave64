@@ -1037,20 +1037,7 @@ BOOL CdbWaveDoc::copy_files_to_directory(const CString & path)
 	return true;
 }
 
-void CdbWaveDoc::set_prop_sheet_state(const ViewdbWaveState& state) {
-	viewdbWaveState_.primed = state.primed;
-	viewdbWaveState_.display_mode = state.display_mode ;
-	viewdbWaveState_.b_display_file_name = state.b_display_file_name;
-	viewdbWaveState_.b_filter_dat = state.b_filter_dat;
-	viewdbWaveState_.b_set_time_span = state.b_set_time_span;
-	viewdbWaveState_.t_first = state.t_first;
-	viewdbWaveState_.t_last = state.t_last;
-	viewdbWaveState_.b_set_mv_span = state.b_set_mv_span ;
-	viewdbWaveState_.mv_span = state.mv_span ;
-	viewdbWaveState_.b_all_classes = state.b_all_classes ;
-	viewdbWaveState_.spike_class = state.spike_class ;
 
-}
 
 CString CdbWaveDoc::copy_file_to_directory(const LPCTSTR psz_source, const CString & directory)
 {

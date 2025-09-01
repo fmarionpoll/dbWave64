@@ -32,10 +32,18 @@ public:
 protected:
 	void DoDataExchange(CDataExchange* p_dx) override;
 	void OnInitialUpdate() override;
-	void OnSize(UINT n_type, int cx, int cy);
-	void OnUpdate(CView* p_sender, LPARAM l_hint, CObject* p_hint) override;
 	void OnActivateView(BOOL b_activate, CView* p_activate_view, CView* p_deactive_view) override;
+	void OnUpdate(CView* p_sender, LPARAM l_hint, CObject* p_hint) override;
+
+	void OnSize(UINT n_type, int cx, int cy);
+
+	afx_msg void on_record_page_up();
+	afx_msg void on_record_page_down();
+
 	afx_msg void on_hdn_end_track_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_result);
+	afx_msg void on_item_activate_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_result);
+	afx_msg void on_dbl_clk_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_result);
+
 	afx_msg void on_bn_clicked_data();
 	afx_msg void on_bn_clicked_display_spikes();
 	afx_msg void on_bn_clicked_display_nothing();
@@ -51,14 +59,13 @@ protected:
 	afx_msg void on_bn_clicked_radio_one_class();
 	afx_msg void on_lvn_column_click_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_result);
 	afx_msg LRESULT on_my_message(WPARAM w_param, LPARAM l_param);
-	afx_msg void on_item_activate_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_result);
-	afx_msg void on_dbl_clk_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_result);
 
 protected:
 	DECLARE_MESSAGE_MAP()
 	void save_controls_state();
 	void restore_controls_state();
 	void set_display_mode(DisplayMode mode);
+	void update_controls();
 
 private:
 	DataListCtrl m_list_ctrl_;

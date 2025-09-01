@@ -15,6 +15,9 @@ IMPLEMENT_DYNCREATE(ViewdbWave, ViewDbTable)
 ViewdbWaveState ViewdbWave::s_view_state_ {};
 
 BEGIN_MESSAGE_MAP(ViewdbWave, ViewDbTable)
+	ON_COMMAND(ID_RECORD_PAGE_UP, &ViewdbWave::on_record_page_up)
+	ON_COMMAND(ID_RECORD_PAGE_DOWN, &ViewdbWave::on_record_page_down)
+
 	ON_WM_SIZE()
 
 	ON_BN_CLICKED(IDC_DISPLAYDATA, &ViewdbWave::on_bn_clicked_data)
@@ -194,7 +197,7 @@ void ViewdbWave::OnUpdate(CView* p_sender, const LPARAM l_hint, CObject* p_hint)
 		{
 			for (UINT i = 0; i < u_selected_count; i++)
 			{
-				item = static_cast<int>(p_document->selected_records.GetAt(i));
+				item = static_cast<int>(p_document->selected_records.GetAt(static_cast<int>(i)));
 				m_list_ctrl_.SetItemState(item, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 			}
 		}
@@ -210,8 +213,46 @@ void ViewdbWave::OnUpdate(CView* p_sender, const LPARAM l_hint, CObject* p_hint)
 
 	case HINT_DOC_MOVE_RECORD:
 	default:
+		update_controls();
 		break;
 	}
+}
+
+void ViewdbWave::update_controls()
+{
+	const auto db_wave_doc = GetDocument();
+	const int i_file = db_wave_doc->db_get_current_record_position();
+
+	m_list_ctrl_.set_current_selection(i_file);
+	m_list_ctrl_.EnsureVisible(i_file, FALSE);
+
+	//if (m_options_view_data_->display_mode == 2)
+	//{
+	//	CSpikeDoc* p_spk_doc = GetDocument()->open_current_spike_file();
+	//	if (p_spk_doc != nullptr)
+	//	{
+	//		const auto spk_list_size = p_spk_doc->get_spike_list_size();
+	//		if (spk_list_tab_ctrl.GetItemCount() < spk_list_size)
+	//			spk_list_tab_ctrl.init_ctrl_tab_from_spike_doc(p_spk_doc);
+	//	}
+	//}
+
+	//pdb_doc->SetModifiedFlag(true);
+	//pdb_doc->UpdateAllViews(this, HINT_DOC_MOVE_RECORD, nullptr);
+	db_wave_doc->update_all_views_db_wave(this, HINT_DOC_MOVE_RECORD, nullptr);
+
+	//POSITION pos = pdb_doc->GetFirstViewPosition();
+	//int n_views = 0;
+	//while (pos != NULL)
+	//{
+	//	CView* pView = pdb_doc->GetNextView(pos);
+	//	CMainFrame* frame = (CMainFrame*)pView->GetParentFrame();
+	//	frame->OnUpdate(this, HINT_DOC_MOVE_RECORD, nullptr);
+
+	//	//pView->UpdateWindow();
+	//	n_views++;
+	//}
+
 }
 
 void ViewdbWave::delete_records()
@@ -255,6 +296,16 @@ void ViewdbWave::on_dbl_clk_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_result)
 	*p_result = 0;
 	// quit the current view and switch to spike detection view
 	GetParent()->PostMessage(WM_COMMAND, static_cast<WPARAM>(ID_VIEW_SPIKE_DETECTION), static_cast<LPARAM>(NULL));
+}
+
+void ViewdbWave::on_record_page_up()
+{
+	m_list_ctrl_.SendMessage(WM_VSCROLL, SB_PAGEUP, NULL);
+}
+
+void ViewdbWave::on_record_page_down()
+{
+	m_list_ctrl_.SendMessage(WM_VSCROLL, SB_PAGEDOWN, NULL);
 }
 
 void ViewdbWave::OnActivateView(const BOOL b_activate, CView* p_activate_view, CView* p_deactive_view)

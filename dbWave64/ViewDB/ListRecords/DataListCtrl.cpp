@@ -144,6 +144,24 @@ void DataListCtrl::set_visible_range(int first, int last)
 	update_images();
 }
 
+void DataListCtrl::set_current_selection(const int record_position)
+{
+	// get current item which has the focus
+	constexpr auto flag = LVNI_FOCUSED | LVNI_ALL;
+	const auto current_position = GetNextItem(-1, flag);
+
+	// exit if it is the same
+	if (current_position != record_position)
+	{
+		// focus new
+		if (current_position >= 0)
+			SetItemState(current_position, 0, LVIS_SELECTED | LVIS_FOCUSED);
+
+		SetItemState(record_position, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+		EnsureVisible(record_position, FALSE);
+	}
+}
+
 void DataListCtrl::update_images()
 {
 	build_empty_bitmap(FALSE);

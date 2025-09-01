@@ -41,6 +41,7 @@ public:
 	void set_transform_mode(const DataTransform mode) { settings_.data_transform = mode; }
 	void set_spike_plot_mode(const SpikePlotMode mode, const int i_class) { settings_.spike_plot_mode = mode; settings_.selected_class = i_class; }
 	void set_visible_range(int first, int last);
+	void set_current_selection(int record_position);
 
 	float get_amplitude_span() const { return settings_.mv_span; }
 	boolean get_display_file_name() const { return settings_.b_display_file_name; }
@@ -49,7 +50,6 @@ public:
 	DisplayMode get_display_mode() const { return settings_.display_mode; }
 	DataTransform get_transform_mode() const { return settings_.data_transform; }
 	SpikePlotMode get_spike_plot_mode() const { return settings_.spike_plot_mode; }
-
 
 	void refresh_display();
 	void fit_columns_to_size(int n_pixels);

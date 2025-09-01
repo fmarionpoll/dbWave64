@@ -4,7 +4,6 @@
 
 #include "resource.h"
 #include "dbTableMain.h"
-#include "dbWaveDoc.h"
 #include "DlgADIntervals.h"
 #include "DlgADExperiment.h"
 #include "dtacq32.h"

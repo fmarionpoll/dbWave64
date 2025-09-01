@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #include "SpikeClassRowItem.h"
 
+#include "dbWaveDoc.h"
+
 SpikeClassRowItem::SpikeClassRowItem()
 = default;
 

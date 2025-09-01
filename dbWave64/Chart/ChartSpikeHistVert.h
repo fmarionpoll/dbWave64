@@ -10,7 +10,7 @@
 //		index 1 to nbins = data
 
 #include "ChartSpike.h"
-#include "dbWaveDoc.h"
+
 
 class ChartSpikeHistVert : public ChartSpike
 {

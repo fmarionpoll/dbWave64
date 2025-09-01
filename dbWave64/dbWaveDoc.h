@@ -7,7 +7,7 @@
 #include "AcqDataDoc.h"
 #include "dbWave_structures.h"
 #include "db_spike.h"
-#include "ViewDB/ListRecords/DisplaySettings.h"
+#include "ViewDB/ListRecords/ViewdbWave.h"
 
 struct source_data
 {
@@ -19,7 +19,6 @@ struct source_data
 	boolean spike_file_present  {false};
 	CWaveFormat* p_wave_format  {nullptr};
 };
-
 
 
 class CdbWaveDoc : public COleDocument
@@ -37,6 +36,7 @@ protected:
 	BOOL		clean_database_on_exit_  {false};
 	BOOL		transpose_  {false};
 	db_spike	spike_hit_{};
+	ViewdbWaveState viewdbWaveState_ {};
 
 public:
 	AcqDataDoc* m_p_data_doc  {nullptr};
@@ -99,7 +99,8 @@ public:
 	BOOL	import_data_files_from_another_data_base(const CString& other_data_base_file_name, boolean copy_data_to_new_sub_directory) const;
 	BOOL	copy_files_to_directory(const CString& path);
 
-
+	void set_prop_sheet_state(const ViewdbWaveState& state);
+	ViewdbWaveState* get_prop_sheet_state() { return &viewdbWaveState_; };
 
 protected:
 	source_data get_wave_format_from_either_file(CString cs_filename);
@@ -134,15 +135,14 @@ protected:
 public:
 	static CdbWaveDoc* get_active_mdi_document();
 
-	void	Serialize(CArchive& ar) override;
-	BOOL	OnNewDocument() override;
-	BOOL	OnOpenDocument(LPCTSTR lpsz_path_name) override;
-	BOOL	OnSaveDocument(LPCTSTR lpsz_path_name) override;
-	HMENU	GetDefaultMenu() override; // get menu depending on state
+	void	Serialize(CArchive& ar) ;
+	BOOL	OnNewDocument() ;
+	BOOL	OnOpenDocument(LPCTSTR lpsz_path_name) ;
+	BOOL	OnSaveDocument(LPCTSTR lpsz_path_name) ;
+	HMENU	GetDefaultMenu() ; // get menu depending on state
 	void	update_all_views_db_wave(CView* p_sender, LPARAM l_hint, CObject* p_hint);
 
-	~CdbWaveDoc() override;
-
+	~CdbWaveDoc() ;
 #ifdef _DEBUG
 	void AssertValid() const ;
 	void Dump(CDumpContext& dc) const ;

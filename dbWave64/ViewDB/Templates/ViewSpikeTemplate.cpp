@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "ViewSpikeTemplate.h"
 #include "dbWave.h"
+#include "dbWaveDoc.h"
 #include "DlgEditSpikeClass.h"
 
 #ifdef _DEBUG

@@ -8,7 +8,6 @@
 #include "Controls/RulerBar.h"
 #include "afxwin.h"
 #include "chart/ChartDataAD.h"
-#include "StretchControls.h"
 #include "DataTranslation_AD.h"
 #include "DataTranslation_DA.h"
 #include "USBPxxS1Ctl.h"

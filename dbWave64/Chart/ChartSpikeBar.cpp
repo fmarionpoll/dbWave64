@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #include "ChartSpikeBar.h"
 
+#include "dbWaveDoc.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif

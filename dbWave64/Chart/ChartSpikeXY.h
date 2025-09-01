@@ -1,6 +1,6 @@
 #pragma once
 #include "ChartSpike.h"
-#include "dbWaveDoc.h"
+
 
 
 class ChartSpikeXY : public ChartSpike

@@ -4,6 +4,7 @@
 #include "DlgADExperiment.h"
 #include "DlgEditList.h"
 #include "DatabaseUtils.h"
+#include "dbWaveDoc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

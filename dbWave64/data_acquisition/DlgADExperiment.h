@@ -1,7 +1,9 @@
 #pragma once
 #include "afxeditbrowsectrl.h"
-#include "dbWaveDoc.h"
 #include "options_input.h"
+
+class CdbTableAssociated;
+class CdbWaveDoc;
 
 class DlgADExperiment : public CDialog
 {

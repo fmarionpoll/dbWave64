@@ -9,8 +9,8 @@
 
 #include "StdAfx.h"
 #include "ChartSpikeHist.h"
-
 #include "ColorNames.h"
+#include "dbWaveDoc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

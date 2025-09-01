@@ -1,6 +1,8 @@
 ﻿#include "StdAfx.h"
 #include "ChartSpike.h"
 
+#include "dbWaveDoc.h"
+
 
 ChartSpike::ChartSpike()
 {

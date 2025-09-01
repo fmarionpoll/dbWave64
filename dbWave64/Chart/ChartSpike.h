@@ -2,11 +2,12 @@
 #include <tuple>
 
 #include "ChartWnd.h"
-#include "dbWaveDoc.h"
 #include "Spikedoc.h"
 #include "db_spike.h"
 #include "Spikelist.h"
 
+
+class CdbWaveDoc;
 
 class ChartSpike : public ChartWnd
 {

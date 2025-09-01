@@ -4,8 +4,9 @@
 #include "SpikeListTabCtrl.h"
 #include "dbTableMain.h"
 #include "StretchControls.h"
-#include "dbWaveDoc.h"
 
+
+class CdbWaveDoc;
 
 class ViewDbTable : public CDaoRecordView
 {

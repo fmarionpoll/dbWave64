@@ -1,7 +1,9 @@
 #include "StdAfx.h"
-#include "dbWaveDoc.h"
-#include "ViewDbTable.h"
+
 #include "dbWave_constants.h"
+#include "ViewDbTable.h"
+
+#include "dbWaveDoc.h"
 
 IMPLEMENT_DYNAMIC(ViewDbTable, CDaoRecordView)
 

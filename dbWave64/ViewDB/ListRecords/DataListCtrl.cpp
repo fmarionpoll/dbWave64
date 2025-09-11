@@ -184,6 +184,7 @@ void DataListCtrl::update_images()
 				spike_renderer_->renderBitmap(settings_, meta, bmp);
 			}
 			break;
+		case DisplayMode::None:
 		default:
 			break;
 		}

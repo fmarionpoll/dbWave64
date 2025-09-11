@@ -633,7 +633,7 @@ void PaneldbFilter::on_tvn_sel_changed_filter_tree(NMHDR* p_nmhdr, LRESULT* p_re
 {
 	NM_TREEVIEW* p_nm_tree_view = (NM_TREEVIEW*) p_nmhdr;
 	auto* p_new_item = &p_nm_tree_view->itemNew;
-	TRACE("changed filter \n");
+//	TRACE("changed filter \n");
 }
 
 void PaneldbFilter::on_nm_click_filter_tree(NMHDR* p_nmhdr, LRESULT* p_result)
@@ -641,7 +641,7 @@ void PaneldbFilter::on_nm_click_filter_tree(NMHDR* p_nmhdr, LRESULT* p_result)
 	//const auto i_cur_sel = spk_list_tab_ctrl.GetCurSel();
 	//SendMessage(WM_MYMESSAGE, HINT_VIEW_TAB_CHANGE, MAKELPARAM(i_cur_sel, 0));
 	//*p_result = 0;
-	TRACE("click filter \n");
+	//TRACE("click filter \n");
 }
 
 void  PaneldbFilter::on_cbn_sel_change_category()

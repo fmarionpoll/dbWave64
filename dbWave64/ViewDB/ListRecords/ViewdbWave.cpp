@@ -206,16 +206,26 @@ void ViewdbWave::OnUpdate(CView* p_sender, const LPARAM l_hint, CObject* p_hint)
 	break;
 
 	case HINT_REPLACE_VIEW:
-	case HINT_REQUERY:
-	case HINT_DOC_HAS_CHANGED:
 		m_list_ctrl_.set_visible_range(0, m_list_ctrl_.GetCountPerPage() - 1);
+		update_controls();
 		break;
 
+	case HINT_REQUERY:
+		fill_list_box();
+	case HINT_DOC_HAS_CHANGED:
+		m_list_ctrl_.set_visible_range(-1, -1);
 	case HINT_DOC_MOVE_RECORD:
 	default:
 		update_controls();
 		break;
 	}
+}
+
+void ViewdbWave::fill_list_box()
+{
+	m_list_ctrl_.DeleteAllItems();
+	const int n_records = GetDocument()->db_get_records_count();
+	m_list_ctrl_.SetItemCountEx(n_records);
 }
 
 void ViewdbWave::update_controls()

@@ -34,7 +34,6 @@ protected:
 	void OnInitialUpdate() override;
 	void OnActivateView(BOOL b_activate, CView* p_activate_view, CView* p_deactive_view) override;
 	void OnUpdate(CView* p_sender, LPARAM l_hint, CObject* p_hint) override;
-
 	void OnSize(UINT n_type, int cx, int cy);
 
 	afx_msg void on_record_page_up();
@@ -66,6 +65,7 @@ protected:
 	void restore_controls_state();
 	void set_display_mode(DisplayMode mode);
 	void update_controls();
+	void fill_list_box();
 
 private:
 	DataListCtrl m_list_ctrl_;

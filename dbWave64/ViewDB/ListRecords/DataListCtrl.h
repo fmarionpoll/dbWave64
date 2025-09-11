@@ -67,7 +67,6 @@ private:
 	void update_images();
 	void save_columns_width() const;
 
-private:
 	static int m_column_width_[N_COLUMNS2];
 	static CString m_column_headers_[N_COLUMNS2];
 	static int m_column_format_[N_COLUMNS2];

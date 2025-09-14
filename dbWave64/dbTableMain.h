@@ -84,12 +84,12 @@ public:
 	CString m_acq_comment  {_T("")}; // 5
 	long m_id_insect  {0};			// 6
 	long m_id_sensillum  {0};		// 7
-	CString m_more  {_T("")};		// 8
+	CString m_more  {_T("")};	// 8
 	long m_insect_key  {0};			// 9
 	long m_location_key  {0};		// 10
 	long m_operator_key  {0};		// 11
 	long m_sensillum_key  {0};		// 12
-	long m_path1_key {0};				// 13
+	long m_path1_key {0};			// 13
 	long m_path2_key  {0};			// 14 unused 
 	long m_data_len  {0};			// 15
 	long m_n_spikes  {0};			// 16
@@ -100,7 +100,7 @@ public:
 	long m_concentration2_key  {0};	// 21
 	long m_flag  {0};				// 22
 	long m_strain_key  {0};			// 23
-	long m_sex_key  {0};				// 24
+	long m_sex_key  {0};			// 24
 	long m_repeat  {0};				// 25
 	long m_repeat2  {0};			// 26
 	COleDateTime m_acq_date_day  {static_cast<DATE>(0)}; // 27

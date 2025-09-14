@@ -9,7 +9,7 @@
 #include "db_spike.h"
 #include "ViewDB/ListRecords/ViewdbWave.h"
 
-struct source_data
+struct source_data_struct
 {
 	CString cs_dat_file{};
 	CString cs_spk_file{};
@@ -103,10 +103,10 @@ public:
 	ViewdbWaveState* get_prop_sheet_state() { return &viewdbWaveState_; };
 
 protected:
-	source_data get_wave_format_from_either_file(CString cs_filename);
-	void	set_record_file_names(const source_data* record) const;
-	boolean set_record_spk_classes(const source_data* record) const;
-	void	set_record_wave_format(const source_data* record) const;
+	source_data_struct get_wave_format_from_either_file(CString cs_filename);
+	void	set_record_file_names(const source_data_struct* record) const;
+	boolean set_record_spk_classes(const source_data_struct* record) const;
+	void	set_record_wave_format(const source_data_struct* record) const;
 	boolean import_file_single(const CString& cs_filename, long& m_id, int i_record, const CStringArray& cs_array, int n_columns,
 	                           boolean b_header);
 	CString get_full_path_name_without_extension() const;
@@ -120,7 +120,7 @@ protected:
 				{ return cs_array.GetSize() / n_columns - (b_header ? 1 : 0); }
 	static void	remove_row_at(CStringArray& file_name_array, int i_row, int n_columns, boolean b_header);
 	static CSharedFile* file_discarded_message(CSharedFile* p_sf, const CString& cs_filename, int i_record);
-	static void	get_infos_from_string_array(const source_data* p_record, const CStringArray& file_names_array, int i_record, int n_columns, boolean b_header);
+	static void	get_infos_from_string_array(const source_data_struct* p_record, const CStringArray& file_names_array, int i_record, int n_columns, boolean b_header);
 	static int	find_column_associated_to_header(const CString& text);
 	static void	remove_file_from_disk(const CString& file_name);
 	static CString get_path_directory(const CString& full_name);

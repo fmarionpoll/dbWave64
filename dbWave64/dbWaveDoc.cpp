@@ -541,7 +541,6 @@ void CdbWaveDoc::center_spike_amplitude_all_spikes_between_t1_and_t2(const boole
 {
 	const long n_files = b_all_files ? db_get_records_count() : 1;
 	const int current_spike_list_index = m_p_spk_doc->get_index_current_spike_list();
-	boolean initialized = false;
 
 	for (long i_file = 0; i_file < n_files; i_file++)
 	{
@@ -706,7 +705,7 @@ void CdbWaveDoc::export_data_ascii_comments(CSharedFile * p_shared_file)
 		cs_dummy.Empty();
 		if (open_current_data_file() != nullptr)
 		{
-			cs_dummy += m_p_data_doc->get_data_file_infos(p_view_data_options); 
+			cs_dummy += m_p_data_doc->get_data_file_infos(p_view_data_options) + _T("\t");
 			if (p_view_data_options->b_data_base_columns)
 				cs_dummy += export_database_data();
 		}
@@ -1135,9 +1134,9 @@ HMENU CdbWaveDoc::GetDefaultMenu()
 	return h_my_menu; // just use original default
 }
 
-source_data CdbWaveDoc::get_wave_format_from_either_file(CString cs_filename)
+source_data_struct CdbWaveDoc::get_wave_format_from_either_file(CString cs_filename)
 {
-	source_data record;
+	source_data_struct record;
 
 	record.i_last_backslash_position = cs_filename.ReverseFind('\\');
 	const auto i_dot_position = cs_filename.ReverseFind('.');
@@ -1188,7 +1187,7 @@ int CdbWaveDoc::find_column_associated_to_header(const CString & text)
 	return found;
 }
 
-void CdbWaveDoc::get_infos_from_string_array(const source_data * p_record, const CStringArray & file_names_array, int const i_record, const int n_columns, const boolean b_header)
+void CdbWaveDoc::get_infos_from_string_array(const source_data_struct * p_record, const CStringArray & file_names_array, int const i_record, const int n_columns, const boolean b_header)
 {
 	CWaveFormat* p_wave_format = p_record->p_wave_format;
 	const int index = index_2d_array(i_record, n_columns, b_header);
@@ -1245,7 +1244,7 @@ void CdbWaveDoc::get_infos_from_string_array(const source_data * p_record, const
 	}
 }
 
-void CdbWaveDoc::set_record_file_names(const source_data * record) const
+void CdbWaveDoc::set_record_file_names(const source_data_struct * record) const
 {
 	// save file names
 	if (record->data_file_present)
@@ -1266,7 +1265,7 @@ void CdbWaveDoc::set_record_file_names(const source_data * record) const
 	}
 }
 
-boolean CdbWaveDoc::set_record_spk_classes(const source_data * record) const
+boolean CdbWaveDoc::set_record_spk_classes(const source_data_struct * record) const
 {
 	const boolean flag = static_cast<boolean>(m_p_spk_doc->OnOpenDocument(record->cs_spk_file));
 	if (flag)
@@ -1280,7 +1279,7 @@ boolean CdbWaveDoc::set_record_spk_classes(const source_data * record) const
 	return flag;
 }
 
-void CdbWaveDoc::set_record_wave_format(const source_data * record) const
+void CdbWaveDoc::set_record_wave_format(const source_data_struct * record) const
 {
 	db_table->transfer_wave_format_data_to_record(record->p_wave_format);
 }
@@ -1294,7 +1293,7 @@ void CdbWaveDoc::import_file_list(CStringArray& cs_descriptors_array, const int 
 
 	CSharedFile* shared_file = static_cast<CdbWaveApp*>(AfxGetApp())->m_psf;
 	SAFE_DELETE(shared_file)
-		static_cast<CdbWaveApp*>(AfxGetApp())->m_psf = nullptr;
+	static_cast<CdbWaveApp*>(AfxGetApp())->m_psf = nullptr;
 	shared_file = new CSharedFile(GMEM_MOVEABLE | GMEM_DDESHARE | GMEM_ZEROINIT);
 
 	// -------------------------- cancel any pending edit or add operation
@@ -1347,16 +1346,16 @@ void CdbWaveDoc::import_file_list(CStringArray& cs_descriptors_array, const int 
 
 	// close files opened here
 	SAFE_DELETE(m_p_data_doc)
-		SAFE_DELETE(m_p_spk_doc)
-		SAFE_DELETE(shared_file)
+	SAFE_DELETE(m_p_spk_doc)
+	SAFE_DELETE(shared_file)
 }
 
 boolean CdbWaveDoc::import_file_single(const CString & cs_filename, long& m_id, const int i_record, const CStringArray & cs_array, const int n_columns,
                                        const boolean b_header)
 {
 	// open document and read data - go to next file if not readable
-	source_data record = get_wave_format_from_either_file(cs_filename);
-	if (record.p_wave_format == nullptr)
+	const source_data_struct record = get_wave_format_from_either_file(cs_filename);
+	if  (record.p_wave_format == nullptr)
 		return false;
 
 	if (n_columns > 1)
@@ -1373,15 +1372,14 @@ boolean CdbWaveDoc::import_file_single(const CString & cs_filename, long& m_id, 
 	}
 
 	// add new pRecord  -- mID
-	db_table->m_main_table_set.AddNew();
-	m_id++;
-	db_table->m_main_table_set.m_id = m_id;
-	set_record_file_names(&record);
-	set_record_wave_format(&record);
-	boolean flag = set_record_spk_classes(&record);
-	
 	try
 	{
+		db_table->m_main_table_set.AddNew();
+		m_id++;
+		db_table->m_main_table_set.m_id = m_id;
+		set_record_file_names(&record);
+		set_record_wave_format(&record);
+		boolean flag = set_record_spk_classes(&record);
 		db_table->m_main_table_set.Update();
 	}
 	catch (CDaoException* e)
@@ -1689,9 +1687,7 @@ void CdbWaveDoc::synchronize_source_infos(const BOOL b_all)
 
 BOOL CdbWaveDoc::update_waveformat_from_database(CWaveFormat * p_wave_format) const
 {
-	auto b_changed = FALSE;
-
-	b_changed = db_table->get_record_value_string(CH_EXPERIMENT_KEY, p_wave_format->cs_comment);
+	auto b_changed = db_table->get_record_value_string(CH_EXPERIMENT_KEY, p_wave_format->cs_comment);
 	b_changed |= db_table->get_record_value_string(CH_MORE, p_wave_format->cs_more_comment);
 	b_changed |= db_table->get_record_value_string(CH_OPERATOR_KEY, p_wave_format->cs_operator);
 	b_changed |= db_table->get_record_value_string(CH_INSECT_KEY, p_wave_format->cs_insect_name);
@@ -1785,7 +1781,7 @@ CString CdbWaveDoc::export_database_data(const int option) const
 	auto filename = desc.cs_val;
 	db_table->get_record_item_value(CH_FILESPK, &desc);
 	filename = filename + _T('\\') + desc.cs_val;
-	cs_file_comment.Format(_T("%i%s%s"), db_table->m_main_table_set.m_id, (LPCTSTR)separator, (LPCTSTR)filename);
+	cs_file_comment.Format(_T("%i%s%s"),  db_table->m_main_table_set.m_id, (LPCTSTR)separator, (LPCTSTR)filename);
 
 	// source data file items
 	if (options_view_spikes->b_acq_date) // source data time and date

@@ -280,12 +280,6 @@ void DataListCtrl::OnVScroll(const UINT n_sb_code, const UINT n_pos, CScrollBar*
 	case SB_LINEDOWN:
 		static_cast<ViewDbTable*>(GetParent())->OnMove(ID_RECORD_NEXT);
 		break;
-	case SB_PAGEUP:
-		static_cast<ViewDbTable*>(GetParent())->OnMove(ID_RECORD_PAGE_UP);
-		break;
-	case SB_PAGEDOWN:
-		static_cast<ViewDbTable*>(GetParent())->OnMove(ID_RECORD_PAGE_DOWN);
-		break;
 	default:
 		CListCtrl::OnVScroll(n_sb_code, n_pos, p_scroll_bar);
 		break;

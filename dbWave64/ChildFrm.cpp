@@ -137,7 +137,7 @@ void CChildFrame::on_view_cursor_mode_normal()
 	(GetActiveView())->PostMessage(WM_MYMESSAGE, HINT_SET_MOUSE_CURSOR, MAKELPARAM(m_cursor_state, NULL));
 }
 
-void CChildFrame::on_update_view_cursor_mode_normal(CCmdUI * p_cmd_ui)
+void CChildFrame::on_update_view_cursor_mode_normal(CCmdUI * p_cmd_ui) 
 {
 	p_cmd_ui->SetCheck(m_cursor_state == CURSOR_ARROW);
 }
@@ -148,7 +148,7 @@ void CChildFrame::on_view_cursor_mode_measure()
 	(GetActiveView())->PostMessage(WM_MYMESSAGE, HINT_SET_MOUSE_CURSOR, MAKELPARAM(m_cursor_state, NULL));
 }
 
-void CChildFrame::on_update_view_cursor_mode_measure(CCmdUI * p_cmd_ui)
+void CChildFrame::on_update_view_cursor_mode_measure(CCmdUI * p_cmd_ui) 
 {
 	p_cmd_ui->SetCheck(m_cursor_state == CURSOR_CROSS);
 }
@@ -159,7 +159,7 @@ void CChildFrame::on_view_cursor_mode_zoom_in()
 	(GetActiveView())->PostMessage(WM_MYMESSAGE, HINT_SET_MOUSE_CURSOR, MAKELPARAM(m_cursor_state, NULL));
 }
 
-void CChildFrame::on_update_view_cursor_mode_zoom_in(CCmdUI * p_cmd_ui)
+void CChildFrame::on_update_view_cursor_mode_zoom_in(CCmdUI * p_cmd_ui) 
 {
 	p_cmd_ui->SetCheck(m_cursor_state == CURSOR_ZOOM);
 }
@@ -658,7 +658,7 @@ void CChildFrame::on_tools_remove_artefact_files()
 				if (abs(last_value - *p_data) <= jitter)
 				{
 					consecutive_points++;
-					if (consecutive_points > consecutive_points)
+					if (consecutive_points > n_consecutive_points)
 						break;
 				}
 				else
@@ -696,7 +696,7 @@ void CChildFrame::on_record_goto()
 	if (IDOK == dlg.DoModal())
 	{
 		static_cast<CdbWaveApp*>(AfxGetApp())->options_view_data.b_goto_record_id = dlg.m_b_goto_record_id;
-		BOOL bSuccess = FALSE;
+		BOOL bSuccess;
 		if (!dlg.m_b_goto_record_id)
 			bSuccess = p_db_wave_doc->db_set_current_record_position(dlg.m_record_pos);
 		else
@@ -1031,11 +1031,11 @@ void CChildFrame::on_tools_import_database()
 	dlg_file.GetOFN().lpstrFilter = _T("Database Files\0*.mdb");
 	dlg_file.GetOFN().lpstrTitle = _T("Select a database to be merged with current database...");
 	constexpr int check_id = 1001;
-	HRESULT b_result = dlg_file.AddCheckButton(check_id, _T("Copy data files to a new sub-directory"), FALSE);
+	dlg_file.AddCheckButton(check_id, _T("Copy data files to a new sub-directory"), FALSE);
 	if (IDOK == dlg_file.DoModal())
 	{
 		BOOL copy_data_to_new_sub_directory;
-		b_result = dlg_file.GetCheckButtonState(check_id, copy_data_to_new_sub_directory);
+		dlg_file.GetCheckButtonState(check_id, copy_data_to_new_sub_directory);
 		TRACE(L"reading the value for check_id %d\n", copy_data_to_new_sub_directory);
 
 		CdbWaveDoc* p_db_wave_doc = CdbWaveDoc::get_active_mdi_document();
@@ -1173,7 +1173,7 @@ void CChildFrame::on_tools_cleanup_filenames()
 		return;
 	}
 
-	BOOL success = FALSE;
+	BOOL success;
 	success = CleanupDataFileFilenames(p_db_wave_doc);
 	if (success)
 	{

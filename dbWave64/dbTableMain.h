@@ -74,6 +74,7 @@ class CdbTableMain : public CDaoRecordset
 public:
 	CdbTableMain(CDaoDatabase* p_database = nullptr);
 	DECLARE_DYNAMIC(CdbTableMain)
+	~CdbTableMain() override;
 
 	// Field/Param Data - these parameters are equivalent to column headers in a table, where each row is a record
 
@@ -136,7 +137,7 @@ public:
 	void DoFieldExchange(CDaoFieldExchange* p_fx) override; 
 
 	// Implementation
-	~CdbTableMain() override;
+	
 #ifdef _DEBUG
 	void AssertValid() const override;
 	void Dump(CDumpContext& dc) const override;

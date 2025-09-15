@@ -1,6 +1,3 @@
-// dbMultiDocTemplate.cpp : implementation file
-//
-
 #include "StdAfx.h"
 #include "dbMultiDocTemplate.h"
 
@@ -8,8 +5,6 @@
 #define new DEBUG_NEW
 #endif
 
-/////////////////////////////////////////////////////////////////////////////
-// CdbMultiDocTemplate
 
 CdbMultiDocTemplate::CdbMultiDocTemplate(UINT nIDResource, CRuntimeClass* pDocClass, CRuntimeClass* pFrameClass,
                                          CRuntimeClass* pViewClass)
@@ -25,9 +20,6 @@ BEGIN_MESSAGE_MAP(CdbMultiDocTemplate, CMultiDocTemplate)
 
 END_MESSAGE_MAP()
 
-/////////////////////////////////////////////////////////////////////////////
-// CdbMultiDocTemplate diagnostics
-
 #ifdef _DEBUG
 void CdbMultiDocTemplate::AssertValid() const
 {
@@ -39,9 +31,6 @@ void CdbMultiDocTemplate::Dump(CDumpContext& dc) const
 	CMultiDocTemplate::Dump(dc);
 }
 #endif //_DEBUG
-
-/////////////////////////////////////////////////////////////////////////////
-// get one of the info strings
 
 BOOL CdbMultiDocTemplate::GetDocString(CString& rString, enum DocStringIndex i) const
 {
@@ -64,12 +53,10 @@ BOOL CdbMultiDocTemplate::GetDocString(CString& rString, enum DocStringIndex i) 
 	return TRUE;
 }
 
-/////////////////////////////////////////////////////////////////////////////
-
 CMultiDocTemplate::Confidence CdbMultiDocTemplate::MatchDocType(LPCTSTR lpszPathName, CDocument*& rpDocMatch)
 {
 	rpDocMatch = nullptr;
-	CString cs_path_name = lpszPathName;
+	const CString cs_path_name = lpszPathName;
 
 	// go through all documents to see if this document is already opened
 	auto pos = GetFirstDocPosition();
@@ -81,7 +68,7 @@ CMultiDocTemplate::Confidence CdbMultiDocTemplate::MatchDocType(LPCTSTR lpszPath
 			rpDocMatch = p_document;
 			return yesAlreadyOpen;
 		}
-	} // end while
+	}
 
 	// not open - then see if it matches either suffix
 	CString str_filter_ext;

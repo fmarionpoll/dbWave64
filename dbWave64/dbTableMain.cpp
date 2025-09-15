@@ -38,7 +38,7 @@ CdbTableMain::CdbTableMain(CDaoDatabase* pdb)
 	m_desc[CH_REPEAT].pdata_item			= &m_repeat;
 
 	m_desc[CH_REPEAT2].pdata_item			= &m_repeat2;
-	m_desc[CH_EXPERIMENT_KEY].pdata_item			= &m_experiment_key;
+	m_desc[CH_EXPERIMENT_KEY].pdata_item	= &m_experiment_key;
 
 	m_desc[CH_ACQDATE].pdata_item			= nullptr; 
 	m_desc[CH_FILENAME].pdata_item			= nullptr; 
@@ -76,6 +76,13 @@ CdbTableMain::CdbTableMain(CDaoDatabase* pdb)
 
 CdbTableMain::~CdbTableMain()
 {
+	//if (IsOpen()) {
+	//	for (int i = 0; i <= m_nFields; i++)
+	//	{
+	//		if (IsFieldDirty(&m_desc[i]))
+	//			AfxMessageBox(_T("field dirty"), MB_OK, 0);
+	//	}
+	//}
 	delete_date_array();
 }
 

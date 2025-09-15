@@ -154,7 +154,7 @@ BOOL CdbTable::create_main_table(const CString& cs_table)
 
 	i = 5; // 5 - "more"
 	fd0.m_strName = m_main_table_set.m_desc[i].header_name;
-	fd0.m_nOrdinalPosition = i;
+	fd0.m_nOrdinalPosition = static_cast<short>(i);
 	fd0.m_nType = dbMemo;
 	fd0.m_lSize = dbMemo;
 	table_def.CreateField(fd0);

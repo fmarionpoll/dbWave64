@@ -135,7 +135,7 @@ END_EVENTSINK_MAP()
 void ViewADcontinuous::attach_controls()
 {
 	// attach controls
-	VERIFY(m_chart_data_ad_.SubclassDlgItem(IDC_DISPLAYDATA, this));
+	VERIFY(m_chart_data_ad_.SubclassDlgItem(IDC_DISPLAY_DATA, this));
 	VERIFY(m_ad_y_ruler_bar.SubclassDlgItem(IDC_YSCALE, this));
 	VERIFY(m_ad_x_ruler_bar.SubclassDlgItem(IDC_XSCALE, this));
 	VERIFY(m_bias_button.SubclassDlgItem(IDC_BIAS_button, this));
@@ -150,7 +150,7 @@ void ViewADcontinuous::attach_controls()
 	m_chart_data_ad_.b_nice_grid = TRUE;
 
 	stretch_.attach_parent(this);
-	stretch_.new_prop(IDC_DISPLAYDATA, XLEQ_XREQ, YTEQ_YBEQ);
+	stretch_.new_prop(IDC_DISPLAY_DATA, XLEQ_XREQ, YTEQ_YBEQ);
 	stretch_.new_prop(IDC_XSCALE, XLEQ_XREQ, SZEQ_YBEQ);
 	stretch_.new_prop(IDC_YSCALE, SZEQ_XLEQ, YTEQ_YBEQ);
 	stretch_.new_prop(IDC_GAIN_button, SZEQ_XREQ, SZEQ_YTEQ);

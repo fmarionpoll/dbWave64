@@ -20,7 +20,7 @@ BEGIN_MESSAGE_MAP(ViewdbWave, ViewDbTable)
 
 	ON_WM_SIZE()
 
-	ON_BN_CLICKED(IDC_DISPLAYDATA, &ViewdbWave::on_bn_clicked_data)
+	ON_BN_CLICKED(IDC_DISPLAY_DATA, &ViewdbWave::on_bn_clicked_display_data)
 	ON_BN_CLICKED(IDC_DISPLAY_SPIKES, &ViewdbWave::on_bn_clicked_display_spikes)
 	ON_BN_CLICKED(IDC_DISPLAY_NOTHING, &ViewdbWave::on_bn_clicked_display_nothing)
 
@@ -150,7 +150,7 @@ void ViewdbWave::OnInitialUpdate()
 		GetDlgItem(IDC_AMPLITUDESPAN)->EnableWindow(FALSE);
 
 		// default to data
-		on_bn_clicked_data();
+		on_bn_clicked_display_data();
 	}
 }
 
@@ -333,7 +333,12 @@ void ViewdbWave::OnActivateView(const BOOL b_activate, CView* p_activate_view, C
 			int first = max(current_index - per_page / 2, 0) ;
 			int last = first + per_page - 1;
 			const int total = db_wave_doc->db_get_records_count();
-			if (last >= total) { last = total - 1; int recomputedFirst = last - per_page + 1; if (recomputedFirst < 0) recomputedFirst = 0; first = recomputedFirst; }
+			if (last >= total) {
+				last = total - 1;
+				int recomputed_first = last - per_page + 1;
+				if (recomputed_first < 0) recomputed_first = 0;
+				first = recomputed_first;
+			}
 
 			m_list_ctrl_.set_visible_range(first, last);
 
@@ -406,7 +411,7 @@ void ViewdbWave::restore_controls_state()
 		// enable/disable controls according to display mode
 		m_spike_class_ = state.spike_class;
 		if (state.display_mode == DisplayMode::Data)
-			on_bn_clicked_data();
+			on_bn_clicked_display_data();
 		else if (state.display_mode == DisplayMode::Spikes)
 			on_bn_clicked_display_spikes();
 		else
@@ -461,9 +466,12 @@ void ViewdbWave::set_display_mode(const DisplayMode mode)
 {
 	m_list_ctrl_.set_display_mode(mode);
 	m_list_ctrl_.refresh_display();
-	static_cast<CButton*>(GetDlgItem(IDC_DISPLAYDATA))->SetCheck(mode == DisplayMode::Data ? BST_CHECKED : BST_UNCHECKED);
-	static_cast<CButton*>(GetDlgItem(IDC_DISPLAY_SPIKES))->SetCheck(mode == DisplayMode::Spikes ? BST_CHECKED : BST_UNCHECKED);
-	static_cast<CButton*>(GetDlgItem(IDC_DISPLAY_NOTHING))->SetCheck(mode == DisplayMode::None ? BST_CHECKED : BST_UNCHECKED);
+	int iID = IDC_DISPLAY_DATA;
+	if (mode == DisplayMode::Spikes)
+		iID = IDC_DISPLAY_SPIKES;
+	else if (mode == DisplayMode::None)
+		iID = IDC_DISPLAY_NOTHING;
+	check_display_button(iID);
 
 	GetDlgItem(IDC_FILTERCHECK)->EnableWindow(mode == DisplayMode::Data ? TRUE: FALSE);
 	GetDlgItem(IDC_RADIOALLCLASSES)->EnableWindow(mode == DisplayMode::Spikes? TRUE : FALSE);
@@ -471,7 +479,12 @@ void ViewdbWave::set_display_mode(const DisplayMode mode)
 	GetDlgItem(IDC_SPIKECLASS)->EnableWindow(mode == DisplayMode::Spikes ? TRUE : FALSE);
 }
 
-void ViewdbWave::on_bn_clicked_data()
+void ViewdbWave::check_display_button(int iID)
+{
+	static_cast<CButton*>(GetDlgItem(iID))->SetCheck(BST_CHECKED);
+}
+
+void ViewdbWave::on_bn_clicked_display_data()
 {
 	set_display_mode(DisplayMode::Data);
 	const BOOL b_filter_dat = static_cast<CButton*>(GetDlgItem(IDC_FILTERCHECK))->GetCheck();

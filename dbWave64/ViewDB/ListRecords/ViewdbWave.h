@@ -43,7 +43,7 @@ protected:
 	afx_msg void on_item_activate_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_result);
 	afx_msg void on_dbl_clk_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_result);
 
-	afx_msg void on_bn_clicked_data();
+	afx_msg void on_bn_clicked_display_data();
 	afx_msg void on_bn_clicked_display_spikes();
 	afx_msg void on_bn_clicked_display_nothing();
 	afx_msg void on_en_change_time_first();
@@ -64,6 +64,7 @@ protected:
 	void save_controls_state();
 	void restore_controls_state();
 	void set_display_mode(DisplayMode mode);
+	void check_display_button(int iID);
 	void update_controls();
 	void fill_list_box();
 

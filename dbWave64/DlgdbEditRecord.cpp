@@ -52,8 +52,8 @@ void DlgdbEditRecord::DoDataExchange(CDataExchange* p_dx)
 	DDX_Control(p_dx, IDC_COMBO_PATHDAT, m_ctl_path_dat);
 	DDX_Control(p_dx, IDC_COMBO_PATHSPK, m_ctl_path_spk);
 	DDX_Control(p_dx, IDC_COMBO_FLAG, m_ctl_flag);
+	DDX_Control(p_dx, IDC_COMBO_COMMENT, m_ctl_comment);
 
-	DDX_Text(p_dx, IDC_EDIT_COMMENT, m_cs_more);
 	DDX_Text(p_dx, IDC_EDIT_NAMEDAT, m_cs_name_dat);
 	DDX_Text(p_dx, IDC_EDIT_NAMESPK, m_cs_name_spk);
 }
@@ -61,8 +61,8 @@ void DlgdbEditRecord::DoDataExchange(CDataExchange* p_dx)
 BEGIN_MESSAGE_MAP(DlgdbEditRecord, CDialog)
 	ON_BN_CLICKED(IDC_BUTTONINSECTID, &DlgdbEditRecord::on_bn_clicked_button_insect_id)
 	ON_BN_CLICKED(IDC_BUTTONSENSILLUMID, &DlgdbEditRecord::on_bn_clicked_button_sensillum_id)
-	ON_BN_CLICKED(IDC_BUTTONSTIMULUS, &DlgdbEditRecord::on_bn_clicked_button_stimulus)
-	ON_BN_CLICKED(IDC_BUTTONCONCENTRATION, &DlgdbEditRecord::on_bn_clicked_button_concentration)
+	ON_BN_CLICKED(IDC_BUTTONSTIMULUS, &DlgdbEditRecord::on_bn_clicked_button_stimulus1)
+	ON_BN_CLICKED(IDC_BUTTONCONCENTRATION, &DlgdbEditRecord::on_bn_clicked_button_concentration1)
 	ON_BN_CLICKED(IDC_BUTTONSTIMULUS2, &DlgdbEditRecord::on_bn_clicked_button_stimulus2)
 	ON_BN_CLICKED(IDC_BUTTONCONCENTRATION2, &DlgdbEditRecord::on_bn_clicked_button_concentration2)
 	ON_BN_CLICKED(IDC_BUTTONINSECTNAME, &DlgdbEditRecord::on_bn_clicked_button_insect_name)
@@ -71,18 +71,19 @@ BEGIN_MESSAGE_MAP(DlgdbEditRecord, CDialog)
 	ON_BN_CLICKED(IDC_BUTTONSENSILLUM, &DlgdbEditRecord::on_bn_clicked_button_sensillum)
 	ON_BN_CLICKED(IDC_BUTTONLOCATION, &DlgdbEditRecord::on_bn_clicked_button_location)
 	ON_BN_CLICKED(IDC_BUTTONOPERATOR, &DlgdbEditRecord::on_bn_clicked_button_operator)
-	ON_BN_CLICKED(IDC_BUTTON5, &DlgdbEditRecord::on_bn_clicked_button5)
-	ON_BN_CLICKED(IDC_BUTTON1, &DlgdbEditRecord::on_bn_clicked_button1)
+	ON_BN_CLICKED(IDC_BUTTON_DATAPATH, &DlgdbEditRecord::on_bn_clicked_button_data_path)
+	ON_BN_CLICKED(IDC_BUTTON_SPIKEPATH, &DlgdbEditRecord::on_bn_clicked_button_spike_path)
 	ON_BN_CLICKED(IDC_SYNCHROSINGLE, &DlgdbEditRecord::on_bn_clicked_synchro_single)
 	ON_BN_CLICKED(IDC_SYNCHROALL, &DlgdbEditRecord::on_bn_clicked_synchro_all)
 	ON_BN_CLICKED(IDC_PREVIOUS, &DlgdbEditRecord::on_bn_clicked_previous)
 	ON_BN_CLICKED(IDC_NEXT, &DlgdbEditRecord::on_bn_clicked_next)
-	ON_BN_CLICKED(IDC_BUTTONREPEAT, &DlgdbEditRecord::on_bn_clicked_button_repeat)
+	ON_BN_CLICKED(IDC_BUTTONREPEAT, &DlgdbEditRecord::on_bn_clicked_button_repeat1)
 	ON_BN_CLICKED(IDC_BUTTONREPEAT2, &DlgdbEditRecord::on_bn_clicked_button_repeat2)
 	ON_BN_CLICKED(IDC_BUTTONFLAG, &DlgdbEditRecord::on_bn_clicked_button_flag)
-	ON_BN_CLICKED(IDC_BUTTONEXPT2, &DlgdbEditRecord::on_bn_clicked_button_expt2)
-	ON_BN_CLICKED(IDC_BUTTON8, &DlgdbEditRecord::OnBnClickedButton8)
-	ON_BN_CLICKED(IDC_BUTTON9, &DlgdbEditRecord::OnBnClickedButton9)
+	ON_BN_CLICKED(IDC_BUTTONEXPT2, &DlgdbEditRecord::on_bn_clicked_button_experiment)
+	ON_BN_CLICKED(IDC_BUTTON_DATAFILENAME, &DlgdbEditRecord::on_bn_clicked_button_data_file_name)
+	ON_BN_CLICKED(IDC_BUTTON_SPIKEFILENAME, &DlgdbEditRecord::on_bn_clicked_spike_file_name)
+	ON_BN_CLICKED(IDC_BUTTONCOMMENT, &DlgdbEditRecord::on_bn_clicked_button_comment)
 END_MESSAGE_MAP()
 
 // CdbEditRecordDlg message handlers
@@ -115,6 +116,7 @@ void DlgdbEditRecord::populate_controls()
 	populate_combo_with_text(p_db->m_path_set, m_ctl_path_dat, m_p_set->m_path1_key);
 	populate_combo_with_text(p_db->m_path_set, m_ctl_path_spk, m_p_set->m_path2_key);
 	populate_combo_with_text(p_db->m_experiment_set, m_ctl_experiment, m_p_set->m_experiment_key);
+	populate_combo_with_text(p_db->m_comment_set, m_ctl_comment, m_p_set->m_comment_key);
 	// ID combos
 	populate_combo_with_numbers(m_ctl_insect_id, &m_p_set->m_desc[CH_IDINSECT].li_array, m_p_set->m_id_insect);
 	populate_combo_with_numbers(m_ctl_sensillum_id, &m_p_set->m_desc[CH_IDSENSILLUM].li_array, m_p_set->m_id_sensillum);
@@ -123,7 +125,6 @@ void DlgdbEditRecord::populate_controls()
 	populate_combo_with_numbers(m_ctl_flag, &m_p_set->m_desc[CH_FLAG].li_array, m_p_set->m_flag);
 
 	// fixed parameters
-	m_cs_more = m_p_set->m_more;
 	m_cs_name_dat = m_p_set->m_file_dat;
 	m_cs_name_spk = m_p_set->m_file_spk;
 
@@ -230,6 +231,7 @@ void DlgdbEditRecord::update_database_from_dialog()
 	update_set_from_combo(p_database->m_location_set, m_ctl_location, m_p_set->m_location_key);
 	update_set_from_combo(p_database->m_operator_set, m_ctl_operator, m_p_set->m_operator_key);
 	update_set_from_combo(p_database->m_experiment_set, m_ctl_experiment, m_p_set->m_experiment_key);
+	update_set_from_combo(p_database->m_comment_set, m_ctl_comment, m_p_set->m_comment_key);
 
 	// save fixed parameters
 	CString cs;
@@ -243,7 +245,6 @@ void DlgdbEditRecord::update_database_from_dialog()
 	m_p_set->m_repeat2 = _ttoi(cs);
 	m_ctl_flag.GetWindowText(cs);
 	m_p_set->m_flag = _ttoi(cs);
-	m_p_set->m_more = m_cs_more;
 	m_p_set->m_file_dat = m_cs_name_dat;
 	m_p_set->m_file_spk = m_cs_name_spk;
 	m_p_set->Update();
@@ -338,9 +339,14 @@ void DlgdbEditRecord::on_bn_clicked_button_flag()
 	edit_change_item_main_field(IDC_COMBO_FLAG);
 }
 
-void DlgdbEditRecord::on_bn_clicked_button_repeat()
+void DlgdbEditRecord::on_bn_clicked_button_repeat1()
 {
 	edit_change_item_main_field(IDC_COMBO_REPEATT);
+}
+
+void DlgdbEditRecord::on_bn_clicked_button_comment()
+{
+	edit_change_item_main_field(IDC_COMBO_COMMENT);
 }
 
 void DlgdbEditRecord::on_bn_clicked_button_repeat2()
@@ -485,6 +491,11 @@ DB_ITEMDESC* DlgdbEditRecord::get_item_descriptors(const int idc)
 		m_p_set->m_desc[ich].p_combo_box = &m_ctl_repeat2;
 		break;
 
+	case IDC_COMBO_COMMENT:
+		ich = CH_COMMENT_KEY;
+		m_p_set->m_desc[ich].p_combo_box = &m_ctl_comment;
+		break;
+
 	default:
 		ich = -1;
 		break;
@@ -498,12 +509,12 @@ DB_ITEMDESC* DlgdbEditRecord::get_item_descriptors(const int idc)
 	return p_desc;
 }
 
-void DlgdbEditRecord::on_bn_clicked_button_stimulus()
+void DlgdbEditRecord::on_bn_clicked_button_stimulus1()
 {
 	edit_change_item_indirect_field(IDC_COMBO_STIMULUS);
 }
 
-void DlgdbEditRecord::on_bn_clicked_button_concentration()
+void DlgdbEditRecord::on_bn_clicked_button_concentration1()
 {
 	edit_change_item_indirect_field(IDC_COMBO_CONCENTRATION);
 }
@@ -538,12 +549,12 @@ void DlgdbEditRecord::on_bn_clicked_button_operator()
 	edit_change_item_indirect_field(IDC_COMBO_OPERATOR);
 }
 
-void DlgdbEditRecord::on_bn_clicked_button5()
+void DlgdbEditRecord::on_bn_clicked_button_data_path()
 {
 	edit_change_item_indirect_field(IDC_COMBO_PATHDAT);
 }
 
-void DlgdbEditRecord::on_bn_clicked_button1()
+void DlgdbEditRecord::on_bn_clicked_button_spike_path()
 {
 	if (AfxMessageBox(_T("Are spike files in the same directory as dat files?"), MB_YESNO, -1) != IDYES)
 		edit_change_item_indirect_field(IDC_COMBO_PATHSPK);
@@ -563,7 +574,7 @@ void DlgdbEditRecord::on_bn_clicked_button_sex()
 	edit_change_item_indirect_field(IDC_COMBO_SEX);
 }
 
-void DlgdbEditRecord::on_bn_clicked_button_expt2()
+void DlgdbEditRecord::on_bn_clicked_button_experiment()
 {
 	edit_change_item_indirect_field(IDC_COMBO_EXPT2);
 }
@@ -602,7 +613,7 @@ void DlgdbEditRecord::on_bn_clicked_next()
 }
 
 
-void DlgdbEditRecord::OnBnClickedButton8()
+void DlgdbEditRecord::on_bn_clicked_button_data_file_name()
 {
 	// Remove leading spaces from data file filenames
 	if (AfxMessageBox(_T("This will remove leading spaces from all data file filenames in the database.\n\nContinue?"), MB_YESNO | MB_ICONQUESTION) != IDYES)
@@ -622,7 +633,7 @@ void DlgdbEditRecord::OnBnClickedButton8()
 }
 
 
-void DlgdbEditRecord::OnBnClickedButton9()
+void DlgdbEditRecord::on_bn_clicked_spike_file_name()
 {
 	// Remove leading spaces from spike file filenames
 	if (AfxMessageBox(_T("This will remove leading spaces from all spike file filenames in the database.\n\nContinue?"), MB_YESNO | MB_ICONQUESTION) != IDYES)
@@ -640,3 +651,5 @@ void DlgdbEditRecord::OnBnClickedButton9()
 		m_pdb_doc->UpdateAllViews(nullptr, HINT_REQUERY, nullptr);
 	}
 }
+
+

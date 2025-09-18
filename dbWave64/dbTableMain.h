@@ -8,7 +8,7 @@ constexpr auto COL_ACQDATE = 3;				// 1
 constexpr auto COL_ACQ_COMMENTS = 4;		// 4
 constexpr auto COL_IDINSECT = 5;			// 6
 constexpr auto COL_IDSENSILLUM = 6;			// 7
-constexpr auto COL_MORE = 7;				// 5
+constexpr auto COL_COMMENT = 7;				// 5
 constexpr auto COL_INSECT_KEY = 8;			// 12
 constexpr auto COL_LOCATION_KEY = 9;		// 17
 constexpr auto COL_OPERATOR_KEY = 10;		// 14
@@ -37,7 +37,7 @@ constexpr auto CH_FILENAME = 2;
 constexpr auto CH_FILESPK = 3;
 constexpr auto CH_ACQ_COMMENTS = 4;
 
-constexpr auto CH_MORE = 5;
+constexpr auto CH_COMMENT_KEY = 5;
 constexpr auto CH_IDINSECT = 6;
 constexpr auto CH_IDSENSILLUM = 7;
 constexpr auto CH_DATALEN = 8;
@@ -85,7 +85,7 @@ public:
 	CString m_acq_comment  {_T("")}; // 5
 	long m_id_insect  {0};			// 6
 	long m_id_sensillum  {0};		// 7
-	CString m_more  {_T("")};	// 8
+	long m_comment_key {0};			// 8
 	long m_insect_key  {0};			// 9
 	long m_location_key  {0};		// 10
 	long m_operator_key  {0};		// 11

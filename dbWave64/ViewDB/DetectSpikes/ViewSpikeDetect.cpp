@@ -513,14 +513,14 @@ void ViewSpikeDetection::define_stretch_parameters()
 	stretch_.new_prop(IDC_FILESCROLL, XLEQ_XREQ, SZEQ_YBEQ);
 
 	stretch_.new_prop(IDC_EMPTYPICTURE, XLEQ_XREQ, YTEQ_YBEQ);
-	stretch_.new_slave_prop(IDC_DISPLAYDATA, XLEQ_XREQ, SZPR_YTEQ, IDC_EMPTYPICTURE);
+	stretch_.new_slave_prop(IDC_DISPLAY_DATA, XLEQ_XREQ, SZPR_YTEQ, IDC_EMPTYPICTURE);
 	stretch_.new_slave_prop(IDC_DISPLAYDETECT, XLEQ_XREQ, SZPR_YBEQ, IDC_EMPTYPICTURE);
 
-	stretch_.new_slave_prop(IDC_CHANSELECTED2, SZEQ_XREQ, SZEQ_YTEQ, IDC_DISPLAYDATA);
-	stretch_.new_slave_prop(IDC_GAIN2, SZEQ_XREQ, SZEQ_YTEQ, IDC_DISPLAYDATA);
-	stretch_.new_slave_prop(IDC_BIAS2, SZEQ_XREQ, SZEQ_YTEQ, IDC_DISPLAYDATA);
-	stretch_.new_slave_prop(IDC_SCROLLY2, SZEQ_XREQ, YTEQ_YBEQ, IDC_DISPLAYDATA);
-	stretch_.new_slave_prop(IDC_STATICDISPLAYDATA, SZEQ_XLEQ, YTEQ_YBEQ, IDC_DISPLAYDATA);
+	stretch_.new_slave_prop(IDC_CHANSELECTED2, SZEQ_XREQ, SZEQ_YTEQ, IDC_DISPLAY_DATA);
+	stretch_.new_slave_prop(IDC_GAIN2, SZEQ_XREQ, SZEQ_YTEQ, IDC_DISPLAY_DATA);
+	stretch_.new_slave_prop(IDC_BIAS2, SZEQ_XREQ, SZEQ_YTEQ, IDC_DISPLAY_DATA);
+	stretch_.new_slave_prop(IDC_SCROLLY2, SZEQ_XREQ, YTEQ_YBEQ, IDC_DISPLAY_DATA);
+	stretch_.new_slave_prop(IDC_STATICDISPLAYDATA, SZEQ_XLEQ, YTEQ_YBEQ, IDC_DISPLAY_DATA);
 
 	stretch_.new_prop(IDC_TAB1, XLEQ_XREQ, SZEQ_YBEQ);
 
@@ -578,7 +578,7 @@ void ViewSpikeDetection::define_sub_classed_items()
 	VERIFY(chart_spike_shape_.SubclassDlgItem(IDC_DISPLAY_SPIKES, this));
 	VERIFY(chart_spike_bar_.SubclassDlgItem(IDC_CHART_BARS, this));
 	VERIFY(chart_data_filtered_.SubclassDlgItem(IDC_DISPLAYDETECT, this));
-	VERIFY(chart_data_.SubclassDlgItem(IDC_DISPLAYDATA, this));
+	VERIFY(chart_data_.SubclassDlgItem(IDC_DISPLAY_DATA, this));
 
 	// load left scrollbar and button
 	VERIFY(m_scroll_y_.SubclassDlgItem(IDC_SCROLLY, this));

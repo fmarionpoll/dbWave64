@@ -474,13 +474,16 @@
 #define IDC_BUTTON1                     1005
 #define IDC_BUTTON5                     1006
 #define IDC_STATIC7                     1006
-#define IDC_DISPLAYDATA                 1007
+#define IDC_BUTTON_DATAPATH             1006
+#define IDC_DISPLAY_DATA                1007
 #define IDC_BUTTON8                     1007
+#define IDC_BUTTON_DATAFILENAME         1007
 #define IDC_COMBO_SENSILLUMID           1008
 #define IDC_COMBO_FLAG                  1009
 #define IDC_STATIC10                    1009
 #define IDC_STATIC11                    1010
 #define IDC_BUTTON9                     1010
+#define IDC_BUTTON_SPIKEFILENAME        1010
 #define IDC_COMBO_STIMULUS              1011
 #define IDC_STATIC12                    1011
 #define IDC_COMBO_CONCENTRATION         1012
@@ -570,6 +573,7 @@
 #define IDC_STATIC_MSEQ_RATIO           1108
 #define IDC_HITRATE                     1109
 #define IDC_STATIC_MSEQ_DELAY           1109
+#define IDC_BUTTONCOMMENT               1109
 #define IDC_TOLERANCE                   1110
 #define IDC_HITRATE2                    1111
 #define IDC_MSEQ_SEED                   1111
@@ -589,6 +593,8 @@
 #define IDC_HISTMAX_STATIC              1123
 #define IDC_COMBO_OPERATOR              1128
 #define IDC_STATICRATIO                 1129
+#define IDC_COMBO_OPERATOR2             1129
+#define IDC_COMBO_COMMENT               1129
 #define IDC_RATIO                       1130
 #define IDC_RADIO4                      1132
 #define IDC_RADIO5                      1133
@@ -869,6 +875,7 @@
 #define IDC_NONE                        1544
 #define IDC_REPLACE_WITH                1545
 #define IDC_CHANGE_INTO                 1546
+#define IDC_BUTTON_SPIKEPATH            1547
 #define IDC_VSPLIT                      30980
 #define IDC_HSPLIT                      30981
 #define ID_CANCEL_EDIT_CNTR             32768
@@ -923,7 +930,6 @@
 #define ID_VIEW_SPIKE_SORTING_TEMPLATES 32941
 #define ID_VIEW_SPIKE_TIME_SERIES       32942
 #define ID_VIEW_ACQUIRE_DATA            32943
-
 #define ID_TOOLS_EDIT_STIMULUS          32946
 #define ID_TOOLS_REMOVE_DUPLICATE_FILES 32948
 #define ID_TOOLS_RESTORE_DELETED_FILES  32951
@@ -1004,7 +1010,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        580
 #define _APS_NEXT_COMMAND_VALUE         33072
-#define _APS_NEXT_CONTROL_VALUE         1547
+#define _APS_NEXT_CONTROL_VALUE         1548
 #define _APS_NEXT_SYMED_VALUE           555
 #endif
 #endif

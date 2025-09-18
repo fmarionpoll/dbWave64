@@ -37,6 +37,7 @@ public:
 	CdbTableAssociated m_strain_set;
 	CdbTableAssociated m_experiment_set;
 	CdbTableAssociated m_path_set;
+	CdbTableAssociated m_comment_set;
 
 	//CdbTableAssociated	m_stim2Set; // TODO
 	//CdbTableAssociated	m_conc2Set;	// TODO

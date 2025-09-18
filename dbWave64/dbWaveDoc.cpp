@@ -1688,7 +1688,7 @@ void CdbWaveDoc::synchronize_source_infos(const BOOL b_all)
 BOOL CdbWaveDoc::update_waveformat_from_database(CWaveFormat * p_wave_format) const
 {
 	auto b_changed = db_table->get_record_value_string(CH_EXPERIMENT_KEY, p_wave_format->cs_comment);
-	b_changed |= db_table->get_record_value_string(CH_MORE, p_wave_format->cs_more_comment);
+	b_changed |= db_table->get_record_value_string(CH_COMMENT_KEY, p_wave_format->cs_more_comment);
 	b_changed |= db_table->get_record_value_string(CH_OPERATOR_KEY, p_wave_format->cs_operator);
 	b_changed |= db_table->get_record_value_string(CH_INSECT_KEY, p_wave_format->cs_insect_name);
 	b_changed |= db_table->get_record_value_string(CH_STRAIN_KEY, p_wave_format->cs_strain);
@@ -1815,7 +1815,7 @@ CString CdbWaveDoc::export_database_data(const int option) const
 
 		db_table->get_record_item_value(CH_OPERATOR_KEY, &desc);
 		cs_file_comment += separator + desc.cs_val;
-		db_table->get_record_item_value(CH_MORE, &desc);
+		db_table->get_record_item_value(CH_COMMENT_KEY, &desc);
 		cs_file_comment += separator + desc.cs_val;
 
 		db_table->get_record_item_value(CH_STIM1_KEY, &desc);

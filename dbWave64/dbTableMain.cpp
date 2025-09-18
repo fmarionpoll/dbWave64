@@ -21,7 +21,9 @@ CdbTableMain::CdbTableMain(CDaoDatabase* pdb)
 
 	m_desc[CH_NSPIKECLASSES].pdata_item		= &m_n_spike_classes;
 	m_desc[CH_FLAG].pdata_item				= &m_flag;
-	m_desc[CH_INSECT_KEY].pdata_item			= &m_insect_key;
+
+	m_desc[CH_COMMENT_KEY].pdata_item		= &m_comment_key;
+	m_desc[CH_INSECT_KEY].pdata_item		= &m_insect_key;
 	m_desc[CH_SENSILLUM_KEY].pdata_item		= &m_sensillum_key;
 	m_desc[CH_OPERATOR_KEY].pdata_item		= &m_operator_key;
 
@@ -44,7 +46,6 @@ CdbTableMain::CdbTableMain(CDaoDatabase* pdb)
 	m_desc[CH_FILENAME].pdata_item			= nullptr; 
 	m_desc[CH_FILESPK].pdata_item			= nullptr; 
 	m_desc[CH_ACQ_COMMENTS].pdata_item		= nullptr;
-	m_desc[CH_MORE].pdata_item				= nullptr;
 	m_desc[CH_ACQDATE_DAY].pdata_item		= nullptr;
 	m_desc[CH_ACQDATE_TIME].pdata_item		= nullptr;
 	m_desc[CH_ACQDATE_DAY].date_time_param_single_filter	= static_cast<DATE>(0); 
@@ -122,7 +123,6 @@ void CdbTableMain::DoFieldExchange(CDaoFieldExchange* p_fx)
 	DFX_Text(p_fx, m_desc[CH_FILENAME].dfx_name_with_brackets, m_file_dat);
 	DFX_Text(p_fx, m_desc[CH_FILESPK].dfx_name_with_brackets, m_file_spk);
 	DFX_Text(p_fx, m_desc[CH_ACQ_COMMENTS].dfx_name_with_brackets, m_acq_comment);
-	DFX_Text(p_fx, m_desc[CH_MORE].dfx_name_with_brackets, m_more);
 	DFX_Long(p_fx, m_desc[CH_ID].dfx_name_with_brackets, m_id);
 	DFX_Long(p_fx, m_desc[CH_DATALEN].dfx_name_with_brackets, m_data_len);
 	DFX_Long(p_fx, m_desc[CH_NSPIKES].dfx_name_with_brackets, m_n_spikes);
@@ -167,6 +167,8 @@ void CdbTableMain::DoFieldExchange(CDaoFieldExchange* p_fx)
 	DFX_DateTime(p_fx, m_desc[i].dfx_name_with_brackets, m_acq_date_time);
 	i = CH_EXPERIMENT_KEY;
 	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_experiment_key);
+	i = CH_COMMENT_KEY;
+	DFX_Long(p_fx, m_desc[i].dfx_name_with_brackets, m_comment_key);
 	
 	p_fx->SetFieldType(CDaoFieldExchange::param);
 	i = CH_IDINSECT;
@@ -205,6 +207,8 @@ void CdbTableMain::DoFieldExchange(CDaoFieldExchange* p_fx)
 	DFX_DateTime(p_fx, m_desc[i].cs_col_param, m_desc[i].date_time_param_single_filter); // 17
 	i = CH_EXPERIMENT_KEY;
 	DFX_Long(p_fx, m_desc[i].cs_col_param, m_desc[i].l_param_single_filter); // 18
+	i = CH_COMMENT_KEY;
+	DFX_Long(p_fx, m_desc[i].cs_col_param, m_desc[i].l_param_single_filter); // 19
 }
 
 /////////////////////////////////////////////////////////////////////////////

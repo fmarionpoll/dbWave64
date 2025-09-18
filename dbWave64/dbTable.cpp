@@ -20,7 +20,7 @@ column_properties CdbTable::m_column_properties[N_TABLE_COLUMNS] =
 	{COL_FILENAME, _T("filename"), _T("dat file"), FIELD_TEXT, _T("") }, // 2
 	{COL_FILESPK, _T("filespk"), _T("spk file"), FIELD_TEXT, _T("")}, // 3
 	{COL_ACQ_COMMENTS, _T("acq_comment"), _T("comment"), FIELD_TEXT, _T("")}, // 4
-	{COL_MORE, _T("more"), _T("comment"), FIELD_TEXT, _T("")}, // 5
+	{COL_COMMENT, _T("comment"), _T("comment"), FIELD_IND_TEXT, _T("")}, // 5
 	{COL_IDINSECT, _T("insectID"), _T("ID insect"), FIELD_LONG, _T("")}, // 6
 	{COL_IDSENSILLUM, _T("sensillumID"), _T("ID sensillum"), FIELD_LONG, _T("")}, // 7
 	{COL_DATALEN, _T("datalen"), _T("data length (n points)"), FIELD_LONG, _T("")}, // 8
@@ -275,6 +275,7 @@ void CdbTable::create_associated_tables()
 	m_strain_set.create_index_table(_T("strain"), _T("strain"), _T("strainID"), 100, this);
 	m_sex_set.create_index_table(_T("sex"), _T("sex"), _T("sexID"), 10, this);
 	m_experiment_set.create_index_table(_T("expt"), _T("expt"), _T("exptID"), 100, this);
+	m_comment_set.create_index_table(_T("comment"), _T("comment"), _T("commentID"), 100, this);
 }
 
 void CdbTable::create_all_tables()
@@ -362,6 +363,7 @@ BOOL CdbTable::open_tables()
 		open_associated_table(&m_sex_set);
 		open_associated_table(&m_strain_set);
 		open_associated_table(&m_experiment_set);
+		open_associated_table(&m_comment_set);
 	}
 	catch (CDaoException* e)
 	{
@@ -420,7 +422,7 @@ void CdbTable::add_column_22_23(CDaoTableDef& table_def, const CString& cs_table
 		m_main_table_set.m_desc[CH_STRAIN_KEY].header_name); // strain_ID
 	CreateRelation(_T("table_sex"), _T("sex"), cs_table, l_attr, _T("sexID"),
 		m_main_table_set.m_desc[CH_SEX_KEY].header_name); // sex_ID
-// type -> location
+	// type -> location
 	DeleteRelation(_T("table_type")); // delete relationship
 	table_def.DeleteField(CH_LOCATION_KEY);
 	// delete the field (index is different because we deleted one field)
@@ -843,7 +845,6 @@ DB_ITEMDESC* CdbTable::get_record_item_descriptor(const int column_index)
 	case CH_FILENAME:
 	case CH_FILESPK:
 	case CH_ACQ_COMMENTS:
-	case CH_MORE:
 		p_desc->pdata_item = nullptr;
 		ASSERT(p_desc->data_code_number == FIELD_TEXT);
 		break;
@@ -927,6 +928,11 @@ DB_ITEMDESC* CdbTable::get_record_item_descriptor(const int column_index)
 		ASSERT(p_desc->data_code_number == FIELD_IND_TEXT);
 		break;
 	case CH_SEX_KEY:
+		p_desc->pdata_item = &m_main_table_set.m_comment_key;
+		p_desc->p_linked_set = &m_comment_set;
+		ASSERT(p_desc->data_code_number == FIELD_IND_TEXT);
+		break;
+	case CH_COMMENT_KEY:
 		p_desc->pdata_item = &m_main_table_set.m_sex_key;
 		p_desc->p_linked_set = &m_sex_set;
 		ASSERT(p_desc->data_code_number == FIELD_IND_TEXT);
@@ -1090,8 +1096,6 @@ void CdbTable::transfer_wave_format_data_to_record(const CWaveFormat* p_wave_for
 	m_main_table_set.m_repeat = p_wave_format->repeat;
 	m_main_table_set.SetFieldNull(&(m_main_table_set.m_repeat2), FALSE);
 	m_main_table_set.m_repeat2 = p_wave_format->repeat2;
-	m_main_table_set.SetFieldNull(&(m_main_table_set.m_more), FALSE);
-	m_main_table_set.m_more = p_wave_format->cs_more_comment;
 
 	// set type, stimulus and concentrations
 	m_main_table_set.m_operator_key = m_operator_set.get_string_in_linked_table(p_wave_format->cs_operator);
@@ -1106,6 +1110,7 @@ void CdbTable::transfer_wave_format_data_to_record(const CWaveFormat* p_wave_for
 	m_main_table_set.m_sex_key = m_sex_set.get_string_in_linked_table(p_wave_format->cs_sex);
 	m_main_table_set.m_strain_key = m_strain_set.get_string_in_linked_table(p_wave_format->cs_strain);
 	m_main_table_set.m_experiment_key = m_experiment_set.get_string_in_linked_table(p_wave_format->cs_comment);
+	m_main_table_set.m_comment_key = m_experiment_set.get_string_in_linked_table(p_wave_format->cs_more_comment);
 	m_main_table_set.m_flag = p_wave_format->flag;
 }
 

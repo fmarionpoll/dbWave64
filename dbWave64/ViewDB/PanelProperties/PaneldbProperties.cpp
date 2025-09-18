@@ -47,7 +47,7 @@ int PaneldbProperties::m_no_col_[] = {
 	CH_NSPIKES,
 	CH_NSPIKECLASSES,
 	CH_FLAG,
-	CH_MORE,
+	CH_COMMENT_KEY,
 	-1
 }; // 22-25 measures: n spikes, spike_classes, flag, more
 
@@ -509,9 +509,13 @@ void PaneldbProperties::on_bn_clicked_update_infos()
 	m_p_doc_->update_all_views_db_wave(nullptr, HINT_DOC_HAS_CHANGED, nullptr);
 }
 
+// WPARAM = ID iof the property list item which has changed
+// l_param = pointer to the CMFCPropertyGridProperty which has changed
+
 LRESULT PaneldbProperties::on_property_changed(WPARAM, LPARAM l_param)
 {
 	m_b_changed_property_ = TRUE;
+	on_bn_clicked_update_infos();
 	return 0;
 }
 

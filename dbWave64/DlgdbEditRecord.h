@@ -55,15 +55,15 @@ public:
 	CComboBox m_ctl_repeat;
 	CComboBox m_ctl_repeat2;
 	CComboBox m_ctl_flag;
+	CComboBox m_ctl_comment;
 
-	CString m_cs_more{ _T("") };
 	CString m_cs_name_dat{ _T("") };
 	CString m_cs_name_spk{ _T("") };
 
 	afx_msg void on_bn_clicked_button_insect_id();
 	afx_msg void on_bn_clicked_button_sensillum_id();
-	afx_msg void on_bn_clicked_button_stimulus();
-	afx_msg void on_bn_clicked_button_concentration();
+	afx_msg void on_bn_clicked_button_stimulus1();
+	afx_msg void on_bn_clicked_button_concentration1();
 	afx_msg void on_bn_clicked_button_stimulus2();
 	afx_msg void on_bn_clicked_button_concentration2();
 	afx_msg void on_bn_clicked_button_insect_name();
@@ -72,18 +72,19 @@ public:
 	afx_msg void on_bn_clicked_button_sensillum();
 	afx_msg void on_bn_clicked_button_location();
 	afx_msg void on_bn_clicked_button_operator();
-	afx_msg void on_bn_clicked_button5();
-	afx_msg void on_bn_clicked_button1();
+	afx_msg void on_bn_clicked_button_data_path();
+	afx_msg void on_bn_clicked_button_spike_path();
 	afx_msg void on_bn_clicked_synchro_single();
 	afx_msg void on_bn_clicked_synchro_all();
 	afx_msg void on_bn_clicked_previous();
 	afx_msg void on_bn_clicked_next();
-	afx_msg void on_bn_clicked_button_repeat();
+	afx_msg void on_bn_clicked_button_repeat1();
 	afx_msg void on_bn_clicked_button_repeat2();
 	afx_msg void on_bn_clicked_button_flag();
-	afx_msg void on_bn_clicked_button_expt2();
+	afx_msg void on_bn_clicked_button_experiment();
+	afx_msg void on_bn_clicked_button_data_file_name();
+	afx_msg void on_bn_clicked_spike_file_name();
+	afx_msg void on_bn_clicked_button_comment();
 
 	DECLARE_MESSAGE_MAP()
-	afx_msg void OnBnClickedButton8();
-	afx_msg void OnBnClickedButton9();
 };

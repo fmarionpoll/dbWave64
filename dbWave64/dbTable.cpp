@@ -5,7 +5,7 @@
 
 #include "dbTableColumnDescriptor.h"
 #include "dbWave.h"
-#include "DatabaseUtils.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -20,7 +20,7 @@ column_properties CdbTable::m_column_properties[N_TABLE_COLUMNS] =
 	{COL_FILENAME, _T("filename"), _T("dat file"), FIELD_TEXT, _T("") }, // 2
 	{COL_FILESPK, _T("filespk"), _T("spk file"), FIELD_TEXT, _T("")}, // 3
 	{COL_ACQ_COMMENTS, _T("acq_comment"), _T("comment"), FIELD_TEXT, _T("")}, // 4
-	{COL_COMMENT, _T("comment"), _T("comment"), FIELD_IND_TEXT, _T("")}, // 5
+	{COL_COMMENT, _T("comment"), _T("comment"), FIELD_IND_TEXT, _T("comment")}, // 5
 	{COL_IDINSECT, _T("insectID"), _T("ID insect"), FIELD_LONG, _T("")}, // 6
 	{COL_IDSENSILLUM, _T("sensillumID"), _T("ID sensillum"), FIELD_LONG, _T("")}, // 7
 	{COL_DATALEN, _T("datalen"), _T("data length (n points)"), FIELD_LONG, _T("")}, // 8
@@ -76,6 +76,7 @@ void CdbTable::set_attached_tables_names()
 	m_sex_set.set_dfx_sql_names(m_column_properties[CH_SEX_KEY].attached_table, _T("sex"), _T("sexID"));
 	m_strain_set.set_dfx_sql_names(m_column_properties[CH_STRAIN_KEY].attached_table, _T("strain"), _T("strainID"));
 	m_experiment_set.set_dfx_sql_names(m_column_properties[CH_EXPERIMENT_KEY].attached_table, _T("expt"), _T("exptID"));
+	m_comment_set.set_dfx_sql_names(_T("comment"), _T("comment"), _T("commentID"));
 
 }
 
@@ -90,6 +91,7 @@ boolean CdbTable::create_relations_with_attached_tables(const CString& cs_table)
 	if (!create_relation_between_associated_table_and_1_column(cs_table, CH_STRAIN_KEY, l_attr, &m_strain_set)) return FALSE;
 	if (!create_relation_between_associated_table_and_1_column(cs_table, CH_SEX_KEY, l_attr, &m_sex_set)) return FALSE;
 	if (!create_relation_between_associated_table_and_1_column(cs_table, CH_EXPERIMENT_KEY, l_attr, &m_experiment_set)) return FALSE;
+	if (!create_relation_between_associated_table_and_1_column(cs_table, CH_COMMENT_KEY, l_attr, &m_comment_set)) return FALSE;
 
 	if (!create_relation_between_associated_table_and_2_columns(cs_table, CH_PATH1_KEY, CH_PATH2_KEY)) return FALSE;
 	if (!create_relation_between_associated_table_and_2_columns(cs_table, CH_STIM1_KEY, CH_STIM2_KEY)) return FALSE;
@@ -152,12 +154,9 @@ BOOL CdbTable::create_main_table(const CString& cs_table)
 		table_def.CreateField(fd0);
 	}
 
-	i = 5; // 5 - "more"
-	fd0.m_strName = m_main_table_set.m_desc[i].header_name;
-	fd0.m_nOrdinalPosition = static_cast<short>(i);
-	fd0.m_nType = dbMemo;
-	fd0.m_lSize = dbMemo;
-	table_def.CreateField(fd0);
+	// 5 - comment key (LONG). Replaces legacy memo "more" schema in new databases
+	i = CH_COMMENT_KEY;
+	table_def.CreateField(m_main_table_set.m_desc[i].header_name, dbLong, 4, 0);
 
 	for (i = 6; i <= 25; i++)
 		table_def.CreateField(m_main_table_set.m_desc[i].header_name, dbLong, 4, 0); //  6 - insectID to 25 = sex_ID
@@ -221,6 +220,104 @@ BOOL CdbTable::create_relation_between_associated_table_and_2_columns(const LPCT
 		e->Delete();
 		return FALSE;
 	}
+	return TRUE;
+}
+
+BOOL CdbTable::ensure_comment_schema_and_migrate()
+{
+	const CString cs_table = _T("table");
+
+	// Ensure main table has LONG column for comment key
+	bool hasCommentLong = false;
+	try
+	{
+		CDaoRecordset rs(this);
+		rs.Open(dbOpenTable, cs_table);
+		CDaoFieldInfo fi;
+		rs.GetFieldInfo(m_main_table_set.m_desc[CH_COMMENT_KEY].header_name, fi);
+		hasCommentLong = (fi.m_nType == dbLong);
+		rs.Close();
+	}
+	catch (CDaoException* e)
+	{
+		e->Delete();
+		hasCommentLong = false;
+	}
+
+	if (!hasCommentLong)
+	{
+		CDaoTableDef table_def(this);
+		table_def.Open(cs_table);
+		table_def.CreateField(m_main_table_set.m_desc[CH_COMMENT_KEY].header_name, dbLong, 4, 0);
+		table_def.Close();
+	}
+
+    // Ensure associated table exists (open or create) without reopening if already open
+    if (!m_comment_set.IsOpen())
+    {
+        const auto status = open_associated_table(&m_comment_set);
+        if (status == OPEN_ASSOC_ERROR)
+            return FALSE;
+    }
+
+	// Ensure relation exists: table_comment(commentID) -> table([comment])
+	try
+	{
+		const CString cs_rel = _T("table_comment");
+		const long l_attr = dbRelationDontEnforce;
+		CreateRelation(cs_rel, _T("comment"), cs_table, l_attr, _T("commentID"),
+			m_main_table_set.m_desc[CH_COMMENT_KEY].header_name);
+	}
+	catch (CDaoException* e)
+	{
+		// Relation may already exist; ignore
+		e->Delete();
+	}
+
+    // Migrate legacy free-text from column "more" if present (only if main table is already open)
+    bool hasLegacyMore = false;
+    if (m_main_table_set.IsOpen())
+    {
+        try
+        {
+            CDaoFieldInfo fiMore;
+            m_main_table_set.GetFieldInfo(_T("more"), fiMore, AFX_DAO_SECONDARY_INFO);
+            hasLegacyMore = (fiMore.m_nType == dbMemo || fiMore.m_nType == dbText);
+        }
+        catch (CDaoException* e)
+        {
+            e->Delete();
+            hasLegacyMore = false;
+        }
+    }
+
+    if (hasLegacyMore && m_main_table_set.IsOpen())
+    {
+        if (!m_main_table_set.IsEOF()) m_main_table_set.MoveFirst();
+		while (!m_main_table_set.IsEOF())
+		{
+			COleVariant v_text;
+			m_main_table_set.GetFieldValue(_T("more"), v_text);
+			CString legacyText;
+			if (v_text.vt == VT_BSTR)
+				legacyText = V_BSTRT(&v_text);
+
+			COleVariant v_key;
+			m_main_table_set.GetFieldValue(m_main_table_set.m_desc[CH_COMMENT_KEY].header_name, v_key);
+			const long existingKey = (v_key.vt == VT_I4 || v_key.vt == VT_I2) ? v_key.lVal : 0;
+
+			if (!legacyText.IsEmpty() && existingKey == 0)
+			{
+				const long id = m_comment_set.get_string_in_linked_table(legacyText);
+				m_main_table_set.Edit();
+				m_main_table_set.SetFieldValue(m_main_table_set.m_desc[CH_COMMENT_KEY].header_name, COleVariant(id));
+				m_main_table_set.Update();
+			}
+
+			m_main_table_set.MoveNext();
+		}
+	}
+
 	return TRUE;
 }
 
@@ -350,27 +447,41 @@ BOOL CdbTable::open_tables()
 		return FALSE;
 	}
 
-	// open tables
-	try
+	// open tables (collect statuses; if any error remains, stop)
+	CdbTable::OPEN_ASSOC_STATUS st = OPEN_ASSOC_OK;
+	auto merge_status = [](CdbTable::OPEN_ASSOC_STATUS a, CdbTable::OPEN_ASSOC_STATUS b) { return (a < b) ? b : a; };
+	CdbTableAssociated* assoc_sets[] = {
+		&m_stimulus_set,
+		&m_concentration_set,
+		&m_operator_set,
+		&m_insect_set,
+		&m_location_set,
+		&m_path_set,
+		&m_sensillum_set,
+		&m_sex_set,
+		&m_strain_set,
+		&m_experiment_set,
+		&m_comment_set
+	};
+	for (auto* p_set : assoc_sets)
 	{
-		open_associated_table(&m_stimulus_set);
-		open_associated_table(&m_concentration_set);
-		open_associated_table(&m_operator_set);
-		open_associated_table(&m_insect_set);
-		open_associated_table(&m_location_set);
-		open_associated_table(&m_path_set);
-		open_associated_table(&m_sensillum_set);
-		open_associated_table(&m_sex_set);
-		open_associated_table(&m_strain_set);
-		open_associated_table(&m_experiment_set);
-		open_associated_table(&m_comment_set);
+		st = merge_status(st, open_associated_table(p_set));
+		if (st == OPEN_ASSOC_ERROR)
+			return FALSE;
 	}
-	catch (CDaoException* e)
-	{
-		AfxMessageBox(e->m_pErrorInfo->m_strDescription);
-		e->Delete();
-		return FALSE;
-	}
+
+    // Ensure new comment schema exists and migrate legacy text after associated tables are open/created
+    try
+    {
+        if (!ensure_comment_schema_and_migrate())
+            return FALSE;
+    }
+    catch (CDaoException* e)
+    {
+        AfxMessageBox(e->m_pErrorInfo ? e->m_pErrorInfo->m_strDescription : _T("DAO error"));
+        e->Delete();
+        return FALSE;
+    }
 
 	m_main_table_set.m_default_name = GetName();
 	if (!m_main_table_set.open_table(dbOpenDynaset, nullptr, 0))
@@ -480,10 +591,50 @@ void CdbTable::add_column_19_20(CDaoTableDef& table_def, const CString& cs_table
 	table_def.Close();
 }
 
-void CdbTable::open_associated_table(CdbTableAssociated* p_index_table_set)
+CdbTable::OPEN_ASSOC_STATUS CdbTable::open_associated_table(CdbTableAssociated* p_index_table_set)
 {
 	p_index_table_set->m_default_name = GetName();
-	p_index_table_set->Open(dbOpenTable, nullptr, 0);
+	try
+	{
+		p_index_table_set->Open(dbOpenTable, nullptr, 0);
+		return OPEN_ASSOC_OK;
+	}
+	catch (CDaoException* e)
+	{
+		// If the associated table is missing, create an empty one and reopen
+		const CString err = e->m_pErrorInfo ? e->m_pErrorInfo->m_strDescription : _T("");
+		e->Delete();
+		CString cs_table = p_index_table_set->m_default_sql;
+		CString cs_text = p_index_table_set->m_dfx_cs;
+		CString cs_id = p_index_table_set->m_dfx_id;
+		if (cs_table.GetLength() >= 2 && cs_table[0] == '[' && cs_table[cs_table.GetLength() - 1] == ']')
+			cs_table = cs_table.Mid(1, cs_table.GetLength() - 2);
+		if (cs_text.GetLength() >= 2 && cs_text[0] == '[' && cs_text[cs_text.GetLength() - 1] == ']')
+			cs_text = cs_text.Mid(1, cs_text.GetLength() - 2);
+		if (cs_id.GetLength() >= 2 && cs_id[0] == '[' && cs_id[cs_id.GetLength() - 1] == ']')
+			cs_id = cs_id.Mid(1, cs_id.GetLength() - 2);
+
+		int text_size = 100;
+		if (cs_table.CompareNoCase(_T("path")) == 0)
+			text_size = 255;
+		else if (cs_table.CompareNoCase(_T("sex")) == 0)
+			text_size = 10;
+		else if (cs_table.CompareNoCase(_T("operator")) == 0)
+			text_size = 50;
+
+		try
+		{
+			p_index_table_set->create_index_table(cs_table, cs_text, cs_id, text_size, this);
+			p_index_table_set->Open(dbOpenTable, nullptr, 0);
+			return OPEN_ASSOC_CREATED;
+		}
+		catch (CDaoException* e2)
+		{
+			DisplayDaoException(e2, 5);
+			e2->Delete();
+			return OPEN_ASSOC_ERROR;
+		}
+	}
 }
 
 void CdbTable::close_database()
@@ -503,6 +654,7 @@ void CdbTable::close_database()
 		if (m_sex_set.IsOpen()) m_sex_set.Close();
 		if (m_strain_set.IsOpen()) m_strain_set.Close();
 		if (m_experiment_set.IsOpen()) m_experiment_set.Close();
+		if (m_comment_set.IsOpen()) m_comment_set.Close();
 
 		// close the workspace
 		m_pWorkspace->Close();
@@ -533,6 +685,8 @@ void CdbTable::update_all_database_tables()
 		m_strain_set.Update();
 	if (m_experiment_set.GetEditMode() != dbEditNone)
 		m_experiment_set.Update();
+	if (m_comment_set.GetEditMode() != dbEditNone)
+		m_comment_set.Update();
 }
 
 CString CdbTable::get_file_path(const int i_id)
@@ -928,13 +1082,13 @@ DB_ITEMDESC* CdbTable::get_record_item_descriptor(const int column_index)
 		ASSERT(p_desc->data_code_number == FIELD_IND_TEXT);
 		break;
 	case CH_SEX_KEY:
-		p_desc->pdata_item = &m_main_table_set.m_comment_key;
-		p_desc->p_linked_set = &m_comment_set;
+		p_desc->pdata_item = &m_main_table_set.m_sex_key;
+		p_desc->p_linked_set = &m_sex_set;
 		ASSERT(p_desc->data_code_number == FIELD_IND_TEXT);
 		break;
 	case CH_COMMENT_KEY:
-		p_desc->pdata_item = &m_main_table_set.m_sex_key;
-		p_desc->p_linked_set = &m_sex_set;
+		p_desc->pdata_item = &m_main_table_set.m_comment_key;
+		p_desc->p_linked_set = &m_comment_set;
 		ASSERT(p_desc->data_code_number == FIELD_IND_TEXT);
 		break;
 	case CH_REPEAT:
@@ -1110,7 +1264,7 @@ void CdbTable::transfer_wave_format_data_to_record(const CWaveFormat* p_wave_for
 	m_main_table_set.m_sex_key = m_sex_set.get_string_in_linked_table(p_wave_format->cs_sex);
 	m_main_table_set.m_strain_key = m_strain_set.get_string_in_linked_table(p_wave_format->cs_strain);
 	m_main_table_set.m_experiment_key = m_experiment_set.get_string_in_linked_table(p_wave_format->cs_comment);
-	m_main_table_set.m_comment_key = m_experiment_set.get_string_in_linked_table(p_wave_format->cs_more_comment);
+	m_main_table_set.m_comment_key = m_comment_set.get_string_in_linked_table(p_wave_format->cs_more_comment);
 	m_main_table_set.m_flag = p_wave_format->flag;
 }
 

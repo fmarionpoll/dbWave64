@@ -53,6 +53,7 @@ public:
 	void create_all_tables();
 
 	BOOL open_tables();
+	BOOL ensure_comment_schema_and_migrate();
 	void add_column_28(CDaoTableDef& table_def, const CString& cs_table, long l_attr);
 	void add_column_26_27(CDaoTableDef& table_def, const CString& cs_table, long l_attr) const;
 	void add_column_24_25(CDaoTableDef& table_def, const CString& cs_table, long l_attr) const;
@@ -60,7 +61,8 @@ public:
 	void add_column_21(CDaoTableDef& table_def, const CString& cs_table, long l_attr) const;
 	void add_column_19_20(CDaoTableDef& table_def, const CString& cs_table, long l_attr);
 
-	void open_associated_table(CdbTableAssociated* p_index_table_set);
+	enum OPEN_ASSOC_STATUS { OPEN_ASSOC_OK = 0, OPEN_ASSOC_CREATED = 1, OPEN_ASSOC_ERROR = 2 };
+	OPEN_ASSOC_STATUS open_associated_table(CdbTableAssociated* p_index_table_set);
 	void close_database();
 	void update_all_database_tables();
 

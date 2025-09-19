@@ -70,8 +70,8 @@ CdbTableMain::CdbTableMain(CDaoDatabase* pdb)
 		m_desc[i].cs_elements_array.RemoveAll();
 	}
 
-	m_nFields = 29;
-	m_nParams = 18;
+    m_nFields = 29;
+    m_nParams = 0; // no parameters unless filters build a parameterized query
 	m_nDefaultType = dbOpenDynaset;
 }
 

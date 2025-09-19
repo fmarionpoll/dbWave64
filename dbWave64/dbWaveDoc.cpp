@@ -579,7 +579,9 @@ long CdbWaveDoc::db_get_current_record_position() const
 	}
 	catch (CDaoException* e)
 	{
-		DisplayDaoException(e, 14);
+        // During bulk import the main table may be opened as dbOpenTable;
+        // GetAbsolutePosition is not supported on table-type recordsets (DAO 3251).
+        // Suppress interactive help and return -1 instead.
 		e->Delete();
 	}
 	return i_file;

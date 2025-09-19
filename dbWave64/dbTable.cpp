@@ -960,8 +960,8 @@ BOOL CdbTable::set_index_current_file(long i_file)
 	{
 		if (i_file >= record_count)
 			i_file = record_count - 1;
-	/*	if (i_file != m_mainTableSet.GetAbsolutePosition()) */
-		m_main_table_set.SetAbsolutePosition(i_file);
+		if (i_file != m_main_table_set.CanBookmark()) 
+			m_main_table_set.SetAbsolutePosition(i_file);
 		get_current_record_file_names();
 	}
 	catch (CDaoException* e)

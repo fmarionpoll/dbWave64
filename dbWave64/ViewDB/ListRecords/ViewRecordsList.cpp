@@ -39,7 +39,8 @@ BEGIN_MESSAGE_MAP(ViewRecordsList, ViewDbTable)
 
 	ON_NOTIFY(HDN_ENDTRACK, 0, &ViewRecordsList::on_hdn_end_track_list_ctrl)
 	ON_NOTIFY(LVN_COLUMNCLICK, IDC_LISTCTRL, &ViewRecordsList::on_lvn_column_click_list_ctrl)
-	ON_NOTIFY(LVN_ITEMACTIVATE, IDC_LISTCTRL, &ViewRecordsList::on_item_activate_list_ctrl)
+    ON_NOTIFY(LVN_ITEMACTIVATE, IDC_LISTCTRL, &ViewRecordsList::on_item_activate_list_ctrl)
+    ON_NOTIFY(LVN_ITEMCHANGED, IDC_LISTCTRL, &ViewRecordsList::on_item_changed_list_ctrl)
 	ON_NOTIFY(NM_DBLCLK, IDC_LISTCTRL, &ViewRecordsList::on_dbl_clk_list_ctrl)
 
 END_MESSAGE_MAP()
@@ -110,23 +111,32 @@ void ViewRecordsList::OnInitialUpdate()
 	const int n_records = db_wave_doc->db_get_records_count();
 	m_list_ctrl_.SetItemCountEx(n_records);
 	const int per_page = m_list_ctrl_.GetCountPerPage();
-	const int current_index = db_wave_doc->db_get_current_record_position();
+	int current_index = db_wave_doc->db_get_current_record_position();
+	// Force initial document selection to 0 for a predictable top-of-list start
+	if (n_records > 0)
+	{
+		if (current_index != 0)
+		{
+			db_wave_doc->db_set_current_record_position(0);
+			current_index = 0;
+		}
+	}
+	if (current_index < 0) current_index = 0;
 	if (current_index >= 0 && n_records > 0)
 	{
 		const int page = max(m_list_ctrl_.GetCountPerPage(), 1);
-		int first = max(current_index - page / 2, 0);
+		int first = 0; // start at the top for initial load for predictability
 		int last = first + page - 1;
 		if (last >= n_records)
 		{
 			last = n_records - 1;
-			const int recomputed_first = max(last - page + 1, 0);
-			first = recomputed_first;
+			first = max(last - page + 1, 0);
 		}
 		m_list_ctrl_.set_visible_range(first, last);
-		if (current_index < m_list_ctrl_.GetItemCount())
+		if (m_list_ctrl_.GetItemCount() > 0)
 		{
-			m_list_ctrl_.SetItemState(current_index, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
-			m_list_ctrl_.EnsureVisible(current_index, FALSE);
+			// Select top row by default on initial load
+			m_list_ctrl_.SetItemState(0, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 		}
 	}
 	else
@@ -301,6 +311,26 @@ void ViewRecordsList::on_item_activate_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_resu
 	*p_result = 0;
 }
 
+void ViewRecordsList::on_item_changed_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_result)
+{
+    auto* p_nmlv = reinterpret_cast<LPNMLISTVIEW>(p_nmhdr);
+    *p_result = 0;
+    if ((p_nmlv->uChanged & LVIF_STATE) == 0)
+        return;
+    const UINT was_selected = (p_nmlv->uOldState & LVIS_SELECTED);
+    const UINT is_selected = (p_nmlv->uNewState & LVIS_SELECTED);
+    if (!was_selected && is_selected)
+    {
+        const int index = p_nmlv->iItem;
+        if (index >= 0)
+        {
+            GetDocument()->db_set_current_record_position(index);
+            // Avoid re-entrancy: do not call EnsureVisible here; the framework will request display info.
+            GetDocument()->UpdateAllViews(nullptr, HINT_DOC_MOVE_RECORD, nullptr);
+        }
+    }
+}
+
 void ViewRecordsList::on_dbl_clk_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_result)
 {
 	*p_result = 0;
@@ -322,15 +352,16 @@ void ViewRecordsList::OnActivateView(const BOOL b_activate, CView* p_activate_vi
 {
 	if (b_activate)
 	{
-		restore_controls_state();
+        restore_controls_state();
 
 		const auto db_wave_doc = GetDocument();
 		const int current_index = db_wave_doc->db_get_current_record_position();
-		if (current_index >= 0)
+        if (current_index >= 0)
 		{
 			// compute a centered visible range around the current record
 			const int per_page = max(m_list_ctrl_.GetCountPerPage(), 1);
-			int first = max(current_index - per_page / 2, 0) ;
+            // Keep top-of-list visible when we come back from other views
+            int first = 0;
 			int last = first + per_page - 1;
 			const int total = db_wave_doc->db_get_records_count();
 			if (last >= total) {
@@ -343,10 +374,11 @@ void ViewRecordsList::OnActivateView(const BOOL b_activate, CView* p_activate_vi
 			m_list_ctrl_.set_visible_range(first, last);
 
 			// select and focus the current item and ensure visible
-			if (current_index < m_list_ctrl_.GetItemCount())
+            if (current_index < m_list_ctrl_.GetItemCount())
 			{
-				m_list_ctrl_.SetItemState(current_index, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
-				m_list_ctrl_.EnsureVisible(current_index, FALSE);
+                // Maintain the user selection rather than forcing it to 0 on return
+                m_list_ctrl_.SetItemState(current_index, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+                m_list_ctrl_.EnsureVisible(current_index, FALSE);
 			}
 		}
 	}

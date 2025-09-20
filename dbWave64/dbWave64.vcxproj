@@ -182,7 +182,7 @@
     <ClCompile Include="ViewDB\Histograms\ViewSpikeHist.cpp" />
     <ClCompile Include="ViewDB\ListRecords\RecordsListCtrl.cpp" />
     <ClCompile Include="ViewDB\ListRecords\ViewRecordsList.cpp" />
-    <ClCompile Include="ViewDB\ListRecords\ViewdbWaveInit.cpp" />
+    <ClCompile Include="ViewDB\ListRecords\ViewRecordsListInit.cpp" />
     <ClCompile Include="ViewDB\PanelFilter\PaneldbFilter.cpp" />
     <ClCompile Include="ViewDB\PanelFilter\PaneldbFilterToolBar.cpp" />
     <ClCompile Include="ViewDB\PanelProperties\PaneldbProperties.cpp" />

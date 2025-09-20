@@ -29,6 +29,21 @@ public:
 
 	void setVisibleRange(int first, int last, RowCacheUpdatePlan* out_plan)
 	{
+		// Treat negative ranges as a request to clear the cache
+		if (first < 0 || last < 0)
+		{
+			RowCacheUpdatePlan plan{};
+			plan.firstIndex = 0;
+			plan.size = 0;
+			plan.newStartOffset = 0;
+			plan.newCount = 0;
+			rows_.clear();
+			first_index_ = 0;
+			if (out_plan)
+				*out_plan = plan;
+			return;
+		}
+
 		if (last < first)
 			last = first;
 		int size = last - first + 1;
@@ -78,7 +93,16 @@ public:
 			}
 		}
 
+		// Clamp to avoid negative counts
+		if (plan.newCount < 0)
+		{
+			plan.newCount = 0;
+			plan.newStartOffset = 0;
+		}
+
 		// Build new row window reusing old ones when indices overlap
+		if (provider_)
+			provider_->begin_meta_batch();
 		std::vector<RowMeta> new_rows;
 		new_rows.resize(static_cast<size_t>(size));
 		const int old_last = old_first + old_size - 1;
@@ -98,6 +122,8 @@ public:
 
 		rows_.swap(new_rows);
 		first_index_ = first;
+		if (provider_)
+			provider_->end_meta_batch();
 
 		if (out_plan)
 			*out_plan = plan;

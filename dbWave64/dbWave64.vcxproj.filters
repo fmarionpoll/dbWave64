@@ -567,7 +567,7 @@
     <ClCompile Include="ViewDB\ListRecords\ViewRecordsList.cpp">
       <Filter>ViewDB\ListRecords</Filter>
     </ClCompile>
-    <ClCompile Include="ViewDB\ListRecords\ViewdbWaveInit.cpp">
+    <ClCompile Include="ViewDB\ListRecords\ViewRecordsListInit.cpp">
       <Filter>ViewDB\ListRecords</Filter>
     </ClCompile>
     <ClCompile Include="ViewDB\Data\ViewData.cpp">

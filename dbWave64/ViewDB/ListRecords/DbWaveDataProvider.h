@@ -25,6 +25,9 @@ public:
 	virtual ~IDbWaveDataProvider() = default;
 	virtual int get_records_count() const = 0;
 	virtual RowMeta get_row_meta(int index) = 0;
+    // Optional batch notifications to allow providers to avoid per-call state churn
+    virtual void begin_meta_batch() {}
+    virtual void end_meta_batch() {}
 };
 
 

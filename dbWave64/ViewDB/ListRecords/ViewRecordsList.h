@@ -41,6 +41,7 @@ protected:
 
 	afx_msg void on_hdn_end_track_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_result);
 	afx_msg void on_item_activate_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_result);
+    afx_msg void on_item_changed_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_result);
 	afx_msg void on_dbl_clk_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_result);
 
 	afx_msg void on_bn_clicked_display_data();

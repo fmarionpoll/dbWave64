@@ -13,6 +13,21 @@ class DbWaveDocProviderAdapter : public IDbWaveDataProvider
 public:
 	explicit DbWaveDocProviderAdapter(CdbWaveDoc* doc) : doc_(doc) {}
 
+    void begin_meta_batch() override
+    {
+        in_batch_ = true;
+        saved_index_ = doc_ ? doc_->db_get_current_record_position() : -1;
+    }
+
+    void end_meta_batch() override
+    {
+        if (doc_ && saved_index_ >= 0)
+            doc_->db_set_current_record_position(saved_index_);
+        in_batch_ = false;
+        saved_index_ = -1;
+    }
+
+
 	int get_records_count() const override
 	{
 		return doc_ ? doc_->db_get_records_count() : 0;
@@ -23,8 +38,8 @@ public:
 		RowMeta m;
 		if (doc_ == nullptr)
 			return m;
-		const int saved_index = doc_->db_get_current_record_position();
-		if (!doc_->db_set_current_record_position(index))
+        // Move to requested index to read fields
+        if (!doc_->db_set_current_record_position(index))
 			return m;
 
 		m.index = index;
@@ -61,13 +76,16 @@ public:
 			database->get_record_item_value(CH_NSPIKECLASSES, &desc);
 			m.cs_n_spikes.Format(_T("%i (%i classes)"), n_spikes, desc.l_val);
 		}
-		if (saved_index >= 0)
-			doc_->db_set_current_record_position(saved_index);
+        // If not in a batch, restore original position immediately
+        if (!in_batch_ && saved_index_ >= 0)
+            doc_->db_set_current_record_position(saved_index_);
 		return m;
 	}
 
 private:
 	CdbWaveDoc* doc_ { nullptr };
+    bool in_batch_ { false };
+    int saved_index_ { -1 };
 };
 
 class ChartDataRendererAdapter : public IDataRenderer

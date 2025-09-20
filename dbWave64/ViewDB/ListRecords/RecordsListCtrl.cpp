@@ -30,10 +30,11 @@ int RecordsListCtrl::m_column_format_[] = {
 };
 
 BEGIN_MESSAGE_MAP(RecordsListCtrl, CListCtrl)
-	ON_WM_VSCROLL()
-	ON_WM_KEYUP()
-	ON_NOTIFY_REFLECT(LVN_GETDISPINFO, on_get_display_info)
-	ON_WM_DESTROY()
+    ON_WM_VSCROLL()
+    ON_WM_KEYUP()
+    ON_NOTIFY_REFLECT(LVN_GETDISPINFO, on_get_display_info)
+    ON_NOTIFY_REFLECT(LVN_ODCACHEHINT, on_od_cache_hint)
+    ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 RecordsListCtrl::RecordsListCtrl()
@@ -137,11 +138,16 @@ void RecordsListCtrl::set_visible_range(int first, int last)
 {
 	if (cache_ == nullptr)
 		return;
+    if (is_updating_cache_)
+        return;
+    is_updating_cache_ = true;
 	RowCacheUpdatePlan plan{};
-	cache_->setVisibleRange(first, last, &plan);
+    cache_->setVisibleRange(first, last, &plan);
 	const int size = cache_->getSize();
 	image_list_.SetImageCount(size);
 	update_images();
+    // Do not force redraw here; LVN_GETDISPINFO will be raised as needed.
+    is_updating_cache_ = false;
 }
 
 void RecordsListCtrl::set_current_selection(const int record_position)
@@ -215,33 +221,17 @@ void RecordsListCtrl::on_get_display_info(NMHDR* p_nmhdr, LRESULT* p_result)
 		last_cache = first_cache + cache_->getSize() - 1;
 	}
 
-	if (cache_)
-	{
-		if (item_index < first_cache)
-		{
-			int first = item_index;
-			int last = first + GetCountPerPage() - 1;
-			set_visible_range(first, last);
-		}
-		else if (item_index > last_cache)
-		{
-			int last = item_index;
-			int first = last - GetCountPerPage() + 1;
-			set_visible_range(first, last);
-		}
-		else if (cache_->getSize() == 0)
-		{
-			set_visible_range(0, GetCountPerPage() - 1);
-		}
-	}
+    // Do not change the visible range here to avoid re-entrancy loops.
 
 	if (cache_ == nullptr || cache_->getSize() == 0)
 		return;
 
 	const int first_index = cache_->getFirstIndex();
+	// If the item is outside the cached range, do not try to fabricate a row.
+	// Allow a subsequent LVN_GETDISPINFO after cache update to provide correct data.
+	if (item_index < first_index || item_index >= first_index + cache_->getSize())
+		return;
 	int i_cache_index = item_index - first_index;
-	if (i_cache_index < 0) i_cache_index = 0;
-	if (i_cache_index >= cache_->getSize()) i_cache_index = cache_->getSize() - 1;
 
 	const RowMeta& row = cache_->at(i_cache_index);
 
@@ -268,6 +258,25 @@ void RecordsListCtrl::on_get_display_info(NMHDR* p_nmhdr, LRESULT* p_result)
 
 	if (item->mask & LVIF_IMAGE && item->iSubItem == CTRL2_COL_CURVE)
 		item->iImage = i_cache_index;
+}
+
+void RecordsListCtrl::on_od_cache_hint(NMHDR* p_nmhdr, LRESULT* p_result)
+{
+    // Virtual list hints which range will be needed soon
+    auto* p_hint = reinterpret_cast<NMLVCACHEHINT*>(p_nmhdr);
+    *p_result = 0;
+    if (cache_ == nullptr)
+        return;
+    if (is_updating_cache_)
+        return;
+    int total = GetItemCount();
+    if (total <= 0)
+        return;
+    int first = max(p_hint->iFrom, 0);
+    int last = min(p_hint->iTo, max(total - 1, 0));
+    if (first > last)
+        std::swap(first, last);
+    set_visible_range(first, last);
 }
 
 void RecordsListCtrl::OnVScroll(const UINT n_sb_code, const UINT n_pos, CScrollBar* p_scroll_bar)

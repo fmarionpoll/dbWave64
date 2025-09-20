@@ -58,6 +58,7 @@ public:
 protected:
 	DECLARE_MESSAGE_MAP()
 	afx_msg void on_get_display_info(NMHDR* p_nmhdr, LRESULT* p_result);
+	afx_msg void on_od_cache_hint(NMHDR* p_nmhdr, LRESULT* p_result);
 	afx_msg void OnVScroll(UINT n_sb_code, UINT n_pos, CScrollBar* p_scroll_bar);
 	afx_msg void OnKeyUp(UINT n_char, UINT n_rep_cnt, UINT n_flags);
 	afx_msg void OnDestroy();
@@ -79,6 +80,7 @@ private:
 	DisplaySettings settings_{};
 	IDataRenderer* data_renderer_{ nullptr };
 	ISpikeRenderer* spike_renderer_{ nullptr };
+	bool is_updating_cache_ { false };
 };
 
 

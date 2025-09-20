@@ -180,8 +180,8 @@
     <ClCompile Include="ViewDB\Data\ViewData.cpp" />
     <ClCompile Include="ViewDB\DetectSpikes\ViewSpikeDetect.cpp" />
     <ClCompile Include="ViewDB\Histograms\ViewSpikeHist.cpp" />
-    <ClCompile Include="ViewDB\ListRecords\DataListCtrl.cpp" />
-    <ClCompile Include="ViewDB\ListRecords\ViewdbWave.cpp" />
+    <ClCompile Include="ViewDB\ListRecords\RecordsListCtrl.cpp" />
+    <ClCompile Include="ViewDB\ListRecords\ViewRecordsList.cpp" />
     <ClCompile Include="ViewDB\ListRecords\ViewdbWaveInit.cpp" />
     <ClCompile Include="ViewDB\PanelFilter\PaneldbFilter.cpp" />
     <ClCompile Include="ViewDB\PanelFilter\PaneldbFilterToolBar.cpp" />
@@ -400,12 +400,12 @@
     <ClInclude Include="ViewDB\DetectSpikes\ViewSpikeDetect.h" />
     <ClInclude Include="ViewDB\Histograms\ViewSpikeHist.h" />
     <ClInclude Include="ViewDB\ListRecords\Adapters.h" />
-    <ClInclude Include="ViewDB\ListRecords\DataListCtrl.h" />
+    <ClInclude Include="ViewDB\ListRecords\RecordsListCtrl.h" />
     <ClInclude Include="ViewDB\ListRecords\DbWaveDataProvider.h" />
     <ClInclude Include="ViewDB\ListRecords\DisplaySettings.h" />
     <ClInclude Include="ViewDB\ListRecords\Renderers.h" />
     <ClInclude Include="ViewDB\ListRecords\RowCache.h" />
-    <ClInclude Include="ViewDB\ListRecords\ViewdbWave.h" />
+    <ClInclude Include="ViewDB\ListRecords\ViewRecordsList.h" />
     <ClInclude Include="ViewDB\PanelFilter\PaneldbFilter.h" />
     <ClInclude Include="ViewDB\PanelFilter\PaneldbFilterToolBar.h" />
     <ClInclude Include="ViewDB\PanelProperties\PaneldbProperties.h" />

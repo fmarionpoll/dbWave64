@@ -344,11 +344,6 @@ void DlgdbEditRecord::on_bn_clicked_button_repeat1()
 	edit_change_item_main_field(IDC_COMBO_REPEATT);
 }
 
-void DlgdbEditRecord::on_bn_clicked_button_comment()
-{
-	edit_change_item_main_field(IDC_COMBO_COMMENT);
-}
-
 void DlgdbEditRecord::on_bn_clicked_button_repeat2()
 {
 	edit_change_item_main_field(IDC_COMBO_REPEATT2);
@@ -547,6 +542,11 @@ void DlgdbEditRecord::on_bn_clicked_button_location()
 void DlgdbEditRecord::on_bn_clicked_button_operator()
 {
 	edit_change_item_indirect_field(IDC_COMBO_OPERATOR);
+}
+
+void DlgdbEditRecord::on_bn_clicked_button_comment()
+{
+	edit_change_item_indirect_field(IDC_COMBO_COMMENT);
 }
 
 void DlgdbEditRecord::on_bn_clicked_button_data_path()

@@ -1,10 +1,10 @@
 #pragma once
 
 #include "ViewDB/ViewDbTable.h"
-#include "DataListCtrl.h"
+#include "RecordsListCtrl.h"
 #include "ViewDB/ListRecords/DisplaySettings.h"
 
-struct ViewdbWaveState {
+struct ViewRecordsListState {
 	boolean primed = false;
 	DisplayMode display_mode;
 	BOOL b_display_file_name;
@@ -18,12 +18,12 @@ struct ViewdbWaveState {
 	int spike_class;
 };
 
-class ViewdbWave : public ViewDbTable
+class ViewRecordsList : public ViewDbTable
 {
 protected:
-	DECLARE_DYNCREATE(ViewdbWave)
-	ViewdbWave();
-	~ViewdbWave() override;
+	DECLARE_DYNCREATE(ViewRecordsList)
+	ViewRecordsList();
+	~ViewRecordsList() override;
 
 public:
 	enum { IDD = IDD_VIEWDBWAVE };
@@ -69,14 +69,14 @@ protected:
 	void fill_list_box();
 
 private:
-	DataListCtrl m_list_ctrl_;
+	RecordsListCtrl m_list_ctrl_;
 	// cached UI values
 	float m_time_first_  {0.f};
 	float m_time_last_   {0.f};
 	float m_amplitude_span_ {0.f};
 	int m_spike_class_ {0};
 	CUIntArray m_columns_width_;
-	static ViewdbWaveState s_view_state_;
+	static ViewRecordsListState s_view_state_;
 };
 
 

@@ -561,10 +561,10 @@
     <ClCompile Include="ViewDB\PanelFilter\PaneldbFilterToolBar.cpp">
       <Filter>ViewDB\PanelFilter</Filter>
     </ClCompile>
-    <ClCompile Include="ViewDB\ListRecords\DataListCtrl.cpp">
+    <ClCompile Include="ViewDB\ListRecords\RecordsListCtrl.cpp">
       <Filter>ViewDB\ListRecords</Filter>
     </ClCompile>
-    <ClCompile Include="ViewDB\ListRecords\ViewdbWave.cpp">
+    <ClCompile Include="ViewDB\ListRecords\ViewRecordsList.cpp">
       <Filter>ViewDB\ListRecords</Filter>
     </ClCompile>
     <ClCompile Include="ViewDB\ListRecords\ViewdbWaveInit.cpp">
@@ -1217,7 +1217,7 @@
     <ClInclude Include="ViewDB\ListRecords\Adapters.h">
       <Filter>ViewDB\ListRecords</Filter>
     </ClInclude>
-    <ClInclude Include="ViewDB\ListRecords\DataListCtrl.h">
+    <ClInclude Include="ViewDB\ListRecords\RecordsListCtrl.h">
       <Filter>ViewDB\ListRecords</Filter>
     </ClInclude>
     <ClInclude Include="ViewDB\ListRecords\DbWaveDataProvider.h">
@@ -1232,7 +1232,7 @@
     <ClInclude Include="ViewDB\ListRecords\RowCache.h">
       <Filter>ViewDB\ListRecords</Filter>
     </ClInclude>
-    <ClInclude Include="ViewDB\ListRecords\ViewdbWave.h">
+    <ClInclude Include="ViewDB\ListRecords\ViewRecordsList.h">
       <Filter>ViewDB\ListRecords</Filter>
     </ClInclude>
     <ClInclude Include="ViewDB\Data\ViewData.h">

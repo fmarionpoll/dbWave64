@@ -47,6 +47,8 @@ public:
 		m.cs_concentration2 = desc.cs_val;
 		database->get_record_item_value(CH_SENSILLUM_KEY, &desc);
 		m.cs_sensillum_name = desc.cs_val;
+		database->get_record_item_value(CH_COMMENT_KEY, &desc);
+		m.cs_comment = desc.cs_val;
 		database->get_record_item_value(CH_FLAG, &desc);
 		m.cs_flag.Format(_T("%i"), desc.l_val);
 

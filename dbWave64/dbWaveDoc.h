@@ -7,7 +7,7 @@
 #include "AcqDataDoc.h"
 #include "dbWave_structures.h"
 #include "db_spike.h"
-#include "ViewDB/ListRecords/ViewdbWave.h"
+#include "ViewDB/ListRecords/ViewRecordsList.h"
 
 struct source_data_struct
 {
@@ -36,7 +36,7 @@ protected:
 	BOOL		clean_database_on_exit_  {false};
 	BOOL		transpose_  {false};
 	db_spike	spike_hit_{};
-	ViewdbWaveState viewdbWaveState_ {};
+	ViewRecordsListState viewdbWaveState_ {};
 
 public:
 	AcqDataDoc* m_p_data_doc  {nullptr};
@@ -99,8 +99,8 @@ public:
 	BOOL	import_data_files_from_another_data_base(const CString& other_data_base_file_name, boolean copy_data_to_new_sub_directory) const;
 	BOOL	copy_files_to_directory(const CString& path);
 
-	void set_prop_sheet_state(const ViewdbWaveState& state);
-	ViewdbWaveState* get_prop_sheet_state() { return &viewdbWaveState_; };
+	void set_prop_sheet_state(const ViewRecordsListState& state);
+	ViewRecordsListState* get_prop_sheet_state() { return &viewdbWaveState_; };
 
 protected:
 	source_data_struct get_wave_format_from_either_file(CString cs_filename);

@@ -7,7 +7,7 @@
 #include "ChildFrm.h"
 #include "ViewDB/Data/ViewData.h"
 #include "ViewDB/Spikes/ViewSpikes.h"
-#include "ViewDB/ListRecords/ViewdbWave.h"
+#include "ViewDB/ListRecords/ViewRecordsList.h"
 #include "data_acquisition/ViewADcontinuous.h"
 #include "ViewText/ViewNotedoc.h"
 #include "dbWaveDoc.h"
@@ -123,7 +123,7 @@ BOOL CdbWaveApp::InitInstance()
 	m_db_wave_view_template = new CdbMultiDocTemplate(IDR_DBWAVETYPE,
 	                                                RUNTIME_CLASS(CdbWaveDoc),
 	                                                RUNTIME_CLASS(CChildFrame), // custom MDI child frame
-	                                                RUNTIME_CLASS(ViewdbWave));
+	                                                RUNTIME_CLASS(ViewRecordsList));
 	m_db_wave_view_template->SetContainerInfo(IDR_DBWAVETYPE_CNTR_IP);
 	AddDocTemplate(m_db_wave_view_template);
 	h_menu_db_view = m_db_wave_view_template->m_hMenuShared;

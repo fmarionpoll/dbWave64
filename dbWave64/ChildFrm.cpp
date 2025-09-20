@@ -9,7 +9,7 @@
 
 #include "MainFrm.h"
 #include "chart/ChartData.h"
-#include "ViewDB/ListRecords/ViewdbWave.h"
+#include "ViewDB/ListRecords/ViewRecordsList.h"
 #include "NoteDoc.h"
 
 #include "DlgFindFiles.h"
@@ -355,7 +355,7 @@ void CChildFrame::replace_view_index(UINT n_id)
 	switch (n_id)
 	{
 	case ID_VIEW_DATABASE:
-		replace_view(RUNTIME_CLASS(ViewdbWave), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_db_view);
+		replace_view(RUNTIME_CLASS(ViewRecordsList), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_db_view);
 		break;
 
 	case ID_VIEW_DATA_FILE:
@@ -389,7 +389,7 @@ void CChildFrame::replace_view_index(UINT n_id)
 
 	default:
 		n_id = 0;
-		replace_view(RUNTIME_CLASS(ViewdbWave), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_data_view);
+		replace_view(RUNTIME_CLASS(ViewRecordsList), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_data_view);
 		break;
 	}
 	p_mainframe->ActivatePropertyPane(b_active_panes);
@@ -797,8 +797,8 @@ void CChildFrame::on_record_delete()
 	{
 		// delete records from the database and collect names of files to change
 		// save list of data files to delete into a temporary array
-		if (p_view->IsKindOf(RUNTIME_CLASS(ViewdbWave)))
-			static_cast<ViewdbWave*>(p_view)->delete_records();
+		if (p_view->IsKindOf(RUNTIME_CLASS(ViewRecordsList)))
+			static_cast<ViewRecordsList*>(p_view)->delete_records();
 		else
 			p_dbWave_doc->db_delete_current_record();
 

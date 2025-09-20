@@ -16,6 +16,7 @@ struct RowMeta
 	CString cs_flag {};
 	CString cs_datafile_name {};
 	CString cs_spike_file_name {};
+	CString cs_comment{};
 };
 
 class IDbWaveDataProvider

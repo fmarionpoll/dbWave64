@@ -18,11 +18,11 @@
 #define CTRL2_COL_FLAG (CTRL2_COL_INDEX+9)
 #define N_COLUMNS2 11
 
-class DataListCtrl : public CListCtrl
+class RecordsListCtrl : public CListCtrl
 {
 public:
-	DataListCtrl();
-	~DataListCtrl() override;
+	RecordsListCtrl();
+	~RecordsListCtrl() override;
 
 	void init(IDbWaveDataProvider* provider,
 		const DisplaySettings& settings,

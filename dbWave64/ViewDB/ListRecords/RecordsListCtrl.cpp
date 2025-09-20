@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 
-#include "DataListCtrl.h"
+#include "RecordsListCtrl.h"
 
 #include "ViewDB/ViewDbTable.h"
 
@@ -8,40 +8,40 @@
 #define new DEBUG_NEW
 #endif
 
-int DataListCtrl::m_column_width_[] = {
+int RecordsListCtrl::m_column_width_[] = {
 	1,
 	10, 300, 15, 30,
 	30, 50, 40, 40,
 	40, 40
 };
 
-CString DataListCtrl::m_column_headers_[] = {
+CString RecordsListCtrl::m_column_headers_[] = {
 	__T(""),
 	__T("#"), __T("data"), __T("insect ID"), __T("sensillum"),
 	__T("stim1"), __T("conc1"), __T("stim2"), __T("conc2"),
 	__T("spikes"), __T("flag")
 };
 
-int DataListCtrl::m_column_format_[] = {
+int RecordsListCtrl::m_column_format_[] = {
 	LVCFMT_LEFT,
 	LVCFMT_CENTER, LVCFMT_CENTER, LVCFMT_CENTER, LVCFMT_CENTER,
 	LVCFMT_CENTER, LVCFMT_CENTER, LVCFMT_CENTER, LVCFMT_CENTER,
 	LVCFMT_CENTER, LVCFMT_CENTER
 };
 
-BEGIN_MESSAGE_MAP(DataListCtrl, CListCtrl)
+BEGIN_MESSAGE_MAP(RecordsListCtrl, CListCtrl)
 	ON_WM_VSCROLL()
 	ON_WM_KEYUP()
 	ON_NOTIFY_REFLECT(LVN_GETDISPINFO, on_get_display_info)
 	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
-DataListCtrl::DataListCtrl()
+RecordsListCtrl::RecordsListCtrl()
 	: cache_(nullptr)
 {
 }
 
-DataListCtrl::~DataListCtrl()
+RecordsListCtrl::~RecordsListCtrl()
 {
 	if (cache_ != nullptr)
 		delete cache_;
@@ -52,7 +52,7 @@ DataListCtrl::~DataListCtrl()
 	SAFE_DELETE(spike_renderer_)
 }
 
-void DataListCtrl::init(IDbWaveDataProvider* provider,
+void RecordsListCtrl::init(IDbWaveDataProvider* provider,
 	const DisplaySettings& settings,
 	IDataRenderer* dataRenderer,
 	ISpikeRenderer* spikeRenderer,
@@ -67,7 +67,7 @@ void DataListCtrl::init(IDbWaveDataProvider* provider,
 	init_columns(width_columns);
 }
 
-void DataListCtrl::init_columns(CUIntArray* width_columns)
+void RecordsListCtrl::init_columns(CUIntArray* width_columns)
 {
 	if (width_columns != nullptr)
 	{
@@ -88,7 +88,7 @@ void DataListCtrl::init_columns(CUIntArray* width_columns)
 	SetImageList(&image_list_, LVSIL_SMALL);
 }
 
-void DataListCtrl::save_columns_width() const
+void RecordsListCtrl::save_columns_width() const
 {
 	if (m_width_columns_ != nullptr)
 	{
@@ -100,12 +100,12 @@ void DataListCtrl::save_columns_width() const
 	}
 }
 
-void DataListCtrl::OnDestroy()
+void RecordsListCtrl::OnDestroy()
 {
 	save_columns_width();
 }
 
-void DataListCtrl::build_empty_bitmap(const boolean force_update)
+void RecordsListCtrl::build_empty_bitmap(const boolean force_update)
 {
 	if (p_empty_bitmap_ != nullptr && !force_update)
 		return;
@@ -133,7 +133,7 @@ void DataListCtrl::build_empty_bitmap(const boolean force_update)
 	mem_dc.Rectangle(&rect_data);
 }
 
-void DataListCtrl::set_visible_range(int first, int last)
+void RecordsListCtrl::set_visible_range(int first, int last)
 {
 	if (cache_ == nullptr)
 		return;
@@ -144,7 +144,7 @@ void DataListCtrl::set_visible_range(int first, int last)
 	update_images();
 }
 
-void DataListCtrl::set_current_selection(const int record_position)
+void RecordsListCtrl::set_current_selection(const int record_position)
 {
 	// get current item which has the focus
 	constexpr auto flag = LVNI_FOCUSED | LVNI_ALL;
@@ -162,7 +162,7 @@ void DataListCtrl::set_current_selection(const int record_position)
 	}
 }
 
-void DataListCtrl::update_images()
+void RecordsListCtrl::update_images()
 {
 	build_empty_bitmap(FALSE);
 	const int size = cache_->getSize();
@@ -199,7 +199,7 @@ void DataListCtrl::update_images()
 	}
 }
 
-void DataListCtrl::on_get_display_info(NMHDR* p_nmhdr, LRESULT* p_result)
+void RecordsListCtrl::on_get_display_info(NMHDR* p_nmhdr, LRESULT* p_result)
 {
 	auto* display_info = reinterpret_cast<LV_DISPINFO*>(p_nmhdr);
 	LV_ITEM* item = &(display_info)->item;
@@ -270,7 +270,7 @@ void DataListCtrl::on_get_display_info(NMHDR* p_nmhdr, LRESULT* p_result)
 		item->iImage = i_cache_index;
 }
 
-void DataListCtrl::OnVScroll(const UINT n_sb_code, const UINT n_pos, CScrollBar* p_scroll_bar)
+void RecordsListCtrl::OnVScroll(const UINT n_sb_code, const UINT n_pos, CScrollBar* p_scroll_bar)
 {
 	switch (n_sb_code)
 	{
@@ -286,7 +286,7 @@ void DataListCtrl::OnVScroll(const UINT n_sb_code, const UINT n_pos, CScrollBar*
 	}
 }
 
-void DataListCtrl::OnKeyUp(UINT n_char, UINT n_rep_cnt, UINT n_flags)
+void RecordsListCtrl::OnKeyUp(UINT n_char, UINT n_rep_cnt, UINT n_flags)
 {
 	switch (n_char)
 	{
@@ -308,7 +308,7 @@ void DataListCtrl::OnKeyUp(UINT n_char, UINT n_rep_cnt, UINT n_flags)
 	}
 }
 
-void DataListCtrl::refresh_display()
+void RecordsListCtrl::refresh_display()
 {
 	build_empty_bitmap(TRUE);
 	update_images();
@@ -316,7 +316,7 @@ void DataListCtrl::refresh_display()
 	UpdateWindow();
 }
 
-void DataListCtrl::resize_signal_column(const int n_pixels)
+void RecordsListCtrl::resize_signal_column(const int n_pixels)
 {
 	m_column_width_[CTRL2_COL_CURVE] = n_pixels;
 	image_list_.DeleteImageList();
@@ -327,7 +327,7 @@ void DataListCtrl::resize_signal_column(const int n_pixels)
 	refresh_display();
 }
 
-void DataListCtrl::fit_columns_to_size(const int n_pixels)
+void RecordsListCtrl::fit_columns_to_size(const int n_pixels)
 {
 	int fixed_width = 0;
 	for (const auto i : m_column_width_)

@@ -78,6 +78,7 @@ private:
 	int m_spike_class_ {0};
 	CUIntArray m_columns_width_;
 	static ViewRecordsListState s_view_state_;
+    bool suppress_selection_events_ { false };
 };
 
 

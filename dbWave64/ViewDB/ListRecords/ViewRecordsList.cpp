@@ -111,16 +111,7 @@ void ViewRecordsList::OnInitialUpdate()
 	const int n_records = db_wave_doc->db_get_records_count();
 	m_list_ctrl_.SetItemCountEx(n_records);
 	const int per_page = m_list_ctrl_.GetCountPerPage();
-	int current_index = db_wave_doc->db_get_current_record_position();
-	// Force initial document selection to 0 for a predictable top-of-list start
-	if (n_records > 0)
-	{
-		if (current_index != 0)
-		{
-			db_wave_doc->db_set_current_record_position(0);
-			current_index = 0;
-		}
-	}
+    int current_index = db_wave_doc->db_get_current_record_position();
 	if (current_index < 0) current_index = 0;
 	if (current_index >= 0 && n_records > 0)
 	{
@@ -132,12 +123,14 @@ void ViewRecordsList::OnInitialUpdate()
 			last = n_records - 1;
 			first = max(last - page + 1, 0);
 		}
-		m_list_ctrl_.set_visible_range(first, last);
-		if (m_list_ctrl_.GetItemCount() > 0)
-		{
-			// Select top row by default on initial load
-			m_list_ctrl_.SetItemState(0, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
-		}
+        m_list_ctrl_.set_visible_range(first, last);
+        if (current_index >= 0 && current_index < m_list_ctrl_.GetItemCount())
+        {
+            suppress_selection_events_ = true;
+            m_list_ctrl_.SetItemState(current_index, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+            m_list_ctrl_.EnsureVisible(current_index, FALSE);
+            suppress_selection_events_ = false;
+        }
 	}
 	else
 	{
@@ -316,6 +309,8 @@ void ViewRecordsList::on_item_changed_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_resul
     auto* p_nmlv = reinterpret_cast<LPNMLISTVIEW>(p_nmhdr);
     *p_result = 0;
     if ((p_nmlv->uChanged & LVIF_STATE) == 0)
+        return;
+    if (suppress_selection_events_)
         return;
     const UINT was_selected = (p_nmlv->uOldState & LVIS_SELECTED);
     const UINT is_selected = (p_nmlv->uNewState & LVIS_SELECTED);

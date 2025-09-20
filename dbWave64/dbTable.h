@@ -1,7 +1,11 @@
 #pragma once
 
+#include <afxdao.h>
 #define N_TABLE_COLUMNS	29
 #include "AcqWaveFormat.h"
+#include "dbTableMain.h"
+#include "dbTableAssociated.h"
+#include "dbTableColumnDescriptor.h"
 
 typedef struct
 {
@@ -54,6 +58,10 @@ public:
 
 	BOOL open_tables();
 	BOOL ensure_comment_schema_and_migrate();
+	// Settings table helpers
+	BOOL ensure_settings_table();
+	BOOL settings_write(const CString& key, const CString& value);
+	CString settings_read(const CString& key, const CString& default_value = _T(""));
 	void add_column_28(CDaoTableDef& table_def, const CString& cs_table, long l_attr);
 	void add_column_26_27(CDaoTableDef& table_def, const CString& cs_table, long l_attr) const;
 	void add_column_24_25(CDaoTableDef& table_def, const CString& cs_table, long l_attr) const;

@@ -1,0 +1,1448 @@
+
+1>ChartSpike.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/Chart/ChartSpike.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>ChartSpikeBar.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/Chart/ChartSpikeBar.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>ChartSpikeHist.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/Chart/ChartSpikeHist.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>ChartSpikeHistVert.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/Chart/ChartSpikeHistVert.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>ChartSpikeShape.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/Chart/ChartSpikeShape.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>ChartSpikeXY.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/Chart/ChartSpikeXY.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>DlgADExperiment.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/data_acquisition/DlgADExperiment.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>ViewAdcontinuous.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/data_acquisition/ViewAdcontinuous.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>dbWaveDoc.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/dbWaveDoc.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1838,14): error C2079: 'desc' uses undefined struct 'DB_ITEMDESC'
+1>(compiling source file '/dbWaveDoc.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1839,12): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/dbWaveDoc.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1839,12):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1839,48):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1839,12):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1841,12): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/dbWaveDoc.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1841,12):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1841,46):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1841,12):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1842,2): error C3536: 'filename': cannot be used before it is initialized
+1>(compiling source file '/dbWaveDoc.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1856,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/dbWaveDoc.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1856,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1856,54):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1856,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1859,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/dbWaveDoc.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1859,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1859,48):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1859,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1862,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/dbWaveDoc.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1862,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1862,51):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1862,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1866,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/dbWaveDoc.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1866,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1866,50):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1866,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1868,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/dbWaveDoc.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1868,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1868,50):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1868,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1870,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/dbWaveDoc.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1870,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1870,47):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1870,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1872,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/dbWaveDoc.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1872,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1872,52):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1872,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1875,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/dbWaveDoc.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1875,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1875,52):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1875,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1877,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/dbWaveDoc.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1877,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1877,51):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1877,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1880,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/dbWaveDoc.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1880,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1880,49):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1880,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1882,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/dbWaveDoc.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1882,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1882,49):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1882,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1884,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/dbWaveDoc.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1884,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1884,46):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1884,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1888,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/dbWaveDoc.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1888,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1888,49):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1888,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1890,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/dbWaveDoc.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1890,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1890,49):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1890,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1892,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/dbWaveDoc.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1892,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1892,47):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1892,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1896,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/dbWaveDoc.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1896,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1896,53):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1896,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1898,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/dbWaveDoc.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1898,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1898,44):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbWaveDoc.cpp(1898,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>ChildFrm.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/ChildFrm.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>dbTable.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(33,15): error C2079: 'CdbTable::m_main_table_set' uses undefined class 'CdbTableMain'
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(36,21): error C2079: 'CdbTable::m_operator_set' uses undefined class 'CdbTableAssociated'
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(37,21): error C2079: 'CdbTable::m_insect_set' uses undefined class 'CdbTableAssociated'
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(38,21): error C2079: 'CdbTable::m_location_set' uses undefined class 'CdbTableAssociated'
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(39,21): error C2079: 'CdbTable::m_sensillum_set' uses undefined class 'CdbTableAssociated'
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(40,21): error C2079: 'CdbTable::m_stimulus_set' uses undefined class 'CdbTableAssociated'
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(41,21): error C2079: 'CdbTable::m_concentration_set' uses undefined class 'CdbTableAssociated'
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(42,21): error C2079: 'CdbTable::m_sex_set' uses undefined class 'CdbTableAssociated'
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(43,21): error C2079: 'CdbTable::m_strain_set' uses undefined class 'CdbTableAssociated'
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(44,21): error C2079: 'CdbTable::m_experiment_set' uses undefined class 'CdbTableAssociated'
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(45,21): error C2079: 'CdbTable::m_path_set' uses undefined class 'CdbTableAssociated'
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(46,21): error C2079: 'CdbTable::m_comment_set' uses undefined class 'CdbTableAssociated'
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableMain.h(113,14): error C2079: 'CdbTableMain::m_desc' uses undefined struct 'DB_ITEMDESC'
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableMain.h(161,10): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableMain.h(161,23): error C7732: expected an expression before ']'
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableMain.h(161,23): error C2109: subscript requires array or pointer type
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableMain.h(161,43): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableMain.h(162,10): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableMain.h(162,23): error C7732: expected an expression before ']'
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableMain.h(162,23): error C2109: subscript requires array or pointer type
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableMain.h(162,49): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(90,7): error C2664: 'BOOL CdbTable::create_relation_between_associated_table_and_1_column(LPCTSTR,int,long,CdbTableAssociated *)': cannot convert argument 4 from '<error type> *' to 'CdbTableAssociated *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(90,94):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(130,7):
+1>    see declaration of 'CdbTable::create_relation_between_associated_table_and_1_column'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(90,7):
+1>    while trying to match the argument list '(const CString, const int, const long, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(91,7): error C2664: 'BOOL CdbTable::create_relation_between_associated_table_and_1_column(LPCTSTR,int,long,CdbTableAssociated *)': cannot convert argument 4 from '<error type> *' to 'CdbTableAssociated *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(91,97):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(130,7):
+1>    see declaration of 'CdbTable::create_relation_between_associated_table_and_1_column'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(91,7):
+1>    while trying to match the argument list '(const CString, const int, const long, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(92,7): error C2664: 'BOOL CdbTable::create_relation_between_associated_table_and_1_column(LPCTSTR,int,long,CdbTableAssociated *)': cannot convert argument 4 from '<error type> *' to 'CdbTableAssociated *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(92,96):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(130,7):
+1>    see declaration of 'CdbTable::create_relation_between_associated_table_and_1_column'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(92,7):
+1>    while trying to match the argument list '(const CString, const int, const long, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(93,7): error C2664: 'BOOL CdbTable::create_relation_between_associated_table_and_1_column(LPCTSTR,int,long,CdbTableAssociated *)': cannot convert argument 4 from '<error type> *' to 'CdbTableAssociated *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(93,96):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(130,7):
+1>    see declaration of 'CdbTable::create_relation_between_associated_table_and_1_column'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(93,7):
+1>    while trying to match the argument list '(const CString, const int, const long, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(94,7): error C2664: 'BOOL CdbTable::create_relation_between_associated_table_and_1_column(LPCTSTR,int,long,CdbTableAssociated *)': cannot convert argument 4 from '<error type> *' to 'CdbTableAssociated *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(94,94):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(130,7):
+1>    see declaration of 'CdbTable::create_relation_between_associated_table_and_1_column'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(94,7):
+1>    while trying to match the argument list '(const CString, const int, const long, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(95,7): error C2664: 'BOOL CdbTable::create_relation_between_associated_table_and_1_column(LPCTSTR,int,long,CdbTableAssociated *)': cannot convert argument 4 from '<error type> *' to 'CdbTableAssociated *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(95,91):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(130,7):
+1>    see declaration of 'CdbTable::create_relation_between_associated_table_and_1_column'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(95,7):
+1>    while trying to match the argument list '(const CString, const int, const long, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(96,7): error C2664: 'BOOL CdbTable::create_relation_between_associated_table_and_1_column(LPCTSTR,int,long,CdbTableAssociated *)': cannot convert argument 4 from '<error type> *' to 'CdbTableAssociated *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(96,98):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(130,7):
+1>    see declaration of 'CdbTable::create_relation_between_associated_table_and_1_column'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(96,7):
+1>    while trying to match the argument list '(const CString, const int, const long, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(97,7): error C2664: 'BOOL CdbTable::create_relation_between_associated_table_and_1_column(LPCTSTR,int,long,CdbTableAssociated *)': cannot convert argument 4 from '<error type> *' to 'CdbTableAssociated *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(97,95):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(130,7):
+1>    see declaration of 'CdbTable::create_relation_between_associated_table_and_1_column'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(97,7):
+1>    while trying to match the argument list '(const CString, const int, const long, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(261,29): error C2664: 'CdbTable::OPEN_ASSOC_STATUS CdbTable::open_associated_table(CdbTableAssociated *)': cannot convert argument 1 from '<error type> *' to 'CdbTableAssociated *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(261,51):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(75,20):
+1>    see declaration of 'CdbTable::open_associated_table'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(261,29):
+1>    while trying to match the argument list '(<error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(275,4): error C2661: 'CDaoDatabase::CreateRelation': no overloaded function takes 5 arguments
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(275,4):
+1>    while trying to match the argument list '(const CString, const wchar_t [8], const CString, const long, const wchar_t [10])'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(323,16): error C2737: 'id': const object must be initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(348,3): error C2661: 'CDaoDatabase::CreateRelation': no overloaded function takes 5 arguments
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(348,3):
+1>    while trying to match the argument list '(CString, const LPCTSTR, const LPCTSTR, const long, CString)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(466,3): error C2440: 'initializing': cannot convert from '<error type> *' to 'CdbTableAssociated *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(466,3):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(467,3): error C2440: 'initializing': cannot convert from '<error type> *' to 'CdbTableAssociated *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(467,3):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(468,3): error C2440: 'initializing': cannot convert from '<error type> *' to 'CdbTableAssociated *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(468,3):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(469,3): error C2440: 'initializing': cannot convert from '<error type> *' to 'CdbTableAssociated *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(469,3):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(470,3): error C2440: 'initializing': cannot convert from '<error type> *' to 'CdbTableAssociated *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(470,3):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(471,3): error C2440: 'initializing': cannot convert from '<error type> *' to 'CdbTableAssociated *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(471,3):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(472,3): error C2440: 'initializing': cannot convert from '<error type> *' to 'CdbTableAssociated *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(472,3):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(473,3): error C2440: 'initializing': cannot convert from '<error type> *' to 'CdbTableAssociated *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(473,3):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(474,3): error C2440: 'initializing': cannot convert from '<error type> *' to 'CdbTableAssociated *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(474,3):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(475,3): error C2440: 'initializing': cannot convert from '<error type> *' to 'CdbTableAssociated *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(475,3):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(476,3): error C2440: 'initializing': cannot convert from '<error type> *' to 'CdbTableAssociated *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(476,3):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(650,2): error C2661: 'CDaoDatabase::CreateRelation': no overloaded function takes 5 arguments
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(650,2):
+1>    while trying to match the argument list '(const wchar_t [11], const wchar_t [5], const CString, const long, const wchar_t [7])'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(680,2): error C2661: 'CDaoDatabase::CreateRelation': no overloaded function takes 5 arguments
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(680,2):
+1>    while trying to match the argument list '(const wchar_t [13], const wchar_t [7], const CString, long, const wchar_t [9])'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(682,2): error C2661: 'CDaoDatabase::CreateRelation': no overloaded function takes 5 arguments
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(682,2):
+1>    while trying to match the argument list '(const wchar_t [10], const wchar_t [4], const CString, long, const wchar_t [6])'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(711,2): error C2661: 'CDaoDatabase::CreateRelation': no overloaded function takes 5 arguments
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(711,2):
+1>    while trying to match the argument list '(CString, const wchar_t [14], const CString, long, const wchar_t [8])'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(714,2): error C2661: 'CDaoDatabase::CreateRelation': no overloaded function takes 5 arguments
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(714,2):
+1>    while trying to match the argument list '(CString, const wchar_t [9], const CString, long, const wchar_t [7])'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(734,2): error C2661: 'CDaoDatabase::CreateRelation': no overloaded function takes 5 arguments
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(734,2):
+1>    while trying to match the argument list '(CString, const wchar_t [5], const CString, long, const wchar_t [7])'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(737,2): error C2661: 'CDaoDatabase::CreateRelation': no overloaded function takes 5 arguments
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(737,2):
+1>    while trying to match the argument list '(CString, const wchar_t [5], const CString, long, const wchar_t [7])'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(843,23): error C3536: 'cs_path': cannot be used before it is initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(873,13): error C2737: 'cs_path': const object must be initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(875,24): error C3536: 'cs_path': cannot be used before it is initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(877,14): error C2737: 'cs_relative_path': const object must be initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(878,8): error C3536: 'cs_relative_path': cannot be used before it is initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(912,14): error C2737: 'ol': const object must be initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(914,14): error C2737: 'i_col_path': const object must be initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(915,14): error C2737: 'i_col_path2': const object must be initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(919,34): error C3536: 'i_col_path': cannot be used before it is initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(920,34): error C3536: 'i_col_path2': cannot be used before it is initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(923,32): error C3536: 'ol': cannot be used before it is initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(949,13): error C2737: 'cs_path': const object must be initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(950,23): error C3536: 'cs_path': cannot be used before it is initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(952,14): error C2737: 'cs_absolute_path': const object must be initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(953,8): error C3536: 'cs_absolute_path': cannot be used before it is initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(987,14): error C2737: 'ol': const object must be initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(989,14): error C2737: 'col_path': const object must be initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(990,14): error C2737: 'col_path2': const object must be initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(994,29): error C3536: 'col_path': cannot be used before it is initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(995,29): error C3536: 'col_path2': cannot be used before it is initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(998,32): error C3536: 'ol': cannot be used before it is initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1102,12): error C2737: 'record_count': const object must be initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1134,13): error C2737: 'p_desc': const object must be initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1135,2): error C3536: 'p_desc': cannot be used before it is initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1274,13): error C2737: 'p_desc': const object must be initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1275,2): error C3536: 'p_desc': cannot be used before it is initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1291,3): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1292,3): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1293,40): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1295,20): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1295,15): error C2737: 'cs': const object must be initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1296,22): error C3536: 'cs': cannot be used before it is initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1296,15): error C2737: 'left': const object must be initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1297,15): error C2737: 'right': const object must be initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1298,4): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1298,40): error C3536: 'left': cannot be used before it is initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1298,50): error C3536: 'right': cannot be used before it is initialized
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1302,3): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1304,4): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1308,3): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1313,3): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1331,98): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1341,85): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1345,27): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1352,85): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1365,14): error C2079: 'desc' uses undefined struct 'DB_ITEMDESC'
+1>(compiling source file '/dbTable.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1373,24): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1280,16):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1373,24):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1373,49):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1373,24):
+1>    while trying to match the argument list '(int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1374,3): error C2664: 'BOOL CdbTable::set_record_item_value(int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1374,28):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1323,16):
+1>    see declaration of 'CdbTable::set_record_item_value'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1374,3):
+1>    while trying to match the argument list '(int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1421,2): error C2664: 'void CdbTable::delete_unused_entries_in_attached_table(CdbTableAssociated *,int,int)': cannot convert argument 1 from '<error type> *' to 'CdbTableAssociated *'
+1>(compiling source file '/dbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1421,42):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(124,7):
+1>    see declaration of 'CdbTable::delete_unused_entries_in_attached_table'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1421,2):
+1>    while trying to match the argument list '(<error type> *, const int, int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.cpp(1421,2): error C1003: error count exceeds 100; stopping compilation
+1>(compiling source file '/dbTable.cpp')
+1>dbWave.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/dbWave.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>DlgdbEditField.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/DlgdbEditField.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>DlgdbEditRecord.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(358,6): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(363,22): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(364,24): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(368,29): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(368,61): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(368,92): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(368,3): error C2660: 'DlgdbEditRecord::populate_combo_with_text': function does not take 1 arguments
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(157,23):
+1>    see declaration of 'DlgdbEditRecord::populate_combo_with_text'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(368,3):
+1>    while trying to match the argument list '()'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(374,6): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(379,22): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(380,24): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(387,32): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(387,54): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(387,73): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(387,3): error C2660: 'DlgdbEditRecord::populate_combo_with_numbers': function does not take 1 arguments
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(138,23):
+1>    see declaration of 'DlgdbEditRecord::populate_combo_with_numbers'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(387,3):
+1>    while trying to match the argument list '()'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(390,22): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(390,14): error C2737: 'i_id': const object must be initialized
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(392,17): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(392,51): error C3536: 'i': cannot be used before it is initialized
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(394,8): error C3536: 'i_id': cannot be used before it is initialized
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(394,16): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(400,3): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(500,12): error C2440: '=': cannot convert from 'DB_ITEMDESC *' to 'DB_ITEMDESC *'
+1>(compiling source file '/DlgdbEditRecord.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\DlgdbEditRecord.cpp(500,12):
+1>    Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>DlgExportData.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/DlgExportData.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>DlgFindFiles.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/DlgFindFiles.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>DlgImportFiles.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/DlgImportFiles.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>DlgSpikeEdit.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/DlgSpikeEdit.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>FilenameCleanupUtils.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/FilenameCleanupUtils.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>MainFrm.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/MainFrm.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>Generating Code...
+1>Compiling...
+1>MeasureHZtagsPage.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/MeasureHZtagsPage.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>MeasureOptionsPage.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/MeasureOptionsPage.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>MeasureProperties.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/MeasureProperties.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>MeasureResultsPage.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/MeasureResultsPage.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>MeasureVTtagsPage.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/MeasureVTtagsPage.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>NoteDoc.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/NoteDoc.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>SpikeClassGrid.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/SpikeClassGrid.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>SpikeClassListBox.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/SpikeClassListBox.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>SpikeClassRowItem.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/SpikeClassRowItem.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>SpikeListTabCtrl.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/SpikeListTabCtrl.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>ViewData.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/ViewDB/Data/ViewData.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>ViewSpikeDetect.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/ViewDB/DetectSpikes/ViewSpikeDetect.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>ViewSpikeHist.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/ViewDB/Histograms/ViewSpikeHist.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>ViewRecordsList.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsList.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(50,15): error C2079: 'desc' uses undefined struct 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsList.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(51,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsList.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(51,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(51,42):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(51,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(53,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsList.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(53,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(53,48):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(53,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(55,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsList.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(55,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(55,49):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(55,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(57,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsList.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(57,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(57,49):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(57,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(59,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsList.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(59,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(59,49):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(59,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(61,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsList.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(61,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(61,49):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(61,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(63,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsList.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(63,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(63,53):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(63,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(65,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsList.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(65,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(65,51):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(65,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(67,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsList.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(67,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(67,44):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(67,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(74,14): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsList.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(74,14):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(74,48):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(74,14):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(75,14): error C2737: 'n_spikes': const object must be initialized
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsList.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(76,14): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsList.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(76,14):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(76,54):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(76,14):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>ViewRecordsListInit.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsListInit.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(50,15): error C2079: 'desc' uses undefined struct 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsListInit.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(51,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsListInit.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(51,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(51,42):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(51,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(53,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsListInit.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(53,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(53,48):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(53,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(55,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsListInit.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(55,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(55,49):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(55,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(57,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsListInit.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(57,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(57,49):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(57,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(59,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsListInit.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(59,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(59,49):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(59,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(61,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsListInit.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(61,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(61,49):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(61,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(63,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsListInit.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(63,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(63,53):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(63,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(65,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsListInit.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(65,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(65,51):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(65,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(67,13): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsListInit.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(67,13):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(67,44):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(67,13):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(74,14): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsListInit.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(74,14):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(74,48):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(74,14):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(75,14): error C2737: 'n_spikes': const object must be initialized
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsListInit.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(76,14): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/ListRecords/ViewRecordsListInit.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(76,14):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(76,54):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\ListRecords\Adapters.h(76,14):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>PaneldbFilter.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(255,10): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(276,62): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(276,18): error C2737: 'h_tree_item': const object must be initialized
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(278,28): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(278,13): error C2737: 'cs_element_j': const object must be initialized
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(279,6): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(282,24): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(284,8): error C3536: 'cs_element_j': cannot be used before it is initialized
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(284,35): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(291,11): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(293,34): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(307,23): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(361,27): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(361,13): error C2737: 'cs_col_head': const object must be initialized
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(362,26): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(362,13): error C2737: 'array_size': const object must be initialized
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(363,6): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(367,6): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(369,3): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(369,51): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(375,3): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(376,24): error C3536: 'array_size': cannot be used before it is initialized
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(378,22): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(378,15): error C2737: 'i_id': const object must be initialized
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(380,38): error C3536: 'cs_col_head': cannot be used before it is initialized
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(380,51): error C3536: 'i_id': cannot be used before it is initialized
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(385,5): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(386,9): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(386,36): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(388,6): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(397,14): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(398,2): error C3536: 'str2': cannot be used before it is initialized
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(400,22): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(402,6): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(405,6): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(407,3): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(407,36): error C3536: 'p_linked_set': cannot be used before it is initialized
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(407,70): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(412,3): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(413,3): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(444,37): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(448,37): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(448,5): error C2660: 'PaneldbFilter::insert_alphabetic': function does not take 1 arguments
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.h(35,14):
+1>    see declaration of 'PaneldbFilter::insert_alphabetic'
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(448,5):
+1>    while trying to match the argument list '(CString)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(449,5): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(460,30): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(460,13): error C2737: 'cs_column_head': const object must be initialized
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(464,6): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(468,6): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(470,8): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(471,3): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(476,3): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(481,39): error C3536: 'cs_column_head': cannot be used before it is initialized
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(486,5): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(514,25): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(516,21): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(516,16): error C2737: 'li': const object must be initialized
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(517,16): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(517,58): error C3536: 'li': cannot be used before it is initialized
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(518,9): error C3536: 'str': cannot be used before it is initialized
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(518,13): error C2446: '==': no conversion from 'CString' to '<error type>'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(518,16):
+1>    No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(520,6): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(521,6): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(538,20): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(538,15): error C2737: 'li': const object must be initialized
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(539,4): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(539,37): error C3536: 'li': cannot be used before it is initialized
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(540,4): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(556,4): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(557,4): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(581,4): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(586,4): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(587,4): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(588,4): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(589,4): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelFilter\PaneldbFilter.cpp(591,12): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelFilter/PaneldbFilter.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>PaneldbProperties.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/ViewDB/PanelProperties/PaneldbProperties.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(188,14): error C2079: 'desc' uses undefined struct 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelProperties/PaneldbProperties.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(196,9): error C2665: 'CdbTable::get_record_item_value': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/PanelProperties/PaneldbProperties.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(115,7):
+1>    could be 'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(196,9):
+1>        'BOOL CdbTable::get_record_item_value(const int,DB_ITEMDESC *)': cannot convert argument 2 from '<error type> *' to 'DB_ITEMDESC *'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(196,41):
+1>            Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(196,9):
+1>    while trying to match the argument list '(const int, <error type> *)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(281,11): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelProperties/PaneldbProperties.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(285,4): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelProperties/PaneldbProperties.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(287,29): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelProperties/PaneldbProperties.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(288,21): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelProperties/PaneldbProperties.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(291,4): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelProperties/PaneldbProperties.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(293,29): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelProperties/PaneldbProperties.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(294,21): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelProperties/PaneldbProperties.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(297,4): error C2027: use of undefined type 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelProperties/PaneldbProperties.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8):
+1>    see declaration of 'DB_ITEMDESC'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(409,15): error C2079: 'desc' uses undefined struct 'DB_ITEMDESC'
+1>(compiling source file '/ViewDB/PanelProperties/PaneldbProperties.cpp')
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(423,41): error C2665: 'CMFCPropertyGridProperty::CMFCPropertyGridProperty': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/PanelProperties/PaneldbProperties.cpp')
+1>    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\atlmfc\include\afxpropertygridctrl.h(49,2):
+1>    could be 'CMFCPropertyGridProperty::CMFCPropertyGridProperty(const CString &,const COleVariant &,LPCTSTR,DWORD_PTR,LPCTSTR,LPCTSTR,LPCTSTR)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(423,41):
+1>        'CMFCPropertyGridProperty::CMFCPropertyGridProperty(const CString &,const COleVariant &,LPCTSTR,DWORD_PTR,LPCTSTR,LPCTSTR,LPCTSTR)': cannot convert argument 3 from 'const int' to 'LPCTSTR'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(423,77):
+1>            Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\atlmfc\include\afxpropertygridctrl.h(46,2):
+1>    or       'CMFCPropertyGridProperty::CMFCPropertyGridProperty(const CString &,DWORD_PTR,BOOL)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(423,41):
+1>        'CMFCPropertyGridProperty::CMFCPropertyGridProperty(const CString &,DWORD_PTR,BOOL)': cannot convert argument 2 from 'CString' to 'DWORD_PTR'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(423,65):
+1>            No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(423,41):
+1>    while trying to match the argument list '(CString, CString, const int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(427,41): error C2665: 'CMFCPropertyGridProperty::CMFCPropertyGridProperty': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/PanelProperties/PaneldbProperties.cpp')
+1>    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\atlmfc\include\afxpropertygridctrl.h(49,2):
+1>    could be 'CMFCPropertyGridProperty::CMFCPropertyGridProperty(const CString &,const COleVariant &,LPCTSTR,DWORD_PTR,LPCTSTR,LPCTSTR,LPCTSTR)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(427,41):
+1>        'CMFCPropertyGridProperty::CMFCPropertyGridProperty(const CString &,const COleVariant &,LPCTSTR,DWORD_PTR,LPCTSTR,LPCTSTR,LPCTSTR)': cannot convert argument 3 from 'const int' to 'LPCTSTR'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(427,76):
+1>            Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\atlmfc\include\afxpropertygridctrl.h(46,2):
+1>    or       'CMFCPropertyGridProperty::CMFCPropertyGridProperty(const CString &,DWORD_PTR,BOOL)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(427,41):
+1>        'CMFCPropertyGridProperty::CMFCPropertyGridProperty(const CString &,DWORD_PTR,BOOL)': cannot convert argument 2 from 'CString' to 'DWORD_PTR'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(427,64):
+1>            No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(427,41):
+1>    while trying to match the argument list '(CString, CString, const int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(431,41): error C2665: 'CMFCPropertyGridProperty::CMFCPropertyGridProperty': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/PanelProperties/PaneldbProperties.cpp')
+1>    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\atlmfc\include\afxpropertygridctrl.h(49,2):
+1>    could be 'CMFCPropertyGridProperty::CMFCPropertyGridProperty(const CString &,const COleVariant &,LPCTSTR,DWORD_PTR,LPCTSTR,LPCTSTR,LPCTSTR)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(431,41):
+1>        'CMFCPropertyGridProperty::CMFCPropertyGridProperty(const CString &,const COleVariant &,LPCTSTR,DWORD_PTR,LPCTSTR,LPCTSTR,LPCTSTR)': cannot convert argument 3 from 'const int' to 'LPCTSTR'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(431,77):
+1>            Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\atlmfc\include\afxpropertygridctrl.h(46,2):
+1>    or       'CMFCPropertyGridProperty::CMFCPropertyGridProperty(const CString &,DWORD_PTR,BOOL)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(431,41):
+1>        'CMFCPropertyGridProperty::CMFCPropertyGridProperty(const CString &,DWORD_PTR,BOOL)': cannot convert argument 2 from 'CString' to 'DWORD_PTR'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(431,65):
+1>            No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(431,41):
+1>    while trying to match the argument list '(CString, CString, const int)'
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(437,41): error C2665: 'CMFCPropertyGridProperty::CMFCPropertyGridProperty': no overloaded function could convert all the argument types
+1>(compiling source file '/ViewDB/PanelProperties/PaneldbProperties.cpp')
+1>    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\atlmfc\include\afxpropertygridctrl.h(49,2):
+1>    could be 'CMFCPropertyGridProperty::CMFCPropertyGridProperty(const CString &,const COleVariant &,LPCTSTR,DWORD_PTR,LPCTSTR,LPCTSTR,LPCTSTR)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(437,41):
+1>        'CMFCPropertyGridProperty::CMFCPropertyGridProperty(const CString &,const COleVariant &,LPCTSTR,DWORD_PTR,LPCTSTR,LPCTSTR,LPCTSTR)': cannot convert argument 3 from 'const int' to 'LPCTSTR'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(437,77):
+1>            Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or parenthesized function-style cast
+1>    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\atlmfc\include\afxpropertygridctrl.h(46,2):
+1>    or       'CMFCPropertyGridProperty::CMFCPropertyGridProperty(const CString &,DWORD_PTR,BOOL)'
+1>        C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(437,41):
+1>        'CMFCPropertyGridProperty::CMFCPropertyGridProperty(const CString &,DWORD_PTR,BOOL)': cannot convert argument 2 from 'CString' to 'DWORD_PTR'
+1>            C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(437,65):
+1>            No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\ViewDB\PanelProperties\PaneldbProperties.cpp(437,41):
+1>    while trying to match the argument list '(CString, CString, const int)'
+1>ViewSpikeSort.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/ViewDB/SpikeSort/ViewSpikeSort.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>ViewSpikes.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/ViewDB/Spikes/ViewSpikes.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>ViewSpikeTemplate.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/ViewDB/Templates/ViewSpikeTemplate.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>Generating Code...
+1>Compiling...
+1>ViewDbTable.cpp
+1>C:\Users\fred\source\repos\dbwave64\dbWave64\dbTable.h(10,8): error C2371: 'DB_ITEMDESC': redefinition; different basic types
+1>(compiling source file '/ViewDB/ViewDbTable.cpp')
+1>    C:\Users\fred\source\repos\dbwave64\dbWave64\dbTableColumnDescriptor.h(14,7):
+1>    see declaration of 'DB_ITEMDESC'
+1>Generating Code...
+1>Done building project "dbWave64.vcxproj" -- FAILED.
+========== Build: 0 succeeded, 1 failed, 0 up-to-date, 0 skipped ==========
+========== Build completed at 22:45 and took 07.618 seconds ==========

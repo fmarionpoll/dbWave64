@@ -1,7 +1,35 @@
 #include "StdAfx.h"
-#include "dbTableAssociated.h"
-#include "dbTableMain.h"
 #include "dbTable.h"
+
+// Forward declaration for internal helper used by settings_write
+static BOOL settings_delete_row(CDaoDatabase* db, const CString& key);
+
+// Helpers: non-throwing existence checks
+static bool dao_table_exists(CDaoDatabase* db, const CString& name)
+{
+    try {
+        const short n = db->GetTableDefCount();
+        for (short i = 0; i < n; ++i)
+        {
+            CDaoTableDefInfo info; db->GetTableDefInfo(i, info, AFX_DAO_PRIMARY_INFO);
+            if (info.m_strName.CompareNoCase(name) == 0) return true;
+        }
+    } catch (CDaoException* e) { e->Delete(); }
+    return false;
+}
+
+static bool dao_relation_exists(CDaoDatabase* db, const CString& name)
+{
+    try {
+        const short n = db->GetRelationCount();
+        for (short i = 0; i < n; ++i)
+        {
+            CDaoRelationInfo info; db->GetRelationInfo(i, info, AFX_DAO_PRIMARY_INFO);
+            if (info.m_strName.CompareNoCase(name) == 0) return true;
+        }
+    } catch (CDaoException* e) { e->Delete(); }
+    return false;
+}
 
 #include "dbTableColumnDescriptor.h"
 #include "dbWave.h"
@@ -260,19 +288,27 @@ BOOL CdbTable::ensure_comment_schema_and_migrate()
             return FALSE;
     }
 
-	// Ensure relation exists: table_comment(commentID) -> table([comment])
-	try
-	{
-		const CString cs_rel = _T("table_comment");
-		const long l_attr = dbRelationDontEnforce;
-		CreateRelation(cs_rel, _T("comment"), cs_table, l_attr, _T("commentID"),
-			m_main_table_set.m_desc[CH_COMMENT_KEY].header_name);
-	}
-	catch (CDaoException* e)
-	{
-		// Relation may already exist; ignore
-		e->Delete();
-	}
+    // Ensure relation exists: table_comment(commentID) -> table([comment])
+    {
+        const CString cs_rel = _T("table_comment");
+        // Check if relation exists; if not, create it
+        if (!dao_relation_exists(this, cs_rel))
+        {
+            try
+            {
+                const long l_attr = dbRelationDontEnforce;
+                CreateRelation(cs_rel, _T("comment"), cs_table, l_attr, _T("commentID"),
+                    m_main_table_set.m_desc[CH_COMMENT_KEY].header_name);
+            }
+            catch (CDaoException* e)
+            {
+                // Ignore 3012 if some other process created it in-between
+                if (!e->m_pErrorInfo || e->m_pErrorInfo->m_lErrorCode != 3012)
+                    DisplayDaoException(e, 13);
+                e->Delete();
+            }
+        }
+    }
 
     // Migrate legacy free-text from column "more" if present (only if main table is already open)
     bool hasLegacyMore = false;
@@ -483,6 +519,10 @@ BOOL CdbTable::open_tables()
         return FALSE;
     }
 
+    // Ensure settings table exists (per-database persistent state)
+    if (!ensure_settings_table())
+        return FALSE;
+
 	m_main_table_set.m_default_name = GetName();
 	if (!m_main_table_set.open_table(dbOpenDynaset, nullptr, 0))
 		return FALSE;
@@ -492,6 +532,131 @@ BOOL CdbTable::open_tables()
 		get_record_item_descriptor(column);
 
 	return TRUE;
+}
+
+BOOL CdbTable::ensure_settings_table()
+{
+    // Try open existing settings table using non-throw check
+    if (dao_table_exists(this, _T("settings")))
+        return TRUE;
+    else
+    {
+        try
+        {
+            CDaoTableDef table_def(this);
+            table_def.Create(_T("settings"));
+            table_def.CreateField(_T("name"), dbText, 128, 0);
+            table_def.CreateField(_T("value"), dbMemo, 0, 0);
+            table_def.Append();
+            table_def.Close();
+            // Create unique primary index on name
+            CDaoIndexFieldInfo idx_field;
+            idx_field.m_strName = _T("name");
+            idx_field.m_bDescending = FALSE;
+            CDaoIndexInfo idx_info;
+            idx_info.m_strName = _T("pk_settings_name");
+            idx_info.m_pFieldInfos = &idx_field;
+            idx_info.m_nFields = 1;
+            idx_info.m_bPrimary = TRUE;
+            idx_info.m_bUnique = TRUE;
+            CDaoTableDef t2(this); t2.Open(_T("settings"));
+            t2.CreateIndex(idx_info);
+            t2.Close();
+            return TRUE;
+        }
+        catch (CDaoException* e2)
+        {
+            DisplayDaoException(e2, 20);
+            e2->Delete();
+            return FALSE;
+        }
+    }
+}
+
+BOOL CdbTable::settings_write(const CString& key, const CString& value)
+{
+    try
+    {
+        // treat empty string as delete to avoid 3315 error on zero-length memo
+        if (value.IsEmpty())
+        {
+            settings_delete_row(this, key);
+            return TRUE;
+        }
+        // Try update existing
+        CDaoRecordset rs(this);
+        rs.Open(dbOpenDynaset, _T("SELECT name, value FROM settings WHERE name='" + key + _T("'")));
+        if (!rs.IsEOF())
+        {
+            rs.Edit();
+            rs.SetFieldValue(_T("value"), COleVariant(value));
+            rs.Update();
+            rs.Close();
+            return TRUE;
+        }
+        rs.Close();
+        // Insert new
+        rs.Open(dbOpenDynaset, _T("SELECT name, value FROM settings"));
+        rs.AddNew();
+        rs.SetFieldValue(_T("name"), COleVariant(key));
+        rs.SetFieldValue(_T("value"), COleVariant(value));
+        rs.Update();
+        rs.Close();
+        return TRUE;
+    }
+    catch (CDaoException* e)
+    {
+        DisplayDaoException(e, 21);
+        e->Delete();
+        return FALSE;
+    }
+}
+
+CString CdbTable::settings_read(const CString& key, const CString& default_value)
+{
+    try
+    {
+        CDaoRecordset rs(this);
+        rs.Open(dbOpenDynaset, _T("SELECT value FROM settings WHERE name='" + key + _T("'")));
+        if (rs.IsEOF())
+        {
+            rs.Close();
+            return default_value;
+        }
+        COleVariant v; rs.GetFieldValue((short)0, v);
+        rs.Close();
+        if (v.vt == VT_BSTR) return CString(v.bstrVal);
+        if (v.vt == VT_EMPTY || v.vt == VT_NULL) return default_value;
+        v.ChangeType(VT_BSTR);
+        return CString(v.bstrVal);
+    }
+    catch (CDaoException* e)
+    {
+        e->Delete();
+        return default_value;
+    }
+}
+
+// helper: delete a settings row if exists
+static BOOL settings_delete_row(CDaoDatabase* db, const CString& key)
+{
+    try
+    {
+        CDaoRecordset rs(db);
+        rs.Open(dbOpenDynaset, _T("SELECT name FROM settings WHERE name='" + key + _T("'")));
+        if (!rs.IsEOF())
+        {
+            rs.Delete();
+        }
+        rs.Close();
+        return TRUE;
+    }
+    catch (CDaoException* e)
+    {
+        // Ignore "not found" conditions
+        e->Delete();
+        return FALSE;
+    }
 }
 
 void CdbTable::add_column_28(CDaoTableDef& table_def, const CString& cs_table, const long l_attr)

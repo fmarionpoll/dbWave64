@@ -610,7 +610,274 @@ void PaneldbFilter::on_apply_filter()
 	// update recordset and tell other views...
 	p_db->m_main_table_set.build_filters();
 	p_db->m_main_table_set.refresh_query();
+	// Persist SQL filter and full tree selection state in per-database settings
+	CString where_sql = p_db->m_main_table_set.m_strFilter;
+	p_db->settings_write(_T("filter_sql"), where_sql);
+	CString tree_state = serialize_tree_state();
+	p_db->settings_write(_T("filter_tree_state"), tree_state);
 	m_p_doc_->update_all_views_db_wave(nullptr, HINT_REQUERY, nullptr);
+}
+
+static CString TrimBrackets(const CString& col)
+{
+    CString s = col;
+    s.Trim();
+    if (!s.IsEmpty() && s[0] == '[' && s[s.GetLength()-1] == ']')
+        s = s.Mid(1, s.GetLength()-2);
+    return s;
+}
+
+CString PaneldbFilter::serialize_tree_state() const
+{
+    CString out;
+    const auto* p_db = m_p_doc_->db_table;
+    for (int i = 0; m_no_col_[i] > 0; ++i)
+    {
+        const int col = m_no_col_[i];
+        const auto* d = &p_db->m_main_table_set.m_desc[col];
+        CString line; line += d->header_name; line += _T("|");
+        if (d->b_single_filter && !d->cs_param_single_filter.IsEmpty())
+        {
+            line += _T("1|"); line += d->cs_param_single_filter;
+        }
+        else if (d->b_array_filter)
+        {
+            line += _T("2|");
+            for (int k = 0; k < d->cs_array_filter.GetSize(); ++k)
+            {
+                if (k) line += _T(",");
+                line += d->cs_array_filter.GetAt(k);
+            }
+        }
+        else
+        {
+            continue;
+        }
+        out += line; out += _T("\n");
+    }
+    return out;
+}
+
+void PaneldbFilter::restore_tree_state_from_db()
+{
+    if (!m_p_doc_ || !m_p_doc_->db_table) return;
+    auto* p_db = m_p_doc_->db_table;
+    const CString blob = p_db->settings_read(_T("filter_tree_state"), _T(""));
+    if (blob.IsEmpty()) return;
+    const CString saved = p_db->m_main_table_set.m_strFilter;
+    p_db->m_main_table_set.m_strFilter.Empty(); p_db->m_main_table_set.refresh_query();
+    init_filter_list();
+    for (int i = 0; i < p_db->m_main_table_set.m_nFields; ++i)
+    {
+        auto* d = &p_db->m_main_table_set.m_desc[i];
+        d->b_single_filter = FALSE; d->b_array_filter = FALSE;
+        d->l_param_single_filter = 0; d->l_param_filter_array.RemoveAll();
+        d->cs_array_filter.RemoveAll(); d->data_time_array_filter.RemoveAll();
+    }
+    int start = 0;
+    while (start < blob.GetLength())
+    {
+        int end = blob.Find(_T('\n'), start);
+        CString line = (end >= 0) ? blob.Mid(start, end - start) : blob.Mid(start);
+        if (end < 0) start = blob.GetLength(); else start = end + 1;
+        if (line.IsEmpty()) continue;
+        int p1 = line.Find(_T('|')); if (p1 < 0) continue;
+        int p2 = line.Find(_T('|'), p1 + 1); if (p2 < 0) continue;
+        CString col = line.Left(p1);
+        int type = _ttoi(line.Mid(p1 + 1, p2 - p1 - 1));
+        CString values = line.Mid(p2 + 1);
+        int idx = p_db->m_main_table_set.get_column_index(col);
+        if (idx < 0) continue;
+        auto* d = &p_db->m_main_table_set.m_desc[idx];
+        if (type == 1) { d->b_single_filter = TRUE; d->cs_param_single_filter = values; }
+        else if (type == 2)
+        {
+            d->b_array_filter = TRUE; CString v = values;
+            while (!v.IsEmpty())
+            {
+                int c = v.Find(_T(',')); CString tok = (c >= 0) ? v.Left(c) : v; if (c >= 0) v = v.Mid(c + 1); else v.Empty();
+                tok.Trim(); if (!tok.IsEmpty()) d->cs_array_filter.Add(tok);
+            }
+        }
+    }
+    for (int i = 0; m_no_col_[i] > 0; ++i)
+    {
+        const int col = m_no_col_[i];
+        const auto* d = &p_db->m_main_table_set.m_desc[col];
+        const HTREEITEM h_parent = m_h_tree_item_[i];
+        const auto startH = m_wnd_filter_view_.GetNextItem(h_parent, TVGN_CHILD);
+        for (HTREEITEM h = startH; h != nullptr; h = m_wnd_filter_view_.GetNextItem(h, TVGN_NEXT))
+        {
+            CString itemText = m_wnd_filter_view_.GetItemText(h);
+            TVCS_CHECKSTATE st = TVCS_UNCHECKED;
+            if (d->b_single_filter && !d->cs_param_single_filter.IsEmpty())
+            {
+                if (itemText.CompareNoCase(d->cs_param_single_filter) == 0) st = TVCS_CHECKED;
+            }
+            else if (d->b_array_filter)
+            {
+                for (int k = 0; k < d->cs_array_filter.GetSize(); ++k)
+                {
+                    if (itemText.CompareNoCase(d->cs_array_filter.GetAt(k)) == 0) { st = TVCS_CHECKED; break; }
+                }
+            }
+            m_wnd_filter_view_.set_check(h, st);
+        }
+    }
+    p_db->m_main_table_set.m_strFilter = saved; p_db->m_main_table_set.refresh_query();
+}
+
+void PaneldbFilter::apply_sql_filter(const CString& where_clause)
+{
+    if ((!m_p_doc_ || !m_p_doc_->db_table) && GetSafeHwnd())
+    {
+        // Try to fetch active document if panel was not initialized yet
+        const auto* p_main = static_cast<CMainFrame*>(AfxGetMainWnd());
+        if (p_main)
+        {
+            BOOL bMax; auto* pChild = p_main->MDIGetActive(&bMax);
+            if (pChild)
+            {
+                auto* pDoc = pChild->GetActiveDocument();
+                if (pDoc && pDoc->IsKindOf(RUNTIME_CLASS(CdbWaveDoc)))
+                    m_p_doc_ = static_cast<CdbWaveDoc*>(pDoc);
+            }
+        }
+    }
+    if (!m_p_doc_ || !m_p_doc_->db_table || where_clause.IsEmpty()) return;
+    auto* p_db = m_p_doc_->db_table;
+
+    // Build UI from full dataset so all options are present
+    const CString saved_sql = p_db->m_main_table_set.m_strFilter;
+    p_db->m_main_table_set.m_strFilter.Empty();
+    p_db->m_main_table_set.refresh_query();
+    init_filter_list();
+
+    // Reset filter flags
+    for (int i = 0; i < p_db->m_main_table_set.m_nFields; ++i)
+    {
+        auto* d = &p_db->m_main_table_set.m_desc[i];
+        d->b_single_filter = FALSE; d->b_array_filter = FALSE;
+        d->l_param_single_filter = 0; d->l_param_filter_array.RemoveAll();
+        d->cs_array_filter.RemoveAll(); d->data_time_array_filter.RemoveAll();
+    }
+
+    // Very simple parser: split by AND, support [col]=value and [col] IN (..)
+    CString where = where_clause; where.Trim();
+    CString rest = where;
+    while (!rest.IsEmpty())
+    {
+        int and_pos = rest.Find(_T(" AND "));
+        CString term = (and_pos >= 0) ? rest.Left(and_pos) : rest;
+        if (and_pos >= 0) rest = rest.Mid(and_pos + 5); else rest.Empty();
+        term.Trim(); if (term.IsEmpty()) continue;
+
+        // Handle IN list
+        int in_pos = term.Find(_T(" IN "));
+        if (in_pos > 0)
+        {
+            CString col = TrimBrackets(term.Left(in_pos));
+            int lpar = term.Find('('); int rpar = term.ReverseFind(')');
+            if (lpar > in_pos && rpar > lpar)
+            {
+                CString list = term.Mid(lpar+1, rpar-lpar-1);
+                // split on comma
+                int idx = p_db->m_main_table_set.get_column_index(col);
+                auto* d = &p_db->m_main_table_set.m_desc[idx];
+                d->b_array_filter = TRUE; d->l_param_filter_array.RemoveAll(); d->cs_array_filter.RemoveAll();
+                while (!list.IsEmpty())
+                {
+                    list.Trim();
+                    int comma = list.Find(',');
+                    CString tok = (comma >= 0) ? list.Left(comma) : list;
+                    if (comma >= 0) list = list.Mid(comma+1); else list.Empty();
+                    tok.Trim();
+                    if (!tok.IsEmpty())
+                    {
+                        if (tok[0] == '#')
+                        {
+                            // date literal
+                            tok.Trim(_T("#"));
+                            COleDateTime dt; dt.ParseDateTime(tok);
+                            d->data_time_array_filter.Add(dt);
+                            d->cs_array_filter.Add(dt.Format(VAR_DATEVALUEONLY));
+                        }
+                        else
+                        {
+                            long val = _ttol(tok);
+                            d->l_param_filter_array.Add(val);
+                            d->cs_array_filter.Add(tok);
+                        }
+                    }
+                }
+            }
+            continue;
+        }
+
+        // Handle equality
+        int eq = term.Find('=');
+        if (eq > 0)
+        {
+            CString col = TrimBrackets(term.Left(eq));
+            CString val = term.Mid(eq+1); val.Trim();
+            int idx = p_db->m_main_table_set.get_column_index(col);
+            auto* d = &p_db->m_main_table_set.m_desc[idx];
+            d->b_single_filter = TRUE;
+            if (!val.IsEmpty() && val[0] == '#')
+            {
+                val.Trim(_T("#"));
+                COleDateTime dt; dt.ParseDateTime(val);
+                d->date_time_param_single_filter = dt;
+                d->cs_param_single_filter = dt.Format(VAR_DATEVALUEONLY);
+            }
+            else
+            {
+                d->l_param_single_filter = _ttol(val);
+                d->cs_param_single_filter = val;
+            }
+        }
+    }
+
+    // Reflect flags in the tree (check marks) without collapsing options
+    // Iterate categories and children, set check state according to flags
+    for (int i = 0; m_no_col_[i] > 0; ++i)
+    {
+        const int col = m_no_col_[i];
+        const auto* d = &p_db->m_main_table_set.m_desc[col];
+        const HTREEITEM h_parent = m_h_tree_item_[i];
+        const auto start = m_wnd_filter_view_.GetNextItem(h_parent, TVGN_CHILD);
+        for (HTREEITEM h = start; h != nullptr; h = m_wnd_filter_view_.GetNextItem(h, TVGN_NEXT))
+        {
+            CString itemText = m_wnd_filter_view_.GetItemText(h);
+            TVCS_CHECKSTATE st = TVCS_UNCHECKED;
+            if (d->b_single_filter && !d->cs_param_single_filter.IsEmpty())
+            {
+                if (itemText.CompareNoCase(d->cs_param_single_filter) == 0) st = TVCS_CHECKED;
+            }
+            else if (d->b_array_filter)
+            {
+                for (int k = 0; k < d->cs_array_filter.GetSize(); ++k)
+                {
+                    if (itemText.CompareNoCase(d->cs_array_filter.GetAt(k)) == 0) { st = TVCS_CHECKED; break; }
+                }
+            }
+            m_wnd_filter_view_.set_check(h, st);
+        }
+    }
+
+    // Finally apply the SQL again so the dataset is filtered
+    p_db->m_main_table_set.m_strFilter = where_clause;
+    p_db->m_main_table_set.refresh_query();
+    // Persist tree selection as well
+    CString tree_state = serialize_tree_state();
+    p_db->settings_write(_T("filter_tree_state"), tree_state);
+    m_p_doc_->update_all_views_db_wave(nullptr, HINT_REQUERY, nullptr);
+}
+
+CString PaneldbFilter::build_sql_filter() const
+{
+    const auto* p_set = &m_p_doc_->db_table->m_main_table_set;
+    return p_set->m_strFilter; // use generated SQL directly
 }
 
 //void PaneldbFilter::on_sort_records()

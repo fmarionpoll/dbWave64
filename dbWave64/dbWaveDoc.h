@@ -141,6 +141,9 @@ public:
 	BOOL	OnSaveDocument(LPCTSTR lpsz_path_name) ;
 	HMENU	GetDefaultMenu() ; // get menu depending on state
 	void	update_all_views_db_wave(CView* p_sender, LPARAM l_hint, CObject* p_hint);
+	// Persist/restore per-database view state
+	void	persist_db_view_state();
+	void	restore_db_view_state();
 
 	~CdbWaveDoc() ;
 #ifdef _DEBUG

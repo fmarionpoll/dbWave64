@@ -45,6 +45,21 @@ protected:
 public:
 	~PaneldbFilter() override;
 
+	// Apply an SQL WHERE clause (without the leading WHERE) to the filter model and UI.
+	// Supports simple forms: [col] = value, [col] IN (...), and date literals #mm/dd/yy#.
+	void apply_sql_filter(const CString& where_clause);
+	// Serialize current filter to SQL WHERE string.
+	CString build_sql_filter() const;
+
+private:
+    void parse_sql_to_flags(const CString& where_clause);
+    void apply_flags_to_tree();
+
+public:
+    // Persist/restore full tree selection state (per-database settings)
+    CString serialize_tree_state() const;
+    void restore_tree_state_from_db();
+
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lp_create_struct);
 	afx_msg void OnSize(UINT n_type, int cx, int cy);

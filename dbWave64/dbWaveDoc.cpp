@@ -41,6 +41,8 @@ CdbWaveDoc::CdbWaveDoc()
 
 CdbWaveDoc::~CdbWaveDoc()
 {
+    // Save last record and filter SQL to DB settings
+    persist_db_view_state();
 	SAFE_DELETE(db_table)
 		SAFE_DELETE(m_p_data_doc)
 		SAFE_DELETE(m_p_spk_doc)
@@ -60,6 +62,51 @@ void CdbWaveDoc::update_all_views_db_wave(CView* p_sender, LPARAM l_hint, CObjec
 	// passes message OnUpdate() to the mainframe and add a reference to the document that sends it
 	const auto main_frame = static_cast<CMainFrame*>(AfxGetMainWnd());
 	main_frame->OnUpdate(reinterpret_cast<CView*>(this), l_hint, p_hint);
+}
+
+void CdbWaveDoc::persist_db_view_state()
+{
+    if (!db_table || !db_table->IsOpen()) return;
+    // Save last record absolute index
+    const long idx = db_get_current_record_position();
+    CString s; s.Format(_T("%ld"), idx);
+    db_table->settings_write(_T("last_record_index"), s);
+    // Save filter SQL
+    const CString filter_sql = db_table->m_main_table_set.m_strFilter;
+    if (filter_sql.IsEmpty())
+        db_table->settings_write(_T("filter_sql"), _T("")); // delete row if empty
+    else
+        db_table->settings_write(_T("filter_sql"), filter_sql);
+}
+
+void CdbWaveDoc::restore_db_view_state()
+{
+    if (!db_table || !db_table->IsOpen()) return;
+    // Restore filter first by setting recordset filter; avoid calling UI before panes initialize
+    const CString filter_sql = db_table->settings_read(_T("filter_sql"), _T(""));
+    if (!filter_sql.IsEmpty())
+    {
+        db_table->m_main_table_set.m_strFilter = filter_sql;
+        db_table->m_main_table_set.refresh_query();
+        // Ask panel to reflect tree state lazily if available
+        auto* main_frame = static_cast<CMainFrame*>(AfxGetMainWnd());
+        if (main_frame && main_frame->m_wndPanelFilter.GetSafeHwnd())
+        {
+            main_frame->m_wndPanelFilter.restore_tree_state_from_db();
+        }
+    }
+
+    // Restore last record index (absolute position)
+    const CString s_idx = db_table->settings_read(_T("last_record_index"), _T("0"));
+    const long idx = _ttol(s_idx);
+    const long total = db_table->get_records_count();
+    if (total > 0)
+    {
+        long clamped = idx;
+        if (clamped < 0) clamped = 0; if (clamped >= total) clamped = total - 1;
+        db_set_current_record_position(clamped);
+        update_all_views_db_wave(nullptr, HINT_DOC_MOVE_RECORD, nullptr);
+    }
 }
 
 // TODO here: ask where data are to be saved (call make directory/explore directory)
@@ -220,7 +267,13 @@ BOOL CdbWaveDoc::OnOpenDocument(LPCTSTR lpsz_path_name)
 	{
 		if (!COleDocument::OnOpenDocument(lpsz_path_name))
 			return FALSE;
-		return open_database(lpsz_path_name);
+        const BOOL ok = open_database(lpsz_path_name);
+        if (ok)
+        {
+            // Restore per-database state (filter and last record) once tables are open
+            restore_db_view_state();
+        }
+        return ok;
 	}
 
 	// open spike or dat documents

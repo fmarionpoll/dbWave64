@@ -56,7 +56,6 @@ public:
 	options_detect_stimulus stimulus_detect;
 	spike_detection_array spk_detect_array;
 	options_spk_classification spk_classification;
-
 	options_view_data options_view_data;
 	options_view_spikes options_view_spikes;
 	options_measure options_view_data_measure;

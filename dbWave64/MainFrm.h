@@ -35,7 +35,10 @@ protected: // control bar embedded members
 	CMFCRibbonApplicationButton ribbon_application_button_;
 	CMFCToolBarImages user_images_;
 	PaneldbProperties panel_db_properties_;
-	PaneldbFilter panel_db_filter_;
+    PaneldbFilter panel_db_filter_;
+public:
+    // Expose filter pane for document glue
+    PaneldbFilter& m_wndPanelFilter { panel_db_filter_ };
 	CMFCOutlookBar outlook_bar_;
 	CMFCOutlookBarPane outlook_pane_;
 

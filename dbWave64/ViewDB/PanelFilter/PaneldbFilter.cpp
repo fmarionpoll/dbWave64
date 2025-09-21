@@ -194,20 +194,15 @@ LRESULT PaneldbFilter::on_my_message(const WPARAM w_param, const LPARAM l_param)
 	    if (m_p_doc_ != m_p_doc_old_)
 	    {
 	        init_filter_list();
-	        if (m_p_doc_ && m_p_doc_->db_table)
-	        {
-	            const CString blob = m_p_doc_->db_table->settings_read(_T("filter_tree_state"), _T(""));
-	            if (!blob.IsEmpty())
-	            {
-	                restore_tree_state_from_db();
-	            //}
-	            //else
-	            //{
-	                const CString where_sql = m_p_doc_->db_table->settings_read(_T("filter_sql"), _T(""));
-	                if (!where_sql.IsEmpty())
-	                    apply_sql_filter(where_sql);
-	            }
-	        }
+	        //if (m_p_doc_ && m_p_doc_->db_table)
+	        //{
+	        //   const CString blob = m_p_doc_->db_table->settings_read(_T("filter_tree_state"), _T(""));
+	        //   if (!blob.IsEmpty())
+	        //      restore_tree_state_from_db();
+			//   const CString where_sql = m_p_doc_->db_table->settings_read(_T("filter_sql"), _T(""));
+			//   if (!where_sql.IsEmpty())
+			//		apply_sql_filter(where_sql);
+	        //}
 	    }
 	    break;
 
@@ -223,14 +218,16 @@ LRESULT PaneldbFilter::on_my_message(const WPARAM w_param, const LPARAM l_param)
 				return NULL;
 			m_p_doc_ = static_cast<CdbWaveDoc*>(p_document);
 			init_filter_list();
-			CString tree_blob = m_p_doc_->db_table->settings_read(_T("filter_tree_state"), _T(""));
-			if (!tree_blob.IsEmpty())
-			{
-				restore_tree_state_from_db();
-				const CString where_sql = m_p_doc_->db_table->settings_read(_T("filter_sql"), _T(""));
-				if (!where_sql.IsEmpty())
-					apply_sql_filter(where_sql);
-			}
+
+			//if (m_p_doc_ && m_p_doc_->db_table)
+			//{
+			//	const CString blob = m_p_doc_->db_table->settings_read(_T("filter_tree_state"), _T(""));
+			//	if (!blob.IsEmpty()) 
+			//		restore_tree_state_from_db();
+			//	const CString where_sql = m_p_doc_->db_table->settings_read(_T("filter_sql"), _T(""));
+			//	if (!where_sql.IsEmpty())
+			//		apply_sql_filter(where_sql);
+			//}
 		}
 		break;
 
@@ -245,17 +242,16 @@ void PaneldbFilter::OnUpdate(CView* p_sender, const LPARAM l_hint, CObject* p_hi
 	m_p_doc_ = reinterpret_cast<CdbWaveDoc*>(p_sender);
     switch (LOWORD(l_hint))
 	{
-case HINT_CLOSE_FILE_MODIFIED:
-    // TODO save filter and settings
-    if (m_p_doc_ && m_p_doc_->db_table)
-    {
-        auto* p_db = m_p_doc_->db_table;
-        const CString where_sql = p_db->m_main_table_set.m_strFilter;
-        p_db->settings_write(_T("filter_sql"), where_sql);
-        const CString tree_state = serialize_tree_state();
-        p_db->settings_write(_T("filter_tree_state"), tree_state);
-    }
-    break;
+	case HINT_CLOSE_FILE_MODIFIED:
+	    if (m_p_doc_ && m_p_doc_->db_table)
+	    {
+	        auto* p_db = m_p_doc_->db_table;
+	        const CString where_sql = p_db->m_main_table_set.m_strFilter;
+	        p_db->settings_write(_T("filter_sql"), where_sql);
+	        const CString tree_state = serialize_tree_state();
+	        p_db->settings_write(_T("filter_tree_state"), tree_state);
+	    }
+	    break;
 
 	case HINT_REQUERY:
 		m_p_doc_old_ = nullptr;
@@ -265,20 +261,17 @@ case HINT_CLOSE_FILE_MODIFIED:
 	case HINT_REPLACE_VIEW:
     default:
         init_filter_list();
-        // After rebuilding from current dataset, restore tree checks once per activation
-        if ( m_p_doc_ && m_p_doc_->db_table)
-        {
-            const CString blob = m_p_doc_->db_table->settings_read(_T("filter_tree_state"), _T(""));
-			if (!blob.IsEmpty()) {
-				restore_tree_state_from_db();
-			//}
-   //         else
-   //         {
-                const CString where_sql = m_p_doc_->db_table->settings_read(_T("filter_sql"), _T(""));
-                if (!where_sql.IsEmpty())
-                    apply_sql_filter(where_sql);
-            }
-        }
+		// After rebuilding from current dataset, restore tree checks once per activation
+	   //     if ( m_p_doc_ && m_p_doc_->db_table)
+	   //     {
+	   //         const CString blob = m_p_doc_->db_table->settings_read(_T("filter_tree_state"), _T(""));
+    	//if (!blob.IsEmpty()) 
+		//	restore_tree_state_from_db();
+
+	   //         const CString where_sql = m_p_doc_->db_table->settings_read(_T("filter_sql"), _T(""));
+	   //         if (!where_sql.IsEmpty())
+	   //             apply_sql_filter(where_sql);
+	   //     }
         break;
 	}
 }

@@ -460,11 +460,11 @@ void CMainFrame::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
 	panel_db_filter_.OnUpdate(pSender, lHint, pHint);
 }
 
-LRESULT CMainFrame::OnMyMessage(WPARAM wParam, LPARAM lParam)
+LRESULT CMainFrame::OnMyMessage(const WPARAM w_param, const LPARAM l_param)
 {
-	// pass message to PropertiesPane
-	panel_db_properties_.on_my_message(wParam, lParam);
-	panel_db_filter_.on_my_message(wParam, lParam);
+	// pass message to FilterPane and PropertiesPane
+	panel_db_properties_.on_my_message(w_param, l_param);
+	panel_db_filter_.on_my_message(w_param, l_param);
 	return 0L;
 }
 

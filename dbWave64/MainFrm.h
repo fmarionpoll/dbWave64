@@ -59,7 +59,7 @@ public:
 	afx_msg void OnViewFilterWindow();
 	afx_msg void OnUpdateViewFilterWindow(CCmdUI* pCmdUI);
 	afx_msg void OnOptions();
-	afx_msg LRESULT OnMyMessage(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnMyMessage(WPARAM w_param, LPARAM l_param);
 
 public:
 	afx_msg void OnDestroy();

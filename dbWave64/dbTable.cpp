@@ -35,9 +35,9 @@ static bool dao_relation_exists(CDaoDatabase* db, const CString& name)
 #include "dbWave.h"
 
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
+//#ifdef _DEBUG
+//#define new DEBUG_NEW
+//#endif
 
 
 column_properties CdbTable::m_column_properties[N_TABLE_COLUMNS] =
@@ -623,10 +623,13 @@ CString CdbTable::settings_read(const CString& key, const CString& default_value
             rs.Close();
             return default_value;
         }
-        COleVariant v; rs.GetFieldValue((short)0, v);
+        COleVariant v;
+    	rs.GetFieldValue((short)0, v);
         rs.Close();
-        if (v.vt == VT_BSTR) return CString(v.bstrVal);
-        if (v.vt == VT_EMPTY || v.vt == VT_NULL) return default_value;
+        if (v.vt == VT_BSTR) 
+			return CString(v.bstrVal);
+        if (v.vt == VT_EMPTY || v.vt == VT_NULL) 
+			return default_value;
         v.ChangeType(VT_BSTR);
         return CString(v.bstrVal);
     }

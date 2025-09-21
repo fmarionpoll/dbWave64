@@ -44,6 +44,8 @@ protected:
 	// Implementation
 public:
 	~PaneldbFilter() override;
+	// Public helper to allow document to force a full tree rebuild
+	void refresh_tree_from_document();
 
 	// Apply an SQL WHERE clause (without the leading WHERE) to the filter model and UI.
 	// Supports simple forms: [col] = value, [col] IN (...), and date literals #mm/dd/yy#.
@@ -52,8 +54,6 @@ public:
 	CString build_sql_filter() const;
 
 private:
-    void parse_sql_to_flags(const CString& where_clause);
-    void apply_flags_to_tree();
 
 public:
     // Persist/restore full tree selection state (per-database settings)

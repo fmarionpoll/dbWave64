@@ -66,6 +66,11 @@ BEGIN_MESSAGE_MAP(PaneldbFilter, CDockablePane)
 
 	
 END_MESSAGE_MAP()
+void PaneldbFilter::refresh_tree_from_document()
+{
+    m_p_doc_old_ = nullptr;
+    init_filter_list();
+}
 
 void PaneldbFilter::AdjustLayout()
 {
@@ -185,10 +190,26 @@ LRESULT PaneldbFilter::on_my_message(const WPARAM w_param, const LPARAM l_param)
 	switch (w_param)
 	{
 	case HINT_ACTIVATE_VIEW:
-		m_p_doc_ = reinterpret_cast<CdbWaveDoc*>(l_param);
-		if (m_p_doc_ != m_p_doc_old_)
-			init_filter_list();
-		break;
+	    m_p_doc_ = reinterpret_cast<CdbWaveDoc*>(l_param);
+	    if (m_p_doc_ != m_p_doc_old_)
+	    {
+	        init_filter_list();
+	        if (m_p_doc_ && m_p_doc_->db_table)
+	        {
+	            const CString blob = m_p_doc_->db_table->settings_read(_T("filter_tree_state"), _T(""));
+	            if (!blob.IsEmpty())
+	            {
+	                restore_tree_state_from_db();
+	            //}
+	            //else
+	            //{
+	                const CString where_sql = m_p_doc_->db_table->settings_read(_T("filter_sql"), _T(""));
+	                if (!where_sql.IsEmpty())
+	                    apply_sql_filter(where_sql);
+	            }
+	        }
+	    }
+	    break;
 
 	case HINT_MDI_ACTIVATE:
 		{
@@ -202,6 +223,14 @@ LRESULT PaneldbFilter::on_my_message(const WPARAM w_param, const LPARAM l_param)
 				return NULL;
 			m_p_doc_ = static_cast<CdbWaveDoc*>(p_document);
 			init_filter_list();
+			CString tree_blob = m_p_doc_->db_table->settings_read(_T("filter_tree_state"), _T(""));
+			if (!tree_blob.IsEmpty())
+			{
+				restore_tree_state_from_db();
+				const CString where_sql = m_p_doc_->db_table->settings_read(_T("filter_sql"), _T(""));
+				if (!where_sql.IsEmpty())
+					apply_sql_filter(where_sql);
+			}
 		}
 		break;
 
@@ -214,10 +243,19 @@ LRESULT PaneldbFilter::on_my_message(const WPARAM w_param, const LPARAM l_param)
 void PaneldbFilter::OnUpdate(CView* p_sender, const LPARAM l_hint, CObject* p_hint)
 {
 	m_p_doc_ = reinterpret_cast<CdbWaveDoc*>(p_sender);
-	switch (LOWORD(l_hint))
+    switch (LOWORD(l_hint))
 	{
-	case HINT_CLOSE_FILE_MODIFIED:
-		break;
+case HINT_CLOSE_FILE_MODIFIED:
+    // TODO save filter and settings
+    if (m_p_doc_ && m_p_doc_->db_table)
+    {
+        auto* p_db = m_p_doc_->db_table;
+        const CString where_sql = p_db->m_main_table_set.m_strFilter;
+        p_db->settings_write(_T("filter_sql"), where_sql);
+        const CString tree_state = serialize_tree_state();
+        p_db->settings_write(_T("filter_tree_state"), tree_state);
+    }
+    break;
 
 	case HINT_REQUERY:
 		m_p_doc_old_ = nullptr;
@@ -225,23 +263,61 @@ void PaneldbFilter::OnUpdate(CView* p_sender, const LPARAM l_hint, CObject* p_hi
 	case HINT_DOC_HAS_CHANGED:
 	case HINT_DOC_MOVE_RECORD:
 	case HINT_REPLACE_VIEW:
-	default:
-		init_filter_list();
-		break;
+    default:
+        init_filter_list();
+        // After rebuilding from current dataset, restore tree checks once per activation
+        if ( m_p_doc_ && m_p_doc_->db_table)
+        {
+            const CString blob = m_p_doc_->db_table->settings_read(_T("filter_tree_state"), _T(""));
+			if (!blob.IsEmpty()) {
+				restore_tree_state_from_db();
+			//}
+   //         else
+   //         {
+                const CString where_sql = m_p_doc_->db_table->settings_read(_T("filter_sql"), _T(""));
+                if (!where_sql.IsEmpty())
+                    apply_sql_filter(where_sql);
+            }
+        }
+        break;
 	}
 }
 
 void PaneldbFilter::fill_combo_with_categories(const CdbTable* p_db) const
 {
-	const auto p_combo = m_wnd_tool_bar_.get_combo();
-	ASSERT(ID_RECORD_SORT == m_wnd_tool_bar_.GetItemID(3));
+    const auto p_combo = m_wnd_tool_bar_.get_combo();
+    ASSERT(ID_RECORD_SORT == m_wnd_tool_bar_.GetItemID(3));
+    if (p_combo == nullptr)
+        return;
 
-	if (p_combo->GetCount() <= 0)
-	{
-		for (auto i = 0; i < N_TABLE_COLUMNS; i++)
-			p_combo->AddSortedItem(CdbTable::m_column_properties[i].description, i);
-	}
-	p_combo->SelectItem(p_db->m_main_table_set.m_strSort);
+    if (p_combo->GetCount() <= 0)
+    {
+        for (auto i = 0; i < N_TABLE_COLUMNS; i++)
+            p_combo->AddSortedItem(CdbTable::m_column_properties[i].description, i);
+    }
+    // Map stored header_name to description text in combo
+    CString sortHeader = p_db->m_main_table_set.m_strSort;
+    CString sortDesc;
+    for (int i = 0; i < N_TABLE_COLUMNS; ++i)
+    {
+        if (CdbTable::m_column_properties[i].header_name.CompareNoCase(sortHeader) == 0)
+        {
+            sortDesc = CdbTable::m_column_properties[i].description;
+            break;
+        }
+    }
+    if (sortDesc.IsEmpty())
+        sortDesc = CdbTable::m_column_properties[CH_ACQDATE].description;
+
+    for (int i = 0; i < p_combo->GetCount(); ++i)
+    {
+        CString item = p_combo->GetItem(i);
+        if (item.CompareNoCase(sortDesc) == 0)
+        {
+            p_combo->SelectItem(sortDesc);
+            break;
+        }
+    }
 
 }
 
@@ -566,46 +642,85 @@ void PaneldbFilter::on_apply_filter()
 	const auto p_db = m_p_doc_->db_table;
 
 	auto i = 0;
-	while (m_no_col_[i] > 0)
-	{
-		const auto h_parent = m_h_tree_item_[i];
-		i++;
+    while (m_no_col_[i] > 0)
+    {
+        const auto h_parent = m_h_tree_item_[i];
+        i++;
 
-		const int i_col = static_cast<int>(m_wnd_filter_view_.GetItemData(h_parent));
-		const auto p_desc = p_db->get_record_item_descriptor(i_col);
+        const int i_col = static_cast<int>(m_wnd_filter_view_.GetItemData(h_parent));
+        const auto p_desc = p_db->get_record_item_descriptor(i_col);
 
-		//if root is checked (or unchecked), it means no item is selected - remove flag
-		const auto state_root = m_wnd_filter_view_.get_check(h_parent);
-		if ((state_root == TVCS_CHECKED) || (state_root == TVCS_UNCHECKED))
-		{
-			p_desc->b_array_filter = FALSE;
-		}
-		// else if foot is un-determinate build filter
-		else
-		{
-			p_desc->b_array_filter = TRUE;
-			p_desc->l_param_filter_array.RemoveAll();
-			p_desc->cs_array_filter.RemoveAll();
-			p_desc->data_time_array_filter.RemoveAll();
-			const auto start_item = m_wnd_filter_view_.GetNextItem(h_parent, TVGN_CHILD);
-			switch (p_desc->data_code_number)
-			{
-			case FIELD_IND_TEXT:
-			case FIELD_IND_FILEPATH:
-				build_filter_item_indirection_from_tree(p_desc, start_item);
-				break;
-			case FIELD_LONG:
-				build_filter_item_long_from_tree(p_desc, start_item);
-				break;
-			case FIELD_DATE_YMD:
-				build_filter_item_date_from_tree(p_desc, start_item);
-				break;
-			default:
-				ASSERT(false);
-				break;
-			}
-		}
-	}
+        // Rebuild filter strictly from UI state
+        p_desc->b_single_filter = FALSE; // ignore any previous equality filters when applying from tree
+        p_desc->b_array_filter = FALSE;
+        p_desc->l_param_filter_array.RemoveAll();
+        p_desc->cs_array_filter.RemoveAll();
+        p_desc->data_time_array_filter.RemoveAll();
+
+        const auto first_child = m_wnd_filter_view_.GetNextItem(h_parent, TVGN_CHILD);
+        int total_children = 0;
+        int checked_children = 0;
+        int child_index = 0;
+        for (HTREEITEM h = first_child; h != nullptr; h = m_wnd_filter_view_.GetNextItem(h, TVGN_NEXT), ++child_index)
+        {
+            total_children++;
+            const auto st = m_wnd_filter_view_.get_check(h);
+            if (st != TVCS_CHECKED)
+                continue;
+            checked_children++;
+            CString itemText = m_wnd_filter_view_.GetItemText(h);
+            switch (p_desc->data_code_number)
+            {
+            case FIELD_IND_TEXT:
+            case FIELD_IND_FILEPATH:
+            {
+                // map display string back to key
+                long li = -1;
+                if (p_desc->p_linked_set && p_desc->p_linked_set->get_key_from_string(itemText, li))
+                {
+                    p_desc->l_param_filter_array.Add(li);
+                    p_desc->cs_array_filter.Add(itemText);
+                }
+                break;
+            }
+            case FIELD_LONG:
+            {
+                // Use corresponding id from li_array by index
+                if (child_index < p_desc->li_array.GetSize())
+                {
+                    const long li = p_desc->li_array.GetAt(child_index);
+                    p_desc->l_param_filter_array.Add(li);
+                    p_desc->cs_array_filter.Add(itemText);
+                }
+                break;
+            }
+            case FIELD_DATE_YMD:
+            {
+                COleDateTime dt; dt.ParseDateTime(itemText);
+                p_desc->data_time_array_filter.Add(dt);
+                p_desc->cs_array_filter.Add(itemText);
+                break;
+            }
+            default:
+                ASSERT(false);
+                break;
+            }
+        }
+
+        // Decide filter activation:
+        // - 0 checked => no filter
+        // - all checked => no filter (equivalent to full set)
+        // - some checked => enable array filter
+        if (checked_children > 0 && checked_children < total_children)
+        {
+            // Ensure arrays contain entries for this descriptor type
+            const bool has_long = (p_desc->data_code_number == FIELD_DATE_YMD)
+                ? (p_desc->data_time_array_filter.GetSize() > 0)
+                : (p_desc->l_param_filter_array.GetSize() > 0);
+            if (has_long)
+                p_desc->b_array_filter = TRUE;
+        }
+    }
 
 	// update recordset and tell other views...
 	p_db->m_main_table_set.build_filters();
@@ -660,12 +775,16 @@ CString PaneldbFilter::serialize_tree_state() const
 
 void PaneldbFilter::restore_tree_state_from_db()
 {
-    if (!m_p_doc_ || !m_p_doc_->db_table) return;
+    if (!m_p_doc_ || !m_p_doc_->db_table) 
+		return;
     auto* p_db = m_p_doc_->db_table;
     const CString blob = p_db->settings_read(_T("filter_tree_state"), _T(""));
-    if (blob.IsEmpty()) return;
+    if (blob.IsEmpty()) 
+		return;
     const CString saved = p_db->m_main_table_set.m_strFilter;
+    // Ensure we rebuild UI from the full dataset
     p_db->m_main_table_set.m_strFilter.Empty(); p_db->m_main_table_set.refresh_query();
+    m_p_doc_old_ = nullptr; // force rebuild from full dataset
     init_filter_list();
     for (int i = 0; i < p_db->m_main_table_set.m_nFields; ++i)
     {
@@ -698,6 +817,9 @@ void PaneldbFilter::restore_tree_state_from_db()
                 int c = v.Find(_T(',')); CString tok = (c >= 0) ? v.Left(c) : v; if (c >= 0) v = v.Mid(c + 1); else v.Empty();
                 tok.Trim(); if (!tok.IsEmpty()) d->cs_array_filter.Add(tok);
             }
+            // Guard: if no values found, disable array filter
+            if (d->cs_array_filter.GetSize() == 0)
+                d->b_array_filter = FALSE;
         }
     }
     for (int i = 0; m_no_col_[i] > 0; ++i)
@@ -724,6 +846,7 @@ void PaneldbFilter::restore_tree_state_from_db()
             m_wnd_filter_view_.set_check(h, st);
         }
     }
+    // Restore previous dataset filter (if any) after UI reflects checks
     p_db->m_main_table_set.m_strFilter = saved; p_db->m_main_table_set.refresh_query();
 }
 
@@ -735,7 +858,8 @@ void PaneldbFilter::apply_sql_filter(const CString& where_clause)
         const auto* p_main = static_cast<CMainFrame*>(AfxGetMainWnd());
         if (p_main)
         {
-            BOOL bMax; auto* pChild = p_main->MDIGetActive(&bMax);
+            BOOL bMax;
+        	auto* pChild = p_main->MDIGetActive(&bMax);
             if (pChild)
             {
                 auto* pDoc = pChild->GetActiveDocument();
@@ -751,9 +875,7 @@ void PaneldbFilter::apply_sql_filter(const CString& where_clause)
     const CString saved_sql = p_db->m_main_table_set.m_strFilter;
     p_db->m_main_table_set.m_strFilter.Empty();
     p_db->m_main_table_set.refresh_query();
-    init_filter_list();
-
-    // Reset filter flags
+    // Reset filter flags BEFORE building arrays/tree so all choices are computed
     for (int i = 0; i < p_db->m_main_table_set.m_nFields; ++i)
     {
         auto* d = &p_db->m_main_table_set.m_desc[i];
@@ -761,6 +883,8 @@ void PaneldbFilter::apply_sql_filter(const CString& where_clause)
         d->l_param_single_filter = 0; d->l_param_filter_array.RemoveAll();
         d->cs_array_filter.RemoveAll(); d->data_time_array_filter.RemoveAll();
     }
+    m_p_doc_old_ = nullptr; // force rebuild from full dataset
+    init_filter_list();
 
     // Very simple parser: split by AND, support [col]=value and [col] IN (..)
     CString where = where_clause; where.Trim();
@@ -804,9 +928,20 @@ void PaneldbFilter::apply_sql_filter(const CString& where_clause)
                         }
                         else
                         {
+                            // strip optional quotes
+                            tok.Trim(_T("'\""));
                             long val = _ttol(tok);
                             d->l_param_filter_array.Add(val);
-                            d->cs_array_filter.Add(tok);
+                            if (d->data_code_number == FIELD_IND_TEXT || d->data_code_number == FIELD_IND_FILEPATH)
+                            {
+                                CString disp = (d->p_linked_set) ? d->p_linked_set->get_string_from_key(val) : tok;
+                                if (disp.IsEmpty()) disp = tok;
+                                d->cs_array_filter.Add(disp);
+                            }
+                            else
+                            {
+                                d->cs_array_filter.Add(tok);
+                            }
                         }
                     }
                 }
@@ -832,8 +967,18 @@ void PaneldbFilter::apply_sql_filter(const CString& where_clause)
             }
             else
             {
-                d->l_param_single_filter = _ttol(val);
-                d->cs_param_single_filter = val;
+                val.Trim(_T("'\""));
+                long id_val = _ttol(val);
+                d->l_param_single_filter = id_val;
+                if (d->data_code_number == FIELD_IND_TEXT || d->data_code_number == FIELD_IND_FILEPATH)
+                {
+                    CString disp = (d->p_linked_set) ? d->p_linked_set->get_string_from_key(id_val) : val;
+                    d->cs_param_single_filter = disp.IsEmpty() ? val : disp;
+                }
+                else
+                {
+                    d->cs_param_single_filter = val;
+                }
             }
         }
     }
@@ -852,6 +997,7 @@ void PaneldbFilter::apply_sql_filter(const CString& where_clause)
             TVCS_CHECKSTATE st = TVCS_UNCHECKED;
             if (d->b_single_filter && !d->cs_param_single_filter.IsEmpty())
             {
+                // For indirection columns, cs_param_single_filter is a display string; compare directly
                 if (itemText.CompareNoCase(d->cs_param_single_filter) == 0) st = TVCS_CHECKED;
             }
             else if (d->b_array_filter)
@@ -868,9 +1014,10 @@ void PaneldbFilter::apply_sql_filter(const CString& where_clause)
     // Finally apply the SQL again so the dataset is filtered
     p_db->m_main_table_set.m_strFilter = where_clause;
     p_db->m_main_table_set.refresh_query();
-    // Persist tree selection as well
+    // Persist tree selection as well, but only if something is actually selected
     CString tree_state = serialize_tree_state();
-    p_db->settings_write(_T("filter_tree_state"), tree_state);
+    if (!tree_state.IsEmpty())
+        p_db->settings_write(_T("filter_tree_state"), tree_state);
     m_p_doc_->update_all_views_db_wave(nullptr, HINT_REQUERY, nullptr);
 }
 

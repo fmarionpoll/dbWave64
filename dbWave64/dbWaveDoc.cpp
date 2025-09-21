@@ -79,35 +79,6 @@ void CdbWaveDoc::persist_db_view_state()
         db_table->settings_write(_T("filter_sql"), filter_sql);
 }
 
-void CdbWaveDoc::restore_db_view_state()
-{
-    if (!db_table || !db_table->IsOpen()) return;
-    // Restore filter first by setting recordset filter; avoid calling UI before panes initialize
-    const CString filter_sql = db_table->settings_read(_T("filter_sql"), _T(""));
-    if (!filter_sql.IsEmpty())
-    {
-        db_table->m_main_table_set.m_strFilter = filter_sql;
-        db_table->m_main_table_set.refresh_query();
-        // Ask panel to reflect tree state lazily if available
-        auto* main_frame = static_cast<CMainFrame*>(AfxGetMainWnd());
-        if (main_frame && main_frame->m_wndPanelFilter.GetSafeHwnd())
-        {
-            main_frame->m_wndPanelFilter.restore_tree_state_from_db();
-        }
-    }
-
-    // Restore last record index (absolute position)
-    const CString s_idx = db_table->settings_read(_T("last_record_index"), _T("0"));
-    const long idx = _ttol(s_idx);
-    const long total = db_table->get_records_count();
-    if (total > 0)
-    {
-        long clamped = idx;
-        if (clamped < 0) clamped = 0; if (clamped >= total) clamped = total - 1;
-        db_set_current_record_position(clamped);
-        update_all_views_db_wave(nullptr, HINT_DOC_MOVE_RECORD, nullptr);
-    }
-}
 
 // TODO here: ask where data are to be saved (call make directory/explore directory)
 // ask for name of a database, then create a directory of the same name where the database will be put
@@ -268,11 +239,6 @@ BOOL CdbWaveDoc::OnOpenDocument(LPCTSTR lpsz_path_name)
 		if (!COleDocument::OnOpenDocument(lpsz_path_name))
 			return FALSE;
         const BOOL ok = open_database(lpsz_path_name);
-        if (ok)
-        {
-            // Restore per-database state (filter and last record) once tables are open
-            restore_db_view_state();
-        }
         return ok;
 	}
 

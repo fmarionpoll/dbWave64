@@ -123,8 +123,10 @@ public:
 		chart.set_bottom_comment(settings.b_display_file_name, meta.cs_datafile_name);
 		CString spike_path = meta.cs_spike_file_name;
 
-		COLORREF bk_color = spike_path.IsEmpty() ? col_light_salmon : col_white;
-		bk_color = meta.cs_flag == "0"? bk_color: col_light_salmon;
+		COLORREF frame_color = spike_path.IsEmpty() ? col_red : col_black;
+		//bk_color = meta.cs_flag == "0"? bk_color: col_light_salmon;
+		chart.get_scope_parameters()->cr_scope_frame = frame_color;
+		COLORREF bk_color = meta.cs_flag == "0" ? col_white : col_light_grey;
 		chart.get_scope_parameters()->cr_scope_fill = bk_color;
 				
 		chart.plot_data_to_dc(&mem_dc);

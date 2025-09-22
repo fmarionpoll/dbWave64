@@ -21,6 +21,7 @@ public:
 	int i_y_tick_line{0};
 	COLORREF cr_scope_fill{col_white};
 	COLORREF cr_scope_grid{col_black};
+	COLORREF cr_scope_frame{ col_black };
 	BOOL b_draw_frame{true};
 	BOOL b_clip_rect{false};
 	float x_scale_unit_value{0.f};

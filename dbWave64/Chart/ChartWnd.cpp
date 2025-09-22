@@ -261,7 +261,9 @@ void ChartWnd::erase_background(CDC* p_dc)
 	brush.CreateSolidBrush(scope_structure_.cr_scope_fill);
 	const auto p_old_brush = p_dc->SelectObject(&brush);
 
-	const auto p_old_pen = static_cast<CPen*>(p_dc->SelectStockObject(BLACK_PEN));
+	CPen pen;
+	pen.CreatePen(PS_SOLID, 1, scope_structure_.cr_scope_frame);
+	const auto p_old_pen = static_cast<CPen*>(p_dc->SelectObject(pen));
 	p_dc->Rectangle(&display_rect_);
 
 	p_dc->SelectObject(p_old_pen);

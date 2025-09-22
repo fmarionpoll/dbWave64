@@ -122,9 +122,11 @@ public:
 		chart.adjust_gain(settings.b_set_mv_span, settings.mv_span);
 		chart.set_bottom_comment(settings.b_display_file_name, meta.cs_datafile_name);
 		CString spike_path = meta.cs_spike_file_name;
-		const COLORREF bk_color = spike_path.IsEmpty() ? col_light_grey : col_white;
+
+		COLORREF bk_color = spike_path.IsEmpty() ? col_light_salmon : col_white;
+		bk_color = meta.cs_flag == "0"? bk_color: col_light_salmon;
 		chart.get_scope_parameters()->cr_scope_fill = bk_color;
-		
+				
 		chart.plot_data_to_dc(&mem_dc);
 		data_doc.acq_close_file();
 	}

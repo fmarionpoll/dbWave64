@@ -427,7 +427,7 @@ void PaneldbFilter::init_filter_list()
 void PaneldbFilter::populate_item_from_table_long(DB_ITEMDESC* p_desc) const
 {
 	const auto p_set = &m_p_doc_->db_table->m_main_table_set;
-	const auto cs_col_head = p_desc->header_name;
+	const auto cs_col_head = p_desc->column_name;
 	const auto array_size = p_desc->li_array.GetSize();
 	if (p_desc->b_array_filter)
 	{
@@ -463,7 +463,7 @@ void PaneldbFilter::populate_item_from_table_long(DB_ITEMDESC* p_desc) const
 
 void PaneldbFilter::populate_item_from_linked_table(DB_ITEMDESC* p_desc) const
 {
-	auto str2 = p_desc->header_name;
+	auto str2 = p_desc->column_name;
 	ASSERT(!str2.IsEmpty());
 
 	auto p_linked_set = p_desc->p_linked_set;
@@ -510,7 +510,7 @@ void PaneldbFilter::populate_item_from_linked_table(DB_ITEMDESC* p_desc) const
 			}
 			
 			// add string only if found into p_main_table_set...
-			cs.Format(_T("%s=%li"), (LPCTSTR)p_desc->header_name, id_value);
+			cs.Format(_T("%s=%li"), (LPCTSTR)p_desc->column_name, id_value);
 			const auto flag = p_set->FindFirst(cs);
 			if (flag != 0)
 			{
@@ -526,7 +526,7 @@ void PaneldbFilter::populate_item_from_linked_table(DB_ITEMDESC* p_desc) const
 void PaneldbFilter::populate_item_from_table_with_date(DB_ITEMDESC* p_desc) const
 {
 	CString cs; // to construct date
-	const auto cs_column_head = p_desc->header_name;
+	const auto cs_column_head = p_desc->column_name;
 	const auto p_main_table_set = &m_p_doc_->db_table->m_main_table_set;
 	const auto array_size = p_main_table_set->m_desc[CH_ACQDATE_DAY].ti_array.GetSize();
 
@@ -644,7 +644,7 @@ void PaneldbFilter::on_apply_filter()
         const auto p_desc = p_db->get_record_item_descriptor(i_col);
 
         // Rebuild filter strictly from UI state
-        p_desc->b_single_filter = FALSE; // ignore any previous equality filters when applying from tree
+        p_desc->b_single_filter = FALSE;
         p_desc->b_array_filter = FALSE;
         p_desc->l_param_filter_array.RemoveAll();
         p_desc->cs_array_filter.RemoveAll();
@@ -743,7 +743,7 @@ CString PaneldbFilter::serialize_tree_state() const
     {
         const int col = m_no_col_[i];
         const auto* d = &p_db->m_main_table_set.m_desc[col];
-        CString line; line += d->header_name; line += _T("|");
+        CString line; line += d->column_name; line += _T("|");
         if (d->b_single_filter && !d->cs_param_single_filter.IsEmpty())
         {
             line += _T("1|"); line += d->cs_param_single_filter;

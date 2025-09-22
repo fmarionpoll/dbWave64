@@ -608,15 +608,15 @@ void ViewRecordsList::on_lvn_column_click_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_r
 	const auto pdb_doc = GetDocument();
 	switch (p_nmlv->iSubItem)
 	{
-	case CTRL2_COL_CURVE: cs = pdb_doc->db_table->m_main_table_set.m_desc[CH_DATALEN].header_name; break;
-	case CTRL2_COL_INDEX: cs = pdb_doc->db_table->m_main_table_set.m_desc[CH_ID].header_name; break;
-	case CTRL2_COL_SENSI: cs = pdb_doc->db_table->m_main_table_set.m_desc[CH_SENSILLUM_KEY].header_name; break;
-	case CTRL2_COL_STIM1: cs = pdb_doc->db_table->m_main_table_set.m_desc[CH_STIM1_KEY].header_name; break;
-	case CTRL2_COL_CONC1: cs = pdb_doc->db_table->m_main_table_set.m_desc[CH_CONC1_KEY].header_name; break;
-	case CTRL2_COL_STIM2: cs = pdb_doc->db_table->m_main_table_set.m_desc[CH_STIM2_KEY].header_name; break;
-	case CTRL2_COL_CONC2: cs = pdb_doc->db_table->m_main_table_set.m_desc[CH_CONC2_KEY].header_name; break;
-	case CTRL2_COL_NBSPK: cs = pdb_doc->db_table->m_main_table_set.m_desc[CH_NSPIKES].header_name; break;
-	case CTRL2_COL_FLAG: cs = pdb_doc->db_table->m_main_table_set.m_desc[CH_FLAG].header_name; break;
+	case CTRL2_COL_CURVE: cs = pdb_doc->db_table->m_main_table_set.m_desc[CH_DATALEN].column_name; break;
+	case CTRL2_COL_INDEX: cs = pdb_doc->db_table->m_main_table_set.m_desc[CH_ID].column_name; break;
+	case CTRL2_COL_SENSI: cs = pdb_doc->db_table->m_main_table_set.m_desc[CH_SENSILLUM_KEY].column_name; break;
+	case CTRL2_COL_STIM1: cs = pdb_doc->db_table->m_main_table_set.m_desc[CH_STIM1_KEY].column_name; break;
+	case CTRL2_COL_CONC1: cs = pdb_doc->db_table->m_main_table_set.m_desc[CH_CONC1_KEY].column_name; break;
+	case CTRL2_COL_STIM2: cs = pdb_doc->db_table->m_main_table_set.m_desc[CH_STIM2_KEY].column_name; break;
+	case CTRL2_COL_CONC2: cs = pdb_doc->db_table->m_main_table_set.m_desc[CH_CONC2_KEY].column_name; break;
+	case CTRL2_COL_NBSPK: cs = pdb_doc->db_table->m_main_table_set.m_desc[CH_NSPIKES].column_name; break;
+	case CTRL2_COL_FLAG: cs = pdb_doc->db_table->m_main_table_set.m_desc[CH_FLAG].column_name; break;
 	default: break;
 	}
 	p_db_table_main->m_strSort = cs;

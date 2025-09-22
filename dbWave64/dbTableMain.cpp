@@ -58,7 +58,7 @@ CdbTableMain::CdbTableMain(CDaoDatabase* pdb)
 		m_desc[i].l_param_single_filter = 0;
 		m_desc[i].b_array_filter = FALSE;
 		m_desc[i].pdata_item = nullptr;
-		m_desc[i].index = i;
+		m_desc[i].column_index = i;
 		m_desc[i].p_combo_box = nullptr;
 		m_desc[i].cs_col_param.Empty();
 		m_desc[i].cs_param_single_filter.Empty();
@@ -322,7 +322,7 @@ BOOL CdbTableMain::find_key_in_column(const long i_id, const int i_column)
 {
 	CString cs; // to construct insect and sensillum number (for example)
 	CString str; // to store FindFirst filter
-	const auto cs_col_head = m_desc[i_column].header_name;
+	const auto cs_col_head = m_desc[i_column].column_name;
 	str.Format(_T("%s=%li"), (LPCTSTR)cs_col_head, i_id);
 	auto flag = FALSE;
 
@@ -505,7 +505,7 @@ void CdbTableMain::add_day_to_date_array(const COleDateTime& o_time)
 void CdbTableMain::add_to_li_array(const int i_col)
 {
 	COleVariant var_value;
-	GetFieldValue(m_desc[i_col].header_name, var_value);
+	GetFieldValue(m_desc[i_col].column_name, var_value);
 	int l_val = var_value.lVal;
 	if (var_value.vt == VT_NULL)
 		l_val = 0;
@@ -577,11 +577,11 @@ void CdbTableMain::add_current_record_to_id_arrays()
 	add_to_li_array(CH_FLAG);
 
 	// look for date
-	GetFieldValue(m_desc[CH_ACQDATE_DAY].header_name, var_value);
+	GetFieldValue(m_desc[CH_ACQDATE_DAY].column_name, var_value);
 	if (var_value.vt == VT_NULL)
 	{
 		// transfer date from field 1 and copy date and time in 2 separate columns
-		GetFieldValue(m_desc[CH_ACQDATE].header_name, var_value);
+		GetFieldValue(m_desc[CH_ACQDATE].column_name, var_value);
 		if (var_value.vt != VT_NULL)
 		{
 			COleDateTime o_time = var_value.date;

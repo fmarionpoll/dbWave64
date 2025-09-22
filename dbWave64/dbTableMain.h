@@ -158,7 +158,7 @@ public:
 
 	void set_filter_single_item(const DB_ITEMDESC* p_desc)
 	{
-		m_desc[p_desc->index].b_single_filter = p_desc->b_single_filter;
-		m_desc[p_desc->index].l_param_single_filter = p_desc->l_param_single_filter;
+		m_desc[p_desc->column_index].b_single_filter = p_desc->b_single_filter;
+		m_desc[p_desc->column_index].l_param_single_filter = p_desc->l_param_single_filter;
 	}
 };

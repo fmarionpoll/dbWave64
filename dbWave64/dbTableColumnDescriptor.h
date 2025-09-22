@@ -14,8 +14,8 @@ constexpr auto FIELD_DATE_YMD = 7;
 using DB_ITEMDESC = struct db_table_column_descriptor
 {
 	// -----------------descriptor and DFX parameters
-	int		index  {0};								// column number in the table
-	CString header_name;							// x - "name" of the column in the main table
+	int		column_index  {0};						// column number in the table
+	CString column_name;							// x - "name" of the column in the main table
 	CString dfx_name_with_brackets;					// x - "[name]" used by DFX exchange mechanism
 	CString cs_col_param;							// x - "nameParam"
 	CString cs_equ_condition;						// x - "name  nameParam"

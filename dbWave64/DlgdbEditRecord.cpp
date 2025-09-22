@@ -360,7 +360,7 @@ void DlgdbEditRecord::edit_change_item_indirect_field(const int idc)
 
 	DlgdbEditField dlg;
 	dlg.m_p_main_table = m_p_set;
-	dlg.m_cs_col_name = item_descriptor->header_name; 
+	dlg.m_cs_col_name = item_descriptor->column_name; 
 	dlg.m_p_index_table = item_descriptor->p_linked_set; 
 	dlg.m_pli_id_array = nullptr; 
 	dlg.m_pdb_doc = m_pdb_doc;
@@ -376,7 +376,7 @@ void DlgdbEditRecord::edit_change_item_main_field(const int idc)
 
 	DlgdbEditField dlg;
 	dlg.m_p_main_table = m_p_set; 
-	dlg.m_cs_col_name = p_desc->header_name;
+	dlg.m_cs_col_name = p_desc->column_name;
 	dlg.m_pli_id_array = &p_desc->li_array; 
 	dlg.m_p_index_table = nullptr;
 	dlg.m_pdb_doc = m_pdb_doc;

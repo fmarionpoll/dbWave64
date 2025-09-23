@@ -89,8 +89,14 @@ private:
     int saved_index_ { -1 };
 };
 
+
+
 class ChartDataRendererAdapter : public IDataRenderer
 {
+	static const COLORREF color_flag_[];
+	static const int color_flag_count;
+
+	
 public:
 	void renderBitmap(const DisplaySettings& settings, const RowMeta& meta, CBitmap& out_bitmap) override
 	{
@@ -126,13 +132,22 @@ public:
 		COLORREF frame_color = spike_path.IsEmpty() ? col_red : col_black;
 		//bk_color = meta.cs_flag == "0"? bk_color: col_light_salmon;
 		chart.get_scope_parameters()->cr_scope_frame = frame_color;
-		COLORREF bk_color = meta.cs_flag == "0" ? col_white : col_light_grey;
-		chart.get_scope_parameters()->cr_scope_fill = bk_color;
+
+		//COLORREF bk_color = meta.cs_flag == "0" ? col_white : col_light_grey;
+		//chart.get_scope_parameters()->cr_scope_fill = bk_color;
+		//COLORREF bk_color = meta.cs_flag == "0" ? col_white : col_light_grey;
+		int flagInt = _ttoi(meta.cs_flag);
+		const COLORREF color = color_flag_[flagInt];
+		chart.get_scope_parameters()->cr_scope_fill = color;
+
 				
 		chart.plot_data_to_dc(&mem_dc);
 		data_doc.acq_close_file();
 	}
 };
+
+
+
 
 class ChartSpikeRendererAdapter : public ISpikeRenderer
 {

@@ -180,6 +180,7 @@
     <ClCompile Include="ViewDB\Data\ViewData.cpp" />
     <ClCompile Include="ViewDB\DetectSpikes\ViewSpikeDetect.cpp" />
     <ClCompile Include="ViewDB\Histograms\ViewSpikeHist.cpp" />
+    <ClCompile Include="ViewDB\ListRecords\Adapters.cpp" />
     <ClCompile Include="ViewDB\ListRecords\RecordsListCtrl.cpp" />
     <ClCompile Include="ViewDB\ListRecords\ViewRecordsList.cpp" />
     <ClCompile Include="ViewDB\ListRecords\ViewRecordsListInit.cpp" />

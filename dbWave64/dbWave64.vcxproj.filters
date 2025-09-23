@@ -600,6 +600,9 @@
     <ClCompile Include="ViewDB\ViewDbTable.cpp">
       <Filter>ViewDB</Filter>
     </ClCompile>
+    <ClCompile Include="ViewDB\ListRecords\Adapters.cpp">
+      <Filter>ViewDB\ListRecords</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AcqDataDoc.h">

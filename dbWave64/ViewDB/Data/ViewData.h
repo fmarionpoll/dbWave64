@@ -103,6 +103,8 @@ protected:
 	void OnBeginPrinting(CDC* p_dc, CPrintInfo* p_info) override;
 	void OnPrint(CDC* p_dc, CPrintInfo* p_info) override;
 	void OnEndPrinting(CDC* p_dc, CPrintInfo* p_info) override;
+protected:
+	void render_for_export(CDC* p_dc, const CRect& pixel_rect) override;
 
 	// Implementation
 public:

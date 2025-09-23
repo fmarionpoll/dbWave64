@@ -262,8 +262,8 @@ void ChartWnd::erase_background(CDC* p_dc)
 	brush.CreateSolidBrush(scope_structure_.cr_scope_fill);
 	const auto p_old_brush = p_dc->SelectObject(&brush);
 
-	CPen pen;
-	pen.CreatePen(PS_SOLID, 1, scope_structure_.cr_scope_frame);
+    CPen pen;
+    pen.CreatePen(PS_SOLID, 0, scope_structure_.cr_scope_frame);
 	const auto p_old_pen = p_dc->SelectObject(&pen);
 	p_dc->Rectangle(&display_rect_);
 
@@ -280,7 +280,7 @@ void ChartWnd::draw_grid_evenly_spaced(CDC* p_dc) const
 	rect.DeflateRect(1, 1);
 
 	// Standard grid is 8 high by 10 wide
-	CPen pen_scale(PS_SOLID, 1, scope_structure_.cr_scope_grid);
+    CPen pen_scale(PS_SOLID, 0, scope_structure_.cr_scope_grid);
 	const auto pen_old = p_dc->SelectObject(&pen_scale);
 	const auto i_x_ticks = scope_structure_.i_x_cells * scope_structure_.i_x_ticks;
 	const auto i_y_ticks = scope_structure_.i_y_cells * scope_structure_.i_y_ticks;
@@ -339,8 +339,8 @@ void ChartWnd::draw_grid_from_ruler(CDC* p_dc, const Ruler* p_ruler) const
 	if (p_ruler->m_highest_value == p_ruler->m_lowest_value)
 		return;
 
-	CPen a_pen2;
-	a_pen2.CreatePen(PS_SOLID, 1, scope_structure_.cr_scope_grid);
+    CPen a_pen2;
+    a_pen2.CreatePen(PS_SOLID, 0, scope_structure_.cr_scope_grid);
 	const auto p_old_pen = p_dc->SelectObject(&a_pen2);
 
 	// draw ticks and legends
@@ -395,11 +395,11 @@ void ChartWnd::draw_scale_from_ruler(CDC* p_dc, const Ruler* p_ruler)
 	if (p_ruler->m_highest_value == p_ruler->m_lowest_value)
 		return;
 
-	CPen a_pen1;
-	CPen a_pen2;
-	a_pen1.CreatePen(PS_SOLID, 1, scope_structure_.cr_scope_grid);
+    CPen a_pen1;
+    CPen a_pen2;
+    a_pen1.CreatePen(PS_SOLID, 0, scope_structure_.cr_scope_grid);
 	const auto p_old_pen = p_dc->SelectObject(&a_pen1);
-	a_pen2.CreatePen(PS_SOLID, 1, scope_structure_.cr_scope_grid);
+    a_pen2.CreatePen(PS_SOLID, 0, scope_structure_.cr_scope_grid);
 	/*auto p_old_font = */
 	p_dc->SelectObject(&h_font);
 	CString str;

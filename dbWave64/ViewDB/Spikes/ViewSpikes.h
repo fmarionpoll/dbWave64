@@ -155,6 +155,8 @@ protected:
 	afx_msg void OnLButtonDown(UINT n_flags, CPoint point);
 
 	afx_msg void on_edit_copy();
+protected:
+	void render_for_export(CDC* p_dc, const CRect& pixel_rect) override;
 	afx_msg void on_gain_button();
 	afx_msg void on_bias_button();
 	afx_msg void on_artefact();

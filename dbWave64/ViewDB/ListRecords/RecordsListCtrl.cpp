@@ -127,7 +127,7 @@ void RecordsListCtrl::build_empty_bitmap(const boolean force_update)
 	CBrush brush(RGB(200,200,200));
 	mem_dc.SelectObject(&brush);
 	CPen pen;
-	pen.CreatePen(PS_SOLID, 1, RGB(0,0,0));
+    pen.CreatePen(PS_SOLID, 0, RGB(0,0,0));
 	mem_dc.SelectObject(&pen);
 	const auto rect_data = CRect(1, 0, settings_.image_width, settings_.image_height);
 	mem_dc.Rectangle(&rect_data);

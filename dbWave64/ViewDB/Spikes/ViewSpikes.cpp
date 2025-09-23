@@ -1186,9 +1186,11 @@ void ViewSpikes::OnBeginPrinting(CDC* p_dc, CPrintInfo* p_info)
 
 void ViewSpikes::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 {
-	p_old_font_ = p_dc->SelectObject(&font_print_);
-	p_dc->SetMapMode(MM_TEXT); 
-	print_file_bottom_page(p_dc, p_info); 
+    p_old_font_ = p_dc->SelectObject(&font_print_);
+    // bottom page footer: keep anisotropic, but draw text via helper
+    CString footer;
+    // print_file_bottom_page composes text via TextOut; keep call but draw through helper below if needed
+    print_file_bottom_page(p_dc, p_info);
 	const int current_page = static_cast<int>(p_info->m_nCurPage); 
 
 	// --------------------- load data corresponding to the first row of current page
@@ -1217,9 +1219,7 @@ void ViewSpikes::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 
 		// set first rectangle where data will be printed
 
-		auto comment_rect = r_where;
-		p_dc->SetMapMode(MM_TEXT);
-		p_dc->SetTextAlign(TA_LEFT); 
+        auto comment_rect = r_where;
 		if (options_view_data_->b_frame_rect) 
 		{
 			p_dc->MoveTo(r_where.left, r_where.top);
@@ -1359,15 +1359,11 @@ void ViewSpikes::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		// update display rectangle for next row
 		r_where.OffsetRect(0, options_view_data_->height_doc + options_view_data_->height_separator);
 
-		// restore DC ------------------------------------------------------
+        // restore DC ------------------------------------------------------
+        p_dc->RestoreDC(old_dc); // restore Display context
 
-		p_dc->RestoreDC(old_dc); // restore Display context
-
-		// print comments --------------------------------------------------
-
-		p_dc->SetMapMode(MM_TEXT); // 1 LP = 1 pixel
-		p_dc->SelectClipRgn(nullptr); // no more clipping
-		p_dc->SetViewportOrg(0, 0); // org = 0,0
+        // print comments -------------------------------------------------- (stay anisotropic; use helper)
+        p_dc->SelectClipRgn(nullptr); // no more clipping
 
 		// print comments according to row within file
 		CString cs_comment;
@@ -1381,11 +1377,9 @@ void ViewSpikes::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		comment_rect.OffsetRect(options_view_data_->text_separator + comment_rect.Width(), 0);
 		comment_rect.right = print_rect_.right;
 
-		// reset text align mode (otherwise pbs!) output text and restore text alignment
-		const auto ui_flag = p_dc->SetTextAlign(TA_LEFT | TA_NOUPDATECP);
-		p_dc->DrawText(cs_comment, cs_comment.GetLength(), comment_rect,
-		               DT_NOPREFIX | DT_LEFT | DT_WORDBREAK);
-		p_dc->SetTextAlign(ui_flag);
+        // draw via helper (1:1 mapping in target rect)
+        draw_text_block(p_dc, comment_rect, options_view_data_->font_size, cs_comment,
+                        DT_NOPREFIX | DT_LEFT | DT_WORDBREAK);
 
 		// update file parameters for next row --------------------------------------------
 		l_first += l_print_len_;
@@ -1594,107 +1588,7 @@ void ViewSpikes::on_edit_copy()
 		// output rectangle requested by user
 		CRect rect(0, 0, options_view_data_->hz_resolution, options_view_data_->vt_resolution);
 
-		// create metafile
-		CMetaFileDC mDC;
-		auto p_dc_ref = GetDC();
-		const int dpi_x = p_dc_ref->GetDeviceCaps(LOGPIXELSX);
-		const int dpi_y = p_dc_ref->GetDeviceCaps(LOGPIXELSY);
-		CRect rect_bound_himetric(0, 0,
-			MulDiv(rect.Width(), 2540, dpi_x),
-			MulDiv(rect.Height(), 2540, dpi_y));
-		const auto old_dc = p_dc_ref->SaveDC(); // save DC
-
-		auto cs_title = _T("dbWave\0") + GetDocument()->GetTitle();
-		cs_title += _T("\0\0");
-		mDC.CreateEnhanced(p_dc_ref, nullptr, &rect_bound_himetric, cs_title);
-
-		// Draw document in metafile.
-		CPen black_pen(PS_SOLID, 0, col_black);
-		const auto old_pen = mDC.SelectObject(&black_pen);
-		if (!static_cast<CBrush*>(mDC.SelectStockObject(BLACK_BRUSH)))
-			return;
-		CClientDC attribute_dc(this); 
-		mDC.SetAttribDC(attribute_dc.GetSafeHdc()); 
-
-		// print comments : set font
-		p_old_font_ = nullptr;
-		const auto old_size = options_view_data_->font_size;
-		options_view_data_->font_size = 10;
-		memset(&log_font_, 0, sizeof(LOGFONT)); 
-		lstrcpy(log_font_.lfFaceName, _T("Arial")); 
-		log_font_.lfHeight = options_view_data_->font_size; 
-		p_old_font_ = nullptr;
-		font_print_.CreateFontIndirect(&log_font_);
-		mDC.SetBkMode(TRANSPARENT);
-
-		options_view_data_->font_size = old_size;
-		p_old_font_ = mDC.SelectObject(&font_print_);
-
-		CString comments;
-		// display data: source data and spikes
-		//auto extent = m_ChartSpikesListBox.GetYWExtent(); 
-		const auto r_height = MulDiv(spike_class_listbox_.get_row_height(), rect.Width(),
-		                            spike_class_listbox_.get_columns_time_width());
-		auto rw_spikes = rect;
-		rw_spikes.bottom = r_height; 
-		auto rw_text = rw_spikes;
-		auto rw_bars = rw_spikes;
-		// horizontal size and position of the 3 rectangles
-		const auto r_separator = r_height / 5;
-		rw_text.right = rw_text.left + r_height;
-		rw_spikes.left = rw_text.right + r_separator;
-		rw_spikes.right = rw_spikes.left + r_height;
-		rw_bars.left = rw_spikes.right + r_separator;
-
-		// display data	if data file was found
-		if (p_data_doc_ != nullptr)
-		{
-			chart_data_wnd_.center_chan(0);
-			chart_data_wnd_.print(&mDC, &rw_bars);
-
-			//auto extent = m_ChartDataWnd.get_channel_list_item(0)->Get_Y_extent();
-			rw_spikes.OffsetRect(0, r_height);
-			rw_bars.OffsetRect(0, r_height);
-			rw_text.OffsetRect(0, r_height);
-		}
-
-		// display spikes and bars
-		adjust_y_zoom_to_max_min(true);
-		const auto n_count = spike_class_listbox_.GetCount();
-
-		for (int i_count = 0; i_count < n_count; i_count++)
-		{
-			spike_class_listbox_.print_item(&mDC, &rw_text, &rw_spikes, &rw_bars, i_count);
-			rw_spikes.OffsetRect(0, r_height);
-			rw_bars.OffsetRect(0, r_height);
-			rw_text.OffsetRect(0, r_height);
-		}
-
-		if (p_old_font_ != nullptr)
-			mDC.SelectObject(p_old_font_);
-		font_print_.DeleteObject();
-
-		// restore old_pen
-		mDC.SelectObject(old_pen);
-		ReleaseDC(p_dc_ref);
-
-		// Close metafile
-		const auto h_emf_tmp = mDC.CloseEnhanced();
-		ASSERT(h_emf_tmp != NULL);
-		if (OpenClipboard())
-		{
-			EmptyClipboard(); 
-			SetClipboardData(CF_ENHMETAFILE, h_emf_tmp); 
-			CloseClipboard();
-		}
-		else
-		{
-			// Someone else has the Clipboard open...
-			DeleteEnhMetaFile(h_emf_tmp); 
-			MessageBeep(0); 
-			AfxMessageBox(IDS_CANNOT_ACCESS_CLIPBOARD, NULL, MB_OK | MB_ICONEXCLAMATION);
-		}
-		p_dc_ref->RestoreDC(old_dc); 
+		copy_as_emf_to_clipboard(rect, GetDocument()->GetTitle());
 	}
 
 	// restore screen in previous state
@@ -2108,6 +2002,40 @@ void ViewSpikes::on_en_change_no_spike()
 		}
 		else
 			UpdateData(FALSE);
+	}
+}
+
+void ViewSpikes::render_for_export(CDC* p_dc, const CRect& rect)
+{
+	const auto r_height = MulDiv(spike_class_listbox_.get_row_height(), rect.Width(),
+	                            spike_class_listbox_.get_columns_time_width());
+	auto rw_spikes = rect;
+	rw_spikes.bottom = r_height;
+	auto rw_text = rw_spikes;
+	auto rw_bars = rw_spikes;
+	const auto r_separator = r_height / 5;
+	rw_text.right = rw_text.left + r_height;
+	rw_spikes.left = rw_text.right + r_separator;
+	rw_spikes.right = rw_spikes.left + r_height;
+	rw_bars.left = rw_spikes.right + r_separator;
+
+	if (p_data_doc_ != nullptr)
+	{
+		chart_data_wnd_.center_chan(0);
+		chart_data_wnd_.print(p_dc, &rw_bars);
+		rw_spikes.OffsetRect(0, r_height);
+		rw_bars.OffsetRect(0, r_height);
+		rw_text.OffsetRect(0, r_height);
+	}
+
+	adjust_y_zoom_to_max_min(true);
+	const auto n_count = spike_class_listbox_.GetCount();
+	for (int i_count = 0; i_count < n_count; i_count++)
+	{
+		spike_class_listbox_.print_item(p_dc, &rw_text, &rw_spikes, &rw_bars, i_count);
+		rw_spikes.OffsetRect(0, r_height);
+		rw_bars.OffsetRect(0, r_height);
+		rw_text.OffsetRect(0, r_height);
 	}
 }
 

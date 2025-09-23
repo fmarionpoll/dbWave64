@@ -41,6 +41,7 @@ public:
 		dbwave_doc_ = p_document;
 	}
 
+	void print(CDC* p_dc, const CRect* rect);
 	void plot_data_to_dc(CDC* p_dc) override;
 	void zoom_data(CRect* rect_from, CRect* rect_dest) override;
 

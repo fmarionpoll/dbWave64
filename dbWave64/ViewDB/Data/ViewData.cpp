@@ -291,89 +291,9 @@ void ViewData::on_edit_copy()
 			chart_data.copy_as_text(dlg.m_i_option, dlg.m_i_unit, dlg.m_n_abscissa);
 		else
 		{
-			CRect old_rect;
-			chart_data.GetWindowRect(&old_rect);
-
 			CRect rect(0, 0, options_view_data_->hz_resolution, options_view_data_->vt_resolution);
 			pixels_count_0_ = chart_data.get_rect_width();
-
-			// create metafile
-			CMetaFileDC m_dc;
-			const auto p_dc_ref = GetDC();
-			auto cs_title = _T("dbWave\0") + m_p_dat_->GetTitle();
-			cs_title += _T("\0\0");
-			const CRect rect_bound(0, 0, 21000, 29700); // dimensions in HIMETRIC units (in .01-millimeter increments)
-			const auto hm_dc = m_dc.CreateEnhanced(p_dc_ref, nullptr, &rect_bound, cs_title);
-			ASSERT(hm_dc != NULL);
-
-			// Draw document in metafile.
-			const CClientDC attrib_dc(this); // Create and attach attribute DC
-			m_dc.SetAttribDC(attrib_dc.GetSafeHdc()); // from current screen
-
-			const auto old_scope_struct= new options_scope_struct();
-			options_scope_struct* new_scope_struct = chart_data.get_scope_parameters();
-			*old_scope_struct = *new_scope_struct;
-			new_scope_struct->b_draw_frame = options_view_data_->b_frame_rect;
-			new_scope_struct->b_clip_rect = options_view_data_->b_clip_rect;
-			chart_data.print(&m_dc, &rect);
-			*new_scope_struct = *old_scope_struct;
-
-			// print comments : set font
-			memset(&log_font_, 0, sizeof(LOGFONT));
-			GetObject(GetStockObject(SYSTEM_FONT), sizeof(LOGFONT), &log_font_);
-			p_old_font_ = nullptr;
-			/*BOOL flag = */
-			font_print_.CreateFontIndirect(&log_font_);
-			p_old_font_ = m_dc.SelectObject(&font_print_);
-			const int line_height = log_font_.lfHeight + 5;
-			auto y_pixels_row = 0;
-			constexpr auto x_column = 10;
-
-			CString comments = _T("Abscissa: ");
-			CString content;
-			content.Format(_T("%g - %g s"), m_time_first_abscissa, m_time_last_abscissa);
-			comments += content;
-			m_dc.TextOut(x_column, y_pixels_row, comments);
-			y_pixels_row += line_height;
-			comments.Format(_T("Vertical bar (ch. 0) = %g mV"), chart_data.y_ruler.get_scale_increment());
-			m_dc.TextOut(x_column, y_pixels_row, comments);
-			y_pixels_row += line_height;
-			comments.Format(_T("Horizontal bar = %g s"), chart_data.x_ruler.get_scale_increment());
-			m_dc.TextOut(x_column, y_pixels_row, comments);
-			y_pixels_row += line_height;
-
-			// bars
-			const auto p_old_brush = static_cast<CBrush*>(m_dc.SelectStockObject(BLACK_BRUSH));
-			m_dc.MoveTo(0, y_pixels_row);
-			const auto bottom = chart_data.y_ruler.get_scale_unit_pixels(rect.Height());
-			m_dc.LineTo(0, y_pixels_row - bottom);
-			m_dc.MoveTo(0, y_pixels_row);
-			const auto left = chart_data.x_ruler.get_scale_unit_pixels(rect.Width());
-			m_dc.LineTo(left, y_pixels_row);
-
-			m_dc.SelectObject(p_old_brush);
-			if (p_old_font_ != nullptr)
-				m_dc.SelectObject(p_old_font_);
-			font_print_.DeleteObject();
-
-			// Close metafile
-			ReleaseDC(p_dc_ref);
-			const auto h_emf_tmp = m_dc.CloseEnhanced();
-			ASSERT(h_emf_tmp != NULL);
-			if (OpenClipboard())
-			{
-				EmptyClipboard(); 
-				SetClipboardData(CF_ENHMETAFILE, h_emf_tmp); // put data
-				CloseClipboard(); 
-			}
-			else
-			{
-				// Someone else has the Clipboard open...
-				DeleteEnhMetaFile(h_emf_tmp); // delete data
-				MessageBeep(0); // tell user something is wrong!
-				AfxMessageBox(IDS_CANNOT_ACCESS_CLIPBOARD, NULL, MB_OK | MB_ICONEXCLAMATION);
-			}
-
+			copy_as_emf_to_clipboard(rect, m_p_dat_->GetTitle());
 			// restore initial conditions
 			chart_data.resize_channels(pixels_count_0_, 0);
 			chart_data.get_data_from_doc();
@@ -1530,8 +1450,8 @@ void ViewData::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 	//CRect RW2 = RWhere;									// printing rectangle - constant
 	//RW2.OffsetRect(-RWhere.left, -RWhere.top);			// set RW2 origin = 0,0
 
-	p_dc->SetMapMode(MM_TEXT); // change map mode to text (1 pixel = 1 logical point)
-	print_file_bottom_page(p_dc, p_info); // print bottom - text, date, etc
+    // bottom page footer (leave chart mapping, draw text via helper if needed)
+    print_file_bottom_page(p_dc, p_info);
 
 	// --------------------- load data corresponding to the first row of current page
 	int file_number; // file number and file index
@@ -1555,9 +1475,7 @@ void ViewData::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 	for (auto i = 0; i < n_rows_per_page_; i++)
 	{
 		// first : set rectangle where data will be printed
-		auto comment_rect = r_where; // save RWhere for comments
-		p_dc->SetMapMode(MM_TEXT); // 1 pixel = 1 logical unit
-		p_dc->SetTextAlign(TA_LEFT); // set text align mode
+        auto comment_rect = r_where; // save RWhere for comments
 
 		// load data and adjust display rectangle ----------------------------------------
 		// reduce width to the size of the data
@@ -1574,10 +1492,8 @@ void ViewData::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		// update display rectangle for next row
 		r_where.OffsetRect(0, r_height + options_view_data_->height_separator);
 
-		// restore DC and print comments --------------------------------------------------
-		p_dc->SetMapMode(MM_TEXT); // 1 LP = 1 pixel
-		p_dc->SelectClipRgn(nullptr); // no more clipping
-		p_dc->SetViewportOrg(0, 0); // org = 0,0
+        // restore DC and print comments --------------------------------------------------
+        p_dc->SelectClipRgn(nullptr); // no more clipping
 
 		// print comments according to row within file
 		CString cs_comment;
@@ -1593,11 +1509,9 @@ void ViewData::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		comment_rect.OffsetRect(options_view_data_->text_separator + comment_rect.Width(), 0);
 		comment_rect.right = print_rect_.right;
 
-		// reset text align mode (otherwise pbs!) output text and restore text alignment
-		const auto ui_flag = p_dc->SetTextAlign(TA_LEFT | TA_NOUPDATECP);
-		p_dc->DrawText(cs_comment, cs_comment.GetLength(), comment_rect,
-		               DT_NOPREFIX | DT_NOCLIP | DT_LEFT | DT_WORDBREAK);
-		p_dc->SetTextAlign(ui_flag);
+        // draw via helper with 1:1 mapping in target rect
+        draw_text_block(p_dc, comment_rect, options_view_data_->font_size, cs_comment,
+                        DT_NOPREFIX | DT_NOCLIP | DT_LEFT | DT_WORDBREAK);
 
 		// update file parameters for next row --------------------------------------------
 		const auto i_file = file_number;
@@ -1738,4 +1652,51 @@ void ViewData::update_y_zero(const int i_chan, const int y_bias)
 		const auto y_volts_extent = chan->get_volts_per_bin() * static_cast<float>(y_bias);
 		chart_data.set_channel_list_volts_zero(-1, &y_volts_extent);
 	}
+}
+
+void ViewData::render_for_export(CDC* p_dc, const CRect& rect)
+{
+	const auto old_scope_struct = new options_scope_struct();
+	options_scope_struct* new_scope_struct = chart_data.get_scope_parameters();
+	*old_scope_struct = *new_scope_struct;
+	new_scope_struct->b_draw_frame = options_view_data_->b_frame_rect;
+	new_scope_struct->b_clip_rect = options_view_data_->b_clip_rect;
+	chart_data.print(p_dc, &rect);
+	*new_scope_struct = *old_scope_struct;
+
+	// comments and bars
+	LOGFONT lf{};
+	GetObject(GetStockObject(SYSTEM_FONT), sizeof(LOGFONT), &lf);
+	CFont font;
+	font.CreateFontIndirect(&lf);
+	const auto p_old_font = p_dc->SelectObject(&font);
+	const int line_height = lf.lfHeight + 5;
+	auto y_pixels_row = 0;
+	constexpr auto x_column = 10;
+
+	CString comments = _T("Abscissa: ");
+	CString content;
+	content.Format(_T("%g - %g s"), m_time_first_abscissa, m_time_last_abscissa);
+	comments += content;
+	p_dc->TextOut(x_column, y_pixels_row, comments);
+	y_pixels_row += line_height;
+	comments.Format(_T("Vertical bar (ch. 0) = %g mV"), chart_data.y_ruler.get_scale_increment());
+	p_dc->TextOut(x_column, y_pixels_row, comments);
+	y_pixels_row += line_height;
+	comments.Format(_T("Horizontal bar = %g s"), chart_data.x_ruler.get_scale_increment());
+	p_dc->TextOut(x_column, y_pixels_row, comments);
+	y_pixels_row += line_height;
+
+	const auto p_old_brush = static_cast<CBrush*>(p_dc->SelectStockObject(BLACK_BRUSH));
+	p_dc->MoveTo(0, y_pixels_row);
+	const auto bottom = chart_data.y_ruler.get_scale_unit_pixels(rect.Height());
+	p_dc->LineTo(0, y_pixels_row - bottom);
+	p_dc->MoveTo(0, y_pixels_row);
+	const auto left = chart_data.x_ruler.get_scale_unit_pixels(rect.Width());
+	p_dc->LineTo(left, y_pixels_row);
+
+	p_dc->SelectObject(p_old_brush);
+	if (p_old_font != nullptr)
+		p_dc->SelectObject(p_old_font);
+	font.DeleteObject();
 }

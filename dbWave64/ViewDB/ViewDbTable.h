@@ -75,6 +75,19 @@ protected:
 	BOOL b_init_ {false};
 
 protected:
+	// Export helpers (EMF clipboard)
+	// Creates an EMF with HIMETRIC bounds derived from pixelRect and copies it to the clipboard.
+	// Calls render_for_export(dc, pixelRect) to let derived views draw their content.
+	BOOL copy_as_emf_to_clipboard(const CRect& pixel_rect, const CString& title);
+	virtual void render_for_export(CDC* p_dc, const CRect& pixel_rect);
+
+	// Text helpers (device-independent in MM_ANISOTROPIC)
+	void draw_text_block(CDC* p_dc, const CRect& device_rect, int point_size, const CString& text, UINT draw_text_flags, LPCTSTR font_face = _T("Arial")) const;
+	int get_line_height_for_point_size(CDC* p_dc, int point_size, LPCTSTR font_face = _T("Arial")) const;
+	int calc_draw_text_height(CDC* p_dc, int point_size, const CString& text, int max_width, UINT draw_text_flags, LPCTSTR font_face = _T("Arial")) const;
+	BOOL export_to_png(const CRect& pixel_rect, const CString& file_path, int bg_color = RGB(255,255,255));
+
+protected:
 	afx_msg void OnSize(UINT n_type, int cx, int cy);
 	afx_msg void on_nm_click_tab1(NMHDR* p_nmhdr, LRESULT* p_result);
 	afx_msg void on_tcn_sel_change_tab1(NMHDR* p_nmhdr, LRESULT* p_result);

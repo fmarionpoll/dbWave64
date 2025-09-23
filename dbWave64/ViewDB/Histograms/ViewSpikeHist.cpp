@@ -625,65 +625,31 @@ void ViewSpikeHist::on_en_change_dot_height()
 
 void ViewSpikeHist::on_edit_copy()
 {
-	// create metafile
-	CMetaFileDC m_dc;
+	CRect rect;
+	const auto p_wnd = GetDlgItem(IDC_STATIC12);
+	p_wnd->GetClientRect(&rect);
+	copy_as_emf_to_clipboard(rect, GetDocument()->GetTitle());
+}
 
-	// size of the window
-	CRect rect_bound, rect;
-	const auto p_wnd = GetDlgItem(IDC_STATIC12); // get pointer to display static control
-	p_wnd->GetClientRect(&rect); // get the final rect
 
-	// DC for output and objects
-	const auto p_dc_ref = p_wnd->GetDC();
-	const int dpi_x = p_dc_ref->GetDeviceCaps(LOGPIXELSX);
-	const int dpi_y = p_dc_ref->GetDeviceCaps(LOGPIXELSY);
-	rect_bound = CRect(0, 0,
-		MulDiv(rect.Width(), 2540, dpi_x),
-		MulDiv(rect.Height(), 2540, dpi_y));
-	auto cs_title = _T("dbWave\0") + (GetDocument())->GetTitle();
-	cs_title += _T("\0\0");
-	const auto hm_dc = m_dc.CreateEnhanced(p_dc_ref, nullptr, &rect_bound, cs_title);
-	ASSERT(hm_dc != NULL);
-
-	// Draw document in metafile.
-	const CClientDC attrib_dc(this); // Create and attach attribute DC
-	m_dc.SetAttribDC(attrib_dc.GetSafeHdc()); // from current screen
-
-	// display curves
-	// call display routine according to selection
+void  ViewSpikeHist::render_for_export(CDC* p_dc, const CRect& pixel_rect)
+{
+	CRect rect = pixel_rect;
 	switch (m_b_hist_type_)
 	{
 	case 0:
 	case 1:
 	case 2:
-		display_histogram(&m_dc, &rect);
+		display_histogram(p_dc, &pixel_rect);
 		break;
 	case 3:
-		display_dot(&m_dc, &rect);
+		display_dot(p_dc, &rect);
 		break;
 	case 4:
-		display_psth_autocorrelation(&m_dc, &rect);
+		display_psth_autocorrelation(p_dc, &rect);
 		break;
 	default:
 		break;
-	}
-	ReleaseDC(p_dc_ref);
-
-	// Close metafile
-	const auto h_emf_tmp = m_dc.CloseEnhanced();
-	ASSERT(h_emf_tmp != NULL);
-	if (OpenClipboard())
-	{
-		EmptyClipboard(); 
-		SetClipboardData(CF_ENHMETAFILE, h_emf_tmp); 
-		CloseClipboard(); 
-	}
-	else
-	{
-		// Someone else has the Clipboard open...
-		DeleteEnhMetaFile(h_emf_tmp); 
-		MessageBeep(0); 
-		AfxMessageBox(IDS_CANNOT_ACCESS_CLIPBOARD, NULL, MB_OK | MB_ICONEXCLAMATION);
 	}
 }
 

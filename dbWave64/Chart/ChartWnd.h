@@ -119,6 +119,8 @@ protected:
 public:
 	virtual void plot_data_to_dc(CDC* p_dc);
 	void display_text_bottom_left(CDC* p_dc, const CString& text, const COLORREF& color) const;
+	// Draw a text block within deviceRect using MM_ANISOTROPIC with 1:1 logical mapping to the rect.
+	// point_size is in typographic points; font_face should be a common face (e.g., "Arial").
 	virtual options_scope_struct* get_scope_parameters();
 	virtual void set_scope_parameters(options_scope_struct* p_struct);
 	virtual int set_mouse_cursor_type(int cursor_type);

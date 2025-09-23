@@ -213,5 +213,8 @@ public:
 	afx_msg void on_en_change_hist_bin_ms();
 
 	DECLARE_MESSAGE_MAP()
+
+protected:
+	void render_for_export(CDC* p_dc, const CRect& pixel_rect) override;
 	
 };

@@ -1825,129 +1825,9 @@ void ViewSpikeDetection::on_edit_copy()
 		else
 		{
 			serialize_windows_state(b_save);
-
-			CRect old_rect1; // save size of line view windows
-			chart_data_filtered_.GetWindowRect(&old_rect1);
-			CRect old_rect2;
-			chart_data_.GetWindowRect(&old_rect2);
-
 			const CRect rect(0, 0, options_view_data_->hz_resolution, options_view_data_->vt_resolution);
 			pixels_count_0_ = chart_data_filtered_.get_rect_width();
-
-			// create meta file
-			CMetaFileDC m_dc;
-			const auto p_dc_ref = GetDC();
-			const int dpi_x = p_dc_ref->GetDeviceCaps(LOGPIXELSX);
-			const int dpi_y = p_dc_ref->GetDeviceCaps(LOGPIXELSY);
-			CRect rect_bound_himetric(0, 0,
-				MulDiv(rect.Width(), 2540, dpi_x),
-				MulDiv(rect.Height(), 2540, dpi_y));
-			auto cs_title = _T("dbWave\0") + GetDocument()->m_p_data_doc->GetTitle();
-			cs_title += _T("\0\0");
-			const auto hm_dc = m_dc.CreateEnhanced(p_dc_ref, nullptr, &rect_bound_himetric, cs_title);
-			ASSERT(hm_dc != NULL);
-
-			// Draw document in meta file.
-			CPen black_pen(PS_SOLID, 0, col_black);
-			const auto old_pen = m_dc.SelectObject(&black_pen);
-			const auto p_old_brush = static_cast<CBrush*>(m_dc.SelectStockObject(BLACK_BRUSH));
-			CClientDC attribute_dc(this); 
-			m_dc.SetAttribDC(attribute_dc.GetSafeHdc()); // from current screen
-
-			// print comments : set font
-			p_old_font_ = nullptr;
-			const auto old_font_size = options_view_data_->font_size;
-			options_view_data_->font_size = 10;
-			print_create_font();
-			m_dc.SetBkMode(TRANSPARENT);
-			options_view_data_->font_size = old_font_size;
-			p_old_font_ = m_dc.SelectObject(&font_print_);
-			const int line_height = log_font_.lfHeight + 5;
-			auto row = 0;
-			constexpr auto column = 10;
-
-			// comment and descriptors
-			auto comments = GetDocument()->export_database_data(1);
-			m_dc.TextOut(column, row, comments);
-			row += line_height;
-
-			// abscissa
-			comments = _T("Abscissa: ");
-			CString content;
-			GetDlgItem(IDC_TIMEFIRST)->GetWindowText(content);
-			comments += content;
-			comments += _T(" - ");
-			GetDlgItem(IDC_TIMELAST)->GetWindowText(content);
-			comments += content;
-			m_dc.TextOut(column, row, comments);
-
-			// define display sizes - data_view & data_detect are same, spk_shape & spk_bar = as on screen
-			auto data_rect = rect;
-			data_rect.top -= -3 * line_height;
-			const auto rect_spike_width = MulDiv(chart_spike_shape_.get_rect_width(), data_rect.Width(),
-				chart_spike_shape_.get_rect_width() + chart_data_filtered_.get_rect_width());
-			const auto rect_data_height = MulDiv(chart_data_filtered_.get_rect_height(), data_rect.Height(),
-				chart_data_filtered_.get_rect_height() * 2 + chart_spike_bar_.
-				get_rect_height());
-			const auto separator = rect_spike_width / 10;
-
-			// display curves : data
-			data_rect.bottom = rect.top + rect_data_height - separator / 2;
-			data_rect.left = rect.left + rect_spike_width + separator;
-			print_data_cartridge(&m_dc, &chart_data_, &data_rect);
-
-			// display curves: detect channel
-			data_rect.top = data_rect.bottom + separator;
-			data_rect.bottom = data_rect.top + rect_data_height;
-			print_data_cartridge(&m_dc, &chart_data_filtered_, &data_rect);
-
-			// display spike bars
-			auto rect_bars = data_rect;
-			rect_bars.top = data_rect.bottom + separator;
-			rect_bars.bottom = rect.bottom - 2 * line_height;
-			chart_spike_bar_.print(&m_dc, &rect_bars);
-
-			// display spike shapes
-			auto rect_spikes = rect; // compute output rectangle
-			rect_spikes.left += separator;
-			rect_spikes.right = rect.left + rect_spike_width;
-			rect_spikes.bottom = rect.bottom - 2 * line_height;
-			rect_spikes.top = rect_spikes.bottom - rect_bars.Height();
-			chart_spike_shape_.print(&m_dc, &rect_spikes);
-			comments = print_spk_shape_bars(&m_dc, &rect_spikes, TRUE);
-
-			auto rect_comment = rect;
-			rect_comment.right = data_rect.left;
-			rect_comment.top = rect_spikes.bottom;
-			constexpr UINT n_format = DT_NOPREFIX | DT_NOCLIP | DT_LEFT | DT_WORDBREAK;
-			m_dc.DrawText(comments, comments.GetLength(), rect_comment, n_format);
-			m_dc.SelectObject(p_old_brush);
-
-			if (p_old_font_ != nullptr)
-				m_dc.SelectObject(p_old_font_);
-			font_print_.DeleteObject();
-
-			// restore old pen
-			m_dc.SelectObject(old_pen);
-			ReleaseDC(p_dc_ref);
-
-			// Close metafile
-			const auto h_emf_tmp = m_dc.CloseEnhanced();
-			ASSERT(h_emf_tmp != NULL);
-			if (OpenClipboard())
-			{
-				EmptyClipboard(); 
-				SetClipboardData(CF_ENHMETAFILE, h_emf_tmp); 
-				CloseClipboard(); 
-			}
-			else
-			{
-				// someone has the Clipboard open...
-				DeleteEnhMetaFile(h_emf_tmp); 
-				MessageBeep(0); 
-				AfxMessageBox(IDS_CANNOT_ACCESS_CLIPBOARD, NULL, MB_OK | MB_ICONEXCLAMATION);
-			}
-			// restore initial conditions
+			copy_as_emf_to_clipboard(rect, GetDocument()->m_p_data_doc->GetTitle());
 			serialize_windows_state(b_restore);
 		}
 	}
@@ -2530,8 +2410,8 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 	if (!options_view_data_->b_filter_data_source)
 		chart_data_filtered_.set_channel_list_transform_mode(0, 0);
 
-	p_dc->SetMapMode(MM_TEXT); // change map mode to text (1 pixel = 1 logical point)
-	print_file_bottom_page(p_dc, p_info); // print bottom - text, date, etc
+    // bottom page footer (leave chart mapping; draw text via helper if needed)
+    print_file_bottom_page(p_dc, p_info);
 
 	// --------------------- load data corresponding to the first row of current page
 	int file_index; 
@@ -2551,9 +2431,7 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		const auto old_dc = p_dc->SaveDC(); // save DC
 
 		// first : set rectangle where data will be printed
-		auto comment_rect = r_where; 
-		p_dc->SetMapMode(MM_TEXT); 
-		p_dc->SetTextAlign(TA_LEFT); 
+        auto comment_rect = r_where; 
 
 		// load data and adjust display rectangle ----------------------------------------
 		// set data rectangle to half height to the row height
@@ -2604,11 +2482,9 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		chart_spike_shape_.set_time_intervals(index_first_data_point, l_last);
 		chart_spike_shape_.print(p_dc, &rect_spike_);
 
-		// restore DC and print comments 
-		p_dc->RestoreDC(old_dc); 
-		p_dc->SetMapMode(MM_TEXT);
-		p_dc->SelectClipRgn(nullptr); 
-		p_dc->SetViewportOrg(0, 0);
+        // restore DC and print comments 
+        p_dc->RestoreDC(old_dc); 
+        p_dc->SelectClipRgn(nullptr); 
 
 		// print data Bars & get comments according to row within file
 		CString cs_comment;
@@ -2629,10 +2505,9 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		comment_rect.OffsetRect(options_view_data_->text_separator + comment_rect.Width(), 0);
 		comment_rect.right = print_rect_.right;
 
-		// reset text align mode (otherwise pbs!) output text and restore text alignment
-		const auto ui_flag = p_dc->SetTextAlign(TA_LEFT);// | TA_NOUPDATECP);
-		constexpr UINT format_parameters = DT_NOPREFIX | DT_NOCLIP | DT_LEFT | DT_WORDBREAK;
-		p_dc->DrawText(cs_comment, cs_comment.GetLength(), comment_rect, format_parameters);
+        // draw via helper (1:1 mapping in target rect)
+        constexpr UINT format_parameters = DT_NOPREFIX | DT_NOCLIP | DT_LEFT | DT_WORDBREAK;
+        draw_text_block(p_dc, comment_rect, options_view_data_->font_size, cs_comment, format_parameters);
 
 		// print comments & bar / spike shape
 		cs_comment.Empty();
@@ -2642,7 +2517,8 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		rect_spike_.left -= options_view_data_->text_separator;
 		rect_spike_.top = rect_spike_.bottom;
 		rect_spike_.bottom += log_font_.lfHeight * 3;
-		p_dc->DrawText(cs_comment, cs_comment.GetLength(), rect_spike_, format_parameters);
+        draw_text_block(p_dc, rect_spike_, options_view_data_->font_size, cs_comment, format_parameters);
+		const auto ui_flag = p_dc->SetTextAlign(TA_LEFT | TA_NOUPDATECP);
 		p_dc->SetTextAlign(ui_flag);
 		//--_____________________________________________________________________--------
 		//--|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||--------
@@ -3147,4 +3023,77 @@ void ViewSpikeDetection::update_tabs()
 
 	m_i_detect_parameters_ = p_spk_doc->get_index_current_spike_list();
 	spk_list_tab_ctrl.SetCurSel(m_i_detect_parameters_);
+}
+
+void ViewSpikeDetection::render_for_export(CDC* p_dc, const CRect& pixel_rect)
+{
+	// comments and descriptors
+	p_old_font_ = nullptr;
+	const auto old_font_size = options_view_data_->font_size;
+	options_view_data_->font_size = 10;
+	print_create_font();
+	p_dc->SetBkMode(TRANSPARENT);
+	options_view_data_->font_size = old_font_size;
+	p_old_font_ = p_dc->SelectObject(&font_print_);
+	const int line_height = log_font_.lfHeight + 5;
+	auto row = 0;
+	constexpr auto column = 10;
+
+	auto comments = GetDocument()->export_database_data(1);
+	p_dc->TextOut(column, row, comments);
+	row += line_height;
+
+	comments = _T("Abscissa: ");
+	CString content;
+	GetDlgItem(IDC_TIMEFIRST)->GetWindowText(content);
+	comments += content;
+	comments += _T(" - ");
+	GetDlgItem(IDC_TIMELAST)->GetWindowText(content);
+	comments += content;
+	p_dc->TextOut(column, row, comments);
+
+	// layout rectangles
+	auto rect = pixel_rect;
+	auto data_rect = rect;
+	data_rect.top -= -3 * line_height;
+	const auto rect_spike_width = MulDiv(chart_spike_shape_.get_rect_width(), data_rect.Width(),
+			chart_spike_shape_.get_rect_width() + chart_data_filtered_.get_rect_width());
+	const auto rect_data_height = MulDiv(chart_data_filtered_.get_rect_height(), data_rect.Height(),
+			chart_data_filtered_.get_rect_height() * 2 + chart_spike_bar_.get_rect_height());
+	const auto separator = rect_spike_width / 10;
+
+	// display curves : data
+	data_rect.bottom = rect.top + rect_data_height - separator / 2;
+	data_rect.left = rect.left + rect_spike_width + separator;
+	print_data_cartridge(p_dc, &chart_data_, &data_rect);
+
+	// display curves: detect channel
+	data_rect.top = data_rect.bottom + separator;
+	data_rect.bottom = data_rect.top + rect_data_height;
+	print_data_cartridge(p_dc, &chart_data_filtered_, &data_rect);
+
+	// display spike bars
+	auto rect_bars = data_rect;
+	rect_bars.top = data_rect.bottom + separator;
+	rect_bars.bottom = rect.bottom - 2 * line_height;
+	chart_spike_bar_.print(p_dc, &rect_bars);
+
+	// display spike shapes
+	auto rect_spikes = rect;
+	rect_spikes.left += separator;
+	rect_spikes.right = rect.left + rect_spike_width;
+	rect_spikes.bottom = rect.bottom - 2 * line_height;
+	rect_spikes.top = rect_spikes.bottom - rect_bars.Height();
+	chart_spike_shape_.print(p_dc, &rect_spikes);
+	comments = print_spk_shape_bars(p_dc, &rect_spikes, TRUE);
+
+	auto rect_comment = rect;
+	rect_comment.right = data_rect.left;
+	rect_comment.top = rect_spikes.bottom;
+	constexpr UINT n_format = DT_NOPREFIX | DT_NOCLIP | DT_LEFT | DT_WORDBREAK;
+	p_dc->DrawText(comments, comments.GetLength(), rect_comment, n_format);
+
+	if (p_old_font_ != nullptr)
+		p_dc->SelectObject(p_old_font_);
+	font_print_.DeleteObject();
 }

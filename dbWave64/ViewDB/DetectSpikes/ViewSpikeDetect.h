@@ -192,6 +192,7 @@ public:
 	afx_msg void on_edit_copy();
 	afx_msg void on_file_save();
 	afx_msg void on_measure();
+	void render_for_export(CDC* p_dc, const CRect& pixel_rect) override;
 
 	afx_msg void on_bn_clicked_bias_button();
 	afx_msg void on_bn_clicked_gain_button();

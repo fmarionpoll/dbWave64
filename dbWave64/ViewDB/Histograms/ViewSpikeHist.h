@@ -124,6 +124,9 @@ protected:
 	afx_msg void on_format_histogram();
 	afx_msg void on_click_cycle_hist();
 	afx_msg void on_edit_copy();
+
+protected:
+	void render_for_export(CDC* p_dc, const CRect& pixel_rect) override;
 	afx_msg void on_sel_change_histogram_type();
 	afx_msg void on_en_change_edit_n_stimuli_per_cycle();
 	afx_msg void OnHScroll(UINT n_sb_code, UINT n_pos, CScrollBar* p_scroll_bar);

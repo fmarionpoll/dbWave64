@@ -109,6 +109,31 @@ BEGIN_MESSAGE_MAP(ViewSpikeSort, ViewDbTable)
 	ON_REGISTERED_MESSAGE(AFX_WM_PROPERTY_CHANGED, OnPropertyChanged)
 
 END_MESSAGE_MAP()
+void ViewSpikeSort::render_for_export(CDC* p_dc, const CRect& rect)
+{
+    // Layout similar to on screen: top measures, middle bars, bottom shape, right histogram
+    auto area = rect;
+    const int separator = max(4, rect.Height() / 50);
+
+    // Split vertically into three rows for measures, bars, shapes
+    const int row_h = (rect.Height() - 2 * separator);
+    CRect r_measures = rect; r_measures.bottom = r_measures.top + row_h / 3;
+    CRect r_bars = r_measures; r_bars.OffsetRect(0, r_measures.Height() + separator);
+    CRect r_shapes = r_bars; r_shapes.OffsetRect(0, r_bars.Height() + separator);
+
+    // Reserve right column for histogram
+    const int right_w = max(rect.Width() / 4, 80);
+    r_measures.right -= right_w + separator;
+    r_bars.right -= right_w + separator;
+    r_shapes.right -= right_w + separator;
+    CRect r_hist(rect.right - right_w, rect.top, rect.right, rect.bottom);
+
+    // Render charts
+    chart_measures_.print(p_dc, &r_measures);
+    chart_spike_bar_.print(p_dc, &r_bars);
+    chart_shape_.print(p_dc, &r_shapes);
+    chart_histogram_.plot_data_to_dc(p_dc); // uses its own display_rect; approximate fallback
+}
 
 void ViewSpikeSort::define_sub_classed_items()
 {

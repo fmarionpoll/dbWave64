@@ -224,7 +224,7 @@ void ChartSpikeXY::highlight_spike_measure(const Spike* spike)
 	const auto y1 = MulDiv(spike->get_y1() - y_wo_, y_ve_, y_we_) + y_vo_;
 
 	CPen new_pen;
-	new_pen.CreatePen(PS_SOLID, 1, RGB(196, 2, 51));
+    new_pen.CreatePen(PS_SOLID, 0, RGB(196, 2, 51));
 	auto* old_pen = dc.SelectObject(&new_pen);
 	auto* old_brush = dc.SelectStockObject(NULL_BRUSH);
 
@@ -503,4 +503,20 @@ void ChartSpikeXY::get_extents()
 		x_we_ = display_rect_.Width();
 		x_wo_ = display_rect_.left;
 	}
+}
+
+void ChartSpikeXY::print(CDC* p_dc, const CRect* rect)
+{
+	// check if there are valid data to display
+	if (p_spike_list_ == nullptr || p_spike_list_->get_spikes_count() == 0)
+		return;
+
+	// set mapping mode and viewport
+	const auto n_saved_dc = p_dc->SaveDC(); // save display context
+	//display_bars(p_dc, rect);
+
+	//if (dbwave_doc_->m_p_spk_doc->m_stimulus_intervals.n_items > 0)
+	//	display_stimulus(p_dc, rect);
+
+	p_dc->RestoreDC(n_saved_dc);
 }

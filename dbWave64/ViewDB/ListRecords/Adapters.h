@@ -18,12 +18,21 @@ public:
     {
         in_batch_ = true;
         saved_index_ = doc_ ? doc_->db_get_current_record_position() : -1;
+        // Ensure we always restore to a valid position; default to 0 if unknown
+        if (saved_index_ < 0 && doc_ && doc_->db_get_records_count() > 0)
+            saved_index_ = 0;
     }
 
     void end_meta_batch() override
     {
-        if (doc_ && saved_index_ >= 0)
-            doc_->db_set_current_record_position(saved_index_);
+        if (doc_)
+        {
+            int idx = saved_index_;
+            if (idx < 0 && doc_->db_get_records_count() > 0)
+                idx = 0;
+            if (idx >= 0)
+                doc_->db_set_current_record_position(idx);
+        }
         in_batch_ = false;
         saved_index_ = -1;
     }
@@ -77,9 +86,15 @@ public:
 			database->get_record_item_value(CH_NSPIKECLASSES, &desc);
 			m.cs_n_spikes.Format(_T("%i (%i classes)"), n_spikes, desc.l_val);
 		}
-        // If not in a batch, restore original position immediately
-        if (!in_batch_ && saved_index_ >= 0)
-            doc_->db_set_current_record_position(saved_index_);
+        // If not in a batch, restore original position immediately (fall back to index 0)
+        if (!in_batch_)
+        {
+            int idx = saved_index_;
+            if (idx < 0 && doc_->db_get_records_count() > 0)
+                idx = 0;
+            if (idx >= 0)
+                doc_->db_set_current_record_position(idx);
+        }
 		return m;
 	}
 

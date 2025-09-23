@@ -3,6 +3,8 @@
 #include "dbWave.h"
 #include "resource.h"
 #include "Adapters.h"
+#include "ChildFrm.h"
+#include "MainFrm.h"
 #include "RegistryManager.h"
 
 #ifdef _DEBUG
@@ -76,7 +78,12 @@ void ViewRecordsList::OnInitialUpdate()
 	ViewDbTable::OnInitialUpdate();
 
 	VERIFY(m_list_ctrl_.SubclassDlgItem(IDC_LISTCTRL, this));
-	m_list_ctrl_.SetExtendedStyle(m_list_ctrl_.GetExtendedStyle() | LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE | LVS_EX_SUBITEMIMAGES);
+    {
+        const DWORD ex0 = m_list_ctrl_.GetExtendedStyle();
+        DWORD ex = ex0 | LVS_EX_FULLROWSELECT | LVS_EX_SUBITEMIMAGES;
+        ex &= ~LVS_EX_ONECLICKACTIVATE; // avoid hot-track activation side-effects
+        m_list_ctrl_.SetExtendedStyle(ex);
+    }
 
 	// initialize document and db table pointer (same as original view)
 	const auto db_wave_doc = GetDocument();
@@ -314,13 +321,27 @@ void ViewRecordsList::on_item_changed_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_resul
         return;
     const UINT was_selected = (p_nmlv->uOldState & LVIS_SELECTED);
     const UINT is_selected = (p_nmlv->uNewState & LVIS_SELECTED);
-    if (!was_selected && is_selected)
+    const UINT is_focused  = (p_nmlv->uNewState & LVIS_FOCUSED);
+    // Only react to the final focused-selected item to avoid transient or cache-driven state changes
+    if (!was_selected && is_selected && is_focused)
     {
-        const int index = p_nmlv->iItem;
+        int index = m_list_ctrl_.GetNextItem(-1, LVNI_SELECTED | LVNI_FOCUSED);
+        if (index < 0)
+            index = p_nmlv->iItem;
         if (index >= 0)
         {
+            // Update doc selection first
             GetDocument()->db_set_current_record_position(index);
-            // Avoid re-entrancy: do not call EnsureVisible here; the framework will request display info.
+            // Align cache viewport around the selection for stability
+            const int total = m_list_ctrl_.GetItemCount();
+            if (total > 0)
+            {
+                const int page = max(m_list_ctrl_.GetCountPerPage(), 1);
+                const int first = max(0, min(index, max(total - page, 0)));
+                const int last  = min(first + page - 1, max(total - 1, 0));
+                m_list_ctrl_.set_visible_range(first, last);
+            }
+            // Notify
             GetDocument()->UpdateAllViews(nullptr, HINT_DOC_MOVE_RECORD, nullptr);
         }
     }
@@ -345,41 +366,23 @@ void ViewRecordsList::on_record_page_down()
 
 void ViewRecordsList::OnActivateView(const BOOL b_activate, CView* p_activate_view, CView* p_deactive_view)
 {
+	auto* p_mainframe = static_cast<CMainFrame*>(AfxGetMainWnd());
 	if (b_activate)
 	{
         restore_controls_state();
 
-		const auto db_wave_doc = GetDocument();
-		const int current_index = db_wave_doc->db_get_current_record_position();
-        if (current_index >= 0)
-		{
-			// compute a centered visible range around the current record
-			const int per_page = max(m_list_ctrl_.GetCountPerPage(), 1);
-            // Keep top-of-list visible when we come back from other views
-            int first = 0;
-			int last = first + per_page - 1;
-			const int total = db_wave_doc->db_get_records_count();
-			if (last >= total) {
-				last = total - 1;
-				int recomputed_first = last - per_page + 1;
-				if (recomputed_first < 0) recomputed_first = 0;
-				first = recomputed_first;
-			}
-
-			m_list_ctrl_.set_visible_range(first, last);
-
-			// select and focus the current item and ensure visible
-            if (current_index < m_list_ctrl_.GetItemCount())
-			{
-                // Maintain the user selection rather than forcing it to 0 on return
-                m_list_ctrl_.SetItemState(current_index, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
-                m_list_ctrl_.EnsureVisible(current_index, FALSE);
-			}
-		}
+		// make sure the secondary toolbar is not visible (none is defined for the database)
+		if (p_mainframe->m_p_second_tool_bar != nullptr)
+			p_mainframe->ShowPane(p_mainframe->m_p_second_tool_bar, FALSE, FALSE, TRUE);
+		// load status
+		m_nStatus = static_cast<CChildFrame*>(p_mainframe->MDIGetActive())->m_n_status;
+		p_mainframe->PostMessageW(WM_MYMESSAGE, HINT_ACTIVATE_VIEW, reinterpret_cast<LPARAM>(p_activate_view->GetDocument()));
 	}
 	else
 	{
 		save_controls_state();
+		if (p_activate_view != nullptr)
+			static_cast<CChildFrame*>(p_mainframe->MDIGetActive())->m_n_status = m_nStatus;
 	}
 	ViewDbTable::OnActivateView(b_activate, p_activate_view, p_deactive_view);
 }

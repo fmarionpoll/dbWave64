@@ -1438,7 +1438,7 @@ void ViewSpikes::OnEndPrinting(CDC* p_dc, CPrintInfo* p_info)
 	}
 }
 
-char vs_units[] = {"GM  mµpf  "};  
+char vs_units[] = {"GM  mï¿½pf  "};  
 int vs_units_power[] = {9, 6, 0, 0, -3, -6, -9, -12, 0};
 constexpr int vs_max_index = 8; 
 
@@ -1596,15 +1596,17 @@ void ViewSpikes::on_edit_copy()
 
 		// create metafile
 		CMetaFileDC mDC;
-		auto rect_bound = rect;
-		rect_bound.right *= 32;
-		rect_bound.bottom *= 30;
 		auto p_dc_ref = GetDC();
+		const int dpi_x = p_dc_ref->GetDeviceCaps(LOGPIXELSX);
+		const int dpi_y = p_dc_ref->GetDeviceCaps(LOGPIXELSY);
+		CRect rect_bound_himetric(0, 0,
+			MulDiv(rect.Width(), 2540, dpi_x),
+			MulDiv(rect.Height(), 2540, dpi_y));
 		const auto old_dc = p_dc_ref->SaveDC(); // save DC
 
 		auto cs_title = _T("dbWave\0") + GetDocument()->GetTitle();
 		cs_title += _T("\0\0");
-		mDC.CreateEnhanced(p_dc_ref, nullptr, &rect_bound, cs_title);
+		mDC.CreateEnhanced(p_dc_ref, nullptr, &rect_bound_himetric, cs_title);
 
 		// Draw document in metafile.
 		CPen black_pen(PS_SOLID, 0, col_black);

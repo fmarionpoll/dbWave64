@@ -632,12 +632,14 @@ void ViewSpikeHist::on_edit_copy()
 	CRect rect_bound, rect;
 	const auto p_wnd = GetDlgItem(IDC_STATIC12); // get pointer to display static control
 	p_wnd->GetClientRect(&rect); // get the final rect
-	rect_bound = rect;
-	rect_bound.right *= 32; // HIMETRIC UNIT (0.01 mm increments)
-	rect_bound.bottom *= 30; // HIMETRIC UNIT (0.01 mm increments)
 
 	// DC for output and objects
 	const auto p_dc_ref = p_wnd->GetDC();
+	const int dpi_x = p_dc_ref->GetDeviceCaps(LOGPIXELSX);
+	const int dpi_y = p_dc_ref->GetDeviceCaps(LOGPIXELSY);
+	rect_bound = CRect(0, 0,
+		MulDiv(rect.Width(), 2540, dpi_x),
+		MulDiv(rect.Height(), 2540, dpi_y));
 	auto cs_title = _T("dbWave\0") + (GetDocument())->GetTitle();
 	cs_title += _T("\0\0");
 	const auto hm_dc = m_dc.CreateEnhanced(p_dc_ref, nullptr, &rect_bound, cs_title);

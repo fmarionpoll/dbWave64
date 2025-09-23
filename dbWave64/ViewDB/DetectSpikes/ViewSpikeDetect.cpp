@@ -1836,13 +1836,15 @@ void ViewSpikeDetection::on_edit_copy()
 
 			// create meta file
 			CMetaFileDC m_dc;
-			auto rect_bound = rect;
-			rect_bound.right *= 32;
-			rect_bound.bottom *= 30;
 			const auto p_dc_ref = GetDC();
+			const int dpi_x = p_dc_ref->GetDeviceCaps(LOGPIXELSX);
+			const int dpi_y = p_dc_ref->GetDeviceCaps(LOGPIXELSY);
+			CRect rect_bound_himetric(0, 0,
+				MulDiv(rect.Width(), 2540, dpi_x),
+				MulDiv(rect.Height(), 2540, dpi_y));
 			auto cs_title = _T("dbWave\0") + GetDocument()->m_p_data_doc->GetTitle();
 			cs_title += _T("\0\0");
-			const auto hm_dc = m_dc.CreateEnhanced(p_dc_ref, nullptr, &rect_bound, cs_title);
+			const auto hm_dc = m_dc.CreateEnhanced(p_dc_ref, nullptr, &rect_bound_himetric, cs_title);
 			ASSERT(hm_dc != NULL);
 
 			// Draw document in meta file.

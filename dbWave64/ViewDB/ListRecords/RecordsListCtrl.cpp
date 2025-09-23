@@ -30,6 +30,7 @@ int RecordsListCtrl::m_column_format_[] = {
 };
 
 BEGIN_MESSAGE_MAP(RecordsListCtrl, CListCtrl)
+    // Avoid accidental hot-track activation: we don't handle NM_HOVER etc.
     ON_WM_VSCROLL()
     ON_WM_KEYUP()
     ON_NOTIFY_REFLECT(LVN_GETDISPINFO, on_get_display_info)
@@ -44,10 +45,8 @@ RecordsListCtrl::RecordsListCtrl()
 
 RecordsListCtrl::~RecordsListCtrl()
 {
-	if (cache_ != nullptr)
-		delete cache_;
-	if (p_empty_bitmap_ != nullptr)
-		delete p_empty_bitmap_;
+	delete cache_;
+	delete p_empty_bitmap_;
 	SAFE_DELETE(provider_)
 	SAFE_DELETE(data_renderer_)
 	SAFE_DELETE(spike_renderer_)
@@ -213,25 +212,25 @@ void RecordsListCtrl::on_get_display_info(NMHDR* p_nmhdr, LRESULT* p_result)
 
 	const int item_index = item->iItem;
 
-	int first_cache = 0;
-	int last_cache = -1;
 	if (cache_ && cache_->getSize() > 0)
 	{
+		int last_cache = -1;
+		int first_cache = 0;
 		first_cache = cache_->getFirstIndex();
 		last_cache = first_cache + cache_->getSize() - 1;
 	}
 
     // Do not change the visible range here to avoid re-entrancy loops.
 
-	if (cache_ == nullptr || cache_->getSize() == 0)
-		return;
+    if (cache_ == nullptr || cache_->getSize() == 0)
+        return;
 
 	const int first_index = cache_->getFirstIndex();
-	// If the item is outside the cached range, do not try to fabricate a row.
-	// Allow a subsequent LVN_GETDISPINFO after cache update to provide correct data.
+	// If the item is outside the cached range, avoid changing the cache here to prevent re-entrancy.
+	// Let LVN_ODCACHEHINT dictate cache updates driven by the control's own scrolling.
 	if (item_index < first_index || item_index >= first_index + cache_->getSize())
 		return;
-	int i_cache_index = item_index - first_index;
+	const int i_cache_index = item_index - first_index;
 
 	const RowMeta& row = cache_->at(i_cache_index);
 
@@ -263,13 +262,13 @@ void RecordsListCtrl::on_get_display_info(NMHDR* p_nmhdr, LRESULT* p_result)
 void RecordsListCtrl::on_od_cache_hint(NMHDR* p_nmhdr, LRESULT* p_result)
 {
     // Virtual list hints which range will be needed soon
-    auto* p_hint = reinterpret_cast<NMLVCACHEHINT*>(p_nmhdr);
+    const auto* p_hint = reinterpret_cast<NMLVCACHEHINT*>(p_nmhdr);
     *p_result = 0;
     if (cache_ == nullptr)
         return;
     if (is_updating_cache_)
         return;
-    int total = GetItemCount();
+    const int total = GetItemCount();
     if (total <= 0)
         return;
     int first = max(p_hint->iFrom, 0);

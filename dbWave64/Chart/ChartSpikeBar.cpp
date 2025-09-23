@@ -163,8 +163,7 @@ void ChartSpikeBar::display_stimulus(CDC* p_dc, const CRect* rect) const
 		int iix0 = p_intervals->get_at(ii) - ii_first;
 		if (iix0 >= ii_length) // first transition ON after last graph pt?
 			break; 
-		if (iix0 < 0) // first transition off graph?
-			iix0 = 0; 
+		iix0 = max( 0,iix0); 
 
 		iix0 = MulDiv(display_width, iix0, ii_length) + rect->left;
 		p_dc->LineTo(iix0, state);	
@@ -214,10 +213,8 @@ void ChartSpikeBar::display_bars(CDC* p_dc, const CRect* rect)
 	auto i_last = p_spike_list_->get_spikes_count() - 1;
 	if (range_mode_ == RANGE_INDEX)
 	{
-		if (index_last_spike_ > i_last)
-			index_last_spike_ = i_last;
-		if (index_first_spike_ < 0)
-			index_first_spike_ = 0;
+		index_last_spike_ = min(i_last, index_last_spike_); 
+		index_first_spike_ = max(0, index_first_spike_); 
 		i_last = index_last_spike_; 
 		i_first = index_first_spike_;
 	}
@@ -311,9 +308,7 @@ void ChartSpikeBar::display_flagged_spikes(const BOOL b_high_light)
 
 	for (auto i = p_spike_list_->get_spike_flag_array_count() - 1; i >= 0; i--)
 	{
-		constexpr auto pen_size = 0;
 		const auto spike_index_flagged = p_spike_list_->get_spike_index_of_flag(i);
-
 		const Spike* spike = p_spike_list_->get_spike(spike_index_flagged);
 		const auto no_spike_class = spike->get_class_id();
 		if (PLOT_ONE_CLASS_ONLY == plot_mode_ && no_spike_class != selected_class_)
@@ -546,8 +541,7 @@ void ChartSpikeBar::zoom_data(CRect* prev_rect, CRect* new_rect)
 	// change index of first and last pt displayed
 	auto l_size = l_last_ - l_first_ + 1;
 	l_first_ = l_first_ + l_size * (new_rect->left - prev_rect->left) / prev_rect->Width();
-	if (l_first_ < 0)
-		l_first_ = 0;
+	l_first_ = max( 0, l_first_);
 	l_size = l_size * new_rect->Width() / prev_rect->Width();
 	l_last_ = l_first_ + l_size - 1;
 
@@ -603,8 +597,8 @@ int ChartSpikeBar::hit_curve(const CPoint point)
 	auto i_spike_last = p_spike_list_->get_spikes_count() - 1;
 	if (range_mode_ == RANGE_INDEX)
 	{
-		if (index_last_spike_ > i_spike_last) index_last_spike_ = i_spike_last;
-		if (index_first_spike_ < 0) index_first_spike_ = 0;
+		index_last_spike_ = min(i_spike_last, index_last_spike_);
+		index_first_spike_ = max(0, index_first_spike_);
 		i_spike_last = index_last_spike_;
 		i_spike_first = index_first_spike_;
 	}

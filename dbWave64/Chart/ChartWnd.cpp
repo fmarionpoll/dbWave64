@@ -235,6 +235,7 @@ void ChartWnd::display_text_bottom_left(CDC* p_dc, const CString& text, const CO
 	if (previous_map_mode == MM_ANISOTROPIC)
 		rect.OffsetRect(0, -y_vo_);
 
+	p_dc->SetBkColor(col_white);
 	const COLORREF old_color = p_dc->SetTextColor(color);
 	p_dc->DrawText(text, text.GetLength(), rect, DT_LEFT | DT_SINGLELINE | DT_BOTTOM); // DT_TOP
 

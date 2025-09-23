@@ -680,8 +680,7 @@ LRESULT ViewSpikeDetection::on_my_message(const WPARAM w_param, const LPARAM l_p
 		break;
 
 	case HINT_DBL_CLK_SEL:
-		if (threshold < 0)
-			threshold = 0;
+		threshold = max( 0, threshold);
 		m_spike_index = threshold;
 		on_tools_edit_spikes();
 		break;
@@ -782,10 +781,8 @@ LRESULT ViewSpikeDetection::on_my_message(const WPARAM w_param, const LPARAM l_p
 			long l_last;
 			p_spk_list->get_range_of_spike_flagged(l_first, l_last);
 			const auto l_time = p_spk_list->get_spike(threshold)->get_time();
-			if (l_time < l_first)
-				l_first = l_time;
-			if (l_time > l_last)
-				l_last = l_time;
+			l_first = min(l_first, l_time);
+			l_last = max(l_last, l_time);
 			p_spk_list->flag_range_of_spikes(l_first, l_last, TRUE);
 			update_spike_display();
 		}
@@ -1136,8 +1133,7 @@ void ViewSpikeDetection::detect_all(const BOOL b_all)
 	save_current_spk_file();
 
 	// display data
-	if (old_spike_list_index < 0)
-		old_spike_list_index = 0;
+	old_spike_list_index = max(0, old_spike_list_index);
 	p_spk_list = p_spk_doc->set_index_current_spike_list(old_spike_list_index);
 
 	chart_spike_bar_.set_source_data(p_spk_list, db_document);
@@ -1206,9 +1202,7 @@ int ViewSpikeDetection::detect_stimulus_1(const int channel_index)
 			break;
 
 		// compute initial offset (address of first point)
-		auto l_last = l_rw_last;
-		if (l_last > l_data_last)
-			l_last = l_data_last;
+		auto l_last = min(l_rw_last, l_data_last);
 		const int i_buf_first = l_data_first - data_document->get_doc_channel_index_first();
 		const auto p_data_first = data_document->get_transformed_data_element(i_buf_first);
 
@@ -1805,7 +1799,7 @@ void ViewSpikeDetection::print_data_cartridge(CDC* p_dc, ChartData* p_data_chart
 	const int top = p_rect->top;
 	p_dc->TextOut(left, top, comments);
 
-	p_dc->SetTextAlign(TA_LEFT | TA_NOUPDATECP);
+	p_dc->SetTextAlign(TA_LEFT); // | TA_NOUPDATECP);
 }
 
 void ViewSpikeDetection::on_edit_copy()
@@ -2634,7 +2628,7 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		comment_rect.right = print_rect_.right;
 
 		// reset text align mode (otherwise pbs!) output text and restore text alignment
-		const auto ui_flag = p_dc->SetTextAlign(TA_LEFT | TA_NOUPDATECP);
+		const auto ui_flag = p_dc->SetTextAlign(TA_LEFT);// | TA_NOUPDATECP);
 		constexpr UINT format_parameters = DT_NOPREFIX | DT_NOCLIP | DT_LEFT | DT_WORDBREAK;
 		p_dc->DrawText(cs_comment, cs_comment.GetLength(), comment_rect, format_parameters);
 

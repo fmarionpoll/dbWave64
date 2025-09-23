@@ -204,8 +204,11 @@ void ChartSpikeBar::display_bars(CDC* p_dc, const CRect* rect)
 	p_dc->LineTo(rect->right, baseline);
 
 	// prepare text
-	const auto h_font = CreateFont(10, 0, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 2, 0, _T("SYSTEM_FIXED_FONT"));
-	const auto h_tmp = static_cast<HFONT>(p_dc->SelectObject(h_font));
+	CFont font;
+	font.CreateFont(10, 0, 0, 0, FW_BOLD, 0, 0, 0,
+				   DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+				   PROOF_QUALITY, FIXED_PITCH | FF_DONTCARE, _T("Courier New"));
+	const auto p_old_font = p_dc->SelectObject(&font);
 	p_dc->SetBkMode(TRANSPARENT);
 
 	// loop through all spikes of the list
@@ -281,7 +284,9 @@ void ChartSpikeBar::display_bars(CDC* p_dc, const CRect* rect)
 		display_flagged_spikes(TRUE);
 
 	p_dc->SelectObject(old_pen);
-	DeleteObject(p_dc->SelectObject(h_tmp));
+	if (p_old_font != nullptr)
+		p_dc->SelectObject(p_old_font);
+	font.DeleteObject();
 
 
 }

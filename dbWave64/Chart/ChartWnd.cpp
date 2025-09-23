@@ -264,7 +264,7 @@ void ChartWnd::erase_background(CDC* p_dc)
 
 	CPen pen;
 	pen.CreatePen(PS_SOLID, 1, scope_structure_.cr_scope_frame);
-	const auto p_old_pen = static_cast<CPen*>(p_dc->SelectObject(pen));
+	const auto p_old_pen = p_dc->SelectObject(&pen);
 	p_dc->Rectangle(&display_rect_);
 
 	p_dc->SelectObject(p_old_pen);

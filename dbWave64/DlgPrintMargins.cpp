@@ -126,8 +126,8 @@ void DlgPrintMargins::OnPaint()
 	CPoint center; // center of the drawing area
 	center.x = (m_rect_.right + m_rect_.left) / 2;
 	center.y = (m_rect_.bottom + m_rect_.top) / 2;
-	const auto rect_size = min(m_rect_.Width(), m_rect_.Height()); // max size of the square
-	const auto max_resolution = max(options_view_data->vertical_resolution, options_view_data->horizontal_resolution); // max resolution
+	const auto rect_size = std::min(m_rect_.Width(), m_rect_.Height()); // max size of the square
+	const auto max_resolution = std::max(options_view_data->vertical_resolution, options_view_data->horizontal_resolution); // max resolution
 
 	// draw page area
 	auto diff = MulDiv(options_view_data->horizontal_resolution, rect_size, max_resolution) / 2;
@@ -261,8 +261,8 @@ void DlgPrintMargins::OnLButtonUp(const UINT n_flags, const CPoint point)
 		ReleaseCapture();
 		m_b_captured_ = FALSE;
 
-		const auto rect_size = min(m_rect_.Width(), m_rect_.Height()); // max size of the square
-		const auto max_resolution = max(options_view_data->vertical_resolution, options_view_data->horizontal_resolution); // max resolution
+		const auto rect_size = std::min(m_rect_.Width(), m_rect_.Height()); // max size of the square
+		const auto max_resolution = std::max(options_view_data->vertical_resolution, options_view_data->horizontal_resolution); // max resolution
 
 		switch (m_i_captured_bar_)
 		{

@@ -163,7 +163,7 @@ void ChartSpikeBar::display_stimulus(CDC* p_dc, const CRect* rect) const
 		int iix0 = p_intervals->get_at(ii) - ii_first;
 		if (iix0 >= ii_length) // first transition ON after last graph pt?
 			break; 
-		iix0 = max( 0,iix0); 
+		iix0 = std::max( 0,iix0); 
 
 		iix0 = MulDiv(display_width, iix0, ii_length) + rect->left;
 		p_dc->LineTo(iix0, state);	
@@ -216,8 +216,8 @@ void ChartSpikeBar::display_bars(CDC* p_dc, const CRect* rect)
 	auto i_last = p_spike_list_->get_spikes_count() - 1;
 	if (range_mode_ == RANGE_INDEX)
 	{
-		index_last_spike_ = min(i_last, index_last_spike_); 
-		index_first_spike_ = max(0, index_first_spike_); 
+		index_last_spike_ = std::min(i_last, index_last_spike_);
+		index_first_spike_ = std::max(0, index_first_spike_);
 		i_last = index_last_spike_; 
 		i_first = index_first_spike_;
 	}
@@ -546,7 +546,7 @@ void ChartSpikeBar::zoom_data(CRect* prev_rect, CRect* new_rect)
 	// change index of first and last pt displayed
 	auto l_size = l_last_ - l_first_ + 1;
 	l_first_ = l_first_ + l_size * (new_rect->left - prev_rect->left) / prev_rect->Width();
-	l_first_ = max( 0, l_first_);
+	l_first_ = std::max<long>( 0, l_first_);
 	l_size = l_size * new_rect->Width() / prev_rect->Width();
 	l_last_ = l_first_ + l_size - 1;
 
@@ -602,8 +602,8 @@ int ChartSpikeBar::hit_curve(const CPoint point)
 	auto i_spike_last = p_spike_list_->get_spikes_count() - 1;
 	if (range_mode_ == RANGE_INDEX)
 	{
-		index_last_spike_ = min(i_spike_last, index_last_spike_);
-		index_first_spike_ = max(0, index_first_spike_);
+		index_last_spike_ = std::min(i_spike_last, index_last_spike_);
+		index_first_spike_ = std::max(0, index_first_spike_);
 		i_spike_last = index_last_spike_;
 		i_spike_first = index_first_spike_;
 	}

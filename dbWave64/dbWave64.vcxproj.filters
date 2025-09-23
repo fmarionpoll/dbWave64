@@ -1268,6 +1268,9 @@
     <ClInclude Include="ViewDB\ViewDbTable.h">
       <Filter>ViewDB</Filter>
     </ClInclude>
+    <ClInclude Include="AlgorithmUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="dbWave.rc">

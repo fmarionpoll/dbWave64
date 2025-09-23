@@ -147,8 +147,8 @@ inline GridCellID GridCellRange::GetTopLeft() const
 
 inline GridCellRange GridCellRange::Intersect(const GridCellRange& rhs) const
 {
-	return GridCellRange(max(m_nMinRow, rhs.m_nMinRow), max(m_nMinCol, rhs.m_nMinCol),
-	                  min(m_nMaxRow, rhs.m_nMaxRow), min(m_nMaxCol, rhs.m_nMaxCol));
+	return GridCellRange(std::max(m_nMinRow, rhs.m_nMinRow), std::max(m_nMinCol, rhs.m_nMinCol),
+		std::min(m_nMaxRow, rhs.m_nMaxRow), std::min(m_nMaxCol, rhs.m_nMaxCol));
 }
 
 #endif // !defined(AFX_CELLRANGE_H__F86EF761_725A_11D1_ABBA_00A0243D1382__INCLUDED_)

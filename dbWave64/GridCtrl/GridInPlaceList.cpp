@@ -134,7 +134,7 @@ int GridInPlaceList::GetCorrectDropWidth()
 	{
 		GetLBText(i, str);
 		int nLength = dc.GetTextExtent(str).cx + nScrollWidth;
-		nWidth = max(nWidth, nLength);
+		nWidth = std::max(nWidth, nLength);
 	}
 
 	// Add margin space to the calculations
@@ -142,7 +142,7 @@ int GridInPlaceList::GetCorrectDropWidth()
 
 	dc.RestoreDC(nSave);
 
-	nWidth = min(nWidth, nMaxWidth);
+	nWidth = std::min(nWidth, nMaxWidth);
 
 	return nWidth;
 	//SetDroppedWidth(nWidth);

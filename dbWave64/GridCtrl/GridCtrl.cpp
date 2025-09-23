@@ -1364,7 +1364,7 @@ void GridCtrl::OnHScroll(UINT nSBCode, UINT /*nPos*/, CScrollBar* /*pScrollBar*/
 		{
 			rect.left = GetFixedColumnWidth();
 			const int offset = rect.Width();
-			const int pos = min(m_nHScrollMax, scrollPos + offset);
+			const int pos = std::min(m_nHScrollMax, scrollPos + offset);
 			SetScrollPos32(SB_HORZ, pos);
 			rect.left = GetFixedColumnWidth();
 			InvalidateRect(rect);
@@ -1484,7 +1484,7 @@ void GridCtrl::OnVScroll(UINT nSBCode, UINT /*nPos*/, CScrollBar* /*pScrollBar*/
 		if (scrollPos < m_nVScrollMax)
 		{
 			rect.top = GetFixedRowHeight();
-			scrollPos = min(m_nVScrollMax, scrollPos + rect.Height());
+			scrollPos = std::min(m_nVScrollMax, scrollPos + rect.Height());
 			SetScrollPos32(SB_VERT, scrollPos);
 			rect.top = GetFixedRowHeight();
 			InvalidateRect(rect);
@@ -2139,9 +2139,9 @@ void GridCtrl::SelectColumns(GridCellID currentCell,
 		                 bForceRedraw, bSelectCells);
 	else
 		SetSelectedRange(GetFixedRowCount(),
-		                 min(m_SelectionStartCell.col, currentCell.col),
+			std::min(m_SelectionStartCell.col, currentCell.col),
 		                 GetRowCount() - 1,
-		                 max(m_SelectionStartCell.col, currentCell.col),
+			std::max(m_SelectionStartCell.col, currentCell.col),
 		                 bForceRedraw, bSelectCells);
 }
 
@@ -2163,7 +2163,7 @@ void GridCtrl::SelectRows(GridCellID currentCell,
 		                 currentCell.row, GetColumnCount() - 1,
 		                 bForceRedraw, bSelectCells);
 	else
-		SetSelectedRange(min(m_SelectionStartCell.row, currentCell.row),
+		SetSelectedRange(std::min(m_SelectionStartCell.row, currentCell.row),
 		                 Left,
 		                 __max(m_SelectionStartCell.row, currentCell.row),
 		                 GetColumnCount() - 1,
@@ -2188,8 +2188,8 @@ void GridCtrl::SelectCells(GridCellID currentCell,
 	//if (currentCell == m_LeftClickDownCell)  return;
 	//else if (currentCell == m_idCurrentCell) return;
 
-	SetSelectedRange(min(m_SelectionStartCell.row, row),
-	                 min(m_SelectionStartCell.col, col),
+	SetSelectedRange(std::min(m_SelectionStartCell.row, row),
+		std::min(m_SelectionStartCell.col, col),
 	                 __max(m_SelectionStartCell.row, row),
 	                 __max(m_SelectionStartCell.col, col),
 	                 bForceRedraw, bSelectCells);
@@ -2930,7 +2930,7 @@ GridCellRange GridCtrl::GetVisibleNonFixedCellRange(LPRECT pRect /*=NULL*/,
 			break;
 		}
 	}
-	const int maxVisibleRow = min(i, GetRowCount() - 1);
+	const int maxVisibleRow = std::min(i, GetRowCount() - 1);
 
 	// calc right
 	int right = GetFixedColumnWidth();
@@ -2943,7 +2943,7 @@ GridCellRange GridCtrl::GetVisibleNonFixedCellRange(LPRECT pRect /*=NULL*/,
 			break;
 		}
 	}
-	const int maxVisibleCol = min(i, GetColumnCount() - 1);
+	const int maxVisibleCol = std::min(i, GetColumnCount() - 1);
 	if (pRect)
 	{
 		pRect->left = pRect->top = 0;
@@ -2974,7 +2974,7 @@ GridCellRange GridCtrl::GetVisibleFixedCellRange(LPRECT pRect /*=NULL*/,
 			break;
 		}
 	}
-	const int maxVisibleRow = min(i, GetRowCount() - 1);
+	const int maxVisibleRow = std::min(i, GetRowCount() - 1);
 
 	// calc right
 	int right = 0;
@@ -2987,7 +2987,7 @@ GridCellRange GridCtrl::GetVisibleFixedCellRange(LPRECT pRect /*=NULL*/,
 			break;
 		}
 	}
-	const int maxVisibleCol = min(i, GetColumnCount() - 1);
+	const int maxVisibleCol = std::min(i, GetColumnCount() - 1);
 	if (pRect)
 	{
 		pRect->left = pRect->top = 0;
@@ -3015,7 +3015,7 @@ GridCellRange GridCtrl::GetUnobstructedNonFixedCellRange(BOOL bForceRecalculatio
 		if (bottom >= rect.bottom)
 			break;
 	}
-	int maxVisibleRow = min(i, GetRowCount() - 1);
+	int maxVisibleRow = std::min(i, GetRowCount() - 1);
 	if (maxVisibleRow > 0 && bottom > rect.bottom)
 		maxVisibleRow--;
 
@@ -3027,7 +3027,7 @@ GridCellRange GridCtrl::GetUnobstructedNonFixedCellRange(BOOL bForceRecalculatio
 		if (right >= rect.right)
 			break;
 	}
-	int maxVisibleCol = min(i, GetColumnCount() - 1);
+	int maxVisibleCol = std::min(i, GetColumnCount() - 1);
 	if (maxVisibleCol > 0 && right > rect.right)
 		maxVisibleCol--;
 
@@ -3046,8 +3046,8 @@ GridCellRange GridCtrl::GetSelectedCellRange() const
 		GridCellID cell;
 		m_SelectedCellMap.GetNextAssoc(pos, key, cell);
 
-		Selection.SetMinRow(min(Selection.GetMinRow(), cell.row));
-		Selection.SetMinCol(min(Selection.GetMinCol(), cell.col));
+		Selection.SetMinRow(std::min(Selection.GetMinRow(), cell.row));
+		Selection.SetMinCol(std::min(Selection.GetMinCol(), cell.col));
 		Selection.SetMaxRow(__max(Selection.GetMaxRow(), cell.row));
 		Selection.SetMaxCol(__max(Selection.GetMaxCol(), cell.col));
 	}

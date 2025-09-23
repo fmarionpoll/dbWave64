@@ -122,13 +122,13 @@ void ViewRecordsList::OnInitialUpdate()
 	if (current_index < 0) current_index = 0;
 	if (current_index >= 0 && n_records > 0)
 	{
-		const int page = max(m_list_ctrl_.GetCountPerPage(), 1);
+		const int page = std::max(m_list_ctrl_.GetCountPerPage(), 1);
 		int first = 0; // start at the top for initial load for predictability
 		int last = first + page - 1;
 		if (last >= n_records)
 		{
 			last = n_records - 1;
-			first = max(last - page + 1, 0);
+			first = std::max(last - page + 1, 0);
 		}
         m_list_ctrl_.set_visible_range(first, last);
         if (current_index >= 0 && current_index < m_list_ctrl_.GetItemCount())
@@ -278,7 +278,7 @@ void ViewRecordsList::update_controls()
 void ViewRecordsList::delete_records()
 {
 	// save index current file
-	const auto current_index =max( GetDocument()->db_get_current_record_position() - 1, 0);
+	const auto current_index = std::max<long>( GetDocument()->db_get_current_record_position() - 1, 0);
 
 	// loop on C_data_list_ctrl to delete all selected items
 	const auto pdb_doc = GetDocument();
@@ -336,9 +336,9 @@ void ViewRecordsList::on_item_changed_list_ctrl(NMHDR* p_nmhdr, LRESULT* p_resul
             const int total = m_list_ctrl_.GetItemCount();
             if (total > 0)
             {
-                const int page = max(m_list_ctrl_.GetCountPerPage(), 1);
-                const int first = max(0, min(index, max(total - page, 0)));
-                const int last  = min(first + page - 1, max(total - 1, 0));
+                const int page = std::max(m_list_ctrl_.GetCountPerPage(), 1);
+                const int first = std::max(0, std::min(index, std::max(total - page, 0)));
+                const int last  = std::min(first + page - 1, std::max(total - 1, 0));
                 m_list_ctrl_.set_visible_range(first, last);
             }
             // Notify

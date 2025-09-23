@@ -606,7 +606,7 @@ CSize GridCellBase::GetCellExtent(CDC* p_dc)
 		}
 	}
 	size.cx += ImageSize.cx + 1;
-	size.cy = max(size.cy, ImageSize.cy) + 1;
+	size.cy = std::max(size.cy, ImageSize.cy) + 1;
 	if (IsFixed())
 	{
 		size.cx++;

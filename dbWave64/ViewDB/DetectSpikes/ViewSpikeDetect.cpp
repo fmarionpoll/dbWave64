@@ -680,7 +680,7 @@ LRESULT ViewSpikeDetection::on_my_message(const WPARAM w_param, const LPARAM l_p
 		break;
 
 	case HINT_DBL_CLK_SEL:
-		threshold = max( 0, threshold);
+		threshold = std::max( 0, threshold);
 		m_spike_index = threshold;
 		on_tools_edit_spikes();
 		break;
@@ -781,8 +781,8 @@ LRESULT ViewSpikeDetection::on_my_message(const WPARAM w_param, const LPARAM l_p
 			long l_last;
 			p_spk_list->get_range_of_spike_flagged(l_first, l_last);
 			const auto l_time = p_spk_list->get_spike(threshold)->get_time();
-			l_first = min(l_first, l_time);
-			l_last = max(l_last, l_time);
+			l_first = std::min(l_first, l_time);
+			l_last = std::max(l_last, l_time);
 			p_spk_list->flag_range_of_spikes(l_first, l_last, TRUE);
 			update_spike_display();
 		}
@@ -1133,7 +1133,7 @@ void ViewSpikeDetection::detect_all(const BOOL b_all)
 	save_current_spk_file();
 
 	// display data
-	old_spike_list_index = max(0, old_spike_list_index);
+	old_spike_list_index = std::max(0, old_spike_list_index);
 	p_spk_list = p_spk_doc->set_index_current_spike_list(old_spike_list_index);
 
 	chart_spike_bar_.set_source_data(p_spk_list, db_document);
@@ -1202,7 +1202,7 @@ int ViewSpikeDetection::detect_stimulus_1(const int channel_index)
 			break;
 
 		// compute initial offset (address of first point)
-		auto l_last = min(l_rw_last, l_data_last);
+		auto l_last = std::min(l_rw_last, l_data_last);
 		const int i_buf_first = l_data_first - data_document->get_doc_channel_index_first();
 		const auto p_data_first = data_document->get_transformed_data_element(i_buf_first);
 

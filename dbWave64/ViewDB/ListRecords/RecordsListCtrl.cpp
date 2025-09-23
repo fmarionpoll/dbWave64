@@ -271,8 +271,8 @@ void RecordsListCtrl::on_od_cache_hint(NMHDR* p_nmhdr, LRESULT* p_result)
     const int total = GetItemCount();
     if (total <= 0)
         return;
-    int first = max(p_hint->iFrom, 0);
-    int last = min(p_hint->iTo, max(total - 1, 0));
+    int first = std::max(p_hint->iFrom, 0);
+    int last = std::min(p_hint->iTo, std::max(total - 1, 0));
     if (first > last)
         std::swap(first, last);
     set_visible_range(first, last);

@@ -58,7 +58,7 @@ CSize GridCellCheck::GetCellExtent(CDC* p_dc)
 	const int nWidth = GetSystemMetrics(SM_CXHSCROLL) + 2 * GetMargin();
 	CSize cellSize = GridCell::GetCellExtent(p_dc);
 	cellSize.cx += nWidth;
-	cellSize.cy = max(cellSize.cy, nWidth);
+	cellSize.cy = std::max<LONG>(cellSize.cy, nWidth);
 	return cellSize;
 }
 

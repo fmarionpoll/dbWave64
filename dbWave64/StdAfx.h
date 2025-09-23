@@ -4,6 +4,8 @@
 //
 
 #pragma once
+#define NOMINMAX
+#include "AlgorithmUtils.h"
 
 #ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN            // Exclude rarely-used stuff from Windows headers

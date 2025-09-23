@@ -113,7 +113,7 @@ void ViewSpikeSort::render_for_export(CDC* p_dc, const CRect& rect)
 {
     // Layout similar to on screen: top measures, middle bars, bottom shape, right histogram
     auto area = rect;
-    const int separator = max(4, rect.Height() / 50);
+    const int separator = std::max(4, rect.Height() / 50);
 
     // Split vertically into three rows for measures, bars, shapes
     const int row_h = (rect.Height() - 2 * separator);
@@ -122,7 +122,7 @@ void ViewSpikeSort::render_for_export(CDC* p_dc, const CRect& rect)
     CRect r_shapes = r_bars; r_shapes.OffsetRect(0, r_bars.Height() + separator);
 
     // Reserve right column for histogram
-    const int right_w = max(rect.Width() / 4, 80);
+    const int right_w = std::max(rect.Width() / 4, 80);
     r_measures.right -= right_w + separator;
     r_bars.right -= right_w + separator;
     r_shapes.right -= right_w + separator;

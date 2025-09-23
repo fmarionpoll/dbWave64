@@ -201,6 +201,7 @@
     <ClInclude Include="AcqWaveChanArray.h" />
     <ClInclude Include="AcqWaveFormat.h" />
     <ClInclude Include="ADAcqDataDoc.h" />
+    <ClInclude Include="AlgorithmUtils.h" />
     <ClInclude Include="chanlistitem.h" />
     <ClInclude Include="Chart\ChartData.h" />
     <ClInclude Include="Chart\ChartDataAD.h" />

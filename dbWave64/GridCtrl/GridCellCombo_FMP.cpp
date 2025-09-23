@@ -89,7 +89,7 @@ CSize GridCellComboFMP::GetCellExtent(CDC* p_dc)
 	const CSize sizeScroll(GetSystemMetrics(SM_CXVSCROLL), GetSystemMetrics(SM_CYHSCROLL));
 	CSize sizeCell(GridCell::GetCellExtent(p_dc));
 	sizeCell.cx += sizeScroll.cx;
-	sizeCell.cy = max(sizeCell.cy, sizeScroll.cy);
+	sizeCell.cy = std::max(sizeCell.cy, sizeScroll.cy);
 	return sizeCell;
 }
 

@@ -2,6 +2,8 @@
 #include "subfileitem.h"
 #include "datafile_Awave.h"
 
+#include <algorithm>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -18,7 +20,7 @@ CDataFileAWAVE::CDataFileAWAVE()
 	b_modified_ = false;
 }
 
-CDataFileAWAVE::CDataFileAWAVE(const CFile* p_file) : b_modified_(false)
+CDataFileAWAVE::CDataFileAWAVE(const CFile* p_file) 
 {
 	m_id_type = DOCTYPE_AWAVE;
 	m_cs_type = "AWAVE";
@@ -76,7 +78,7 @@ int CDataFileAWAVE::check_file_type(CString& cs_file_name)
 BOOL CDataFileAWAVE::read_hz_tags(TagList* p_hz_tags)
 {
 	CSubfileItem* p_struct; // CStruct pointer
-	if (!m_struct_map_.Lookup(STRUCT_HZTAGS, reinterpret_cast<CObject*&>(p_struct)))
+    if (!m_struct_map_.Lookup(STRUCT_HZTAGS, p_struct))
 		return FALSE;
 
 	if (p_struct->get_data_length() > 0)
@@ -93,7 +95,7 @@ BOOL CDataFileAWAVE::read_hz_tags(TagList* p_hz_tags)
 BOOL CDataFileAWAVE::read_vt_tags(TagList* p_vt_tags)
 {
 	CSubfileItem* p_struct; // CStruct pointer
-	if (!m_struct_map_.Lookup(STRUCT_VTAGS, reinterpret_cast<CObject*&>(p_struct)))
+    if (!m_struct_map_.Lookup(STRUCT_VTAGS, p_struct))
 		return FALSE;
 
 	if (p_struct->get_data_length() > 0)
@@ -115,13 +117,13 @@ void CDataFileAWAVE::delete_map()
 
 	auto pos = m_struct_map_.GetStartPosition();
 	
-	while (pos != nullptr) 
-	{
-		CSubfileItem* p_struct;
-		WORD w_key;
-		m_struct_map_.GetNextAssoc(pos, w_key, reinterpret_cast<CObject*&>(p_struct));
-		delete p_struct; 
-	}
+    while (pos != nullptr) 
+    {
+        CSubfileItem* p_struct;
+        WORD w_key;
+        m_struct_map_.GetNextAssoc(pos, w_key, p_struct);
+        delete p_struct; 
+    }
 	m_struct_map_.RemoveAll(); 
 }
 
@@ -156,20 +158,20 @@ void CDataFileAWAVE::write_file_map()
 	WORD w_key; // key value
 	auto pos = m_struct_map_.GetStartPosition(); // position
 
-	while (pos != nullptr) // loop through entire map
+    while (pos != nullptr) // loop through entire map
 	{
 		// get pointer to object & key
-		m_struct_map_.GetNextAssoc(pos, w_key, reinterpret_cast<CObject*&>(p_struct));
+        m_struct_map_.GetNextAssoc(pos, w_key, p_struct);
 		if (w_key == STRUCT_END) 
 			continue; 
 		if (nb_items == nb_items_max) // jump to the end of the file?
 		{
 			CSubfileItem* p_j_struct;
-			if (!m_struct_map_.Lookup(STRUCT_JUMP, reinterpret_cast<CObject*&>(p_j_struct)))
+            if (!m_struct_map_.Lookup(STRUCT_JUMP, p_j_struct))
 			{
 				p_j_struct = new CSubfileItem(STRUCT_JUMP, "JUMP_TAG", 512, 0, NORMAL_MODE);
 				ASSERT(p_j_struct != NULL);
-				m_struct_map_.SetAt(STRUCT_JUMP, p_struct);
+                m_struct_map_.SetAt(STRUCT_JUMP, p_j_struct);
 			}
 			p_j_struct->set_data_offset(GetLength());
 			p_j_struct->write(this);
@@ -181,7 +183,7 @@ void CDataFileAWAVE::write_file_map()
 
 	// map is written, end list with a stop descriptor.
 	// write STRUCT_END (with a stop), create & add to map if not present
-	if (!m_struct_map_.Lookup(STRUCT_END, reinterpret_cast<CObject*&>(p_struct)))
+    if (!m_struct_map_.Lookup(STRUCT_END, p_struct))
 	{
 		p_struct = new CSubfileItem(STRUCT_END, "END_TAGS", 512, 0, NORMAL_MODE);
 		ASSERT(p_struct != NULL);
@@ -205,7 +207,7 @@ BOOL CDataFileAWAVE::write_hz_tags(TagList* p_tags)
 	CSubfileItem* p_struct;
 
 	// save vertical tags
-	if (!m_struct_map_.Lookup(STRUCT_HZTAGS, reinterpret_cast<CObject*&>(p_struct)))
+    if (!m_struct_map_.Lookup(STRUCT_HZTAGS, p_struct))
 	{
 		p_struct = new CSubfileItem(STRUCT_HZTAGS, "HZ_TAGS:", 512, 0, NORMAL_MODE);
 		ASSERT(p_struct != NULL);
@@ -223,7 +225,7 @@ BOOL CDataFileAWAVE::write_vt_tags(TagList* p_tags)
 	CSubfileItem* p_struct;
 
 	// save vertical tags
-	if (!m_struct_map_.Lookup(STRUCT_VTAGS, reinterpret_cast<CObject*&>(p_struct)))
+    if (!m_struct_map_.Lookup(STRUCT_VTAGS, p_struct))
 	{
 		p_struct = new CSubfileItem(STRUCT_VTAGS, "VT_TAGS:", 512, 0, NORMAL_MODE);
 		ASSERT(p_struct != NULL);
@@ -306,15 +308,14 @@ BOOL CDataFileAWAVE::data_append_start()
 	while (pos != nullptr) // loop through entire map
 	{
 		// get pointer to object & key
-		m_struct_map_.GetNextAssoc(pos, w_key, reinterpret_cast<CObject*&>(p_struct));
+    m_struct_map_.GetNextAssoc(pos, w_key, p_struct);
 		if (w_key == STRUCT_DATA) // skip struct_end
-			if (p_struct->get_item_nb() > item_max)
-				item_max = p_struct->get_item_nb();
+			item_max = std::max(p_struct->get_item_nb(), item_max);
 	}
 	item_max++;
 	const auto l_actual = Seek(0, end); // file pointer position
 
-	if (m_struct_map_.Lookup(STRUCT_DATA, reinterpret_cast<CObject*&>(p_struct)))
+    if (m_struct_map_.Lookup(STRUCT_DATA, p_struct))
 		delete p_struct;
 
 	p_struct = new CSubfileItem(STRUCT_DATA,	// ucCode
@@ -348,7 +349,7 @@ BOOL CDataFileAWAVE::data_append(short* pBU, UINT uibytesLength)
 BOOL CDataFileAWAVE::data_append_stop()
 {
 	CSubfileItem* p_struct; 
-	if (!m_struct_map_.Lookup(STRUCT_DATA, reinterpret_cast<CObject*&>(p_struct)))
+    if (!m_struct_map_.Lookup(STRUCT_DATA, p_struct))
 		return 0;
 	p_struct->set_data_length(m_ul_bytes_count);
 	write_file_map();
@@ -365,7 +366,7 @@ BOOL CDataFileAWAVE::write_data_infos(CWaveFormat* pwF, CWaveChanArray* pwC)
 	CSubfileItem* p_struct = nullptr;
 
 	// save ACQDEF
-	if (!m_struct_map_.Lookup(STRUCT_ACQDEF, reinterpret_cast<CObject*&>(p_struct)))
+    if (!m_struct_map_.Lookup(STRUCT_ACQDEF, p_struct))
 	{
 		p_struct = new CSubfileItem(STRUCT_ACQDEF, "ACQDEF:", 512, 0, NORMAL_MODE);
 		ASSERT(p_struct);
@@ -377,7 +378,7 @@ BOOL CDataFileAWAVE::write_data_infos(CWaveFormat* pwF, CWaveChanArray* pwC)
 	p_struct->set_data_length(ul_len_wf);
 
 	// save ACQ_CHAN _ array
-	if (!m_struct_map_.Lookup(STRUCT_ACQCHAN, reinterpret_cast<CObject*&>(p_struct)))
+    if (!m_struct_map_.Lookup(STRUCT_ACQCHAN, p_struct))
 	{
 		p_struct = new CSubfileItem(STRUCT_ACQCHAN, "ACQCHAN:", 512, 0, NORMAL_MODE);
 		ASSERT(p_struct);
@@ -420,7 +421,7 @@ BOOL CDataFileAWAVE::read_data_infos(CWaveBuf* p_buf)
 	while (uc_code != STRUCT_END); // stop?
 
 	// read ACQ_DEF structure: get file pointer and load data
-	if (m_struct_map_.Lookup(STRUCT_ACQDEF, reinterpret_cast<CObject*&>(p_struct)))
+    if (m_struct_map_.Lookup(STRUCT_ACQDEF, p_struct))
 	{
 		if (p_struct->get_data_length() > 0)
 		{
@@ -431,7 +432,7 @@ BOOL CDataFileAWAVE::read_data_infos(CWaveBuf* p_buf)
 	}
 
 	// read ACQ_CHAN data: get file pointer and load data
-	if (m_struct_map_.Lookup(STRUCT_ACQCHAN, reinterpret_cast<CObject*&>(p_struct)))
+    if (m_struct_map_.Lookup(STRUCT_ACQCHAN, p_struct))
 	{
 		if (p_struct->get_data_length() > 0)
 		{
@@ -442,7 +443,7 @@ BOOL CDataFileAWAVE::read_data_infos(CWaveBuf* p_buf)
 	}
 
 	// get pointer to data area
-	if (m_struct_map_.Lookup(STRUCT_DATA, reinterpret_cast<CObject*&>(p_struct)))
+    if (m_struct_map_.Lookup(STRUCT_DATA, p_struct))
 		m_ul_offset_data = p_struct->get_data_offset();
 	return TRUE;
 }

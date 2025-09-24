@@ -26,7 +26,7 @@ public:
 	// protected variables
 protected:
 	CStringA cs_file_desc_; // ASCII chain w. file version
-	CMapWordToOb m_struct_map_; // sub-file descriptors
+    CMap<WORD, WORD, CSubfileItem*, CSubfileItem*> m_struct_map_; // sub-file descriptors
 	BOOL b_modified_{};
 
 	// Implementation

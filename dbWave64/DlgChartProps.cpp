@@ -8,6 +8,8 @@
 //#include "Editctrl.h"
 #include "DlgChartProps.h"
 
+#include <algorithm>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -73,7 +75,7 @@ void DlgChartProps::on_en_change_x_cells()
 		mm_x_cells.on_en_change(this, m_x_cells, 1, -1);
 
 		// check boundaries
-		if (m_x_cells < 1) m_x_cells = 1;
+		m_x_cells = std::max(m_x_cells, 1);
 
 		if (m_x_cells != x_cells)
 		{
@@ -93,7 +95,7 @@ void DlgChartProps::on_en_change_y_cells()
 		auto y_cells = m_y_cells;
 		mm_y_cells.on_en_change(this, m_y_cells, 1, -1);
 
-		if (m_y_cells < 1) m_y_cells = 1;
+		m_y_cells = std::max(m_y_cells, 1);
 		if (m_y_cells != y_cells)
 		{
 			options_scope_struct* pStruct = m_p_scope->get_scope_parameters();
@@ -113,7 +115,7 @@ void DlgChartProps::on_en_change_xy_ticks()
 		mm_xy_ticks.on_en_change(this, m_xy_ticks, 1, -1);
 
 		// check boundaries
-		if (m_xy_ticks < 0) m_xy_ticks = 0;
+		m_xy_ticks = std::max(m_xy_ticks, 0);
 		if (m_xy_ticks != xy_ticks)
 		{
 			if (m_x_cells > 0)
@@ -133,7 +135,7 @@ void DlgChartProps::on_en_change_xy_ticks_line()
 		const auto xy_tick_line = m_xy_tick_line;
 		mm_xy_tick_line.on_en_change(this, m_xy_tick_line, 1, -1);
 
-		if (m_xy_tick_line < 0) m_xy_tick_line = 0;
+		m_xy_tick_line = std::max(m_xy_tick_line, 0);
 		if (m_xy_tick_line != xy_tick_line)
 		{
 			if (m_x_cells > 0)

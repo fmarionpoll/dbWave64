@@ -68,8 +68,8 @@ BOOL DataTranslation_DA::ClearAllOutputs()
 
 BOOL DataTranslation_DA::InitSubSystem(const options_input* pADC_options)
 {
-	const auto ADC_channel_sampling_rate = double(pADC_options->wave_format.sampling_rate_per_channel);
-	const int ADC_trigger_mode = int( pADC_options->wave_format.trig_mode);
+	const auto ADC_channel_sampling_rate = static_cast<double>(pADC_options->wave_format.sampling_rate_per_channel);
+	const int ADC_trigger_mode = static_cast<int>(pADC_options->wave_format.trig_mode);
 	try
 	{
 		if (GetHDass() == NULL)

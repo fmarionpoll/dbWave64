@@ -512,7 +512,6 @@ void GridCtrl::SetLayer(int* pLayer)
 */
 
 BEGIN_MESSAGE_MAP(GridCtrl, CWnd)
-	//EFW - Added ON_WM_RBUTTONUP
 	ON_WM_PAINT()
 	ON_WM_HSCROLL()
 	ON_WM_VSCROLL()
@@ -806,10 +805,7 @@ void GridCtrl::OnTimer(UINT nIDEvent)
 		//SendMessage(WM_VSCROLL, SB_LINEDOWN, 0);
 		SendMessage(WM_KEYDOWN, VK_DOWN, 0);
 
-		if (pt.x < rect.left)
-			pt.x = rect.left;
-		if (pt.x > rect.right)
-			pt.x = rect.right;
+		pt.x = dbw::clamp_value(pt.x, rect.left, rect.right);
 		pt.y = rect.bottom;
 		OnSelecting(GetCellFromPt(pt));
 	}
@@ -818,10 +814,7 @@ void GridCtrl::OnTimer(UINT nIDEvent)
 		//SendMessage(WM_VSCROLL, SB_LINEUP, 0);
 		SendMessage(WM_KEYDOWN, VK_UP, 0);
 
-		if (pt.x < rect.left)
-			pt.x = rect.left;
-		if (pt.x > rect.right)
-			pt.x = rect.right;
+		pt.x = dbw::clamp_value(pt.x, rect.left, rect.right);
 		pt.y = nFixedRowHeight + 1;
 		OnSelecting(GetCellFromPt(pt));
 	}
@@ -832,10 +825,7 @@ void GridCtrl::OnTimer(UINT nIDEvent)
 		// SendMessage(WM_HSCROLL, SB_LINERIGHT, 0);
 		SendMessage(WM_KEYDOWN, VK_RIGHT, 0);
 
-		if (pt.y < rect.top)
-			pt.y = rect.top;
-		if (pt.y > rect.bottom)
-			pt.y = rect.bottom;
+		pt.y = dbw::clamp_value(pt.y, rect.top, rect.bottom);
 		pt.x = rect.right;
 		OnSelecting(GetCellFromPt(pt));
 	}
@@ -844,10 +834,7 @@ void GridCtrl::OnTimer(UINT nIDEvent)
 		//SendMessage(WM_HSCROLL, SB_LINELEFT, 0);
 		SendMessage(WM_KEYDOWN, VK_LEFT, 0);
 
-		if (pt.y < rect.top)
-			pt.y = rect.top;
-		if (pt.y > rect.bottom)
-			pt.y = rect.bottom;
+		pt.y = dbw::clamp_value(pt.y, rect.top, rect.bottom);
 		pt.x = nFixedColWidth + 1;
 		OnSelecting(GetCellFromPt(pt));
 	}
@@ -1044,8 +1031,7 @@ void GridCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT n_flags)
 		if (increment)
 		{
 			next.row += increment;
-			if (next.row > (GetRowCount() - 1))
-				next.row = GetRowCount() - 1;
+			next.row = std::min(next.row, GetRowCount() - 1);
 		}
 		else
 			next.row = GetRowCount() - 1;
@@ -1061,8 +1047,7 @@ void GridCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT n_flags)
 		if (increment)
 		{
 			next.row += increment;
-			if (next.row < m_nFixedRows)
-				next.row = m_nFixedRows;
+			next.row = std::max(next.row, m_nFixedRows);
 		}
 		else
 			next.row = m_nFixedRows;
@@ -3542,9 +3527,7 @@ BOOL GridCtrl::SetRowCount(int nRows)
 
 	// Force recalculation
 	m_idTopLeftCell.col = -1;
-
-	if (nRows < m_nFixedRows)
-		m_nFixedRows = nRows;
+	m_nFixedRows = std::min(nRows, m_nFixedRows);
 
 	if (m_idCurrentCell.row >= nRows)
 		SetFocusCell(-1, -1);
@@ -3639,9 +3622,7 @@ BOOL GridCtrl::SetColumnCount(int nCols)
 
 	// Force recalculation
 	m_idTopLeftCell.col = -1;
-
-	if (nCols < m_nFixedCols)
-		m_nFixedCols = nCols;
+	m_nFixedCols = std::min(nCols, m_nFixedCols);
 
 	if (m_idCurrentCell.col >= nCols)
 		SetFocusCell(-1, -1);
@@ -4872,8 +4853,7 @@ BOOL GridCtrl::AutoSizeColumn(int nCol, UINT nAutoSizeStyle /*=GVS_DEFAULT*/,
 		GridCellBase* pCell = GetCell(nRow, nCol);
 		if (pCell)
 			size = pCell->GetCellExtent(p_dc);
-		if (size.cx > nWidth)
-			nWidth = size.cx;
+		nWidth = std::max<LONG>(size.cx, nWidth);
 	}
 
 	if (GetVirtualMode())
@@ -4914,8 +4894,7 @@ BOOL GridCtrl::AutoSizeRow(int nRow, BOOL bResetScroll /*=TRUE*/)
 		GridCellBase* pCell = GetCell(nRow, nCol);
 		if (pCell)
 			size = pCell->GetCellExtent(p_dc);
-		if (size.cy > nHeight)
-			nHeight = size.cy;
+		nHeight = std::max<LONG>(size.cy, nHeight);
 	}
 	m_arRowHeights[nRow] = nHeight;
 

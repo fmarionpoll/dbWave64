@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include <OLERRORS.H>
+#include <algorithm>
 #include <Olxdaapi.h>
 
 #include "resource.h"
@@ -268,8 +269,7 @@ BOOL ViewADcontinuous::find_dt_open_layers_boards()
 	// if name already defined, check if board present
 	if (!(options_input_data_->wave_format).cs_ad_card_name.IsEmpty())
 		i_sel = static_cast<short>(m_combo_ad_card.FindString(-1, (options_input_data_->wave_format).cs_ad_card_name));
-	if (i_sel < 0)
-		i_sel = 0;
+	i_sel = std::max<short>(i_sel, 0);
 
 	m_combo_ad_card.SetCurSel(i_sel);
 	m_boardName = m_acq32_ad.GetBoardList(i_sel);
@@ -592,12 +592,12 @@ void ViewADcontinuous::display_ol_da_error_message(const CHAR * error_string)
 #ifdef _DEBUG
 void ViewADcontinuous::AssertValid() const
 {
-	CFormView::AssertValid();
+	ViewDbTable::AssertValid();
 }
 
 void ViewADcontinuous::Dump(CDumpContext & dc) const
 {
-	CFormView::Dump(dc);
+	ViewDbTable::Dump(dc);
 }
 
 #endif //_DEBUG
@@ -1159,7 +1159,7 @@ void ViewADcontinuous::on_bias_scroll(const UINT n_sb_code, const UINT n_pos)
 	const CChanlistItem* p_chan = m_chart_data_ad_.get_channel_list_item(0);
 	int y_zero = p_chan->get_y_zero();
 	const int span = p_chan->get_data_bin_span() / 2;
-	const int initial = y_zero;
+	//const int initial = y_zero;
 	switch (n_sb_code)
 	{
 		case SB_LEFT: 

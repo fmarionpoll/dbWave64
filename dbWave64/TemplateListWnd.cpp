@@ -8,6 +8,8 @@
 #include "TemplateWnd.h"
 #include "TemplateListWnd.h"
 
+#include <algorithm>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -480,8 +482,7 @@ void CTemplateListWnd::update_template_base_class_id(const int i_new_lowest_clas
 	for (auto i = template_wnd_ptr_array_.GetSize() - 1; i >= 0; i--)
 	{
 		const auto p_tpl1_wnd = get_template_wnd(i);
-		if (lowest_id > p_tpl1_wnd->m_class_id)
-			lowest_id = p_tpl1_wnd->m_class_id;
+		lowest_id = std::min(lowest_id, p_tpl1_wnd->m_class_id);
 	}
 	// now change the id of each template and update its text
 	const auto delta = lowest_id - i_new_lowest_class;

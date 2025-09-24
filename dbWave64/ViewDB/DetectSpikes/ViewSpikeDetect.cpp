@@ -6,6 +6,8 @@
 #include "dbWave.h"
 #include "ViewSpikeDetect.h"
 
+#include <algorithm>
+
 #include "NiceUnit.h"
 #include "DlgCopyAs.h"
 #include "DlgDataSeries.h"
@@ -1316,8 +1318,7 @@ int ViewSpikeDetection::detect_method_1(const WORD channel_index)
 	auto l_data_last = chart_data_filtered_.get_data_last_index(); // index last pt to test
 	if (l_data_first < pre_threshold + span)
 		l_data_first = static_cast<long>(pre_threshold) + span;
-	if (l_data_last > p_dat->get_doc_channel_length() - post_threshold - span)
-		l_data_last = p_dat->get_doc_channel_length() - post_threshold - span;
+	l_data_last = std::min(l_data_last, p_dat->get_doc_channel_length() - post_threshold - span);
 
 	// loop through data defined in the line_view window
 	while (l_data_first < l_data_last)
@@ -1332,8 +1333,7 @@ int ViewSpikeDetection::detect_method_1(const WORD channel_index)
 		// load a chunk of data and see if any spikes are detected within it
 		// compute initial offset (address of first point
 		auto l_last = l_rw_last - post_threshold;
-		if (l_last > l_data_last)
-			l_last = l_data_last;
+		l_last = std::min(l_last, l_data_last);
 		const int i_buf_first = l_data_first - p_dat->get_doc_channel_index_first();
 		const auto p_data_first = p_dat->get_transformed_data_element(i_buf_first);
 
@@ -1539,8 +1539,7 @@ void ViewSpikeDetection::on_en_change_spike_no()
 	{
 		mm_spike_no_.on_en_change(this, m_spike_index, 1, -1);
 		// check boundaries
-		if (m_spike_index < -1)
-			m_spike_index = -1;
+		m_spike_index = std::max(m_spike_index, -1);
 		if (m_spike_index >= p_spk_list->get_spikes_count())
 			m_spike_index = p_spk_list->get_spikes_count() - 1;
 
@@ -1608,8 +1607,7 @@ void ViewSpikeDetection::align_display_to_current_spike()
 	{
 		const auto l_size = chart_data_filtered_.get_data_last_index() - chart_data_filtered_.get_data_first_index();
 		auto l_first = l_spike_time - l_size / 2;
-		if (l_first < 0)
-			l_first = 0;
+		l_first = std::max<long>(l_first, 0);
 		auto l_last = l_first + l_size - 1;
 		if (l_last > chart_data_filtered_.get_document_last())
 		{
@@ -2198,9 +2196,8 @@ void ViewSpikeDetection::serialize_windows_state(const BOOL save, int tab_index)
 	const auto p_dbWave_app = static_cast<CdbWaveApp*>(AfxGetApp()); 
 	if (tab_index < 0 || tab_index >= spk_list_tab_ctrl.GetItemCount())
 	{
-		int tab_selected = spk_list_tab_ctrl.GetCurSel(); 
-		if (tab_selected < 0)
-			tab_selected = 0;
+		int tab_selected = spk_list_tab_ctrl.GetCurSel();
+		tab_selected = std::max(tab_selected, 0);
 		tab_index = tab_selected;
 	}
 
@@ -2399,8 +2396,7 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 	{
 		r_spk_height = r_height - options_view_data_->font_size * 4;
 		r_spk_width = r_spk_height / 2;
-		if (r_spk_width < MulDiv(r_where.Width(), 10, 100))
-			r_spk_width = MulDiv(r_where.Width(), 10, 100);
+		r_spk_width = std::max(r_spk_width, MulDiv(r_where.Width(), 10, 100));
 		options_view_data_->spike_height = r_spk_height;
 		options_view_data_->spike_width = r_spk_width;
 	}
@@ -2442,9 +2438,8 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		const auto old_size = rect_data_.Width(); 
 
 		// make sure enough data fit into this rectangle, otherwise clip rect
-		auto l_last = index_first_data_point + l_print_len_; 
-		if (l_last > index_last_data_point) 
-			l_last = index_last_data_point;
+		auto l_last = index_first_data_point + l_print_len_;
+		l_last = std::min(l_last, index_last_data_point);
 		if ((l_last - index_first_data_point + 1) < l_print_len_) 
 			rect_data_.right = (old_size * (l_last - index_first_data_point)) / l_print_len_ + rect_data_.left;
 		//--_____________________________________________________________________--------

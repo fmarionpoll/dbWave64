@@ -2,6 +2,8 @@
 #include "resource.h"
 #include "DlgImportGenericData.h"
 
+#include <algorithm>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -324,8 +326,7 @@ void DlgImportGenericData::on_en_change_number_of_channels()
 	mm_nb_ad_channels.on_en_change(this, m_nb_ad_channels, 1, -1);
 
 	//  limit max of chan parameters
-	if (m_nb_ad_channels < 1) // check that there is at least one chan
-		m_nb_ad_channels = 1; // then change the limit of the spin
+	m_nb_ad_channels = std::max<UINT>(m_nb_ad_channels, 1); 
 
 	// action if value has changed
 	if (m_nb_ad_channels != nb_AD_channels)
@@ -363,10 +364,8 @@ void DlgImportGenericData::on_en_change_channel_no()
 	mm_ad_channel_chan.on_en_change(this, m_ad_channel_chan, 1, -1);
 
 	// check limits of m_adChannelChan
-	if (m_ad_channel_chan < 1)
-		m_ad_channel_chan = 1;
-	if (m_ad_channel_chan > m_nb_ad_channels)
-		m_ad_channel_chan = m_nb_ad_channels;
+	m_ad_channel_chan = dbw::clamp_value<UINT>(m_ad_channel_chan, 1, m_nb_ad_channels);
+		
 	if (m_ad_channel_chan != previous_channel)
 	{
 		// save previous data
@@ -401,8 +400,7 @@ void DlgImportGenericData::on_en_change_skip_n_bytes()
 	mm_skip_n_bytes.on_en_change(this, m_skip_n_bytes, 1, -1);
 
 	// check limits of m_adChannelChan
-	if (m_skip_n_bytes < 0)
-		m_skip_n_bytes = 0;
+	m_skip_n_bytes = std::max<UINT>(m_skip_n_bytes, 0);
 	UpdateData(FALSE);
 
 	if (m_skip_n_bytes != skip_n_bytes)

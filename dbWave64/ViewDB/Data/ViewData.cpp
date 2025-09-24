@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "StdAfx.h"
 #include "dbWave.h"
 #include "resource.h"
@@ -399,8 +401,7 @@ void ViewData::update_file_parameters(const BOOL b_update_interface)
 	{
 		l_first = static_cast<long>(m_time_first_abscissa * m_sampling_rate_);
 		l_last = static_cast<long>(m_time_last_abscissa * m_sampling_rate_);
-		if (l_last > m_p_dat_->get_doc_channel_length() - 1) // last OK?
-			l_last = m_p_dat_->get_doc_channel_length() - 1; // clip to the end of the file
+		l_last = std::min(l_last, m_p_dat_->get_doc_channel_length() - 1); // clip to the end of the file
 	}
 	m_sampling_rate_ = wave_format->sampling_rate_per_channel; // update sampling rate
 
@@ -505,10 +506,8 @@ void ViewData::update_channels_display_parameters()
 				p_chan->get_max_min(&max, &min);
 				const auto max_chan_i = p_chan->convert_data_bins_to_volts(max);
 				const auto min_chan_i = p_chan->convert_data_bins_to_volts(min);
-				if (max_chan_i > v_max)
-					v_max = max_chan_i;
-				if (min_chan_i < v_min)
-					v_min = min_chan_i;
+				v_max = std::max(max_chan_i, v_max);
+				v_min = std::min(min_chan_i, v_min);
 			}
 			max = p_chan0->convert_volts_to_data_bins(v_max);
 			min = p_chan0->convert_volts_to_data_bins(v_min);
@@ -1482,8 +1481,7 @@ void ViewData::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		auto l_last = l_first + l_print_len_; // compute last pt to load
 		if (l_first < GetDocument()->db_get_data_len() - 1)
 		{
-			if (l_last > very_last) // check end across file length
-				l_last = very_last;
+			l_last = std::min(l_last, very_last);
 			chart_data.get_data_from_doc(l_first, l_last); // load data from file
 			update_channels_display_parameters();
 			chart_data.print(p_dc, &r_where); // print data

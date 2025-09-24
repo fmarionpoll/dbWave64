@@ -13,6 +13,8 @@
 #include "TemplateWnd.h"
 #include <math.h>
 
+#include <algorithm>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -180,8 +182,8 @@ void CTemplateWnd::get_extents()
 		auto min_val = *p_inf;
 		for (auto i = 0; i < m_tpl_len_; i++, p_sup++, p_inf++)
 		{
-			if (*p_sup > max_val) max_val = *p_sup;
-			if (*p_inf < min_val) min_val = *p_inf;
+			max_val = std::max(*p_sup, max_val);
+			min_val = std::min(*p_inf, min_val);
 		}
 
 		y_we_ = max_val - min_val + 2;
@@ -270,8 +272,7 @@ void CTemplateWnd::set_template_length(int len, int extent, int org)
 		t_init();
 	}
 
-	if (org < 0)
-		org = 0;
+	org = std::max(org, 0);
 	if (extent < 0)
 		extent = m_tpl_len_ - org;
 	x_we_ = extent;
@@ -367,7 +368,7 @@ double CTemplateWnd::t_power_of_p_sum()
 
 BOOL CTemplateWnd::t_get_number_of_points_within(int* p_source, const int* hit_rate)
 {
-	if (!m_b_valid_) // we need valid limits..
+	if (!m_b_valid_) // we need valid limits
 		t_set_display_data();
 
 	const int last = x_we_ + x_wo_;
@@ -421,7 +422,7 @@ double CTemplateWnd::t_dist(int* p_source) const
 
 double CTemplateWnd::t_min_dist(int* p_source, int* i_offset_min, const BOOL b_jitter)
 {
-	if (!m_b_valid_) // we need valid limits..
+	if (!m_b_valid_) // we need valid limits
 		t_set_display_data(); // and also correct power
 
 	const int jitter = (b_jitter ? 2 : 0);

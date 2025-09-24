@@ -2,6 +2,7 @@
 #include "ViewDB/Spikes/ViewSpikes.h"
 
 #include <strsafe.h>
+#include <algorithm>
 #include <cmath>
 #include "dbWave.h"
 #include "DlgCopyAs.h"
@@ -284,8 +285,7 @@ LRESULT ViewSpikes::on_my_message(const WPARAM w_param, const LPARAM l_param)
 		break;
 
 	case HINT_DBL_CLK_SEL:
-		if (param_value < 0)
-			param_value = 0;
+		param_value = std::max<short>(param_value, 0);
 		m_spike_index = param_value;
 		on_tools_edit_spikes();
 		break;
@@ -657,8 +657,7 @@ void ViewSpikes::update_legends(const BOOL b_update_interface)
 	if (!b_update_interface)
 		return;
 
-	if (l_first_ < 0)
-		l_first_ = 0;
+	l_first_ = std::max(l_first_, 0);
 	if (l_last_ <= l_first_)
 		l_last_ = l_first_ + 120;
 	if (p_spk_doc != nullptr)
@@ -1109,8 +1108,7 @@ BOOL ViewSpikes::OnPreparePrinting(CPrintInfo* p_info)
 				nn_classes += n_classes;
 			}
 
-			if (p_dbwave_doc->get_db_n_spike_classes() > max_classes_)
-				max_classes_ = p_dbwave_doc->get_db_n_spike_classes();
+			max_classes_ = std::max<long>(p_dbwave_doc->get_db_n_spike_classes(), max_classes_);
 
 			if (options_view_data_->b_multiple_rows)
 			{
@@ -1259,9 +1257,8 @@ void ViewSpikes::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 
 		// bottom of the first rectangle
 		rw_bars.bottom = rw2.top + r_height;
-		auto l_last = l_first + l_print_len_; 
-		if (l_last > very_last) 
-			l_last = very_last;
+		auto l_last = l_first + l_print_len_;
+		l_last = std::min(l_last, very_last);
 		if ((l_last - l_first + 1) < l_print_len_) 
 		{
 			rw_bars.right = MulDiv(rw_bars.Width(), l_last - l_first, l_print_len_)
@@ -1338,10 +1335,8 @@ void ViewSpikes::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 				int ii_last = p_spk_doc->m_stimulus_intervals.get_at(ii + 1);
 				if (ii_first > l_last || ii_last < l_first)
 					continue;
-				if (ii_first < l_first)
-					ii_first = l_first;
-				if (ii_last > l_last)
-					ii_last = l_last;
+				ii_first = std::max<long>(ii_first, l_first);
+				ii_last = std::min<long>(ii_last, l_last);
 
 				rw_spikes.left = MulDiv(ii_first - l_first, rw_bars.Width(), l_last - l_first) + rw_bars.left;
 				rw_spikes.right = MulDiv(ii_last - l_first, rw_bars.Width(), l_last - l_first) + rw_bars.left;
@@ -1489,8 +1484,8 @@ void ViewSpikes::center_data_display_on_spike(const int spike_no)
 	for (long i = spk_first; i <= spk_last; i++)
 	{
 		const short value = p_data_doc_->get_value_from_buffer(doc_channel, i);
-		if (value > max_data) max_data = value;
-		if (value < min_data) min_data = value;
+		max_data = std::max(value, max_data);
+		min_data = std::min(value, min_data);
 	}
 	chan->set_y_zero((max_data + min_data) / 2);
 
@@ -1624,8 +1619,7 @@ void ViewSpikes::on_zoom()
 
 void ViewSpikes::zoom_on_preset_interval(int ii_start)
 {
-	if (ii_start < 0)
-		ii_start = 0;
+	ii_start = std::max(ii_start, 0);
 	l_first_ = ii_start;
 	const auto acquisition_rate = p_spk_doc->get_acq_rate();
 	l_last_ = static_cast<long>((static_cast<float>(l_first_) / acquisition_rate + m_zoom) * acquisition_rate);

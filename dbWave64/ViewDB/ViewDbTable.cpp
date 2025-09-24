@@ -261,7 +261,7 @@ BOOL ViewDbTable::copy_as_emf_to_clipboard(const CRect& pixel_rect, const CStrin
     // Cleanup and copy to clipboard
     ReleaseDC(p_ref_dc);
     const auto h_emf = meta_dc.CloseEnhanced();
-    if (h_emf == NULL)
+    if (h_emf == nullptr)
         return FALSE;
 
     if (OpenClipboard())

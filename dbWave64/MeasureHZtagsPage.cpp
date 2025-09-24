@@ -8,6 +8,8 @@
 #include "resource.h"
 #include "MeasureHZtagsPage.h"
 
+#include <algorithm>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -90,8 +92,7 @@ void CMeasureHZtagsPage::on_en_change_data_channel()
 		mm_data_channel.on_en_change(this, m_data_channel, 1, -1);
 
 		// update dependent parameters
-		if (m_data_channel < 0)
-			m_data_channel = 0;
+		m_data_channel = std::max(m_data_channel, 0);
 		if (m_data_channel >= m_p_chart_data_wnd->get_channel_list_size())
 			m_data_channel = m_p_chart_data_wnd->get_channel_list_size() - 1;
 		if (m_nb_cursors > 0 && m_index >= 0 && m_index < m_nb_cursors)
@@ -111,8 +112,7 @@ void CMeasureHZtagsPage::on_en_change_index()
 		// update dependent parameters
 		if (m_index >= m_nb_cursors)
 			m_index = m_nb_cursors - 1;
-		if (m_index < 0)
-			m_index = 0;
+		m_index = std::max(m_index, 0);
 		get_hz_cursor_value(m_index);
 		UpdateData(FALSE);
 	}

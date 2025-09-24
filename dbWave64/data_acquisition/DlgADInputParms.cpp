@@ -41,9 +41,8 @@ const TCHAR* DlgADInputs::psz_row_title_[] = {
 	// 11: headstage 12: // headstage gain
 	_T("Signal max/min (mV)"),
 	_T(" total gain"),
-	_T(" resolution (µV)"),
+	_T(" resolution (µV)")
 	// 13: // max range 14: // total gain 15:// bin resolution
-	_T("")
 };
 
 const TCHAR* DlgADInputs::psz_high_pass_[] = {
@@ -171,10 +170,7 @@ void DlgADInputs::on_en_change_n_acq_channels()
 	UpdateData(TRUE);
 
 	// make sure that the number of channels is appropriate
-	if (m_n_acq_channels_ < 1)
-		m_n_acq_channels_ = 1;
-	if (m_n_acq_channels_ > m_input_list_max_)
-		m_n_acq_channels_ = m_input_list_max_;
+	m_n_acq_channels_ = dbw::clamp_value(m_n_acq_channels_, 1, m_input_list_max_);
 
 	// update title of row 2 and refresh cell
 	CString cs;
@@ -792,17 +788,11 @@ void DlgADInputs::init_row_headers()
 	lf.lfWeight = FW_BOLD;
 
 	// set row headers
-	auto n_rows = 0;
-	do
-	{
-		n_rows++;
-	}
-	while (psz_row_title_[n_rows - 1] != _T(""));
+	constexpr int n_rows = _countof(DlgADInputs::psz_row_title_);
 	m_grid.SetRowCount(n_rows);
 
 	// init row headers with descriptors
-	int row = 0;
-	do
+	for (auto row = 0; row < n_rows - 1; row++)
 	{
 		constexpr int col = 0;
 		row++;
@@ -812,7 +802,7 @@ void DlgADInputs::init_row_headers()
 		else
 			m_grid.SetItemFont(row, col, &lf);
 	}
-	while (psz_row_title_[row] != _T(""));
+
 	CString cs;
 	cs.Format(_T("A/D channel (0-%i)"), m_max_channels_ - 1);
 	m_grid.SetItemText(2, 0, cs);

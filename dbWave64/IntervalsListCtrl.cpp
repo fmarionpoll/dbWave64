@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 #include "IntervalsListCtrl.h"
+
+#include <algorithm>
 #include "GridCtrl/InPlaceEdit.h"
 #include "GridCtrl/GridCtrl.h"
 
@@ -162,8 +164,7 @@ int CIntervalsListCtrl::hit_test_ex(const CPoint& point_to_be_tested, int* colum
 
 	row = GetTopIndex();
 	int bottom = row + GetCountPerPage();
-	if (bottom > GetItemCount())
-		bottom = GetItemCount();
+	bottom = std::min(bottom, GetItemCount());
 
 	const auto p_header = static_cast<CHeaderCtrl*>(GetDlgItem(0));
 	const int column_count = p_header->GetItemCount();
@@ -240,8 +241,7 @@ CEdit* CIntervalsListCtrl::edit_sub_label(const int n_item, const int n_col)
 	rect.left += column_left_offset + 4;
 	rect.right = rect.left + GetColumnWidth(n_col) - 3;
 
-	if (rect.right > rc_client.right)
-		rect.right = rc_client.right;
+	rect.right = std::min(rect.right, rc_client.right);
 
 	dw_style |= WS_BORDER | WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL;
 

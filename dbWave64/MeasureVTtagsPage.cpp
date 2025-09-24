@@ -8,6 +8,8 @@
 #include "resource.h"
 #include "MeasureVTtagsPage.h"
 
+#include <algorithm>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -148,8 +150,7 @@ void CMeasureVTtagsPage::on_remove()
 		m_p_chart_data_wnd->vt_tags.remove_tag(m_index);
 		m_nb_tags--;
 	}
-	if (m_index > m_nb_tags - 1)
-		m_index = m_nb_tags - 1;
+	m_index = std::min(m_index, m_nb_tags - 1);
 	m_p_chart_data_wnd->Invalidate();
 
 	get_vt_tag_value(m_index);
@@ -169,8 +170,7 @@ void CMeasureVTtagsPage::on_en_change_item()
 		// update dependent parameters
 		if (m_index >= m_nb_tags)
 			m_index = m_nb_tags - 1;
-		if (m_index < 0)
-			m_index = 0;
+		m_index = std::max(m_index, 0);
 		get_vt_tag_value(m_index);
 		UpdateData(FALSE);
 	}
@@ -184,8 +184,7 @@ void CMeasureVTtagsPage::on_en_change_time_sec()
 		// update dependent parameters
 		if (m_time_sec < 0)
 			m_time_sec = 0.0f;
-		if (m_time_sec >= m_very_last)
-			m_time_sec = m_very_last;
+		m_time_sec = std::min(m_time_sec, m_very_last);
 		UpdateData(FALSE);
 		const auto lk = static_cast<long>(m_time_sec * m_sampling_rate);
 		if (m_index >= 0 && m_index < m_nb_tags)
@@ -207,8 +206,7 @@ void CMeasureVTtagsPage::on_en_change_duration()
 		// update dependent parameters
 		if (m_duration < 0.)
 			m_duration = 0.0f;
-		if (m_duration >= m_period)
-			m_duration = m_period;
+		m_duration = std::min(m_duration, m_period);
 		m_p_options_measure->duration = m_duration;
 		UpdateData(FALSE);
 	}
@@ -220,8 +218,7 @@ void CMeasureVTtagsPage::on_en_change_period()
 	{
 		mm_period.on_en_change(this, m_period, 1.f, -1.f);
 		// update dependent parameters
-		if (m_period < m_duration)
-			m_period = m_duration;
+		m_period = std::max(m_period, m_duration);
 		m_p_options_measure->period = m_period;
 		UpdateData(FALSE);
 	}
@@ -233,8 +230,7 @@ void CMeasureVTtagsPage::on_en_change_n_periods_edit()
 	{
 		mm_n_periods.on_en_change(this, m_n_periods, 1, -1);
 		// update dependent parameters
-		if (m_n_periods < 1)
-			m_n_periods = 1;
+		m_n_periods = std::max(m_n_periods, 1);
 		m_p_options_measure->n_periods = m_n_periods;
 		UpdateData(FALSE);
 	}

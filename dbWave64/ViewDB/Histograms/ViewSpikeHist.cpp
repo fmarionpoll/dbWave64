@@ -1120,8 +1120,7 @@ long ViewSpikeHist::plot_histogram(CDC* p_dc, CRect* p_display_rect, int n_bins,
 		for (auto i = 0; i < n_bins; i++, p_hist++)
 		{
 			const int val = *p_hist; // load value in a temp variable
-			if (val > max) // search max
-				max = val;
+			max = std::max<long>(val, max);
 		}
 		m_rect_ratio_ = 80; // span only 80%
 	}
@@ -1473,7 +1472,7 @@ void ViewSpikeHist::display_dot(CDC* p_dc, CRect* p_rect)
 			}
 		}
 
-		// next file -- jump to next line..
+		// next file -- jump to next line
 		row += dot_line_height;
 	}
 
@@ -1705,8 +1704,7 @@ void ViewSpikeHist::display_psth_autocorrelation(CDC* p_dc, CRect* p_rect)
 			const int val = *p_array;
 			p_array++;
 			auto i_color = MulDiv(val, ChartWnd::nb_colors, max_val);
-			if (i_color > ChartWnd::nb_colors) 
-				i_color = ChartWnd::nb_colors;
+			i_color = std::min(i_color, ChartWnd::nb_colors);
 			if (i_color > 0)
 				p_dc->FillSolidRect(&d_rect, options_view_spikes_->cr_scale[i_color]);
 			d_rect.bottom = d_rect.top;
@@ -1878,8 +1876,7 @@ void ViewSpikeHist::display_stimulus(CDC* p_dc, const CRect* p_rect, const long*
 		if (iix0 >= ii_len) // first transition ON after last graph pt?
 			break; // yes = exit loop
 
-		if (iix0 < 0) // first transition off graph?
-			iix0 = 0; // yes = clip
+		iix0 = std::max(iix0, 0);
 
 		iix0 = MulDiv(display_len, iix0, ii_len) + p_rect->left;
 		p_dc->LineTo(iix0, i_state); // draw line up to the first point of the pulse
@@ -1931,8 +1928,7 @@ void ViewSpikeHist::on_en_change_edit_lock_on_stim()
 	{
 		if (i_lock >= p_spike_doc->m_stimulus_intervals.get_size())
 			i_lock = p_spike_doc->m_stimulus_intervals.get_size() - 1;
-		if (i_lock < 0)
-			i_lock = 0;
+		i_lock = std::max(i_lock, 0);
 		options_view_spikes_->i_stimulus_index = i_lock;
 		SetDlgItemInt(IDC_EDITLOCKONSTIM, options_view_spikes_->i_stimulus_index);
 	}

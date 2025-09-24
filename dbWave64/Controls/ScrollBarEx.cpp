@@ -61,7 +61,7 @@ void ScrollBarEx::OnMouseMove(UINT n_flags, CPoint point)
 					(m_scBarInfo.xyThumbBottom - m_scBarInfo.xyThumbTop),
 					m_scInfo_old.nPage,
 					(m_scBarInfo_old.xyThumbBottom - m_scBarInfo_old.xyThumbTop));
-				// update  barinfo
+				// update  bar_info
 				m_scInfo.fMask = SIF_PAGE | SIF_POS;
 				SetScrollInfo(&m_scInfo);
 			}
@@ -76,7 +76,7 @@ void ScrollBarEx::OnMouseMove(UINT n_flags, CPoint point)
 					m_scInfo_old.nPage,
 					(m_scBarInfo_old.xyThumbBottom - m_scBarInfo_old.xyThumbTop));
 				m_scInfo.nPos = m_scInfo_old.nPos + (m_scInfo_old.nPage - m_scInfo.nPage);
-				// update  barinfo
+				// update  bar_info
 				m_scInfo.fMask = SIF_PAGE | SIF_POS;
 				SetScrollInfo(&m_scInfo);
 			}
@@ -87,7 +87,7 @@ void ScrollBarEx::OnMouseMove(UINT n_flags, CPoint point)
 			m_scInfo.nPos = MulDiv(m_scBarInfo.xyThumbTop,
 			                       m_scInfo_old.nPos,
 			                       m_scBarInfo_old.xyThumbTop);
-		// update  barinfo
+		// update  bar_info
 			m_scInfo.fMask = SIF_PAGE | SIF_POS;
 			SetScrollInfo(&m_scInfo);
 			break;
@@ -144,7 +144,7 @@ void ScrollBarEx::OnLButtonDown(UINT n_flags, CPoint point)
 		CScrollBar::OnLButtonDown(n_flags, point);
 }
 
-void ScrollBarEx::OnLButtonUp(UINT n_flags, CPoint point)
+void ScrollBarEx::OnLButtonUp(const UINT n_flags, const CPoint point)
 {
 	if (m_bCaptured)
 	{

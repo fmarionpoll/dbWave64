@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #include "dbWave.h"
 #include "dbTableMain.h"
+
+#include <algorithm>
 #include "DatabaseUtils.h"
 
 #ifdef _DEBUG
@@ -305,15 +307,9 @@ void CdbTableMain::get_max_key()
 	MoveFirst();
 	while (!IsEOF())
 	{
-		if (m_id_insect > max_insect_key)
-			max_insect_key = m_id_insect;
-
-		if (m_id > max_key)
-			max_key = m_id;
-
-		if (m_id_sensillum > max_sensillum_key)
-			max_sensillum_key = m_id_sensillum;
-
+		max_insect_key = std::max(m_id_insect, max_insect_key);
+		max_key = std::max(m_id, max_key);
+		max_sensillum_key = std::max(m_id_sensillum, max_sensillum_key);
 		MoveNext();
 	}
 }

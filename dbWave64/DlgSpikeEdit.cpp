@@ -7,6 +7,8 @@
 #include "chart/ChartSpikeShape.h"
 #include "DlgSpikeEdit.h"
 
+#include <algorithm>
+
 #include "ColorNames.h"
 
 #ifdef _DEBUG
@@ -46,9 +48,8 @@ void DlgSpikeEdit::load_spike_parameters()
 {
 	if (p_acq_data_doc_ != nullptr)
 		load_source_view_data();
-	
-	if (dlg_spike_index < 0)
-		dlg_spike_index = 0;
+
+	dlg_spike_index = std::max(dlg_spike_index, 0);
 	spike_sel_.spike_index = dlg_spike_index;
 	chart_spike_shape_.set_selected_spike(spike_sel_);
 	
@@ -173,8 +174,7 @@ void DlgSpikeEdit::on_en_change_spike_index()
 		mm_dlg_spike_index.on_en_change(this, dlg_spike_index, 1, -1);
 
 		// check boundaries
-		if (dlg_spike_index < 0)
-			dlg_spike_index = 0;
+		dlg_spike_index = std::max(dlg_spike_index, 0);
 		if (dlg_spike_index >= p_spk_list->get_spikes_count())
 			dlg_spike_index = p_spk_list->get_spikes_count() - 1;
 
@@ -216,8 +216,7 @@ void DlgSpikeEdit::on_en_change_display_ratio()
 	{
 		mm_dlg_display_ratio.on_en_change(this, dlg_display_ratio, 1, -1);
 
-		if (dlg_display_ratio < 1)
-			dlg_display_ratio = 1;
+		dlg_display_ratio = std::max(dlg_display_ratio, 1);
 		UpdateData(FALSE);
 		view_data_len_ = MulDiv(spk_length_, 100, dlg_display_ratio);
 		if (p_acq_data_doc_ != nullptr)
@@ -252,8 +251,7 @@ void DlgSpikeEdit::load_source_view_data()
 
 	// compute limits of m_sourceView
 	auto source_view_first = spike_first + spk_length_ / 2 - view_data_len_ / 2;
-	if (source_view_first < 0) 
-		source_view_first = 0; 
+	source_view_first = std::max<long>(source_view_first, 0);
 	auto source_view_last = source_view_first + view_data_len_ - 1; 
 	if (source_view_last > chart_data_.get_document_last()) 
 	{

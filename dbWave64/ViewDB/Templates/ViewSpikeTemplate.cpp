@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 #include "ViewSpikeTemplate.h"
+
+#include <algorithm>
 #include "dbWave.h"
 #include "dbWaveDoc.h"
 #include "DlgEditSpikeClass.h"
@@ -290,8 +292,7 @@ void ViewSpikeTemplates::update_templates()
 
 void ViewSpikeTemplates::update_legends()
 {
-	if (l_first_ < 0)
-		l_first_ = 0;
+	l_first_ = std::max<long>(l_first_, 0);
 	if (l_last_ <= l_first_)
 		l_last_ = l_first_ + 120;
 	if (l_last_ >= p_spk_doc->get_acq_size())
@@ -317,13 +318,13 @@ void ViewSpikeTemplates::select_spike(db_spike& spike_sel)
 		spike_sel.record_id = p_doc->db_get_current_record_id();
 		spike_sel.spike_list_index = p_doc->m_p_spk_doc->get_index_current_spike_list();
 	}
-	else if (spike_sel.record_id != p_doc->db_get_current_record_id())
-	{
-		if (p_doc->db_move_to_id(spike_sel.record_id))
-		{
-			;
-		}
-	}
+	//else if (spike_sel.record_id != p_doc->db_get_current_record_id())
+	//{
+	//	if (p_doc->db_move_to_id(spike_sel.record_id))
+	//	{
+	//		;
+	//	}
+	//}
 
 	m_chart_spk_wnd_shape_.select_spike(spike_sel);
 	spike_no_ = spike_sel.spike_index;
@@ -464,8 +465,7 @@ void ViewSpikeTemplates::OnHScroll(UINT n_sb_code, UINT n_pos, CScrollBar* p_scr
 		return;
 	}
 
-	if (l_first < 0)
-		l_first = 0;
+	l_first = std::max<long>(l_first, 0);
 
 	long l_last = l_first + page_scroll;
 	if (l_last >= total_scroll)
@@ -672,8 +672,7 @@ void ViewSpikeTemplates::display_avg(const boolean b_all_files, CTemplateListWnd
 			// add template if not found - insert it at the proper place
 			if (!b_found) // add item if not found
 			{
-				if (j_template < 0)
-					j_template = 0;
+				j_template = std::max(j_template, 0);
 				j_template = template_list->insert_template_data(j_template, cla);
 			}
 
@@ -1258,8 +1257,7 @@ void ViewSpikeTemplates::on_en_change_t2()
 
 		const int spike_length = p_spk_list->get_spike_length();
 		const auto t_max = convert_spike_index_to_time(spike_length - 1);
-		if (m_t2 >= t_max)
-			m_t2 = t_max;
+		m_t2 = std::min(m_t2, t_max);
 		// change display if necessary
 		const int it2 = convert_time_to_spike_index(m_t2);
 		if (it2 != m_chart_spk_wnd_shape_.vt_tags.get_value_int(spk_form_tag_right_))

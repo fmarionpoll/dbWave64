@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "dataheader_Atlab.H"
 #include "datafile_Atlab.h"
+#include <algorithm>
 #include <iomanip>
 
 
@@ -250,8 +251,7 @@ void CDataFileATLAB::init_channels_from_cyber_a320(char* p_header) const
 		if (p_cyber1->acqchan <= m_p_w_format_->scan_count)
 		{
 			int chan = p_cyber1->acqchan - 1;
-			if (chan < 0)
-				chan = 0;
+			chan = std::max(chan, 0);
 			load_channel_from_cyber(chan, reinterpret_cast<char*>(p_cyber1));
 			if (m_p_w_format_->scan_count == static_cast<short>(1))
 				p_cyber2->acqchan = static_cast<unsigned char>(255);
@@ -259,8 +259,7 @@ void CDataFileATLAB::init_channels_from_cyber_a320(char* p_header) const
 		if (p_cyber2->acqchan <= m_p_w_format_->scan_count)
 		{
 			short chan = static_cast<short>(p_cyber2->acqchan - 1);
-			if (chan < 0)
-				chan = 0;
+			chan = std::max<short>(chan, 0);
 			load_channel_from_cyber(chan, reinterpret_cast<char*>(p_cyber2));
 		}
 	}

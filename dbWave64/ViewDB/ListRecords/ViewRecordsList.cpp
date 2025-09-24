@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 #include "ViewRecordsList.h"
+
+#include <algorithm>
 #include "dbWave.h"
 #include "resource.h"
 #include "Adapters.h"
@@ -81,7 +83,7 @@ void ViewRecordsList::OnInitialUpdate()
     {
         const DWORD ex0 = m_list_ctrl_.GetExtendedStyle();
         DWORD ex = ex0 | LVS_EX_FULLROWSELECT | LVS_EX_SUBITEMIMAGES;
-        ex &= ~LVS_EX_ONECLICKACTIVATE; // avoid hot-track activation side-effects
+        ex &= ~LVS_EX_ONECLICKACTIVATE; // avoid hot-track activation side effects
         m_list_ctrl_.SetExtendedStyle(ex);
     }
 
@@ -119,7 +121,7 @@ void ViewRecordsList::OnInitialUpdate()
 	m_list_ctrl_.SetItemCountEx(n_records);
 	const int per_page = m_list_ctrl_.GetCountPerPage();
     int current_index = db_wave_doc->db_get_current_record_position();
-	if (current_index < 0) current_index = 0;
+	current_index = std::max(current_index, 0);
 	if (current_index >= 0 && n_records > 0)
 	{
 		const int page = std::max(m_list_ctrl_.GetCountPerPage(), 1);

@@ -4,6 +4,8 @@
 #include "dbTableMain.h"
 #include "Spikedoc.h"
 #include "dbWaveDoc.h"	
+
+#include <algorithm>
 #include "DlgdbNewFileDuplicate.h"
 #include "DlgProgress.h"
 #include "NoteDoc.h"
@@ -500,10 +502,8 @@ boolean CdbWaveDoc::get_max_min_amplitude_of_all_spikes(const BOOL b_all_files, 
 					initialized = true;
 					continue;
 				}
-				if (max < max_file_i)
-					max = max_file_i;
-				if (min > min_file_i)
-					min = min_file_i;
+				max = std::max(max, max_file_i);
+				min = std::min(min, min_file_i);
 			}
 		}
 	}
@@ -545,10 +545,8 @@ boolean CdbWaveDoc::get_max_min_y1_of_all_spikes(const boolean b_all_files, int&
 					spikes_found = true;
 					continue;
 				}
-				if (max < max_file_i) 
-					max = max_file_i;
-				if (min > min_file_i) 
-					min = min_file_i;
+				max = std::max(max, max_file_i);
+				min = std::min(min, min_file_i);
 			}
 		}
 	}
@@ -2081,8 +2079,7 @@ BOOL CdbWaveDoc::transpose_file_for_excel(CSharedFile * p_sf)
 	while (ul_len_char > 0)
 	{
 		auto ul_len = ul_len_char;
-		if (ul_len > 1024)
-			ul_len = 1024;
+		ul_len = std::min<ULONGLONG>(ul_len, 1024);
 		p_sf->Read(&buffer, static_cast<UINT>(ul_len));
 		data_dest.Write(&buffer, static_cast<UINT>(ul_len));
 		ul_len_char = ul_len_char - ul_len;
@@ -2207,8 +2204,7 @@ BOOL CdbWaveDoc::transpose_file_for_excel(CSharedFile * p_sf)
 	while (ul_len_char > 0)
 	{
 		auto ul_len = ul_len_char;
-		if (ul_len > 1024)
-			ul_len = 1024;
+		ul_len = std::min<ULONGLONG>(ul_len, 1024);
 		data_transposed.Read(&buffer, static_cast<UINT>(ul_len));
 		p_sf->Write(&buffer, static_cast<UINT>(ul_len));
 		ul_len_char -= ul_len;

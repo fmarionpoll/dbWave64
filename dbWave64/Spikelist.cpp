@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 #include "Spikelist.h"
+
+#include <algorithm>
 #include "AcqDataDoc.h"
 #include "SpikeFromChan.h"
 
@@ -781,10 +783,8 @@ int SpikeList::get_total_max_min_of_y1_measure()
 				initialized = true;
 				continue;
 			}
-			if (value > max_y1_over_all_spikes_)
-				max_y1_over_all_spikes_ = value;
-			if (value < min_y1_over_all_spikes_)
-				min_y1_over_all_spikes_ = value;
+			max_y1_over_all_spikes_ = std::max(value, max_y1_over_all_spikes_);
+			min_y1_over_all_spikes_ = std::min(value, min_y1_over_all_spikes_);
 		}
 	}
 	return n_spikes_found;
@@ -951,10 +951,8 @@ void SpikeList::get_range_of_spike_flagged(long& l_first, long& l_last)
 	for (auto i = 0; i < flagged_spikes_.GetCount() ; i++)
 	{
 		const auto l_time = get_spike(flagged_spikes_.GetAt(i))->get_time();
-		if (l_time < l_first)
-			l_first = l_time;
-		if (l_time > l_last)
-			l_last = l_time;
+		l_first = std::min(l_time, l_first);
+		l_last = std::max(l_time, l_last);
 	}
 }
 
@@ -1098,10 +1096,8 @@ CSize SpikeList::measure_y1_max_min()
 	for (auto spike_index = 0; spike_index < n_spikes; spike_index++)
 	{
 		const auto val = get_spike(spike_index)->get_y1();
-		if (val > max) 
-			max = val;
-		if (val < min) 
-			min = val;
+		max = std::max(val, max);
+		min = std::min(val, min);
 	}
 
 	return {max, min};

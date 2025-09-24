@@ -39,9 +39,9 @@ protected:
 	SUBF_DESCRIP m_rec_;
 
 public:
-	CSubfileItem();
-	CSubfileItem(unsigned char uc_code, char* sz_label, ULONGLONG ul_offset,
-	             ULONGLONG ul_length, unsigned char uc_encoding, int item_nb = 0);
+    CSubfileItem();
+    CSubfileItem(unsigned char uc_code, const char* sz_label, ULONGLONG ul_offset,
+                 ULONGLONG ul_length, unsigned char uc_encoding, int item_nb = 0);
 	~CSubfileItem() override;
 
 	// Helpers
@@ -53,7 +53,7 @@ public:
 	ULONGLONG get_data_length() const { return m_rec_.ul_length; }
 
 	void set_code(const unsigned char uc_code) { m_rec_.w_code = uc_code; }
-	void set_label(char* psz_label);
+    void set_label(const char* psz_label);
 	void set_data_encoding(const unsigned char uc_encoding) { m_rec_.uc_encoding = uc_encoding; }
 	void set_item_nb(const int item) { m_rec_.item_nb = item; }
 	void set_data_offset(const ULONGLONG ul_offset) { m_rec_.ul_offset = ul_offset; }

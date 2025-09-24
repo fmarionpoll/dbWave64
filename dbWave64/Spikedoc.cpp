@@ -2,6 +2,8 @@
 #include "AcqDataDoc.h"
 #include "Spikedoc.h"
 
+#include <algorithm>
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -493,8 +495,6 @@ void CSpikeDoc::export_spk_psth(CSharedFile* shared_file, const options_view_spi
 		n_bins = options_view_spikes->n_bins;
 		break;
 	case EXPORT_ISI: // ISI
-		n_bins = options_view_spikes->n_bins_isi;
-		break;
 	case EXPORT_AUTOCORR: // Autocorrelation
 		n_bins = options_view_spikes->n_bins_isi;
 		break;
@@ -1219,10 +1219,8 @@ long CSpikeDoc::build_psth(const options_view_spikes* options_view_spikes, long*
 
 	// check validity of stimulus_index
 	auto stimulus_index = options_view_spikes->i_stimulus_index;
-	if (stimulus_index > m_stimulus_intervals.get_size() - 1)
-		stimulus_index = m_stimulus_intervals.get_size() - 1;
-	if (stimulus_index < 0)
-		stimulus_index = 0;
+	stimulus_index = dbw::clamp_value(stimulus_index, 0, static_cast<int>(m_stimulus_intervals.get_size() - 1));
+	
 	const auto stimulus_index_0 = stimulus_index;
 	auto stimulus_index_1 = stimulus_index_0 + 1;
 	auto increment = 2;
@@ -1273,8 +1271,7 @@ long CSpikeDoc::build_psth(const options_view_spikes* options_view_spikes, long*
 				continue;
 
 			int ii = (ii_time - ii_time_start) / ii_bin_size;
-			if (ii >= options_view_spikes->n_bins)
-				ii = options_view_spikes->n_bins;
+			ii = std::min(ii, options_view_spikes->n_bins);
 			(*(pl_sum0 + ii))++;
 		}
 	}

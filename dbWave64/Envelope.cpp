@@ -5,6 +5,8 @@
 #include "StdAfx.h"
 #include "Envelope.h"
 
+#include <algorithm>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -79,8 +81,8 @@ void CEnvelope::fill_envelope_with_abscissa(int n_pixels, int n_points)
 	// fill Envelope with data series, step 1
 	const auto n = m_envelope_.GetSize();
 	if (m_data_per_pixel_ == 1)
-		for (short i = 0; i < n; i++)
-			m_envelope_[i] = i;
+		for (int i = 0; i < n; i++)
+			m_envelope_[i] = static_cast<short>(i);
 	// OR fill Envelope with data series, step 2
 	else
 	{
@@ -128,7 +130,7 @@ void CEnvelope::fill_envelope_with_abscissa_ex(const int pix_first, int pix_last
 	// OR fill Envelope with data series, step 2
 	else
 	{
-		for (short i = 0; i < n; i += 2)
+		for (int i = 0; i < n; i += 2)
 		{
 			const short i_first = static_cast<short>(i / 2 + pix_first);
 			m_envelope_[i] = i_first;
@@ -336,10 +338,8 @@ void CEnvelope::get_envelope_max_min(int* max, int* min)
 	for (auto i = 3; i < n_pixels - 2; i++)
 	{
 		const short val = m_envelope_[i];
-		if (val > max_val)
-			max_val = val;
-		if (val < min_val)
-			min_val = val;
+		max_val = std::max(val, max_val);
+		min_val = std::min(val, min_val);
 	}
 	*min = static_cast<int>(min_val);
 	*max = static_cast<int>(max_val);
@@ -352,10 +352,8 @@ void CEnvelope::get_envelope_max_min_between_points(int i_first_pixel, int i_las
 	for (int i = i_first_pixel + 1; i <= i_last_pixel; i++)
 	{
 		const short val = m_envelope_[i];
-		if (val > max_val)
-			max_val = val;
-		if (val < min_val)
-			min_val = val;
+		max_val = std::max(val, max_val);
+		min_val = std::min(val, min_val);
 	}
 	*min = static_cast<int>(min_val);
 	*max = static_cast<int>(max_val);

@@ -5,6 +5,8 @@
 #include "resource.h"
 #include "DlgDataSeries.h"
 
+#include <algorithm>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -40,19 +42,19 @@ BOOL DlgDataSeries::OnInitDialog()
 	CDialog::OnInitDialog();
 	m_list_series.AddString(_T("New"));
 	int chan_max = m_p_chart_data_wnd->get_channel_list_size();
-	int i = 0;
-	for (i = 0; i < chan_max; i++)
+
+	for (int i = 0; i < chan_max; i++)
 		m_list_series.AddString(m_p_chart_data_wnd->get_channel_list_item(i)->get_comment());
 
 	// doc channel comments
 	chan_max = (m_pdb_doc->get_wave_format())->scan_count;
 	const auto p_chan_array = m_pdb_doc->get_wave_channels_array();
-	for (i = 0; i < chan_max; i++)
+	for (int i = 0; i < chan_max; i++)
 		m_ordinates.AddString(p_chan_array->get_p_channel(i)->am_csComment);
 
 	// doc transfers allowed
 	chan_max = AcqDataDoc::get_transforms_count();
-	for (i = 0; i < chan_max; i++)
+	for (int i = 0; i < chan_max; i++)
 		m_transform.AddString(AcqDataDoc::get_transform_name(i));
 
 	// select...
@@ -136,8 +138,7 @@ void DlgDataSeries::OnOK()
 {
 	on_clicked_define_series(); // take into account last changes
 	m_list_index = m_list_series.GetCurSel() - 1;
-	if (m_list_index < 0)
-		m_list_index = 0;
+	m_list_index = std::max(m_list_index, 0);
 	m_p_chart_data_wnd->get_data_from_doc();
 	m_p_chart_data_wnd->Invalidate();
 	CDialog::OnOK();
@@ -146,8 +147,7 @@ void DlgDataSeries::OnOK()
 void DlgDataSeries::OnCancel()
 {
 	m_list_index = m_list_series.GetCurSel() - 1;
-	if (m_list_index < 0)
-		m_list_index = 0;
+	m_list_index = std::max(m_list_index, 0);
 	CDialog::OnCancel();
 }
 

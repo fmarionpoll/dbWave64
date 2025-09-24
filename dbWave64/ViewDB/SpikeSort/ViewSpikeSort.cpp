@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #include "ViewSpikeSort.h"
 
+#include <algorithm>
+
 #include "dbWave.h"
 #include "DlgProgress.h"
 #include "DlgSpikeEdit.h"
@@ -871,8 +873,7 @@ void ViewSpikeSort::on_measure_parameters_from_spikes()
 		if (b_all_files_)
 		{
 			l_first_ = 0;
-			if (l_last_ < p_spk_doc->get_acq_size() - 1)
-				l_last_ = p_spk_doc->get_acq_size() - 1;
+			l_last_ = std::max(l_last_, p_spk_doc->get_acq_size() - 1);
 			time_first_s_ = static_cast<float>(l_first_) / p_spk_list->get_acq_sampling_rate();
 			time_last_s_ = static_cast<float>(l_last_) / p_spk_list->get_acq_sampling_rate();
 		}
@@ -1006,10 +1007,8 @@ void ViewSpikeSort::gain_adjust_xy_and_histogram()
 
 	const auto upper2 = static_cast<int>(upper_threshold_mv_ / delta_mv_);
 	const auto lower2 = static_cast<int>(lower_threshold_mv_ / delta_mv_);
-	if (upper2 > value_max)
-		value_max = upper2;
-	if (lower2 < value_min)
-		value_min = lower2;
+	value_max = std::max(upper2, value_max);
+	value_min = std::min(lower2, value_min);
 	const auto y_we = MulDiv(value_max - value_min + 1, 10, 8);
 	const auto y_wo = (value_max + value_min) / 2;
 	chart_measures_.set_yw_ext_org(y_we, y_wo);
@@ -1377,8 +1376,7 @@ void ViewSpikeSort::scroll_file(const UINT n_sb_code, const UINT n_pos)
 	default:return;
 	}
 
-	if (l_first < 0)
-		l_first = 0;
+	l_first = std::max<long>(l_first, 0);
 	auto l_last = l_first + page_scroll;
 
 	if (l_last >= total_scroll)
@@ -1600,8 +1598,7 @@ void ViewSpikeSort::on_en_change_shape_t2()
 		if (shape_t2_ms_ < shape_t1_ms_)
 			shape_t2_ms_ = shape_t1_ms_ + delta_ms_;
 		const auto t_max = (static_cast<float>(p_spk_list->get_spike_length()) - 1.f) * delta_ms_;
-		if (shape_t2_ms_ >= t_max)
-			shape_t2_ms_ = t_max;
+		shape_t2_ms_ = std::min(shape_t2_ms_, t_max);
 
 		const auto it2 = static_cast<int>(shape_t2_ms_ / delta_ms_);
 		if (it2 != chart_shape_.vt_tags.get_value_int(shape_t2_))

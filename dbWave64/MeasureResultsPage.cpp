@@ -9,6 +9,8 @@
 #include "resource.h"
 #include "MeasureResultsPage.h"
 
+#include <algorithm>
+
 #include "dbWave.h"
 
 #ifdef _DEBUG
@@ -223,8 +225,7 @@ void CMeasureResultsPage::get_max_min(const int channel, long l_first, const lon
 		buf_chan_first = l_first;
 		buf_chan_last = l_last;
 		m_p_dat_doc->load_raw_data(&buf_chan_first, &buf_chan_last, span);
-		if (l_last < buf_chan_last)
-			buf_chan_last = l_last;
+		buf_chan_last = std::min(l_last, buf_chan_last);
 		if (transform_mode > 0)
 			p_data = m_p_dat_doc->load_transformed_data(l_first, buf_chan_last, transform_mode, source_chan);
 		else

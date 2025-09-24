@@ -189,7 +189,7 @@ BOOL CdbWaveApp::InitInstance()
 	if (cmd_info.m_nShellCommand == CCommandLineInfo::FileNew) // actually none
 		cmd_info.m_nShellCommand = CCommandLineInfo::FileNothing;
 
-	// Enable DDE Execute open - this allow to open data files by double-click on it
+	// Enable DDE Execute open - this allows to open data files by double-click on it
 	EnableShellOpen();
 	RegisterShellFileTypes(TRUE); // this works only if user has administrative rights
 

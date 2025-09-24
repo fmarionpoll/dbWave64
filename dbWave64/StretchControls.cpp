@@ -3,6 +3,8 @@
 #include "StdAfx.h"
 #include "StretchControls.h"
 
+#include <algorithm>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -135,8 +137,7 @@ BOOL CStretchControl::new_slave_prop(const int i_id, const int x_size_slave, con
 	if (prop_master != nullptr)
 		pb->m_slave_order = prop_master->m_slave_order + 1;
 
-	if (m_slave_max_ < pb->m_slave_order)
-		m_slave_max_ = pb->m_slave_order;
+	m_slave_max_ = std::max(m_slave_max_, pb->m_slave_order);
 
 	ctrl_prop_ptr_array_.Add(pb);
 	return TRUE;

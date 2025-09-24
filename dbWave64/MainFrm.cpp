@@ -89,9 +89,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	CMDITabInfo mdi_tab_params;
 	mdi_tab_params.m_style = CMFCTabCtrl::STYLE_3D_ONENOTE; // other styles available...
-	mdi_tab_params.m_bActiveTabCloseButton = TRUE; // set to FALSE to place close button at right of tab area
+	mdi_tab_params.m_bActiveTabCloseButton = TRUE; // FALSE = place close button at right of tab area
 	mdi_tab_params.m_bTabIcons = FALSE; // set to TRUE to enable document icons on MDI tabs
-	mdi_tab_params.m_bAutoColor = TRUE; // set to FALSE to disable auto-coloring of MDI tabs
+	mdi_tab_params.m_bAutoColor = TRUE; // FALSE = disable auto-coloring of MDI tabs
 	mdi_tab_params.m_bDocumentMenu = TRUE; // enable the document menu at the right edge of the tab area
 	EnableMDITabbedGroups(TRUE, mdi_tab_params);
 

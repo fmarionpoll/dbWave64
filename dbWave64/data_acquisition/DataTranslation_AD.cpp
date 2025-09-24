@@ -1,10 +1,12 @@
 #include "StdAfx.h"
 #include "DataTranslation_AD.h"
 
+#include <algorithm>
+
 #include "OLERRORS.H"
 
 
-BOOL DataTranslation_AD::OpenSubSystem(const CString card_name)
+BOOL DataTranslation_AD::OpenSubSystem(const CString& card_name)
 {
 	try
 	{
@@ -82,14 +84,13 @@ BOOL DataTranslation_AD::InitSubSystem(options_input* pADC_options)
 		// limit scan_count to m_numchansMAX -
 		// this limits the nb of data acquisition channels to max-1 if one wants to use the additional I/O input "pseudo"channel
 		// so far, it seems acceptable...
-		if (pWFormat->scan_count > m_numchansMAX)
-			pWFormat->scan_count = m_numchansMAX;
+		pWFormat->scan_count = std::min<int>(pWFormat->scan_count, m_numchansMAX);
 
 		// set frequency to value requested, set frequency and get the value returned
-		double clockrate = static_cast<double>(pWFormat->sampling_rate_per_channel) * static_cast<double>(pWFormat->scan_count);
-		SetFrequency(clockrate); // set sampling frequency (total throughput)
-		clockrate = GetFrequency();
-		pWFormat->sampling_rate_per_channel = static_cast<float>(clockrate) / float(pWFormat->scan_count);
+		double clock_rate = static_cast<double>(pWFormat->sampling_rate_per_channel) * static_cast<double>(pWFormat->scan_count);
+		SetFrequency(clock_rate); // set sampling frequency (total throughput)
+		clock_rate = GetFrequency();
+		pWFormat->sampling_rate_per_channel = static_cast<float>(clock_rate) / float(pWFormat->scan_count);
 
 		// update channel list (chan & gain)
 
@@ -130,23 +131,21 @@ void DataTranslation_AD::DeclareBuffers(options_input* pADC_options)
 
 	CWaveFormat* pWFormat = &(pADC_options->wave_format);
 	// make sure that buffer length contains at least nacq chans
-	if (pWFormat->buffer_size < pWFormat->scan_count * m_pOptions->i_under_sample)
-		pWFormat->buffer_size = pWFormat->scan_count * m_pOptions->i_under_sample;
+	pWFormat->buffer_size = std::max<int>(pWFormat->buffer_size, pWFormat->scan_count * m_pOptions->i_under_sample);
 
 	// define buffer length
-	const float sweepduration = m_pOptions->sweep_duration;
-	const long chsweeplength = static_cast<long>(float(sweepduration) * pWFormat->sampling_rate_per_channel / float(
-		m_pOptions->i_under_sample));
-	m_chbuflen = chsweeplength * m_pOptions->i_under_sample / pWFormat->buffer_n_items;
+	const float sweep_duration = m_pOptions->sweep_duration;
+	const long channel_sweep_length = static_cast<long>(static_cast<float>(sweep_duration) * pWFormat->sampling_rate_per_channel / static_cast<float>(m_pOptions->i_under_sample));
+	m_chbuflen = channel_sweep_length * m_pOptions->i_under_sample / pWFormat->buffer_n_items;
 	m_buflen = m_chbuflen * pWFormat->scan_count;
 
 	// declare buffers to DT
 	for (int i = 0; i < pWFormat->buffer_n_items; i++)
 	{
 		ECODE ecode = olDmAllocBuffer(0, m_buflen, &m_bufhandle);
-		ecode = OLNOERROR;
+		ecode = OLNOERROR; // ??? forces ecode to OLNOERROR
 		if ((ecode == OLNOERROR) && (m_bufhandle != nullptr))
-			SetQueue(long(m_bufhandle));
+			SetQueue(reinterpret_cast<long>(m_bufhandle));
 	}
 }
 
@@ -231,7 +230,7 @@ short* DataTranslation_AD::OnBufferDone()
 
 long DataTranslation_AD::VoltsToValue(float fVolts, double dfGain)
 {
-	const long lRes = static_cast<long>(pow(2., double(GetResolution())));
+	const long lRes = static_cast<long>(pow(2., static_cast<double>(GetResolution())));
 
 	float f_min = 0.F;
 	if (GetMinRange() != 0.F)
@@ -242,10 +241,7 @@ long DataTranslation_AD::VoltsToValue(float fVolts, double dfGain)
 		f_max = GetMaxRange() / static_cast<float>(dfGain);
 
 	//clip input to range
-	if (fVolts > f_max)
-		fVolts = f_max;
-	if (fVolts < f_min)
-		fVolts = f_min;
+	fVolts = dbw::clamp_value(fVolts, f_min, f_max);
 
 	//if 2's comp encoding
 	long l_value;
@@ -269,7 +265,7 @@ long DataTranslation_AD::VoltsToValue(float fVolts, double dfGain)
 
 float DataTranslation_AD::ValueToVolts(long lVal, double dfGain)
 {
-	const long lRes = static_cast<long>(pow(2.0, double(GetResolution())));
+	const long lRes = static_cast<long>(pow(2.0, static_cast<double>(GetResolution())));
 	float f_min = 0.F;
 	if (GetMinRange() != 0.F)
 		f_min = GetMinRange() / static_cast<float>(dfGain);

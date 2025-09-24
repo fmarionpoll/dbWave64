@@ -70,7 +70,11 @@ void DlgDataTranslationBoard::on_sel_change_board()
 	m_n_subsystems_ = get_board_capabilities();
 }
 
-#define SS_LIST_SIZE 6
+enum
+{
+	SS_LIST_SIZE = 6
+};
+
 #define	SS_CODES {OLSS_AD, OLSS_DA, OLSS_DIN, OLSS_DOUT, OLSS_CT, OLSS_SRL}
 #define	SS_LIST	 {OLDC_ADELEMENTS, OLDC_DAELEMENTS, OLDC_DINELEMENTS,OLDC_DOUTELEMENTS, OLDC_CTELEMENTS, OLDC_SRLELEMENTS}
 #define SS_TEXT	 {_T("Analog Inputs"), _T("Analog outputs"), _T("Digital Inputs"),_T("Digital Outputs"),	_T("Counter/Trigger"), _T("Serial Port")}
@@ -83,14 +87,12 @@ int DlgDataTranslationBoard::get_board_capabilities()
 	{
 		m_p_dt_acq32->SetBoard(m_board_name_);
 		m_list_board_caps.ResetContent();
-
 		n_sub_systems = m_p_dt_acq32->GetNumSubSystems();
-
-		const CString subsystem_text[SS_LIST_SIZE] = SS_TEXT;
 		constexpr short ss_list[SS_LIST_SIZE] = SS_LIST;
 
 		for (auto i = 0; i < SS_LIST_SIZE; i++)
 		{
+			const CString subsystem_text[SS_LIST_SIZE] = SS_TEXT;
 			const int number = m_p_dt_acq32->GetDevCaps(ss_list[i]);
 			CString cs;
 			cs.Format(_T("\n  %i: "), number);
@@ -140,9 +142,9 @@ void DlgDataTranslationBoard::get_subsystem_yn_capabilities(int num_items)
 	if (num_items > 0)
 	{
 		constexpr OLSSC ol_ssc[SUB_COUNT] = SUB_CAP;
-		const CString cap_text[SUB_COUNT] = SUB_TEXT;
 		try
 		{
+			const CString cap_text[SUB_COUNT] = SUB_TEXT;
 			for (UINT i = 0; i < SUB_COUNT; i++)
 				if (m_p_dt_acq32->GetSSCaps(ol_ssc[i]) != 0)
 					m_list_ss_caps.AddString(cap_text[i]);
@@ -161,7 +163,6 @@ void DlgDataTranslationBoard::get_subsystem_numerical_capabilities(int num_items
 	if (num_items > 0)
 	{
 		constexpr OLSSC ol_ssc_num[SS_NUM_COUNT] = SS_NUM_CAP;
-		const CString num_text[SS_NUM_COUNT] = SS_NUM_TEXT;
 		try
 		{
 			for (UINT i = 0; i < SS_NUM_COUNT; i++)
@@ -169,6 +170,7 @@ void DlgDataTranslationBoard::get_subsystem_numerical_capabilities(int num_items
 				const UINT capability = m_p_dt_acq32->GetSSCaps(ol_ssc_num[i]);
 				if (capability != 0)
 				{
+					const CString num_text[SS_NUM_COUNT] = SS_NUM_TEXT;
 					CString cs;
 					cs.Format(_T(": %d"), capability);
 					m_list_ss_num_caps.AddString(num_text[i] + cs);

@@ -662,7 +662,7 @@ BOOL DlgExportData::export_data_as_excel_file()
 			save_c_string_biff(&data_dest, row, col, comment);
 			col++;
 		}
-		for (auto i = 0; i < n_bouts; i++)
+		for (auto i1 = 0; i1 < n_bouts; i1++)
 		{
 			if (ii_time >= mm_l_last)
 				continue;

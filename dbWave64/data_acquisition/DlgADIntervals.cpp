@@ -4,6 +4,8 @@
 
 #include <Olxdadefs.h>
 
+#include <algorithm>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -227,7 +229,7 @@ void DlgADIntervals::on_en_change_buffer_size()
 		m_buffer_w_size = (m_buffer_w_size / m_under_sample_factor) * m_under_sample_factor;
 		if (m_buffer_w_size == 0)
 			m_buffer_w_size = m_under_sample_factor;
-		m_sweep_duration = float(m_buffer_w_size * m_buffer_n_items) / m_ad_rate_channel;
+		m_sweep_duration = static_cast<float>(m_buffer_w_size * m_buffer_n_items) / m_ad_rate_channel;
 		UpdateData(FALSE);
 	}
 }
@@ -238,9 +240,8 @@ void DlgADIntervals::on_en_change_n_buffers()
 	{
 		mm_buffer_n_items.on_en_change(this, m_buffer_n_items, 1, -1);
 		// update dependent parameters
-		if (m_buffer_n_items < 1)
-			m_buffer_n_items = 1;
-		m_sweep_duration = float(m_buffer_w_size * m_buffer_n_items) / m_ad_rate_channel;
+		m_buffer_n_items = std::max(m_buffer_n_items, 1);
+		m_sweep_duration = static_cast<float>(m_buffer_w_size * m_buffer_n_items) / m_ad_rate_channel;
 		UpdateData(FALSE);
 	}
 }
@@ -251,8 +252,7 @@ void DlgADIntervals::on_en_change_acquisition_duration()
 	{
 		mm_acquisition_duration.on_en_change(this, m_acquisition_duration, 1.f, -1.f);
 		const auto min_duration = static_cast<float>(m_buffer_w_size) / m_ad_rate_channel;
-		if (m_acquisition_duration < min_duration)
-			m_acquisition_duration = min_duration;
+		m_acquisition_duration = std::max(m_acquisition_duration, min_duration);
 		UpdateData(FALSE);
 	}
 }

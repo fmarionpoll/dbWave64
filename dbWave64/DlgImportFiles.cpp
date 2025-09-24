@@ -2,6 +2,8 @@
 #include "dbWave.h"
 #include "DlgImportFiles.h"
 
+#include <algorithm>
+
 #include "ADAcqDataDoc.h"
 #include "resource.h"
 
@@ -125,7 +127,7 @@ void DlgImportFiles::adc_on_bn_clicked_start_stop()
 BOOL DlgImportFiles::import_atf_file()
 {
 	// load parameters
-	const BOOL flag = TRUE;
+	constexpr BOOL flag = TRUE;
 
 	// get infos from the source file
 	CFileStatus status;
@@ -276,8 +278,7 @@ line 11-	0	141.144	0.0317383
 			// take the max absolute value
 			x_min = abs(x_min);
 			x_max = abs(x_max);
-			if (x_min > x_max)
-				x_max = x_min;
+			x_max = std::max(x_min, x_max);
 			float x_total = static_cast<float>(x_max * 2.);
 			CWaveChan* p_channel = (pTo->get_wave_channels_array())->get_p_channel(i_chan);
 			p_channel->am_gaintotal = 20000. / x_total;

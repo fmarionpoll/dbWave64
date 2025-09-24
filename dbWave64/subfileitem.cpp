@@ -22,7 +22,7 @@ CSubfileItem::CSubfileItem()
 	m_rec_.ul_length = 0; 			// Length of the sub-file
 }
 
-CSubfileItem::CSubfileItem(const unsigned char uc_code, char* sz_label, const ULONGLONG ul_offset, const ULONGLONG ul_length,
+CSubfileItem::CSubfileItem(const unsigned char uc_code, const char* sz_label, const ULONGLONG ul_offset, const ULONGLONG ul_length,
                            const unsigned char uc_encoding, const int item_nb)
 {
 	m_rec_.w_code = uc_code; // data, acq_def, acq_chan, ..., zero if end
@@ -88,7 +88,7 @@ void CSubfileItem::read(CFile* p_file)
 	}
 }
 
-void CSubfileItem::set_label(char* psz_label)
+void CSubfileItem::set_label(const char* psz_label)
 {
 	auto p_lab = &m_rec_.sz_label[0];
 	auto i = 0;

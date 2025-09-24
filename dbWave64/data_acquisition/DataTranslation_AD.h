@@ -8,7 +8,7 @@ class DataTranslation_AD final :
 	public CDTAcq32
 {
 public:
-	BOOL OpenSubSystem(CString card_name);
+	BOOL OpenSubSystem(const CString& card_name);
 	BOOL InitSubSystem(options_input* pADC_options);
 	void DeleteBuffers();
 	void DeclareBuffers(options_input* pADC_options);

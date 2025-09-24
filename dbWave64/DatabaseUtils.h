@@ -14,7 +14,7 @@ public:
     static BOOL is_valid_string_variant(const COleVariant& var);
     
     // Safely extract integer from COleVariant
-    static __int64 safe_get_int64_from_variant(const COleVariant& var);
+    static long long safe_get_int64_from_variant(const COleVariant& var);
     
     // Safely extract double from COleVariant
     static double safe_get_double_from_variant(const COleVariant& var);
@@ -46,10 +46,10 @@ public:
     CString get_field_value_as_string(const CString& fieldName);
     
     // Get field value as 64-bit integer by index
-    __int64 get_field_value_as_int64(int fieldIndex);
+    long long get_field_value_as_int64(int fieldIndex);
     
     // Get field value as 64-bit integer by name
-    __int64 get_field_value_as_int64(const CString& fieldName);
+    long long get_field_value_as_int64(const CString& fieldName);
     
     // Get field value as double by index
     double get_field_value_as_double(int fieldIndex);

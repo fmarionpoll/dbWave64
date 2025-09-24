@@ -2,6 +2,8 @@
 #include "dbWave.h"
 #include "DlgEditStimArray.h"
 
+#include <algorithm>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -117,8 +119,7 @@ void DlgEditStimArray::on_bn_clicked_delete()
 	list_control_.DeleteItem(m_item_index_);
 	intervals.remove_at(m_item_index_);
 	const auto last_index = list_control_.GetItemCount() - 1;
-	if (m_item_index_ > last_index)
-		m_item_index_ = last_index;
+	m_item_index_ = std::min(m_item_index_, last_index);
 
 	reset_list_order();
 	list_control_.select_item(m_item_index_);

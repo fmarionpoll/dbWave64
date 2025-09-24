@@ -22,20 +22,21 @@ CString CDatabaseUtils::safe_get_string_from_variant(const COleVariant& var)
                 result = CString(var.bstrVal);
                 
                 // Method 2: If the result looks corrupted (contains non-ASCII chars), try alternative approaches
-                BOOL looksCorrupted = FALSE;
+                BOOL containsNonAscii = FALSE;
                 for (int i = 0; i < result.GetLength(); i++)
                 {
                     TCHAR ch = result[i];
                     if (ch > 127) // Non-ASCII characters
                     {
-                        looksCorrupted = TRUE;
+                        containsNonAscii = TRUE;
                         break;
                     }
                 }
-                
-                if (looksCorrupted)
+
+                if (containsNonAscii)
                 {
                     // Method 3: Try using COleVariant's built-in string conversion
+                    BOOL conversionFailed = FALSE;
                     try
                     {
                         COleVariant varCopy = var;
@@ -62,11 +63,24 @@ CString CDatabaseUtils::safe_get_string_from_variant(const COleVariant& var)
                     }
                     catch (...)
                     {
-                        // Conversion failed, keep original result
+                        // Conversion failed; force ASCII sanitization in the next step
+                        conversionFailed = TRUE;
                     }
-                    
-                    // Method 4: If still corrupted, try to extract only ASCII characters
-                    if (looksCorrupted)
+
+                    // Re-check corruption after attempted conversion
+                    containsNonAscii = FALSE;
+                    for (int i = 0; i < result.GetLength(); i++)
+                    {
+                        TCHAR ch = result[i];
+                        if (ch > 127)
+                        {
+                            containsNonAscii = TRUE;
+                            break;
+                        }
+                    }
+
+                    // Method 4: If still corrupted (or conversion failed), try to extract only ASCII characters
+                    if (containsNonAscii || conversionFailed)
                     {
                         CString asciiOnly;
                         for (int i = 0; i < result.GetLength(); i++)
@@ -77,7 +91,7 @@ CString CDatabaseUtils::safe_get_string_from_variant(const COleVariant& var)
                                 asciiOnly += ch;
                             }
                         }
-                        
+
                         if (!asciiOnly.IsEmpty())
                         {
                             result = asciiOnly;
@@ -234,23 +248,23 @@ BOOL CDatabaseUtils::is_valid_string_variant(const COleVariant& var)
     return (var.vt == VT_BSTR && var.bstrVal != nullptr);
 }
 
-__int64 CDatabaseUtils::safe_get_int64_from_variant(const COleVariant& var)
+long long CDatabaseUtils::safe_get_int64_from_variant(const COleVariant& var)
 {
     try
     {
         if (var.vt == VT_I4)
-            return var.lVal;
+            return static_cast<long long>(var.lVal);
         else if (var.vt == VT_I2)
-            return var.iVal;
+            return static_cast<long long>(var.iVal);
         else if (var.vt == VT_R8)
-            return static_cast<__int64>(var.dblVal);
+            return static_cast<long long>(var.dblVal);
         else if (var.vt == VT_R4)
-            return static_cast<__int64>(var.fltVal);
+            return static_cast<long long>(var.fltVal);
         else if (var.vt == VT_BSTR && var.bstrVal != nullptr)
         {
             // Try to convert string to integer
             CString str(var.bstrVal);
-            return _ttoi64(str);
+            return static_cast<long long>(_ttoi64(str));
         }
         else
             return 0;
@@ -337,7 +351,7 @@ CString CDatabaseAccessWrapper::get_field_value_as_string(int fieldIndex)
     }
     catch (CDaoException* e)
     {
-        m_lastError.Format(_T("DAO Exception: %s"), e->m_pErrorInfo->m_strDescription);
+        m_lastError = _T("DAO Exception: ") + (e->m_pErrorInfo ? e->m_pErrorInfo->m_strDescription : _T(""));
         e->Delete();
         return _T("[Field Read Error]");
     }
@@ -361,7 +375,7 @@ CString CDatabaseAccessWrapper::get_field_value_as_string(const CString& fieldNa
     }
     catch (CDaoException* e)
     {
-        m_lastError.Format(_T("DAO Exception: %s"), e->m_pErrorInfo->m_strDescription);
+        m_lastError = _T("DAO Exception: ") + (e->m_pErrorInfo ? e->m_pErrorInfo->m_strDescription : _T(""));
         e->Delete();
         return _T("[Field Read Error]");
     }
@@ -372,7 +386,7 @@ CString CDatabaseAccessWrapper::get_field_value_as_string(const CString& fieldNa
     }
 }
 
-__int64 CDatabaseAccessWrapper::get_field_value_as_int64(int fieldIndex)
+long long CDatabaseAccessWrapper::get_field_value_as_int64(int fieldIndex)
 {
     if (!is_valid())
         return 0;
@@ -385,7 +399,7 @@ __int64 CDatabaseAccessWrapper::get_field_value_as_int64(int fieldIndex)
     }
     catch (CDaoException* e)
     {
-        m_lastError.Format(_T("DAO Exception: %s"), e->m_pErrorInfo->m_strDescription);
+        m_lastError = _T("DAO Exception: ") + (e->m_pErrorInfo ? e->m_pErrorInfo->m_strDescription : _T(""));
         e->Delete();
         return 0;
     }
@@ -396,7 +410,7 @@ __int64 CDatabaseAccessWrapper::get_field_value_as_int64(int fieldIndex)
     }
 }
 
-__int64 CDatabaseAccessWrapper::get_field_value_as_int64(const CString& fieldName)
+long long CDatabaseAccessWrapper::get_field_value_as_int64(const CString& fieldName)
 {
     if (!is_valid())
         return 0;
@@ -409,7 +423,7 @@ __int64 CDatabaseAccessWrapper::get_field_value_as_int64(const CString& fieldNam
     }
     catch (CDaoException* e)
     {
-        m_lastError.Format(_T("DAO Exception: %s"), e->m_pErrorInfo->m_strDescription);
+        m_lastError = _T("DAO Exception: ") + (e->m_pErrorInfo ? e->m_pErrorInfo->m_strDescription : _T(""));
         e->Delete();
         return 0;
     }
@@ -433,7 +447,7 @@ double CDatabaseAccessWrapper::get_field_value_as_double(int fieldIndex)
     }
     catch (CDaoException* e)
     {
-        m_lastError.Format(_T("DAO Exception: %s"), e->m_pErrorInfo->m_strDescription);
+        m_lastError = _T("DAO Exception: ") + (e->m_pErrorInfo ? e->m_pErrorInfo->m_strDescription : _T(""));
         e->Delete();
         return 0.0;
     }
@@ -457,7 +471,7 @@ double CDatabaseAccessWrapper::get_field_value_as_double(const CString& fieldNam
     }
     catch (CDaoException* e)
     {
-        m_lastError.Format(_T("DAO Exception: %s"), e->m_pErrorInfo->m_strDescription);
+        m_lastError = _T("DAO Exception: ") + (e->m_pErrorInfo ? e->m_pErrorInfo->m_strDescription : _T(""));
         e->Delete();
         return 0.0;
     }

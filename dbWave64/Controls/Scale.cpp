@@ -9,8 +9,7 @@ IMPLEMENT_SERIAL(Scale, CObject, 1 /* schema number*/)
 
 // create CScale with zero points
 Scale::Scale()
-{
-}
+= default;
 
 // create CScale with n points
 Scale::Scale(const int n_pixels) : m_n_pixels_(n_pixels)

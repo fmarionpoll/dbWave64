@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "ChartDataAD.h"
 
+#include <algorithm>
 
 
 void ChartDataAD::start_display(int points_per_channel)
@@ -55,8 +56,7 @@ void ChartDataAD::display_buffer(short* samples_buffer, long samples_number)
 	// get first and last pixels of the interval to display
 	const int ad_pixel_first = MulDiv(m_l_ad_buffer_done_, m_n_pixels_, m_lx_size_);
 	int ad_pixel_last = MulDiv(m_l_ad_buffer_done_ + samples_number - 1, m_n_pixels_, m_lx_size_);
-	if (ad_pixel_last > display_rect_.right - 2)
-		ad_pixel_last = display_rect_.right - 2;
+	ad_pixel_last = std::min<LONG>(ad_pixel_last, display_rect_.right - 2);
 
 	const int display_pixels = ad_pixel_last - ad_pixel_first + 1;
 	const int display_data_points = display_pixels * m_data_per_pixel_;

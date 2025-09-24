@@ -30,10 +30,11 @@
 #include "CWorksheets.h"
 #include "DlgTransferFiles.h"
 #include "DlgExportData.h"
-//#include "data_acquisition/ViewADcontinuous.h"
 
 
 #include "ChildFrm.h"
+
+#include <algorithm>
 
 #include "DlgBrowseFile.h"
 #include "DlgDataComments.h"
@@ -645,8 +646,7 @@ void CChildFrame::on_tools_remove_artefact_files()
 			auto l_read_write_last = l_data_last;
 			if (!p_dat->load_raw_data(&l_read_write_first, &l_read_write_last, 0))
 				break; // exit if error reported
-			if (l_read_write_last > l_data_last)
-				l_read_write_last = l_data_last;
+			l_read_write_last = std::min(l_read_write_last, l_data_last);
 			const auto p_data0 = p_dat->load_transformed_data(l_data_first, l_read_write_last, 0, 0);
 
 			// compute initial offset (address of first point)
@@ -774,8 +774,7 @@ void CChildFrame::on_record_delete()
 
 	// save index current file
 	auto current_index = p_dbWave_doc->db_get_current_record_position();
-	if (current_index < 0)
-		current_index = 0;
+	current_index = std::max<long>(current_index, 0);
 
 	auto b_delete = TRUE;
 	if (!m_b_keep_choice_)
@@ -1173,8 +1172,7 @@ void CChildFrame::on_tools_cleanup_filenames()
 		return;
 	}
 
-	BOOL success;
-	success = CleanupDataFileFilenames(p_db_wave_doc);
+	BOOL success = CleanupDataFileFilenames(p_db_wave_doc);
 	if (success)
 	{
 		success = CleanupSpikeFileFilenames(p_db_wave_doc);

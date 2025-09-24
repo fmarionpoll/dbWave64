@@ -507,13 +507,11 @@ BOOL ChartData::get_data_from_doc()
 		return FALSE;
 
 	// check intervals	(assume m_lxSize OK)
-	if (m_lx_first_ < 0)
-		m_lx_first_ = 0; // avoid negative start
+	m_lx_first_ = std::max<long>(m_lx_first_, 0); // avoid negative start
 	m_lx_last_ = m_lx_first_ + m_lx_size_ - 1; // test end
 	if (m_lx_last_ > m_lx_very_last_) // past end of file?
 	{
-		if (m_lx_size_ >= m_lx_very_last_ + 1)
-			m_lx_size_ = m_lx_very_last_ + 1;
+		m_lx_size_ = std::min(m_lx_size_, m_lx_very_last_ + 1);
 		m_lx_last_ = m_lx_very_last_; // clip to end
 		m_lx_first_ = m_lx_last_ - m_lx_size_ + 1; // change start
 	}
@@ -547,8 +545,7 @@ BOOL ChartData::get_data_from_doc()
 				break; // exit if error reported
 
 			// build Envelopes  .................
-			if (index_last_point_in_pixel > l_last)
-				index_last_point_in_pixel = l_last;
+			index_last_point_in_pixel = std::min<long>(index_last_point_in_pixel, l_last);
 			const int n_points = index_last_point_in_pixel - l_first + 1;
 			if (n_points <= 0)
 				break;
@@ -587,13 +584,11 @@ BOOL ChartData::get_smooth_data_from_doc(const int i_option)
 		return FALSE;
 
 	// check intervals	(assume m_lxSize OK)
-	if (m_lx_first_ < 0)
-		m_lx_first_ = 0; // avoid negative start
+	m_lx_first_ = std::max<long>(m_lx_first_, 0); // avoid negative start
 	m_lx_last_ = m_lx_first_ + m_lx_size_ - 1; // test end
 	if (m_lx_last_ > m_lx_very_last_) // past end of file?
 	{
-		if (m_lx_size_ >= m_lx_very_last_ + 1)
-			m_lx_size_ = m_lx_very_last_ + 1;
+		m_lx_size_ = std::min(m_lx_size_, m_lx_very_last_ + 1);
 		m_lx_last_ = m_lx_very_last_; // clip to end
 		m_lx_first_ = m_lx_last_ - m_lx_size_ + 1; // change start
 	}
@@ -625,8 +620,7 @@ BOOL ChartData::get_smooth_data_from_doc(const int i_option)
 				break; // exit if error reported
 
 			// build Envelopes  .................
-			if (l_buf_chan_last > l_last)
-				l_buf_chan_last = l_last;
+			l_buf_chan_last = std::min(l_buf_chan_last, l_last);
 			const int n_points = l_buf_chan_last - l_first + 1;
 			if (n_points <= 0)
 				break;
@@ -665,16 +659,13 @@ BOOL ChartData::get_data_from_doc(const long l_first)
 
 BOOL ChartData::get_data_from_doc(long l_first, long l_last)
 {
-	if (l_first < 0) 
-		l_first = 0;
-	if (l_last > m_lx_very_last_) 
-		l_last = m_lx_very_last_;
+	l_first = std::max<long>(l_first, 0);
+	l_last = std::min(l_last, m_lx_very_last_);
 	if ((l_first > m_lx_very_last_) || (l_last < l_first))
 	{
 		// shuffled intervals
 		l_first = 0;
-		if (m_lx_size_ > m_lx_very_last_ + 1)
-			m_lx_size_ = m_lx_very_last_ + 1;
+		m_lx_size_ = std::min(m_lx_size_, m_lx_very_last_ + 1);
 		l_last = l_first + m_lx_size_ - 1;
 	}
 
@@ -804,8 +795,8 @@ void ChartData::plot_data_to_dc(CDC* p_dc)
 
 	//if (b_nice_grid) 
 	//{
-		update_x_ruler();
-		update_y_ruler();
+	update_x_ruler();
+	update_y_ruler();
 	//}
 
 	auto rect = display_rect_;
@@ -1136,7 +1127,7 @@ BOOL ChartData::copy_as_text(const int i_option, const int i_unit, const int n_a
 				                  _T("\r\nzero volts(bin):\t%i\r\n"), 0 );
 				// unit for each channel
 				StringCchPrintfEx(lp_copy, characters_remaining, &lp_copy, &characters_remaining, STRSAFE_NULL_ON_FAILURE,
-				                  _T("mvolts per bin:\r\n"));
+				                  _T("mVolts per bin:\r\n"));
 				for (auto i = 0; i < get_channel_list_size(); i++)
 					StringCchPrintfEx(lp_copy, characters_remaining, &lp_copy, &characters_remaining, STRSAFE_NULL_ON_FAILURE,
 					                  _T("%f\t"),
@@ -1460,8 +1451,8 @@ int ChartData::does_cursor_hit_curve(const CPoint point)
 	const auto x_extent = chan_list_item->get_n_elements();
 	int index1 = point.x - cx_mouse_jitter_;
 	auto index2 = index1 + cx_mouse_jitter_;
-	if (index1 < 0) index1 = 0; 
-	if (index2 > (get_rect_width() - 1)) index2 = get_rect_width() - 1;
+	index1 = std::max(index1, 0);
+	index2 = std::min(index2, get_rect_width() - 1);
 
 	// convert index1 into Envelope indexes
 	index1 = index1 * m_data_per_pixel_; // start from
@@ -1470,9 +1461,9 @@ int ChartData::does_cursor_hit_curve(const CPoint point)
 	if (index1 == index2)
 	{
 		index1--;
-		if (index1 < 0) index1 = 0;
+		index1 = std::max(index1, 0);
 		index2++;
-		if (index2 > x_extent) index2 = x_extent;
+		index2 = std::min(index2, x_extent);
 	}
 	// loop through all channels
 	for (auto chan = 0; chan <= i_channels; chan++) // scan all channels
@@ -1590,10 +1581,8 @@ void ChartData::highlight_data(CDC* p_dc, int chan)
 			continue; // next if out of range
 
 		// clip data if out of range
-		if (l_first < m_lx_first_)
-			l_first = m_lx_first_;
-		if (l_last > m_lx_last_) 
-			l_last = m_lx_last_;
+		l_first = std::max(l_first, m_lx_first_);
+		l_last = std::min(l_last, m_lx_last_);
 
 		// compute corresponding interval (assume same m_scale for all channels... (!!)
 		auto i_first = m_scale_.get_which_interval(l_first - m_lx_first_);

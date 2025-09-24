@@ -2,6 +2,8 @@
 #include "StdAfx.h"
 #include "ChartSpikeXY.h"
 
+#include <algorithm>
+
 #include "dbWaveDoc.h"
 
 
@@ -71,10 +73,8 @@ void ChartSpikeXY::plot_data_to_dc(CDC* p_dc)
 		auto first_spike_index = 0;
 		if (range_mode_ == RANGE_INDEX)
 		{
-			if (index_last_spike_ > last_spike_index)
-				index_last_spike_ = last_spike_index;
-			if (index_first_spike_ < 0)
-				index_first_spike_ = 0;
+			index_last_spike_ = std::min(index_last_spike_, last_spike_index);
+			index_first_spike_ = std::max(index_first_spike_, 0);
 			last_spike_index = index_last_spike_;
 			first_spike_index = index_first_spike_;
 		}
@@ -484,8 +484,8 @@ void ChartSpikeXY::get_extents()
 				for (auto i = upperbound; i >= 0; i--)
 				{
 					const auto val = p_spike_list_->get_spike(i)->get_y1();
-					if (val > max_value) max_value = val;
-					if (val < min_value) min_value = val;
+					max_value = std::max(val, max_value);
+					min_value = std::min(val, min_value);
 				}
 			}
 		}

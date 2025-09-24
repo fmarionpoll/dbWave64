@@ -9,6 +9,8 @@
 #include "StdAfx.h"
 #include "ChartSpikeHistVert.h"
 
+#include <algorithm>
+
 #include "dbWaveDoc.h"
 
 #ifdef _DEBUG
@@ -335,14 +337,10 @@ int ChartSpikeHistVert::hit_curve(CPoint point)
 	const auto mouse_x = MulDiv(point.x - x_viewport_origin_, x_we_, x_viewport_extent_) + x_wo_;
 	auto mouse_x1 = mouse_x - delta_x;
 	auto mouse_x2 = mouse_x - delta_x;
-	if (mouse_x1 < 1)
-		mouse_x1 = 1;
-	if (mouse_x1 > n_bins_)
-		mouse_x1 = n_bins_;
-	if (mouse_x2 < 1)
-		mouse_x2 = 1;
-	if (mouse_x2 > n_bins_)
-		mouse_x2 = n_bins_;
+	mouse_x1 = std::max(mouse_x1, 1);
+	mouse_x1 = std::min(mouse_x1, n_bins_);
+	mouse_x2 = std::max(mouse_x2, 1);
+	mouse_x2 = std::min(mouse_x2, n_bins_);
 
 	const auto delta_y = MulDiv(3, y_we_, y_ve_);
 	const auto mouse_y = static_cast<DWORD>(MulDiv(point.y - y_vo_, y_we_, y_ve_)) + y_wo_ + delta_y;

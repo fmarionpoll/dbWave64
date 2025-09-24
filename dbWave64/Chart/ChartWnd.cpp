@@ -3,6 +3,7 @@
 #include "ChartWnd.h"
 #include "DlgChartProps.h"
 #include "ColorNames.h"
+#include <algorithm>
 #include <cmath>
 
 #ifdef _DEBUG
@@ -463,8 +464,7 @@ void ChartWnd::draw_scale_from_ruler(CDC* p_dc, const Ruler* p_ruler)
 				p_dc->MoveTo(tick_pos, rc_client.bottom - 1); // line
 				p_dc->LineTo(tick_pos, rc_client.top + 1);
 				x = tick_pos - (size.cx / 2); // text position (upper left)
-				if (x < 0)
-					x = 0;
+				x = std::max(x, 0);
 				if (x + size.cx > rc_client.right)
 					x = rc_client.right - size.cx;
 				y = rc_client.bottom + 1; // - 1; //- size.cy

@@ -97,7 +97,7 @@ void ScrollBarEx::OnMouseMove(UINT n_flags, CPoint point)
 
 		//only invalidate if mouse drags something
 		if (m_captureMode > 0)
-			GetParent()->SendMessage(WM_HSCROLL, MAKEWPARAM(SB_THUMBTRACK, 0), (LPARAM)m_hWnd);
+			GetParent()->SendMessage(WM_HSCROLL, MAKEWPARAM(SB_THUMBTRACK, 0), reinterpret_cast<LPARAM>(m_hWnd));
 	}
 	else
 		CScrollBar::OnMouseMove(n_flags, point);
@@ -131,7 +131,7 @@ void ScrollBarEx::OnLButtonDown(UINT n_flags, CPoint point)
 		m_bCaptured = TRUE;
 	}
 	// click on thumb; it is necessary to catch this event because the standard routine
-	// does not transfert nPos as (int) but as a 16 bits value only
+	// does not transfer nPos as (int) but as a 16 bits value only
 	else if (point.x <= m_scBarInfo.xyThumbBottom - SPLIT_SIZE - TRACK_SIZE
 		&& point.x >= m_scBarInfo.xyThumbTop - SPLIT_SIZE - TRACK_SIZE)
 	{
@@ -151,7 +151,7 @@ void ScrollBarEx::OnLButtonUp(UINT n_flags, CPoint point)
 		m_bCaptured = FALSE;
 		m_captureMode = 0;
 		ReleaseCapture();
-		GetParent()->SendMessage(WM_HSCROLL, MAKEWPARAM(SB_THUMBPOSITION, 0), (LPARAM)m_hWnd);
+		GetParent()->SendMessage(WM_HSCROLL, MAKEWPARAM(SB_THUMBPOSITION, 0), reinterpret_cast<LPARAM>(m_hWnd));
 	}
 	else
 		CScrollBar::OnLButtonUp(n_flags, point);

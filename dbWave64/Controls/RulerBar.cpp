@@ -2,6 +2,7 @@
 #include "chart/ChartData.h"
 #include "Ruler.h"
 #include "Controls/RulerBar.h"
+#include <algorithm>
 #include <cmath>
 #include "resource.h"
 
@@ -152,8 +153,7 @@ void RulerBar::draw_scale_from_ruler(const Ruler* p_ruler)
 				dc.MoveTo(tick_pos, rc_client_.top);
 				dc.LineTo(tick_pos, rc_client_.top + tick_big_height);
 				x = tick_pos - (size.cx / 2);
-				if (x < 0)
-					x = 0;
+				x = std::max(x, 0);
 				if (x + size.cx > rc_client_.right)
 					x = rc_client_.right - size.cx;
 				y = rc_client_.top + tick_big_height + 1;

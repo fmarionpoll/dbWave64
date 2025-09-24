@@ -1,4 +1,5 @@
 #include "StdAfx.h"
+#include <algorithm>
 #include <cstdlib>
 #include <strsafe.h>
 #include "resource.h"
@@ -138,8 +139,7 @@ void ChartData::update_chan_list_max_span()
 	for (auto i = envelope_ptr_array_.GetUpperBound(); i > 0; i--)
 	{
 		const auto j = envelope_ptr_array_[i]->get_doc_buffer_span();
-		if (j > imax)
-			imax = j;
+		imax = std::max(j, imax);
 	}
 	envelope_ptr_array_[0]->set_doc_buffer_span(imax);
 }
@@ -928,7 +928,7 @@ void ChartData::display_vt_tags_long_value(CDC* p_dc)
 	p_dc->SetROP2(old_rop2);
 }
 
-void ChartData::OnSize(UINT n_type, int cx, int cy)
+void ChartData::OnSize(const UINT n_type, const int cx, const int cy)
 {
 	ChartWnd::OnSize(n_type, cx, cy);
 	if (!is_defined() || m_p_data_file_ == nullptr)
@@ -1001,8 +1001,8 @@ void ChartData::print(CDC* p_dc, const CRect* p_rect, const BOOL b_center_line)
 		{
 			p_x = chan_list_item->p_envelope_abscissa; 
 			p_x->export_to_abscissa(m_poly_points_);
-			n_elements = p_x->get_envelope_size(); 
 		}
+
 		// display: load ordinates ---------------------------------------------
 		const auto p_y = chan_list_item->p_envelope_ordinates; // load pointer to ordinates
 		p_y->export_to_ordinates(m_poly_points_); 
@@ -1016,6 +1016,7 @@ void ChartData::print(CDC* p_dc, const CRect* p_rect, const BOOL b_center_line)
 			p_dc->SelectObject(&pen_table_[color]);
 		}
 		// transform ordinates ------------------------------------------------
+		n_elements = p_x->get_envelope_size();
 		for (auto j = 0; j < n_elements; j++)
 		{
 			const auto p_point = &m_poly_points_[j];

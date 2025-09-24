@@ -163,6 +163,9 @@ protected:
 	void set_v_bar_mode(const int b_mode, const int i_id);
 	void update_tabs();
 
+	void render_for_export(CDC* p_dc, const CRect& pixel_rect) override;
+	CString export_comments(CDC* p_dc);
+
 	// Generated message map functions
 public:
 	afx_msg void OnHScroll(UINT n_sb_code, UINT n_pos, CScrollBar* p_scroll_bar);
@@ -192,7 +195,6 @@ public:
 	afx_msg void on_edit_copy();
 	afx_msg void on_file_save();
 	afx_msg void on_measure();
-	void render_for_export(CDC* p_dc, const CRect& pixel_rect) override;
 
 	afx_msg void on_bn_clicked_bias_button();
 	afx_msg void on_bn_clicked_gain_button();

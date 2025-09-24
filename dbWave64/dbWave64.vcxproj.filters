@@ -1259,9 +1259,6 @@
     <ClInclude Include="AlgorithmUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ViewDB\SpikeDetect\ViewSpikeDetect.h">
-      <Filter>ViewDB\SpikeDetect</Filter>
-    </ClInclude>
     <ClInclude Include="ViewDB\SpikeHist\ViewSpikeHist.h">
       <Filter>ViewDB\SpikeHist</Filter>
     </ClInclude>
@@ -1270,6 +1267,9 @@
     </ClInclude>
     <ClInclude Include="ViewDB\SpikeTemplate\ViewSpikeTemplate.h">
       <Filter>ViewDB\SpikeTemplate</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\SpikeDetect\ViewSpikeDetect.h">
+      <Filter>ViewDB\SpikeDetect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

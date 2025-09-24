@@ -3022,42 +3022,20 @@ void ViewSpikeDetection::update_tabs()
 
 void ViewSpikeDetection::render_for_export(CDC* p_dc, const CRect& pixel_rect)
 {
-	// comments and descriptors
-	p_old_font_ = nullptr;
-	const auto old_font_size = options_view_data_->font_size;
-	options_view_data_->font_size = 10;
-	print_create_font();
-	p_dc->SetBkMode(TRANSPARENT);
-	options_view_data_->font_size = old_font_size;
-	p_old_font_ = p_dc->SelectObject(&font_print_);
-	const int line_height = log_font_.lfHeight + 5;
-	auto row = 0;
-	constexpr auto column = 10;
-
-	auto comments = GetDocument()->export_database_data(1);
-	p_dc->TextOut(column, row, comments);
-	row += line_height;
-
-	comments = _T("Abscissa: ");
-	CString content;
-	GetDlgItem(IDC_TIMEFIRST)->GetWindowText(content);
-	comments += content;
-	comments += _T(" - ");
-	GetDlgItem(IDC_TIMELAST)->GetWindowText(content);
-	comments += content;
-	p_dc->TextOut(column, row, comments);
+	CString comments = export_comments(p_dc);
 
 	// layout rectangles
-	auto rect = pixel_rect;
+	const auto rect = pixel_rect;
 	auto data_rect = rect;
-	data_rect.top -= -3 * line_height;
+	data_rect.top -= -3 * options_view_data_->line_height;
+	
 	const auto rect_spike_width = MulDiv(chart_spike_shape_.get_rect_width(), data_rect.Width(),
-			chart_spike_shape_.get_rect_width() + chart_data_filtered_.get_rect_width());
-	const auto rect_data_height = MulDiv(chart_data_filtered_.get_rect_height(), data_rect.Height(),
-			chart_data_filtered_.get_rect_height() * 2 + chart_spike_bar_.get_rect_height());
+		chart_spike_shape_.get_rect_width() + chart_data_filtered_.get_rect_width());
 	const auto separator = rect_spike_width / 10;
 
 	// display curves : data
+	const auto rect_data_height = MulDiv(chart_data_filtered_.get_rect_height(), data_rect.Height(),
+		chart_data_filtered_.get_rect_height() * 2 + chart_spike_bar_.get_rect_height());
 	data_rect.bottom = rect.top + rect_data_height - separator / 2;
 	data_rect.left = rect.left + rect_spike_width + separator;
 	print_data_cartridge(p_dc, &chart_data_, &data_rect);
@@ -3068,16 +3046,17 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc, const CRect& pixel_rect)
 	print_data_cartridge(p_dc, &chart_data_filtered_, &data_rect);
 
 	// display spike bars
+	
 	auto rect_bars = data_rect;
 	rect_bars.top = data_rect.bottom + separator;
-	rect_bars.bottom = rect.bottom - 2 * line_height;
+	rect_bars.bottom = rect.bottom - 2 * options_view_data_->line_height;
 	chart_spike_bar_.print(p_dc, &rect_bars);
 
 	// display spike shapes
 	auto rect_spikes = rect;
 	rect_spikes.left += separator;
 	rect_spikes.right = rect.left + rect_spike_width;
-	rect_spikes.bottom = rect.bottom - 2 * line_height;
+	rect_spikes.bottom = rect.bottom - 2 * options_view_data_->line_height;
 	rect_spikes.top = rect_spikes.bottom - rect_bars.Height();
 	chart_spike_shape_.print(p_dc, &rect_spikes);
 	comments = print_spk_shape_bars(p_dc, &rect_spikes, TRUE);
@@ -3091,4 +3070,33 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc, const CRect& pixel_rect)
 	if (p_old_font_ != nullptr)
 		p_dc->SelectObject(p_old_font_);
 	font_print_.DeleteObject();
+}
+
+CString ViewSpikeDetection::export_comments(CDC* p_dc)
+{
+	// dc context for export
+	p_old_font_ = nullptr;
+	const auto old_font_size = options_view_data_->font_size;
+	options_view_data_->font_size = 10;
+	print_create_font();
+	p_dc->SetBkMode(TRANSPARENT);
+	options_view_data_->font_size = old_font_size;
+	p_old_font_ = p_dc->SelectObject(&font_print_);
+	options_view_data_->line_height = log_font_.lfHeight + 5;
+
+	// comments and descriptors
+	auto row = 0;
+	constexpr auto column = 10;
+	auto comments = GetDocument()->export_database_data(1);
+	p_dc->TextOut(column, row, comments);
+	row += options_view_data_->line_height;
+	comments = _T("Abscissa: ");
+	CString content;
+	GetDlgItem(IDC_TIMEFIRST)->GetWindowText(content);
+	comments += content;
+	comments += _T(" - ");
+	GetDlgItem(IDC_TIMELAST)->GetWindowText(content);
+	comments += content;
+	p_dc->TextOut(column, row, comments);
+	return comments;
 }

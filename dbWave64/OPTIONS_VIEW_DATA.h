@@ -42,6 +42,7 @@ class options_view_data final : public CObject
 	int font_size{40}; // font size (pixels)
 	int spike_height{0}; //
 	int spike_width{0}; //
+	int line_height{ 0 };
 
 	// how data are displayed from file to file
 	BOOL b_all_channels{true}; // display all channels

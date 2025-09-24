@@ -253,8 +253,6 @@ BOOL ViewDbTable::copy_as_emf_to_clipboard(const CRect& pixel_rect, const CStrin
         return FALSE;
     }
 
-    // Avoid SetAttribDC: derive text metrics explicitly via helper functions where needed
-
     // Let the derived view render its content
     render_for_export(&meta_dc, pixel_rect);
 

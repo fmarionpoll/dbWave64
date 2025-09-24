@@ -43,26 +43,26 @@
     <Filter Include="ViewDB\Data">
       <UniqueIdentifier>{8363d05a-5e4f-4d3b-a370-f417c0f8dd2f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ViewDB\Histograms">
-      <UniqueIdentifier>{e9d5dd1a-d02c-4449-9d59-5b9085fa01f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ViewDB\DetectSpikes">
-      <UniqueIdentifier>{c601b87d-259e-4e09-8e3c-d54a152e3572}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ViewDB\PanelProperties">
       <UniqueIdentifier>{3ed39f3b-decf-4fb4-92ad-3e1798a1791d}</UniqueIdentifier>
     </Filter>
     <Filter Include="ViewDB\SpikeSort">
       <UniqueIdentifier>{e18e52d0-f16b-4c69-be57-88be0407ccae}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ViewDB\Spikes">
-      <UniqueIdentifier>{ec56acc7-28b2-4595-ab7f-d883f81455fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ViewDB\Templates">
-      <UniqueIdentifier>{60fedae4-e59a-4290-9f57-cbfbeeb18a23}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ViewText">
       <UniqueIdentifier>{71e079b0-72ae-4680-83d8-1b5294ebbce2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewDB\SpikeTemplates">
+      <UniqueIdentifier>{60fedae4-e59a-4290-9f57-cbfbeeb18a23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewDB\SpikeHistograms">
+      <UniqueIdentifier>{e9d5dd1a-d02c-4449-9d59-5b9085fa01f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewDB\SpikeDetect">
+      <UniqueIdentifier>{c601b87d-259e-4e09-8e3c-d54a152e3572}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewDB\SpikeView">
+      <UniqueIdentifier>{ec56acc7-28b2-4595-ab7f-d883f81455fa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -573,12 +573,6 @@
     <ClCompile Include="ViewDB\Data\ViewData.cpp">
       <Filter>ViewDB\Data</Filter>
     </ClCompile>
-    <ClCompile Include="ViewDB\Histograms\ViewSpikeHist.cpp">
-      <Filter>ViewDB\Histograms</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewDB\DetectSpikes\ViewSpikeDetect.cpp">
-      <Filter>ViewDB\DetectSpikes</Filter>
-    </ClCompile>
     <ClCompile Include="ViewDB\PanelProperties\PaneldbProperties.cpp">
       <Filter>ViewDB\PanelProperties</Filter>
     </ClCompile>
@@ -588,12 +582,6 @@
     <ClCompile Include="ViewDB\SpikeSort\ViewSpikeSort.cpp">
       <Filter>ViewDB\SpikeSort</Filter>
     </ClCompile>
-    <ClCompile Include="ViewDB\Spikes\ViewSpikes.cpp">
-      <Filter>ViewDB\Spikes</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewDB\Templates\ViewSpikeTemplate.cpp">
-      <Filter>ViewDB\Templates</Filter>
-    </ClCompile>
     <ClCompile Include="ViewText\ViewNotedoc.cpp">
       <Filter>ViewText</Filter>
     </ClCompile>
@@ -602,6 +590,18 @@
     </ClCompile>
     <ClCompile Include="ViewDB\ListRecords\Adapters.cpp">
       <Filter>ViewDB\ListRecords</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\SpikeDetect\ViewSpikeDetect.cpp">
+      <Filter>ViewDB\SpikeDetect</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\SpikeHistograms\ViewSpikeHist.cpp">
+      <Filter>ViewDB\SpikeHistograms</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\SpikeTemplates\ViewSpikeTemplate.cpp">
+      <Filter>ViewDB\SpikeTemplates</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\SpikeView\ViewSpikes.cpp">
+      <Filter>ViewDB\SpikeView</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1241,12 +1241,6 @@
     <ClInclude Include="ViewDB\Data\ViewData.h">
       <Filter>ViewDB\Data</Filter>
     </ClInclude>
-    <ClInclude Include="ViewDB\Histograms\ViewSpikeHist.h">
-      <Filter>ViewDB\Histograms</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewDB\DetectSpikes\ViewSpikeDetect.h">
-      <Filter>ViewDB\DetectSpikes</Filter>
-    </ClInclude>
     <ClInclude Include="ViewDB\PanelProperties\PaneldbProperties.h">
       <Filter>ViewDB\PanelProperties</Filter>
     </ClInclude>
@@ -1256,12 +1250,6 @@
     <ClInclude Include="ViewDB\SpikeSort\ViewSpikeSort.h">
       <Filter>ViewDB\SpikeSort</Filter>
     </ClInclude>
-    <ClInclude Include="ViewDB\Spikes\ViewSpikes.h">
-      <Filter>ViewDB\Spikes</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewDB\Templates\ViewSpikeTemplate.h">
-      <Filter>ViewDB\Templates</Filter>
-    </ClInclude>
     <ClInclude Include="ViewText\ViewNotedoc.h">
       <Filter>ViewText</Filter>
     </ClInclude>
@@ -1270,6 +1258,18 @@
     </ClInclude>
     <ClInclude Include="AlgorithmUtils.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\SpikeDetect\ViewSpikeDetect.h">
+      <Filter>ViewDB\SpikeDetect</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\SpikeHistograms\ViewSpikeHist.h">
+      <Filter>ViewDB\SpikeHistograms</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\SpikeTemplates\ViewSpikeTemplate.h">
+      <Filter>ViewDB\SpikeTemplates</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\SpikeView\ViewSpikes.h">
+      <Filter>ViewDB\SpikeView</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,6 @@
 #pragma once
 #include "datafile_X.h"
+#include "subfileitem.h"
 
 class CDataFileAWAVE : public CDataFileX
 {

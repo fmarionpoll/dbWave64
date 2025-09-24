@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "subfileitem.h"
+
 #include "datafile_Awave.h"
 
 #include <algorithm>
@@ -31,7 +31,7 @@ CDataFileAWAVE::CDataFileAWAVE(const CFile* p_file)
 
 	// if file length zero, initialize file
 	if (p_file->GetLength() < 1)
-		init_file();
+		CDataFileAWAVE::init_file();
 }
 
 // delete CDataFileAWAVE object
@@ -197,8 +197,8 @@ void CDataFileAWAVE::write_file_map()
 //	Add/Save sub_files
 //	If these structures were already saved, old data are out of scope - not removed
 //	ie the pointer to the old data is modified but the data are still in the file.
-//	To purge a file with many changes, perform a file save, or saveas
-// !! no error checking is performed here..
+//	To purge a file with many changes, perform a file save, or save as
+// !! no error checking is performed here
 
 // write tags horizontal or vertical
 

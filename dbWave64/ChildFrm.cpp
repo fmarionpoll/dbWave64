@@ -43,11 +43,11 @@
 #include "DlgPrintMargins.h"
 #include "FilenameCleanupUtils.h"
 #include "ViewDB/Data/ViewData.h"
-#include "ViewDB/DetectSpikes/ViewSpikeDetect.h"
-#include "ViewDB/Histograms/ViewSpikeHist.h"
+#include "ViewDB/SpikeDetect/ViewSpikeDetect.h"
+#include "ViewDB/SpikeHist/ViewSpikeHist.h"
 #include "ViewDB/Spikes/ViewSpikes.h"
 #include "ViewDB/SpikeSort/ViewSpikeSort.h"
-#include "ViewDB/Templates/ViewSpikeTemplate.h"
+#include "ViewDB/SpikeTemplate/ViewSpikeTemplate.h"
 #include "ViewText/ViewNotedoc.h"
 
 #ifdef _DEBUG

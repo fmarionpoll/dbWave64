@@ -187,10 +187,10 @@
     <ClCompile Include="ViewDB\PanelProperties\PaneldbProperties.cpp" />
     <ClCompile Include="ViewDB\PanelProperties\PaneldbPropertiesToolBar.cpp" />
     <ClCompile Include="ViewDB\SpikeDetect\ViewSpikeDetect.cpp" />
-    <ClCompile Include="ViewDB\SpikeHistograms\ViewSpikeHist.cpp" />
+    <ClCompile Include="ViewDB\SpikeHist\ViewSpikeHist.cpp" />
     <ClCompile Include="ViewDB\SpikeSort\ViewSpikeSort.cpp" />
-    <ClCompile Include="ViewDB\SpikeTemplates\ViewSpikeTemplate.cpp" />
-    <ClCompile Include="ViewDB\SpikeView\ViewSpikes.cpp" />
+    <ClCompile Include="ViewDB\Spikes\ViewSpikes.cpp" />
+    <ClCompile Include="ViewDB\SpikeTemplate\ViewSpikeTemplate.cpp" />
     <ClCompile Include="ViewDB\ViewDbTable.cpp" />
     <ClCompile Include="ViewText\ViewNotedoc.cpp" />
     <ClCompile Include="WaveBuf.cpp" />
@@ -411,10 +411,10 @@
     <ClInclude Include="ViewDB\PanelProperties\PaneldbProperties.h" />
     <ClInclude Include="ViewDB\PanelProperties\PaneldbPropertiesToolBar.h" />
     <ClInclude Include="ViewDB\SpikeDetect\ViewSpikeDetect.h" />
-    <ClInclude Include="ViewDB\SpikeHistograms\ViewSpikeHist.h" />
+    <ClInclude Include="ViewDB\SpikeHist\ViewSpikeHist.h" />
     <ClInclude Include="ViewDB\SpikeSort\ViewSpikeSort.h" />
-    <ClInclude Include="ViewDB\SpikeTemplates\ViewSpikeTemplate.h" />
-    <ClInclude Include="ViewDB\SpikeView\ViewSpikes.h" />
+    <ClInclude Include="ViewDB\Spikes\ViewSpikes.h" />
+    <ClInclude Include="ViewDB\SpikeTemplate\ViewSpikeTemplate.h" />
     <ClInclude Include="ViewDB\ViewDbTable.h" />
     <ClInclude Include="ViewText\ViewNotedoc.h" />
     <ClInclude Include="WaveBuf.h" />

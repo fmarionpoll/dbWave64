@@ -603,6 +603,15 @@
     <ClCompile Include="ViewDB\SpikeTemplate\ViewSpikeTemplate.cpp">
       <Filter>ViewDB\SpikeTemplate</Filter>
     </ClCompile>
+    <ClCompile Include="ViewDB\TableDataService.cpp">
+      <Filter>ViewDB</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\GraphicsExport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\TablePrintRenderer.cpp">
+      <Filter>ViewDB</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AcqDataDoc.h">
@@ -1270,6 +1279,15 @@
     </ClInclude>
     <ClInclude Include="ViewDB\SpikeDetect\ViewSpikeDetect.h">
       <Filter>ViewDB\SpikeDetect</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\TableDataService.h">
+      <Filter>ViewDB</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\GraphicsExport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\TablePrintRenderer.h">
+      <Filter>ViewDB</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

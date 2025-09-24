@@ -62,7 +62,12 @@ BOOL ViewDbTable::PreCreateWindow(CREATESTRUCT& cs)
 
 CDaoRecordset* ViewDbTable::OnGetRecordset()
 {
-	return GetDocument()->db_get_recordset();
+    if (!data_service_)
+    {
+        // Default to Dao-backed service constructed from our document
+        data_service_ = std::make_unique<DaoTableDataService>(GetDocument());
+    }
+    return data_service_->get_recordset();
 }
 
 void ViewDbTable::OnSize(UINT n_type, int cx, int cy)
@@ -111,32 +116,38 @@ void ViewDbTable::OnActivateView(BOOL b_activate, CView* p_activate_view, CView*
 
 BOOL ViewDbTable::OnPreparePrinting(CPrintInfo* p_info)
 {
-	if (!DoPreparePrinting(p_info))
-		return FALSE;
-
-	if (!COleDocObjectItem::OnPreparePrinting(this, p_info))
-		return FALSE;
-
-	return TRUE;
+    if (!print_renderer_)
+        print_renderer_ = std::make_unique<DefaultTablePrintRenderer>();
+    return print_renderer_->prepare_printing(this, p_info);
 }
 
-void ViewDbTable::OnBeginPrinting(CDC* /*p_dc*/, CPrintInfo* /*pInfo*/)
+void ViewDbTable::OnBeginPrinting(CDC* p_dc, CPrintInfo* pInfo)
 {
-	// TODO: add extra initialization before printing
+    if (!print_renderer_)
+        print_renderer_ = std::make_unique<DefaultTablePrintRenderer>();
+    print_renderer_->begin_printing(this, p_dc, pInfo);
 }
 
-void ViewDbTable::OnEndPrinting(CDC* /*p_dc*/, CPrintInfo* /*pInfo*/)
+void ViewDbTable::OnEndPrinting(CDC* p_dc, CPrintInfo* pInfo)
 {
-	// TODO: add cleanup after printing
+    if (!print_renderer_)
+        print_renderer_ = std::make_unique<DefaultTablePrintRenderer>();
+    print_renderer_->end_printing(this, p_dc, pInfo);
 }
 
 void ViewDbTable::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 {
-	// TODO: add customized printing code here
-	if (p_info->m_bDocObject)
-		COleDocObjectItem::OnPrint(this, p_info, TRUE);
-	else
-		CView::OnPrint(p_dc, p_info);
+    if (!print_renderer_)
+        print_renderer_ = std::make_unique<DefaultTablePrintRenderer>();
+    print_renderer_->print_page(this, p_dc, p_info);
+}
+
+void ViewDbTable::framework_default_print(CDC* p_dc, CPrintInfo* p_info)
+{
+    if (p_info->m_bDocObject)
+        COleDocObjectItem::OnPrint(this, p_info, TRUE);
+    else
+        CView::OnPrint(p_dc, p_info);
 }
 
 void ViewDbTable::save_current_spk_file()
@@ -232,47 +243,12 @@ void ViewDbTable::draw_text_block(CDC* p_dc, const CRect& device_rect, const int
 // Common EMF creation and clipboard copy
 BOOL ViewDbTable::copy_as_emf_to_clipboard(const CRect& pixel_rect, const CString& title)
 {
-    // Create metafile DC with HIMETRIC bounds
-    CMetaFileDC meta_dc;
-    const auto p_ref_dc = GetDC();
-    if (p_ref_dc == nullptr)
-        return FALSE;
-
-    const int dpi_x = p_ref_dc->GetDeviceCaps(LOGPIXELSX);
-    const int dpi_y = p_ref_dc->GetDeviceCaps(LOGPIXELSY);
-    const CRect himetric_bounds(0, 0,
-        MulDiv(pixel_rect.Width(), 2540, dpi_x),
-        MulDiv(pixel_rect.Height(), 2540, dpi_y));
-
-    CString meta_title = _T("dbWave\0") + title;
-    meta_title += _T("\0\0");
-    const auto h_created = meta_dc.CreateEnhanced(p_ref_dc, nullptr, &himetric_bounds, meta_title);
-    ASSERT(h_created != NULL);
-    if (h_created == NULL)
-    {
-        ReleaseDC(p_ref_dc);
-        return FALSE;
-    }
-
-    // Let the derived view render its content
-    render_for_export(&meta_dc, pixel_rect);
-
-    // Cleanup and copy to clipboard
-    ReleaseDC(p_ref_dc);
-    const auto h_emf = meta_dc.CloseEnhanced();
-    if (h_emf == nullptr)
-        return FALSE;
-
-    if (OpenClipboard())
-    {
-        EmptyClipboard();
-        SetClipboardData(CF_ENHMETAFILE, h_emf);
-        CloseClipboard();
-        return TRUE;
-    }
-    // Clipboard busy; delete handle to avoid leak
-    DeleteEnhMetaFile(h_emf);
-    return FALSE;
+    return GraphicsExport::CopyAsEmfToClipboard(
+        this,
+        pixel_rect,
+        title,
+        [this](CDC* dc, const CRect& pr) { this->render_for_export(dc, pr); }
+    );
 }
 
 int ViewDbTable::get_line_height_for_point_size(CDC* p_dc, const int point_size, const LPCTSTR font_face)
@@ -309,74 +285,11 @@ int ViewDbTable::calc_draw_text_height(CDC* p_dc, const int point_size, const CS
 
 BOOL ViewDbTable::export_to_png(const CRect& pixel_rect, const CString& file_path, const int bg_color)
 {
-    // Create a DIB section for offscreen rendering
-    BITMAPINFO bmi{};
-    bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-    bmi.bmiHeader.biWidth = pixel_rect.Width();
-    bmi.bmiHeader.biHeight = -pixel_rect.Height(); // top-down DIB
-    bmi.bmiHeader.biPlanes = 1;
-    bmi.bmiHeader.biBitCount = 32;
-    bmi.bmiHeader.biCompression = BI_RGB;
-
-    void* p_bits = nullptr;
-    HDC h_screen = ::GetDC(nullptr);
-    HBITMAP h_dib = CreateDIBSection(h_screen, &bmi, DIB_RGB_COLORS, &p_bits, nullptr, 0);
-    if (!h_dib) { ::ReleaseDC(nullptr, h_screen); return FALSE; }
-
-    CDC mem_dc;
-    mem_dc.CreateCompatibleDC(nullptr);
-    const auto h_old = mem_dc.SelectObject(h_dib);
-
-    // Clear background
-    const CRect r(0, 0, pixel_rect.Width(), pixel_rect.Height());
-    HBRUSH h_br = CreateSolidBrush(bg_color);
-    FillRect(mem_dc.GetSafeHdc(), &r, h_br);
-    DeleteObject(h_br);
-
-    // Set 1:1 mapping within the render area
-    mem_dc.SetMapMode(MM_ANISOTROPIC);
-    mem_dc.SetWindowExt(pixel_rect.Width(), pixel_rect.Height());
-    mem_dc.SetViewportOrg(0, 0);
-    mem_dc.SetViewportExt(pixel_rect.Width(), pixel_rect.Height());
-
-    // Render
-    render_for_export(&mem_dc, CRect(0, 0, pixel_rect.Width(), pixel_rect.Height()));
-
-    // Save to PNG using GDI+
-    BOOL result = FALSE;
-    ULONG_PTR gdiplus_token = 0;
-    Gdiplus::GdiplusStartupInput gdiplus_startup_input;
-    if (Gdiplus::Ok == Gdiplus::GdiplusStartup(&gdiplus_token, &gdiplus_startup_input, nullptr))
-    {
-        Gdiplus::Bitmap bitmap((HBITMAP)h_dib, (HPALETTE)nullptr);
-
-        // Get PNG encoder CLSID
-        UINT num = 0, size = 0;
-        Gdiplus::GetImageEncodersSize(&num, &size);
-        if (size > 0)
-        {
-            auto p_codecs = (Gdiplus::ImageCodecInfo*)malloc(size);
-            if (p_codecs && Gdiplus::Ok == Gdiplus::GetImageEncoders(num, size, p_codecs))
-            {
-                CLSID png_clsid{};
-                for (UINT i = 0; i < num; ++i)
-                {
-                    if (wcscmp(p_codecs[i].MimeType, L"image/png") == 0)
-                    { png_clsid = p_codecs[i].Clsid; break; }
-                }
-                if (!IsEqualCLSID(png_clsid, CLSID{}))
-                {
-                    result = (Gdiplus::Ok == bitmap.Save(file_path, &png_clsid, nullptr));
-                }
-            }
-            if (p_codecs) free(p_codecs);
-        }
-        Gdiplus::GdiplusShutdown(gdiplus_token);
-    }
-
-    // Cleanup
-    mem_dc.SelectObject(h_old);
-    DeleteObject(h_dib);
-    ::ReleaseDC(nullptr, h_screen);
-    return result;
+    return GraphicsExport::ExportToPng(
+        this,
+        pixel_rect,
+        file_path,
+        bg_color,
+        [this](CDC* dc, const CRect& pr) { this->render_for_export(dc, pr); }
+    );
 }

@@ -1,9 +1,14 @@
 #pragma once
 #include <afxdao.h>
 #pragma warning(disable : 4995)
+#include <memory>
+
 #include "SpikeListTabCtrl.h"
 #include "dbTableMain.h"
 #include "StretchControls.h"
+#include "ViewDB/TableDataService.h"
+#include "ViewDB/TablePrintRenderer.h"
+#include "ViewDB/GraphicsExport.h"
 
 
 class CdbWaveDoc;
@@ -21,6 +26,14 @@ public:
 	CdbTableMain* p_db_table_main{ nullptr };
 	boolean m_auto_detect { false };
 	boolean m_auto_increment {false};
+
+	// Data service abstraction (defaults to DAO-backed via document)
+	std::unique_ptr<ITableDataService> data_service_ {};
+	// Print/export abstraction
+	std::unique_ptr<ITablePrintRenderer> print_renderer_ {};
+
+	// Framework default print helper (exposes base call for renderer)
+	void framework_default_print(CDC* p_dc, CPrintInfo* p_info);
 
 	CdbWaveDoc* GetDocument();
 	CDaoRecordset* OnGetRecordset() override;
@@ -75,17 +88,15 @@ protected:
 	BOOL b_init_ {false};
 
 protected:
-	// Export helpers (EMF clipboard)
-	// Creates an EMF with HIMETRIC bounds derived from pixelRect and copies it to the clipboard.
-	// Calls render_for_export(dc, pixelRect) to let derived views draw their content.
+	// Export helpers (EMF/PNG)
 	BOOL copy_as_emf_to_clipboard(const CRect& pixel_rect, const CString& title);
+	BOOL export_to_png(const CRect& pixel_rect, const CString& file_path, int bg_color = RGB(255,255,255));
 	virtual void render_for_export(CDC* p_dc, const CRect& pixel_rect);
 
 	// Text helpers (device-independent in MM_ANISOTROPIC)
 	void draw_text_block(CDC* p_dc, const CRect& device_rect, int point_size, const CString& text, UINT draw_text_flags, LPCTSTR font_face = _T("Arial")) const;
 	static int get_line_height_for_point_size(CDC* p_dc, int point_size, LPCTSTR font_face = _T("Arial"));
 	static int calc_draw_text_height(CDC* p_dc, int point_size, const CString& text, int max_width, UINT draw_text_flags, LPCTSTR font_face = _T("Arial"));
-	BOOL export_to_png(const CRect& pixel_rect, const CString& file_path, int bg_color = RGB(255,255,255));
 
 protected:
 	afx_msg void OnSize(UINT n_type, int cx, int cy);

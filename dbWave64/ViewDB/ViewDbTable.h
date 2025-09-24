@@ -83,8 +83,8 @@ protected:
 
 	// Text helpers (device-independent in MM_ANISOTROPIC)
 	void draw_text_block(CDC* p_dc, const CRect& device_rect, int point_size, const CString& text, UINT draw_text_flags, LPCTSTR font_face = _T("Arial")) const;
-	int get_line_height_for_point_size(CDC* p_dc, int point_size, LPCTSTR font_face = _T("Arial")) const;
-	int calc_draw_text_height(CDC* p_dc, int point_size, const CString& text, int max_width, UINT draw_text_flags, LPCTSTR font_face = _T("Arial")) const;
+	static int get_line_height_for_point_size(CDC* p_dc, int point_size, LPCTSTR font_face = _T("Arial"));
+	static int calc_draw_text_height(CDC* p_dc, int point_size, const CString& text, int max_width, UINT draw_text_flags, LPCTSTR font_face = _T("Arial"));
 	BOOL export_to_png(const CRect& pixel_rect, const CString& file_path, int bg_color = RGB(255,255,255));
 
 protected:

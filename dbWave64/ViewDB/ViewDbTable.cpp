@@ -237,6 +237,7 @@ BOOL ViewDbTable::copy_as_emf_to_clipboard(const CRect& pixel_rect, const CStrin
     const auto p_ref_dc = GetDC();
     if (p_ref_dc == nullptr)
         return FALSE;
+
     const int dpi_x = p_ref_dc->GetDeviceCaps(LOGPIXELSX);
     const int dpi_y = p_ref_dc->GetDeviceCaps(LOGPIXELSY);
     const CRect himetric_bounds(0, 0,
@@ -274,7 +275,7 @@ BOOL ViewDbTable::copy_as_emf_to_clipboard(const CRect& pixel_rect, const CStrin
     return FALSE;
 }
 
-int ViewDbTable::get_line_height_for_point_size(CDC* p_dc, const int point_size, const LPCTSTR font_face) const
+int ViewDbTable::get_line_height_for_point_size(CDC* p_dc, const int point_size, const LPCTSTR font_face)
 {
     LOGFONT lf{};
     lf.lfHeight = -MulDiv(point_size, p_dc->GetDeviceCaps(LOGPIXELSY), 72);
@@ -287,7 +288,7 @@ int ViewDbTable::get_line_height_for_point_size(CDC* p_dc, const int point_size,
     return tm.tmHeight + tm.tmExternalLeading;
 }
 
-int ViewDbTable::calc_draw_text_height(CDC* p_dc, const int point_size, const CString& text, const int max_width, const UINT draw_text_flags, const LPCTSTR font_face) const
+int ViewDbTable::calc_draw_text_height(CDC* p_dc, const int point_size, const CString& text, const int max_width, const UINT draw_text_flags, const LPCTSTR font_face)
 {
     LOGFONT lf{};
     lf.lfHeight = -MulDiv(point_size, p_dc->GetDeviceCaps(LOGPIXELSY), 72);

@@ -948,39 +948,45 @@ void ChartData::print(CDC* p_dc, const CRect* p_rect, const BOOL b_center_line)
 	ASSERT(n_saved_dc != 0);
 	const auto old_rect = client_rect_;
 
-	// prepare DC
-	const auto old_map_mode = p_dc->SetMapMode(MM_TEXT); 
+	// prepare background and clip in device coords
 	client_rect_ = *p_rect; 
 	adjust_display_rect(p_rect);
 	erase_background(p_dc);
-	// clip curves
 	if (scope_structure_.b_clip_rect)
 		p_dc->IntersectClipRect(display_rect_);
 	else
 		p_dc->SelectClipRgn(nullptr);
 
-	// adjust coordinates for anisotropic mode
-	const auto y_ve = -display_rect_.Height();
-	const int y_vo = display_rect_.top + display_rect_.Height() / 2;
-	const auto x_ve = display_rect_.Width();
-	const int x_vo = display_rect_.left;
-
-	// exit if no data defined
+	// exit early if no data defined (keep MM_TEXT/default)
 	if (!is_defined())
 	{
 		p_dc->TextOut(10, 10, _T("No data"));
+		p_dc->RestoreDC(n_saved_dc);
+		client_rect_ = old_rect;
+		adjust_display_rect(&client_rect_);
 		return;
 	}
 
-	// change horizontal resolution;
+	// change horizontal resolution and load data
 	resize_channels(display_rect_.Width(), m_lx_size_);
 	if (!b_center_line)
 		get_data_from_doc();
 	else
 		get_smooth_data_from_doc(b_center_line);
 
+	// Set anisotropic mapping: logical 0..W x -H..H (centered Y)
+	p_dc->SetMapMode(MM_ANISOTROPIC);
+	p_dc->SetViewportOrg(display_rect_.left, display_rect_.top + display_rect_.Height() / 2);
+	p_dc->SetViewportExt(display_rect_.Width(), -display_rect_.Height());
+	p_dc->SetWindowExt(display_rect_.Width(), display_rect_.Height());
+	p_dc->SetWindowOrg(0, 0);
+
+	// logical extents
+	const auto y_ve = display_rect_.Height();
+
+	// ensure abscissa envelope uses logical 0..W
 	const auto p_envelope = envelope_ptr_array_.GetAt(0);
-	p_envelope->fill_envelope_with_abscissa_ex(x_vo, x_ve, m_lx_size_);
+	p_envelope->fill_envelope_with_abscissa(m_n_pixels_, m_lx_size_);
 
 	// display all channels
 	auto n_elements = 0;
@@ -989,25 +995,24 @@ void ChartData::print(CDC* p_dc, const CRect* p_rect, const BOOL b_center_line)
 	auto color = BLACK_COLOR;
 	const auto old_pen = p_dc->SelectObject(&pen_table_[color]);
 
-	// display loop:
 	for (auto i_chan = chan_list_item_ptr_array_.GetUpperBound(); i_chan >= 0; i_chan--) // scan all channels
 	{
 		const auto chan_list_item = chan_list_item_ptr_array_[i_chan];
 		if (chan_list_item->is_print_visible() == FALSE)
 			continue;
 
-		// display: load abscissa   ----------------------------------------------
+		// abscissa
 		if (p_x != chan_list_item->p_envelope_abscissa)
 		{
-			p_x = chan_list_item->p_envelope_abscissa; 
+			p_x = chan_list_item->p_envelope_abscissa;
 			p_x->export_to_abscissa(m_poly_points_);
 		}
 
-		// display: load ordinates ---------------------------------------------
-		const auto p_y = chan_list_item->p_envelope_ordinates; // load pointer to ordinates
-		p_y->export_to_ordinates(m_poly_points_); 
+		// ordinates
+		const auto p_y = chan_list_item->p_envelope_ordinates;
+		p_y->export_to_ordinates(m_poly_points_);
 
-		// change extent, org and color ----------------------------------------
+		// color
 		const auto y_extent = chan_list_item->get_y_extent();
 		const auto y_zero = chan_list_item->get_y_zero();
 		if (chan_list_item->get_color_index() != color)
@@ -1015,74 +1020,70 @@ void ChartData::print(CDC* p_dc, const CRect* p_rect, const BOOL b_center_line)
 			color = chan_list_item->get_color_index();
 			p_dc->SelectObject(&pen_table_[color]);
 		}
-		// transform ordinates ------------------------------------------------
+
+		// transform y from data bins to logical units centered at 0
 		n_elements = p_x->get_envelope_size();
 		for (auto j = 0; j < n_elements; j++)
 		{
 			const auto p_point = &m_poly_points_[j];
-			p_point->y = MulDiv(p_point->y - y_zero, y_ve, y_extent) + y_vo;
-		}
-		//  display points ----------------------------------------------------
-		if (b_poly_line)
-			p_dc->Polyline(&m_poly_points_[0], n_elements); 
-		else
-		{
-			p_dc->MoveTo(m_poly_points_[0]); 
-			for (auto j = 0; j < n_elements; j++)
-				p_dc->LineTo(m_poly_points_[j]); 
+			p_point->y = MulDiv(p_point->y - y_zero, y_ve, y_extent);
 		}
 
-		//display associated cursors ------------------------------------------
-		if (hz_tags.get_tag_list_size() > 0) 
+		// draw
+		if (b_poly_line)
+			p_dc->Polyline(&m_poly_points_[0], n_elements);
+		else
 		{
-			// select pen and display mode
+			p_dc->MoveTo(m_poly_points_[0]);
+			for (auto j = 0; j < n_elements; j++)
+				p_dc->LineTo(m_poly_points_[j]);
+		}
+
+		// horizontal tags for this channel (logical coords)
+		if (hz_tags.get_tag_list_size() > 0)
+		{
 			CPen pen_light_grey(PS_SOLID, 0, color_spike_class[SILVER_COLOR]);
 			const auto old_pen2 = p_dc->SelectObject(&pen_light_grey);
-			// iterate through HZ cursor list
-			const int x0 = p_rect->left;
-			const int x1 = p_rect->right;
+			const int x0 = 0;
+			const int x1 = display_rect_.Width();
 			for (auto j = hz_tags.get_tag_list_size() - 1; j >= 0; j--)
 			{
-				if (hz_tags.get_channel(j) != i_chan) // next tag if not associated with
-					continue; // current channel
+				if (hz_tags.get_channel(j) != i_chan)
+					continue;
 				auto k = hz_tags.get_value_int(j);
-				k = MulDiv(k - y_zero, y_ve, y_extent) + y_vo;
-				p_dc->MoveTo(x0, k); // set initial pt
-				p_dc->LineTo(x1, k); // HZ line
+				k = MulDiv(k - y_zero, y_ve, y_extent);
+				p_dc->MoveTo(x0, k);
+				p_dc->LineTo(x1, k);
 			}
 			p_dc->SelectObject(old_pen2);
 		}
-		// highlight data ------------------------------------------------------
+
+		// highlights
 		highlight_data(p_dc, i_chan);
 	}
 
-	// display vertical cursors ------------------------------------------------
+	// vertical tags across the full height (logical coords)
 	if (vt_tags.get_tag_list_size() > 0)
 	{
-		// select pen and display mode
 		CPen pen_light_grey(PS_SOLID, 0, color_spike_class[SILVER_COLOR]);
 		const auto p_old_pen = p_dc->SelectObject(&pen_light_grey);
-		// iterate through VT cursor list
-		const int y0 = p_rect->top;
-		const int y1 = p_rect->bottom;
-		const int k0 = p_rect->left;
-		const int k_size = p_rect->right - k0;
+		const int y_top = y_ve / 2;
+		const int y_bottom = -y_ve / 2;
 		for (auto j = vt_tags.get_tag_list_size() - 1; j >= 0; j--)
 		{
-			const auto lk = vt_tags.get_tag_value_long(j); // get value
+			const auto lk = vt_tags.get_tag_value_long(j);
 			if (lk < m_lx_first_ || lk > m_lx_last_)
 				continue;
-			const int k = k0 + (lk - m_lx_first_) * k_size / (m_lx_last_ - m_lx_first_ + 1);
-			p_dc->MoveTo(k, y0); // set initial pt
-			p_dc->LineTo(k, y1); // VT line
+			const int k = MulDiv(static_cast<int>(lk - m_lx_first_), display_rect_.Width(), (m_lx_last_ - m_lx_first_ + 1));
+			p_dc->MoveTo(k, y_top);
+			p_dc->LineTo(k, y_bottom);
 		}
 		p_dc->SelectObject(p_old_pen);
 	}
 
-	// restore DC ----------------------------------------------------------------
-	p_dc->SelectObject(old_pen); // restore old pen
-	p_dc->RestoreDC(n_saved_dc); // restore DC
-	p_dc->SetMapMode(old_map_mode); // restore map mode
+	// restore DC
+	p_dc->SelectObject(old_pen);
+	p_dc->RestoreDC(n_saved_dc);
 	client_rect_ = old_rect;
 	adjust_display_rect(&client_rect_);
 }

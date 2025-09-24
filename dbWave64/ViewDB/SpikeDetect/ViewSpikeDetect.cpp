@@ -3027,17 +3027,17 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc, const CRect& pixel_rect)
 	// layout rectangles
 	const auto rect = pixel_rect;
 	auto data_rect = rect;
-	data_rect.top -= -3 * options_view_data_->line_height;
-	
+
 	const auto rect_spike_width = MulDiv(chart_spike_shape_.get_rect_width(), data_rect.Width(),
 		chart_spike_shape_.get_rect_width() + chart_data_filtered_.get_rect_width());
+	const auto rect_data_height = MulDiv(chart_data_filtered_.get_rect_height(), data_rect.Height(),
+		chart_data_filtered_.get_rect_height() * 2 + chart_spike_bar_.get_rect_height());
 	const auto separator = rect_spike_width / 10;
 
 	// display curves : data
-	const auto rect_data_height = MulDiv(chart_data_filtered_.get_rect_height(), data_rect.Height(),
-		chart_data_filtered_.get_rect_height() * 2 + chart_spike_bar_.get_rect_height());
-	data_rect.bottom = rect.top + rect_data_height - separator / 2;
-	data_rect.left = rect.left + rect_spike_width + separator;
+	data_rect.top += 3 * options_view_data_->line_height;
+	data_rect.bottom = data_rect.top + rect_data_height - separator / 2;
+	data_rect.left +=  rect_spike_width + separator;
 	print_data_cartridge(p_dc, &chart_data_, &data_rect);
 
 	// display curves: detect channel

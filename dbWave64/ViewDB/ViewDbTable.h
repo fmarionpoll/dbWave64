@@ -10,7 +10,8 @@
 #include "ViewDB/TablePrintRenderer.h"
 #include "ViewDB/GraphicsExport.h"
 
-
+constexpr auto b_restore = 0;
+constexpr auto b_save = 1;
 class CdbWaveDoc;
 
 class ViewDbTable : public CDaoRecordView
@@ -31,6 +32,8 @@ public:
 	std::unique_ptr<ITableDataService> data_service_ {};
 	// Print/export abstraction
 	std::unique_ptr<ITablePrintRenderer> print_renderer_ {};
+	// page format printing parameters (pixel unit)
+	options_view_data* options_view_data_ = nullptr;
 
 	// Framework default print helper (exposes base call for renderer)
 	void framework_default_print(CDC* p_dc, CPrintInfo* p_info);
@@ -87,11 +90,14 @@ protected:
 	CStretchControl stretch_ {};
 	BOOL b_init_ {false};
 
-protected:
+public:
 	// Export helpers (EMF/PNG)
 	BOOL copy_as_emf_to_clipboard(const CRect& pixel_rect, const CString& title);
 	BOOL export_to_png(const CRect& pixel_rect, const CString& file_path, int bg_color = RGB(255,255,255));
 	virtual void render_for_export(CDC* p_dc, const CRect& pixel_rect);
+	virtual bool can_export_view() const { return true; }
+	virtual bool can_export_png() const { return true; }
+	virtual void serialize_windows_state(BOOL save, int tab_index = -1);
 
 	// Text helpers (device-independent in MM_ANISOTROPIC)
 	void draw_text_block(CDC* p_dc, const CRect& device_rect, int point_size, const CString& text, UINT draw_text_flags, LPCTSTR font_face = _T("Arial")) const;
@@ -102,6 +108,10 @@ protected:
 	afx_msg void OnSize(UINT n_type, int cx, int cy);
 	afx_msg void on_nm_click_tab1(NMHDR* p_nmhdr, LRESULT* p_result);
 	afx_msg void on_tcn_sel_change_tab1(NMHDR* p_nmhdr, LRESULT* p_result);
+	afx_msg void OnExportViewToClipboard();
+	afx_msg void OnUpdateExportViewToClipBoard(CCmdUI* pCmdUI);
+	afx_msg void OnExportViewAsPng();
+	afx_msg void OnUpdateExportViewAsPng(CCmdUI* pCmdUI);
 
 	DECLARE_MESSAGE_MAP()
 };

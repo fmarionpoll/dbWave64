@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "ViewDB/Spikes/ViewSpikes.h"
+#include "ViewSpikes.h"
 
 #include <strsafe.h>
 #include <algorithm>
@@ -66,7 +66,6 @@ BEGIN_MESSAGE_MAP(ViewSpikes, ViewDbTable)
 	ON_COMMAND(ID_FORMAT_CENTER_CURVE, &ViewSpikes::on_format_center_curve)
 	ON_COMMAND(ID_FORMAT_GAIN_ADJUST, &ViewSpikes::on_format_gain_adjust)
 	ON_COMMAND(ID_TOOLS_EDIT_SPIKES, &ViewSpikes::on_tools_edit_spikes)
-	ON_COMMAND(ID_EDIT_COPY, &ViewSpikes::on_edit_copy)
 	ON_COMMAND(ID_FORMAT_PREVIOUS_FRAME, &ViewSpikes::on_format_previous_frame)
 	ON_COMMAND(ID_FORMAT_NEXT_FRAME, &ViewSpikes::on_format_next_frame)
 	ON_COMMAND(ID_RECORD_SHIFT_LEFT, &ViewSpikes::on_h_scroll_left)
@@ -1562,43 +1561,6 @@ void ViewSpikes::update_file_scroll()
 	file_scrollbar_.SetScrollInfo(&file_scroll_infos_);
 }
 
-void ViewSpikes::on_edit_copy()
-{
-	DlgCopyAs dlg;
-	dlg.m_n_abscissa = options_view_data_->hz_resolution;
-	dlg.m_n_ordinates = options_view_data_->vt_resolution;
-	dlg.b_graphics = options_view_data_->b_graphics;
-	dlg.m_i_option = options_view_data_->b_contours;
-	dlg.m_i_unit = options_view_data_->b_units;
-
-	// invoke dialog box
-	if (IDOK == dlg.DoModal())
-	{
-		options_view_data_->b_graphics = dlg.b_graphics;
-		options_view_data_->b_contours = dlg.m_i_option;
-		options_view_data_->b_units = dlg.m_i_unit;
-		options_view_data_->hz_resolution = dlg.m_n_abscissa;
-		options_view_data_->vt_resolution = dlg.m_n_ordinates;
-
-		// output rectangle requested by user
-		CRect rect(0, 0, options_view_data_->hz_resolution, options_view_data_->vt_resolution);
-
-		copy_as_emf_to_clipboard(rect, GetDocument()->GetTitle());
-	}
-
-	// restore screen in previous state
-	update_spike_file(TRUE);
-	update_file_scroll();
-	spike_class_listbox_.Invalidate();
-	if (p_data_doc_ != nullptr)
-	{
-		chart_data_wnd_.get_data_from_doc(l_first_, l_last_);
-		chart_data_wnd_.resize_channels(chart_data_wnd_.get_rect_width(), l_last_ - l_first_);
-		chart_data_wnd_.Invalidate();
-	}
-}
-
-
 void ViewSpikes::on_zoom()
 {
 	if (set_zoom.GetCheck())
@@ -2001,6 +1963,8 @@ void ViewSpikes::on_en_change_no_spike()
 
 void ViewSpikes::render_for_export(CDC* p_dc, const CRect& rect)
 {
+	serialize_windows_state(b_save);
+
 	const auto r_height = MulDiv(spike_class_listbox_.get_row_height(), rect.Width(),
 	                            spike_class_listbox_.get_columns_time_width());
 	auto rw_spikes = rect;
@@ -2031,5 +1995,7 @@ void ViewSpikes::render_for_export(CDC* p_dc, const CRect& rect)
 		rw_bars.OffsetRect(0, r_height);
 		rw_text.OffsetRect(0, r_height);
 	}
+
+	serialize_windows_state(b_restore);
 }
 

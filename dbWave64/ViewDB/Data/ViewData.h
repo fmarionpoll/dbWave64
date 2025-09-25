@@ -116,8 +116,6 @@ public:
 	afx_msg void on_clicked_gain();
 	afx_msg void on_format_x_scale();
 	afx_msg void on_format_y_scale();
-	afx_msg void on_edit_copy();
-	afx_msg void on_update_edit_copy(CCmdUI* p_cmd_ui);
 	afx_msg void on_tools_data_series();
 	afx_msg void adc_on_hardware_channels_dlg();
 	afx_msg void adc_on_hardware_intervals_dlg();

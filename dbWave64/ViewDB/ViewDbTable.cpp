@@ -3,7 +3,11 @@
 #include "dbWave_constants.h"
 #include "ViewDbTable.h"
 
+#include "dbWave.h"
 #include "dbWaveDoc.h"
+#include "DlgCopyAs.h"
+
+
 
 IMPLEMENT_DYNAMIC(ViewDbTable, CDaoRecordView)
 
@@ -25,7 +29,10 @@ ViewDbTable::~ViewDbTable()
 BEGIN_MESSAGE_MAP(ViewDbTable, CDaoRecordView)
 	ON_NOTIFY(NM_CLICK, IDC_TAB1, &ViewDbTable::on_nm_click_tab1)
 	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB1, &ViewDbTable::on_tcn_sel_change_tab1)
-
+	ON_COMMAND(ID_EXPORT_VIEW_TO_CLIPBOARD, &ViewDbTable::OnExportViewToClipboard)
+	ON_UPDATE_COMMAND_UI(ID_EXPORT_VIEW_TO_CLIPBOARD, &ViewDbTable::OnUpdateExportViewToClipBoard)
+	ON_COMMAND(ID_EXPORT_VIEW_AS_PNG, &ViewDbTable::OnExportViewAsPng)
+	ON_UPDATE_COMMAND_UI(ID_EXPORT_VIEW_TO_CLIPBOARD, &ViewDbTable::OnUpdateExportViewAsPng)
 END_MESSAGE_MAP()
 
 //  drawing
@@ -292,4 +299,82 @@ BOOL ViewDbTable::export_to_png(const CRect& pixel_rect, const CString& file_pat
         bg_color,
         [this](CDC* dc, const CRect& pr) { this->render_for_export(dc, pr); }
     );
+}
+void ViewDbTable::OnExportViewToClipboard()
+{
+	if (options_view_data_ == nullptr)
+	{
+		const auto p_app = static_cast<CdbWaveApp*>(AfxGetApp());
+		options_view_data_ = &(p_app->options_view_data);
+	}
+		
+	DlgCopyAs dlg;
+	dlg.m_n_abscissa = options_view_data_->hz_resolution;
+	dlg.m_n_ordinates = options_view_data_->vt_resolution;
+	dlg.b_graphics = options_view_data_->b_graphics;
+	dlg.m_i_option = options_view_data_->b_contours;
+	dlg.m_i_unit = options_view_data_->b_units;
+
+	// invoke dialog box
+	if (IDOK == dlg.DoModal())
+	{
+		options_view_data_->b_graphics = dlg.b_graphics;
+		options_view_data_->b_contours = dlg.m_i_option;
+		options_view_data_->b_units = dlg.m_i_unit;
+		options_view_data_->hz_resolution = dlg.m_n_abscissa;
+		options_view_data_->vt_resolution = dlg.m_n_ordinates;
+
+		if (dlg.b_graphics) {
+			serialize_windows_state(b_save);
+			CRect rect(0, 0, options_view_data_->hz_resolution, options_view_data_->vt_resolution);;
+			copy_as_emf_to_clipboard(rect, GetDocument()->GetTitle());
+			serialize_windows_state(b_restore);
+		}
+	}
+}
+
+void ViewDbTable::serialize_windows_state(const BOOL save, int tab_index)
+{
+}
+
+void ViewDbTable::OnExportViewAsPng()
+{
+	if (options_view_data_ == nullptr)
+	{
+		const auto p_app = static_cast<CdbWaveApp*>(AfxGetApp());
+		options_view_data_ = &(p_app->options_view_data);
+	}
+
+	DlgCopyAs dlg;
+	dlg.m_n_abscissa = options_view_data_->hz_resolution;
+	dlg.m_n_ordinates = options_view_data_->vt_resolution;
+	dlg.b_graphics = options_view_data_->b_graphics;
+	dlg.m_i_option = options_view_data_->b_contours;
+	dlg.m_i_unit = options_view_data_->b_units;
+
+	// invoke dialog box
+	if (IDOK == dlg.DoModal())
+	{
+		options_view_data_->b_graphics = dlg.b_graphics;
+		options_view_data_->b_contours = dlg.m_i_option;
+		options_view_data_->b_units = dlg.m_i_unit;
+		options_view_data_->hz_resolution = dlg.m_n_abscissa;
+		options_view_data_->vt_resolution = dlg.m_n_ordinates;
+		const CString file_path = _T("c:\\temp\\export.png");
+		if (dlg.b_graphics) {
+			const CRect rect(0, 0, options_view_data_->hz_resolution, options_view_data_->vt_resolution);
+			const int bg_color = 0;
+			export_to_png(&rect,  file_path, bg_color);
+		}
+	}
+}
+
+void ViewDbTable::OnUpdateExportViewToClipBoard(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(can_export_view());
+}
+
+void ViewDbTable::OnUpdateExportViewAsPng(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(can_export_png());
 }

@@ -72,7 +72,6 @@ BEGIN_MESSAGE_MAP(ViewSpikeHist, ViewDbTable)
 	ON_EN_CHANGE(IDC_EDIT2, &ViewSpikeHist::on_en_change_dot_height)
 	ON_COMMAND(ID_FORMAT_HISTOGRAM, &ViewSpikeHist::on_format_histogram)
 	ON_BN_CLICKED(IDC_CHECK2, &ViewSpikeHist::on_click_cycle_hist)
-	ON_COMMAND(ID_EDIT_COPY, &ViewSpikeHist::on_edit_copy)
 	ON_LBN_SELCHANGE(IDC_LIST1, &ViewSpikeHist::on_sel_change_histogram_type)
 	ON_EN_CHANGE(IDC_EDITNSTIPERCYCLE, &ViewSpikeHist::on_en_change_edit_n_stimuli_per_cycle)
 	ON_EN_CHANGE(IDC_EDITLOCKONSTIM, &ViewSpikeHist::on_en_change_edit_lock_on_stim)
@@ -623,17 +622,9 @@ void ViewSpikeHist::on_en_change_dot_height()
 	}
 }
 
-void ViewSpikeHist::on_edit_copy()
-{
-	CRect rect;
-	const auto p_wnd = GetDlgItem(IDC_STATIC12);
-	p_wnd->GetClientRect(&rect);
-	copy_as_emf_to_clipboard(rect, GetDocument()->GetTitle());
-}
-
-
 void  ViewSpikeHist::render_for_export(CDC* p_dc, const CRect& pixel_rect)
 {
+	serialize_windows_state(b_save);
 	CRect rect = pixel_rect;
 	switch (m_b_hist_type_)
 	{
@@ -651,6 +642,7 @@ void  ViewSpikeHist::render_for_export(CDC* p_dc, const CRect& pixel_rect)
 	default:
 		break;
 	}
+	serialize_windows_state(b_restore);
 }
 
 BOOL ViewSpikeHist::OnPreparePrinting(CPrintInfo* p_info)

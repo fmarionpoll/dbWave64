@@ -4163,6 +4163,12 @@ BEGIN
     ID_TOOLS_CLEANUP_FILENAMES "Remove spaces from dat and spk filnames"
 END
 
+STRINGTABLE
+BEGIN
+    ID_COPY_VIEW            "Copy current view to the clipboard to transfer it to another program as a metafile"
+    ID_EXPORT_VIEW_AS_PNG   "Exprot view as a PNG file"
+END
+
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 

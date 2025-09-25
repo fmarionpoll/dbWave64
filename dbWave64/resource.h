@@ -593,7 +593,6 @@
 #define IDC_HISTMAX_STATIC              1123
 #define IDC_COMBO_OPERATOR              1128
 #define IDC_STATICRATIO                 1129
-#define IDC_COMBO_OPERATOR2             1129
 #define IDC_COMBO_COMMENT               1129
 #define IDC_RATIO                       1130
 #define IDC_RADIO4                      1132
@@ -990,6 +989,10 @@
 #define ID_BUTTON_PREVIOUS              33069
 #define ID_BUTTON_NEXT                  33070
 #define ID_ACTIVE_COLUMN                33071
+#define ID_COPY_VIEW                    33073
+#define ID_BUTTON5                      33074
+#define ID_EXPORT_VIEW_AS_PNG           33074
+#define ID_EXPORT_VIEW_TO_CLIPBOARD     33075
 #define ID_TOOLS_IMPORT                 33097
 #define ID_TOOLS_PATHS_RELATIVE         33099
 #define ID_TOOLS_PATHS_ABSOLUTE         33100
@@ -1009,7 +1012,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        580
-#define _APS_NEXT_COMMAND_VALUE         33072
+#define _APS_NEXT_COMMAND_VALUE         33076
 #define _APS_NEXT_CONTROL_VALUE         1548
 #define _APS_NEXT_SYMED_VALUE           555
 #endif

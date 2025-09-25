@@ -192,7 +192,6 @@ public:
 	afx_msg void on_tools_detection_parameters();
 	afx_msg void on_tools_edit_spikes();
 	afx_msg void on_tools_data_series();
-	afx_msg void on_edit_copy();
 	afx_msg void on_file_save();
 	afx_msg void on_measure();
 

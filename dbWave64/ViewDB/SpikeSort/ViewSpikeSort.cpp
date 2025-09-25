@@ -111,8 +111,11 @@ BEGIN_MESSAGE_MAP(ViewSpikeSort, ViewDbTable)
 	ON_REGISTERED_MESSAGE(AFX_WM_PROPERTY_CHANGED, OnPropertyChanged)
 
 END_MESSAGE_MAP()
+
 void ViewSpikeSort::render_for_export(CDC* p_dc, const CRect& rect)
 {
+	serialize_windows_state(b_save);
+
     // Layout similar to on screen: top measures, middle bars, bottom shape, right histogram
     auto area = rect;
     const int separator = std::max(4, rect.Height() / 50);
@@ -135,6 +138,8 @@ void ViewSpikeSort::render_for_export(CDC* p_dc, const CRect& rect)
     chart_spike_bar_.print(p_dc, &r_bars);
     chart_shape_.print(p_dc, &r_shapes);
     chart_histogram_.plot_data_to_dc(p_dc); // uses its own display_rect; approximate fallback
+
+	serialize_windows_state(b_restore);
 }
 
 void ViewSpikeSort::define_sub_classed_items()

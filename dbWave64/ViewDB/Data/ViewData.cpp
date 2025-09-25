@@ -1,6 +1,6 @@
-#include <algorithm>
-
 #include "StdAfx.h"
+
+#include <algorithm>
 #include "dbWave.h"
 #include "resource.h"
 #include "chart/ChartWnd.h"
@@ -37,8 +37,6 @@ BEGIN_MESSAGE_MAP(ViewData, ViewDbTable)
 	ON_BN_CLICKED(IDC_GAIN_button, &ViewData::on_clicked_gain)
 	ON_COMMAND(ID_FORMAT_XSCALE, &ViewData::on_format_x_scale)
 	ON_COMMAND(ID_FORMAT_SET_ORDINATES, &ViewData::on_format_y_scale)
-	ON_COMMAND(ID_EDIT_COPY, &ViewData::on_edit_copy)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_COPY, &ViewData::on_update_edit_copy)
 	ON_COMMAND(ID_TOOLS_DATA_SERIES, &ViewData::on_tools_data_series)
 	ON_COMMAND(ID_HARDWARE_ADCHANNELS, &ViewData::adc_on_hardware_channels_dlg)
 	ON_COMMAND(ID_HARDWARE_AD_INTERVALS, &ViewData::adc_on_hardware_intervals_dlg)
@@ -269,44 +267,6 @@ void ViewData::on_tools_data_series()
 
 	m_channel_selected = dlg.m_list_index;
 	update_legends(UPD_Y_SCALE);
-}
-
-void ViewData::on_edit_copy()
-{
-	DlgCopyAs dlg;
-	dlg.m_n_abscissa = options_view_data_->hz_resolution;
-	dlg.m_n_ordinates = options_view_data_->vt_resolution;
-	dlg.b_graphics = options_view_data_->b_graphics;
-	dlg.m_i_option = options_view_data_->b_contours;
-	dlg.m_i_unit = options_view_data_->b_units;
-
-	// invoke dialog box
-	if (IDOK == dlg.DoModal())
-	{
-		options_view_data_->b_graphics = dlg.b_graphics;
-		options_view_data_->b_contours = dlg.m_i_option;
-		options_view_data_->b_units = dlg.m_i_unit;
-		options_view_data_->hz_resolution = dlg.m_n_abscissa;
-		options_view_data_->vt_resolution = dlg.m_n_ordinates;
-
-		if (!dlg.b_graphics)
-			chart_data.copy_as_text(dlg.m_i_option, dlg.m_i_unit, dlg.m_n_abscissa);
-		else
-		{
-			CRect rect(0, 0, options_view_data_->hz_resolution, options_view_data_->vt_resolution);
-			pixels_count_0_ = chart_data.get_rect_width();
-			copy_as_emf_to_clipboard(rect, m_p_dat_->GetTitle());
-			// restore initial conditions
-			chart_data.resize_channels(pixels_count_0_, 0);
-			chart_data.get_data_from_doc();
-			chart_data.Invalidate();
-		}
-	}
-}
-
-void ViewData::on_update_edit_copy(CCmdUI* p_cmd_ui) 
-{
-	p_cmd_ui->Enable(chart_data.is_defined() != NULL); 
 }
 
 void ViewData::adc_on_hardware_channels_dlg() 
@@ -1654,6 +1614,8 @@ void ViewData::update_y_zero(const int i_chan, const int y_bias)
 
 void ViewData::render_for_export(CDC* p_dc, const CRect& rect)
 {
+	serialize_windows_state(b_save);
+
 	const auto old_scope_struct = new options_scope_struct();
 	options_scope_struct* new_scope_struct = chart_data.get_scope_parameters();
 	*old_scope_struct = *new_scope_struct;
@@ -1697,4 +1659,6 @@ void ViewData::render_for_export(CDC* p_dc, const CRect& rect)
 	if (p_old_font != nullptr)
 		p_dc->SelectObject(p_old_font);
 	font.DeleteObject();
+
+	serialize_windows_state(b_restore);
 }

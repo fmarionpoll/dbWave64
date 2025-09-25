@@ -123,7 +123,6 @@ protected:
 	afx_msg void on_en_change_dot_height();
 	afx_msg void on_format_histogram();
 	afx_msg void on_click_cycle_hist();
-	afx_msg void on_edit_copy();
 
 protected:
 	void render_for_export(CDC* p_dc, const CRect& pixel_rect) override;

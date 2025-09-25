@@ -9,7 +9,6 @@
 #include <algorithm>
 
 #include "NiceUnit.h"
-#include "DlgCopyAs.h"
 #include "DlgDataSeries.h"
 #include "DlgProgress.h"
 #include "DlgSpikeDetect.h"
@@ -23,9 +22,6 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
-constexpr auto b_restore = 0;
-constexpr auto b_save = 1;
 
 IMPLEMENT_DYNCREATE(ViewSpikeDetection, ViewDbTable)
 
@@ -91,7 +87,6 @@ BEGIN_MESSAGE_MAP(ViewSpikeDetection, ViewDbTable)
 	ON_COMMAND(ID_TOOLS_EDIT_STIMULUS, &ViewSpikeDetection::on_tools_edit_stimulus)
 	ON_COMMAND(ID_TOOLS_EDIT_SPIKES, &ViewSpikeDetection::on_tools_edit_spikes)
 	ON_COMMAND(ID_TOOLS_DATA_SERIES, &ViewSpikeDetection::on_tools_data_series)
-	ON_COMMAND(ID_EDIT_COPY, &ViewSpikeDetection::on_edit_copy)
 	ON_COMMAND(ID_FILE_SAVE, &ViewSpikeDetection::on_file_save)
 	ON_COMMAND(ID_FORMAT_XSCALE, &ViewSpikeDetection::on_format_x_scale)
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
@@ -1816,37 +1811,6 @@ void ViewSpikeDetection::print_data_cartridge(CDC* p_dc, ChartData* p_data_chart
     p_dc->RestoreDC(saved);
 }
 
-void ViewSpikeDetection::on_edit_copy()
-{
-	DlgCopyAs dlg;
-	dlg.m_n_abscissa = options_view_data_->hz_resolution;
-	dlg.m_n_ordinates = options_view_data_->vt_resolution;
-	dlg.b_graphics = options_view_data_->b_graphics;
-	dlg.m_i_option = options_view_data_->b_contours;
-	dlg.m_i_unit = options_view_data_->b_units;
-
-	// invoke dialog box
-	if (IDOK == dlg.DoModal())
-	{
-		options_view_data_->b_graphics = dlg.b_graphics;
-		options_view_data_->b_contours = dlg.m_i_option;
-		options_view_data_->b_units = dlg.m_i_unit;
-		options_view_data_->hz_resolution = dlg.m_n_abscissa;
-		options_view_data_->vt_resolution = dlg.m_n_ordinates;
-
-		if (!dlg.b_graphics)
-			chart_data_filtered_.copy_as_text(dlg.m_i_option, dlg.m_i_unit, dlg.m_n_abscissa);
-		else
-		{
-			serialize_windows_state(b_save);
-			const CRect rect(0, 0, options_view_data_->hz_resolution, options_view_data_->vt_resolution);
-			pixels_count_0_ = chart_data_filtered_.get_rect_width();
-			copy_as_emf_to_clipboard(rect, GetDocument()->m_p_data_doc->GetTitle());
-			serialize_windows_state(b_restore);
-		}
-	}
-}
-
 void ViewSpikeDetection::on_sel_change_detect_mode()
 {
 	UpdateData(TRUE);
@@ -3038,6 +3002,8 @@ void ViewSpikeDetection::update_tabs()
 
 void ViewSpikeDetection::render_for_export(CDC* p_dc, const CRect& pixel_rect)
 {
+	serialize_windows_state(b_save);
+
 	CString comments = export_comments(p_dc);
 
 	// layout rectangles
@@ -3086,6 +3052,8 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc, const CRect& pixel_rect)
 	if (p_old_font_ != nullptr)
 		p_dc->SelectObject(p_old_font_);
 	font_print_.DeleteObject();
+
+	serialize_windows_state(b_restore);
 }
 
 CString ViewSpikeDetection::export_comments(CDC* p_dc)

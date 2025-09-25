@@ -1184,3 +1184,4 @@ void CChildFrame::on_tools_cleanup_filenames()
 		p_db_wave_doc->UpdateAllViews(nullptr, HINT_REQUERY, nullptr);
 	}
 }
+

@@ -1784,11 +1784,25 @@ void ViewSpikeDetection::on_tools_data_series()
 
 void ViewSpikeDetection::print_data_cartridge(CDC* p_dc, ChartData* p_data_chart_wnd, const CRect* p_rect)
 {
-	options_scope_struct* p_struct = p_data_chart_wnd->get_scope_parameters();
-	const auto b_draw_f = p_struct->b_draw_frame;
-	p_struct->b_draw_frame = TRUE;
-	p_data_chart_wnd->print(p_dc, p_rect, (options_view_data_->b_contours == 1));
-	p_struct->b_draw_frame = b_draw_f;
+    const int saved = p_dc->SaveDC();
+
+    options_scope_struct* p_struct = p_data_chart_wnd->get_scope_parameters();
+    const auto b_draw_f = p_struct->b_draw_frame;
+    const auto old_clip = p_struct->b_clip_rect;
+    const auto old_nice_grid = p_data_chart_wnd->b_nice_grid;
+
+    // For export/printing to EMF, avoid device-clip set before mapping and ruler margins shrinking the rect
+    p_struct->b_draw_frame = TRUE;
+    p_struct->b_clip_rect = FALSE;
+    p_data_chart_wnd->b_nice_grid = FALSE;
+    p_dc->SelectClipRgn(nullptr);
+
+    p_data_chart_wnd->print(p_dc, p_rect, (options_view_data_->b_contours == 1));
+
+    // restore
+    p_data_chart_wnd->b_nice_grid = old_nice_grid;
+    p_struct->b_clip_rect = old_clip;
+    p_struct->b_draw_frame = b_draw_f;
 
 	// data vertical and horizontal bars
 	const auto comments = print_data_bars(p_dc, p_data_chart_wnd, p_rect);
@@ -1797,7 +1811,9 @@ void ViewSpikeDetection::print_data_cartridge(CDC* p_dc, ChartData* p_data_chart
 	const int top = p_rect->top;
 	p_dc->TextOut(left, top, comments);
 
-	p_dc->SetTextAlign(TA_LEFT); // | TA_NOUPDATECP);
+    p_dc->SetTextAlign(TA_LEFT); // | TA_NOUPDATECP);
+
+    p_dc->RestoreDC(saved);
 }
 
 void ViewSpikeDetection::on_edit_copy()

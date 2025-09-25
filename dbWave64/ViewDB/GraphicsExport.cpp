@@ -18,36 +18,65 @@ BOOL GraphicsExport::CopyAsEmfToClipboard(CWnd* owner_wnd,
 	const CString& title,
 	const DrawFn& draw_fn)
 {
-	int dpi_x = 96, dpi_y = 96;
-	GetScreenDpi(owner_wnd, dpi_x, dpi_y);
+    // Use a reference device context (CDC*) so the metafile inherits mapping from a real device
+    CDC* p_ref_dc = nullptr;
+    CDC screen_dc;
+    bool used_screen_dc = false;
+    if (owner_wnd)
+        p_ref_dc = owner_wnd->GetDC();
+    if (!p_ref_dc)
+    {
+        HDC h_screen = ::GetDC(nullptr);
+        screen_dc.Attach(h_screen);
+        p_ref_dc = &screen_dc;
+        used_screen_dc = true;
+    }
 
-	CMetaFileDC meta_dc;
-	CRect himetric_bounds(0, 0,
-		MulDiv(pixel_rect.Width(), 2540, dpi_x),
-		MulDiv(pixel_rect.Height(), 2540, dpi_y));
+    const int dpi_x = p_ref_dc->GetDeviceCaps(LOGPIXELSX);
+    const int dpi_y = p_ref_dc->GetDeviceCaps(LOGPIXELSY);
 
-	CString meta_title = _T("dbWave\0") + title;
-	meta_title += _T("\0\0");
-	const auto h_created = meta_dc.CreateEnhanced(nullptr, nullptr, &himetric_bounds, meta_title);
+    CMetaFileDC meta_dc;
+    CRect himetric_bounds(0, 0,
+        MulDiv(pixel_rect.Width(), 2540, dpi_x),
+        MulDiv(pixel_rect.Height(), 2540, dpi_y));
+
+    CString meta_title = _T("dbWave\0") + title;
+    meta_title += _T("\0\0");
+    const auto h_created = meta_dc.CreateEnhanced(p_ref_dc, nullptr, &himetric_bounds, meta_title);
 	if (h_created == NULL)
-		return FALSE;
+    {
+        if (used_screen_dc) ::ReleaseDC(nullptr, screen_dc.Detach());
+        else if (owner_wnd && p_ref_dc) owner_wnd->ReleaseDC(p_ref_dc);
+        return FALSE;
+    }
+
+    // Provide attribute DC so GetDeviceCaps and similar queries behave predictably during EMF recording
+    meta_dc.SetAttribDC(p_ref_dc->GetSafeHdc());
 
 	if (draw_fn)
 		draw_fn(&meta_dc, pixel_rect);
 
-	const auto h_emf = meta_dc.CloseEnhanced();
-	if (h_emf == nullptr)
-		return FALSE;
+    const auto h_emf = meta_dc.CloseEnhanced();
+    if (h_emf == nullptr)
+    {
+        if (used_screen_dc) ::ReleaseDC(nullptr, screen_dc.Detach());
+        else if (owner_wnd && p_ref_dc) owner_wnd->ReleaseDC(p_ref_dc);
+        return FALSE;
+    }
 
 	if (OpenClipboard(owner_wnd ? owner_wnd->GetSafeHwnd() : nullptr))
 	{
 		EmptyClipboard();
 		SetClipboardData(CF_ENHMETAFILE, h_emf);
 		CloseClipboard();
+        if (used_screen_dc) ::ReleaseDC(nullptr, screen_dc.Detach());
+        else if (owner_wnd && p_ref_dc) owner_wnd->ReleaseDC(p_ref_dc);
 		return TRUE;
 	}
 	// Clipboard busy; delete handle to avoid leak
 	DeleteEnhMetaFile(h_emf);
+    if (used_screen_dc) ::ReleaseDC(nullptr, screen_dc.Detach());
+    else if (owner_wnd && p_ref_dc) owner_wnd->ReleaseDC(p_ref_dc);
 	return FALSE;
 }
 

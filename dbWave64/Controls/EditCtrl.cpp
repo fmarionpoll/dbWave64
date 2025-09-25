@@ -1,13 +1,13 @@
 // CEditCtrl.cpp : implementation file
 //
-// CEditCtrl is a control derived from the CEdit control, ie it accepts
+// CEditCtrl is a control derived from the CEdit control. It accepts
 // characters from the keyboard and store them as text within the window.
 //
 // CEditCtrl is used to subclass edit controls and check the incoming keys
 // when the user press CR, the field is considered as validated and
 // a message is sent to the parent to signal that.
 //
-// in addition CEditCtrl traps up/down arrow keys and signals it to the parent
+// CEditCtrl traps up/down arrow keys and signals it to the parent
 // so that the programmer can implement an automatic increment/decrement at the
 // parent level
 //
@@ -44,7 +44,7 @@ CEditCtrl::CEditCtrl()
 CEditCtrl::~CEditCtrl()
 = default;
 
-BEGIN_MESSAGE_MAP(CEditCtrl, CWnd)
+BEGIN_MESSAGE_MAP(CEditCtrl, CEdit)
 	ON_WM_GETDLGCODE()
 	ON_WM_KEYDOWN()
 	ON_WM_CHAR()
@@ -62,9 +62,10 @@ UINT CEditCtrl::OnGetDlgCode()
 void CEditCtrl::OnKeyDown(const UINT n_char, const UINT n_rep_cnt, const UINT n_flags)
 {
 	// VK_SPACE (20), _PRIOR, _NEXT, _END, _HOME, _LEFT, _UP, _RIGHT, _DOWN, _SELECT(28)
+	bool handled = false;
 	if (n_char > VK_SPACE && n_char < VK_SELECT)
-		process_keys(n_char);
-	else
+		handled = process_keys(n_char) != FALSE;
+	if (!handled)
 		CEdit::OnKeyDown(n_char, n_rep_cnt, n_flags);
 }
 
@@ -86,9 +87,11 @@ BOOL CEditCtrl::process_keys(UINT n_char)
 	{
 	case VK_TAB: 
 		{
-			const auto b_next = (GetKeyState(VK_SHIFT) & 0x8000);
-			const auto h_next = ::GetNextDlgGroupItem(::GetParent(m_hWnd), m_hWnd, b_next);
-			::SetFocus(h_next); 
+			const BOOL bShiftDown = (GetKeyState(VK_SHIFT) & 0x8000) != 0;
+			const auto hParent = ::GetParent(m_hWnd);
+			const auto hNext = ::GetNextDlgTabItem(hParent, m_hWnd, bShiftDown);
+			if (hParent && hNext)
+				::SendMessage(hParent, WM_NEXTDLGCTL, reinterpret_cast<WPARAM>(hNext), TRUE);
 		}
 		break;
 
@@ -163,7 +166,7 @@ void CEditCtrl::on_en_change(CWnd* parent_wnd, int& parameter, const int delta_u
 	SetSel(0, -1);
 }
 
-void CEditCtrl::on_en_change(CWnd* parent_wnd, UINT& parameter, const UINT delta_up, const UINT delta_down)
+void CEditCtrl::on_en_change(CWnd* parent_wnd, UINT& parameter, const int delta_up, const int delta_down)
 {
 	switch (m_n_char)
 	{
@@ -172,16 +175,18 @@ void CEditCtrl::on_en_change(CWnd* parent_wnd, UINT& parameter, const UINT delta
 		{
 			CString cs;
 			GetWindowText(cs);
-			parameter = static_cast<int>(_ttoi(cs));
+			LPTSTR endPtr = nullptr;
+			unsigned long val = _tcstoul(cs, &endPtr, 10);
+			parameter = static_cast<UINT>(val);
 		}
 		break;
 	case VK_UP:
 	case VK_PRIOR:
-		parameter += delta_up;
+		parameter = static_cast<UINT>(static_cast<int>(parameter) + delta_up);
 		break;
 	case VK_DOWN:
 	case VK_NEXT:
-		parameter += delta_down;
+		parameter = static_cast<UINT>(static_cast<int>(parameter) + delta_down);
 		break;
 	default:;
 	}
@@ -190,16 +195,9 @@ void CEditCtrl::on_en_change(CWnd* parent_wnd, UINT& parameter, const UINT delta
 	SetSel(0, -1);
 }
 
-//--------------------------------------------------------------------------
-// OnSetFocus()
-// when control is in "caret" mode (flashing vertical bar)
-// Postmessage does not reach parent control!? (ex OnEnChangeChannel)
-// it works only when the whole text is selected
-//--------------------------------------------------------------------------
-
 void CEditCtrl::OnSetFocus(CWnd* p_old_wnd)
 {
-	CWnd::OnSetFocus(p_old_wnd);
+	CEdit::OnSetFocus(p_old_wnd);
 	SetSel(0, -1);
 }
 
@@ -211,7 +209,7 @@ void CEditCtrl::OnKillFocus(CWnd* p_new_wnd)
 		m_n_char = VK_RETURN;
 		GetParent()->PostMessage(WM_COMMAND, MAKELONG(GetDlgCtrlID(), EN_CHANGE), reinterpret_cast<LPARAM>(m_hWnd));
 	}
-	CWnd::OnKillFocus(p_new_wnd);
+	CEdit::OnKillFocus(p_new_wnd);
 }
 
 void CEditCtrl::OnVScroll(const UINT n_sb_code, UINT n_pos, CScrollBar* p_scroll_bar)
@@ -220,8 +218,10 @@ void CEditCtrl::OnVScroll(const UINT n_sb_code, UINT n_pos, CScrollBar* p_scroll
 		m_n_char = VK_DOWN;
 	else if (n_sb_code == SB_LINEUP)
 		m_n_char = VK_UP;
-	else
-		return; // nothing special
+	else {
+		CEdit::OnVScroll(n_sb_code, n_pos, p_scroll_bar);
+		return;
+	}
 	m_b_entry_done = TRUE;
 	GetParent()->PostMessage(WM_COMMAND, MAKELONG(GetDlgCtrlID(), EN_CHANGE), reinterpret_cast<LPARAM>(m_hWnd));
 }

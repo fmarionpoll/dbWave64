@@ -16,9 +16,6 @@
     <Filter Include="excel">
       <UniqueIdentifier>{48ba7e11-5241-4c95-826f-78ce13f1aee5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="customctrl">
-      <UniqueIdentifier>{caaa5830-8837-406f-a8ee-5db580987832}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Grid">
       <UniqueIdentifier>{80c132e6-268c-4d2d-a16e-e4e119719b0e}</UniqueIdentifier>
     </Filter>
@@ -63,6 +60,9 @@
     </Filter>
     <Filter Include="ViewDB\SpikeTemplate">
       <UniqueIdentifier>{60fedae4-e59a-4290-9f57-cbfbeeb18a23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Controls">
+      <UniqueIdentifier>{caaa5830-8837-406f-a8ee-5db580987832}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -219,9 +219,6 @@
     <ClCompile Include="DlgXYParameters.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Editctrl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FilenameCleanupUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -367,10 +364,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Controls\cdxCRot90DC.cpp">
-      <Filter>customctrl</Filter>
+      <Filter>Controls</Filter>
     </ClCompile>
     <ClCompile Include="Controls\cdxCRotBevelLine.cpp">
-      <Filter>customctrl</Filter>
+      <Filter>Controls</Filter>
     </ClCompile>
     <ClCompile Include="GridCtrl\GridCell.cpp">
       <Filter>Grid</Filter>
@@ -442,16 +439,16 @@
       <Filter>Grid</Filter>
     </ClCompile>
     <ClCompile Include="Controls\QuadStateTree.cpp">
-      <Filter>customctrl</Filter>
+      <Filter>Controls</Filter>
     </ClCompile>
     <ClCompile Include="Controls\ScrollBarEx.cpp">
-      <Filter>customctrl</Filter>
+      <Filter>Controls</Filter>
     </ClCompile>
     <ClCompile Include="Controls\Ruler.cpp">
-      <Filter>customctrl</Filter>
+      <Filter>Controls</Filter>
     </ClCompile>
     <ClCompile Include="Controls\RulerBar.cpp">
-      <Filter>customctrl</Filter>
+      <Filter>Controls</Filter>
     </ClCompile>
     <ClCompile Include="DatabaseUtils.cpp">
       <Filter>Source Files</Filter>
@@ -611,6 +608,9 @@
     </ClCompile>
     <ClCompile Include="ViewDB\TablePrintRenderer.cpp">
       <Filter>ViewDB</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\EditCtrl.cpp">
+      <Filter>Controls</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -797,9 +797,6 @@
     <ClInclude Include="DlgXYParameters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Editctrl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Envelope.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -963,13 +960,13 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GridCtrl\MemDC.h">
-      <Filter>customctrl</Filter>
+      <Filter>Controls</Filter>
     </ClInclude>
     <ClInclude Include="Controls\cdxCRot90DC.h">
-      <Filter>customctrl</Filter>
+      <Filter>Controls</Filter>
     </ClInclude>
     <ClInclude Include="Controls\cdxCRotBevelLine.h">
-      <Filter>customctrl</Filter>
+      <Filter>Controls</Filter>
     </ClInclude>
     <ClInclude Include="GridCtrl\GridURLCell.h">
       <Filter>Grid</Filter>
@@ -1080,16 +1077,16 @@
       <Filter>Grid</Filter>
     </ClInclude>
     <ClInclude Include="Controls\QuadStateTree.h">
-      <Filter>customctrl</Filter>
+      <Filter>Controls</Filter>
     </ClInclude>
     <ClInclude Include="Controls\Ruler.h">
-      <Filter>customctrl</Filter>
+      <Filter>Controls</Filter>
     </ClInclude>
     <ClInclude Include="Controls\RulerBar.h">
-      <Filter>customctrl</Filter>
+      <Filter>Controls</Filter>
     </ClInclude>
     <ClInclude Include="Controls\ScrollBarEx.h">
-      <Filter>customctrl</Filter>
+      <Filter>Controls</Filter>
     </ClInclude>
     <ClInclude Include="DatabaseUtils.h">
       <Filter>Header Files</Filter>
@@ -1288,6 +1285,9 @@
     </ClInclude>
     <ClInclude Include="ViewDB\TablePrintRenderer.h">
       <Filter>ViewDB</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls\EditCtrl.h">
+      <Filter>Controls</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

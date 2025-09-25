@@ -22,6 +22,7 @@
     <ClCompile Include="Chart\ChartSpikeShape.cpp" />
     <ClCompile Include="Chart\ChartSpikeXY.cpp" />
     <ClCompile Include="Chart\ChartWnd.cpp" />
+    <ClCompile Include="Controls\EditCtrl.cpp" />
     <ClCompile Include="DatabaseUtils.cpp" />
     <ClCompile Include="data_acquisition\CyberAmp.cpp" />
     <ClCompile Include="data_acquisition\DataTranslation_AD.cpp" />
@@ -107,7 +108,6 @@
     <ClCompile Include="DlgSpikeEdit.cpp" />
     <ClCompile Include="DlgTransferFiles.cpp" />
     <ClCompile Include="DlgXYParameters.cpp" />
-    <ClCompile Include="Editctrl.cpp" />
     <ClCompile Include="Excel\excel9.cpp" />
     <ClCompile Include="FilenameCleanupUtils.cpp" />
     <ClCompile Include="Fileversion.cpp" />
@@ -219,6 +219,7 @@
     <ClInclude Include="ColorNames.h" />
     <ClInclude Include="Controls\cdxCRot90DC.h" />
     <ClInclude Include="Controls\cdxCRotBevelLine.h" />
+    <ClInclude Include="Controls\EditCtrl.h" />
     <ClInclude Include="DatabaseUtils.h" />
     <ClInclude Include="data_acquisition\CDTBoardParameters.h" />
     <ClInclude Include="data_acquisition\CyberAmp.h" />
@@ -323,7 +324,6 @@
     <ClInclude Include="DlgTransferFiles.h" />
     <ClInclude Include="DlgXYParameters.h" />
     <ClInclude Include="data_acquisition\DlgDataTranslationBoard.h" />
-    <ClInclude Include="Editctrl.h" />
     <ClInclude Include="Envelope.h" />
     <ClInclude Include="Excel\excel9.h" />
     <ClInclude Include="FilenameCleanupUtils.h" />

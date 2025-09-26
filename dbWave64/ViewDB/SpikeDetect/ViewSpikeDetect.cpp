@@ -3004,6 +3004,17 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc, const CRect& pixel_rect)
 {
 	serialize_windows_state(b_save);
 
+	CRect rect1;
+	chart_data_.GetWindowRect(&rect1);
+	CRect rect2;
+	chart_data_filtered_.GetWindowRect(&rect2);
+	CRect rect3;
+	chart_spike_bar_.GetWindowRect(&rect3);
+	CRect rect4;
+	chart_spike_shape_.GetWindowRect(&rect4);
+
+
+
 	CString comments = export_comments(p_dc);
 
 	// layout rectangles
@@ -3028,7 +3039,6 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc, const CRect& pixel_rect)
 	print_data_cartridge(p_dc, &chart_data_filtered_, &data_rect);
 
 	// display spike bars
-	
 	auto rect_bars = data_rect;
 	rect_bars.top = data_rect.bottom + separator;
 	rect_bars.bottom = rect.bottom - 2 * options_view_data_->line_height;

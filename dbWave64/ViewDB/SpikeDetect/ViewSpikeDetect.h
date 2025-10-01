@@ -164,7 +164,7 @@ protected:
 	void update_tabs();
 
 	void render_for_export(CDC* p_dc, const CRect& pixel_rect) override;
-	CString export_comments(CDC* p_dc);
+	void export_comments(CDC* p_dc);
 
 	// Generated message map functions
 public:

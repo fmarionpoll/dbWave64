@@ -3013,7 +3013,12 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc, const CRect& pixel_rect)
 	CRect rect4;
 	chart_spike_shape_.GetWindowRect(&rect4);
 
-	CString comments = export_comments(p_dc);
+	p_dc->Rectangle(&rect1);
+	p_dc->Rectangle(&rect2);
+	p_dc->Rectangle(&rect3);
+	p_dc->Rectangle(&rect4);
+
+	export_comments(p_dc);
 
 	// layout rectangles
 	const auto rect = pixel_rect;
@@ -3025,37 +3030,37 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc, const CRect& pixel_rect)
 		chart_data_filtered_.get_rect_height() * 2 + chart_spike_bar_.get_rect_height());
 	const auto separator = rect_spike_width / 10;
 
-	// display curves : data
-	data_rect.top += 3 * options_view_data_->line_height;
-	data_rect.bottom = data_rect.top + rect_data_height - separator / 2;
-	data_rect.left +=  rect_spike_width + separator;
-	print_data_cartridge(p_dc, &chart_data_, &rect1); // &data_rect);
+	//// display curves : data
+	//data_rect.top += 3 * options_view_data_->line_height;
+	//data_rect.bottom = data_rect.top + rect_data_height - separator / 2;
+	//data_rect.left +=  rect_spike_width + separator;
+	//print_data_cartridge(p_dc, &chart_data_, &rect1); // &data_rect);
 
-	// display curves: detect channel
-	data_rect.top = data_rect.bottom + separator;
-	data_rect.bottom = data_rect.top + rect_data_height;
-	print_data_cartridge(p_dc, &chart_data_filtered_, &rect2); // &data_rect);
+	//// display curves: detect channel
+	//data_rect.top = data_rect.bottom + separator;
+	//data_rect.bottom = data_rect.top + rect_data_height;
+	//print_data_cartridge(p_dc, &chart_data_filtered_, &rect2); // &data_rect);
 
-	// display spike bars
-	auto rect_bars = data_rect;
-	rect_bars.top = data_rect.bottom + separator;
-	rect_bars.bottom = rect.bottom - 2 * options_view_data_->line_height;
-	chart_spike_bar_.print(p_dc, &rect3); // &rect_bars);
+	//// display spike bars
+	//auto rect_bars = data_rect;
+	//rect_bars.top = data_rect.bottom + separator;
+	//rect_bars.bottom = rect.bottom - 2 * options_view_data_->line_height;
+	//chart_spike_bar_.print(p_dc, &rect3); // &rect_bars);
 
-	// display spike shapes
-	auto rect_spikes = rect;
-	rect_spikes.left += separator;
-	rect_spikes.right = rect.left + rect_spike_width;
-	rect_spikes.bottom = rect.bottom - 2 * options_view_data_->line_height;
-	rect_spikes.top = rect_spikes.bottom - rect_bars.Height();
-	chart_spike_shape_.print(p_dc, &rect_spikes);
-	comments = print_spk_shape_bars(p_dc, &rect4, TRUE); // &rect_spikes, TRUE);
+	//// display spike shapes
+	//auto rect_spikes = rect;
+	//rect_spikes.left += separator;
+	//rect_spikes.right = rect.left + rect_spike_width;
+	//rect_spikes.bottom = rect.bottom - 2 * options_view_data_->line_height;
+	//rect_spikes.top = rect_spikes.bottom - rect_bars.Height();
+	//chart_spike_shape_.print(p_dc, &rect_spikes);
+	//const CString spike_shapes_comments = print_spk_shape_bars(p_dc, &rect4, TRUE); // &rect_spikes, TRUE);
 
-	auto rect_comment = rect;
-	rect_comment.right = data_rect.left;
-	rect_comment.top = rect_spikes.bottom;
-	constexpr UINT n_format = DT_NOPREFIX | DT_NOCLIP | DT_LEFT | DT_WORDBREAK;
-	p_dc->DrawText(comments, comments.GetLength(), rect_comment, n_format);
+	//auto rect_comment = rect;
+	//rect_comment.right = data_rect.left;
+	//rect_comment.top = rect_spikes.bottom;
+	//constexpr UINT n_format = DT_NOPREFIX | DT_NOCLIP | DT_LEFT | DT_WORDBREAK;
+	//p_dc->DrawText(spike_shapes_comments, spike_shapes_comments.GetLength(), rect_comment, n_format);
 
 	if (p_old_font_ != nullptr)
 		p_dc->SelectObject(p_old_font_);
@@ -3064,7 +3069,7 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc, const CRect& pixel_rect)
 	serialize_windows_state(b_restore);
 }
 
-CString ViewSpikeDetection::export_comments(CDC* p_dc)
+void ViewSpikeDetection::export_comments(CDC* p_dc)
 {
 	// dc context for export
 	p_old_font_ = nullptr;
@@ -3077,18 +3082,17 @@ CString ViewSpikeDetection::export_comments(CDC* p_dc)
 	options_view_data_->line_height = log_font_.lfHeight + 5;
 
 	// comments and descriptors
+	const CString record_description= GetDocument()->export_database_data(1);
+
+	CString content1, content2;
+	GetDlgItem(IDC_TIMEFIRST)->GetWindowText(content1);
+	GetDlgItem(IDC_TIMELAST)->GetWindowText(content2);
+	const CString abscissa = _T("Abscissa: ") + content1 + _T(" - ") + content2;
+
+	// print on screen
 	auto row = 0;
 	constexpr auto column = 10;
-	auto comments = GetDocument()->export_database_data(1);
-	p_dc->TextOut(column, row, comments);
+	p_dc->TextOut(column, row, record_description);
 	row += options_view_data_->line_height;
-	comments = _T("Abscissa: ");
-	CString content;
-	GetDlgItem(IDC_TIMEFIRST)->GetWindowText(content);
-	comments += content;
-	comments += _T(" - ");
-	GetDlgItem(IDC_TIMELAST)->GetWindowText(content);
-	comments += content;
-	p_dc->TextOut(column, row, comments);
-	return comments;
+	p_dc->TextOut(column, row, abscissa);
 }

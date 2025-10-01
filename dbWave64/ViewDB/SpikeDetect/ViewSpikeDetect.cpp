@@ -3013,8 +3013,6 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc, const CRect& pixel_rect)
 	CRect rect4;
 	chart_spike_shape_.GetWindowRect(&rect4);
 
-
-
 	CString comments = export_comments(p_dc);
 
 	// layout rectangles
@@ -3031,18 +3029,18 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc, const CRect& pixel_rect)
 	data_rect.top += 3 * options_view_data_->line_height;
 	data_rect.bottom = data_rect.top + rect_data_height - separator / 2;
 	data_rect.left +=  rect_spike_width + separator;
-	print_data_cartridge(p_dc, &chart_data_, &data_rect);
+	print_data_cartridge(p_dc, &chart_data_, &rect1); // &data_rect);
 
 	// display curves: detect channel
 	data_rect.top = data_rect.bottom + separator;
 	data_rect.bottom = data_rect.top + rect_data_height;
-	print_data_cartridge(p_dc, &chart_data_filtered_, &data_rect);
+	print_data_cartridge(p_dc, &chart_data_filtered_, &rect2); // &data_rect);
 
 	// display spike bars
 	auto rect_bars = data_rect;
 	rect_bars.top = data_rect.bottom + separator;
 	rect_bars.bottom = rect.bottom - 2 * options_view_data_->line_height;
-	chart_spike_bar_.print(p_dc, &rect_bars);
+	chart_spike_bar_.print(p_dc, &rect3); // &rect_bars);
 
 	// display spike shapes
 	auto rect_spikes = rect;
@@ -3051,7 +3049,7 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc, const CRect& pixel_rect)
 	rect_spikes.bottom = rect.bottom - 2 * options_view_data_->line_height;
 	rect_spikes.top = rect_spikes.bottom - rect_bars.Height();
 	chart_spike_shape_.print(p_dc, &rect_spikes);
-	comments = print_spk_shape_bars(p_dc, &rect_spikes, TRUE);
+	comments = print_spk_shape_bars(p_dc, &rect4, TRUE); // &rect_spikes, TRUE);
 
 	auto rect_comment = rect;
 	rect_comment.right = data_rect.left;

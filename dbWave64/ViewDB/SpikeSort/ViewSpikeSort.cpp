@@ -112,11 +112,12 @@ BEGIN_MESSAGE_MAP(ViewSpikeSort, ViewDbTable)
 
 END_MESSAGE_MAP()
 
-void ViewSpikeSort::render_for_export(CDC* p_dc, const CRect& rect)
+void ViewSpikeSort::render_for_export(CDC* p_dc, const CSize& resolution)
 {
 	serialize_windows_state(b_save);
 
     // Layout similar to on screen: top measures, middle bars, bottom shape, right histogram
+	const CRect rect(0, 0, resolution.cx, resolution.cy);
     auto area = rect;
     const int separator = std::max(4, rect.Height() / 50);
 

@@ -622,16 +622,16 @@ void ViewSpikeHist::on_en_change_dot_height()
 	}
 }
 
-void  ViewSpikeHist::render_for_export(CDC* p_dc, const CRect& pixel_rect)
+void  ViewSpikeHist::render_for_export(CDC* p_dc, const CSize& resolution)
 {
 	serialize_windows_state(b_save);
-	CRect rect = pixel_rect;
+	CRect rect (0, 0, resolution.cx, resolution.cy);
 	switch (m_b_hist_type_)
 	{
 	case 0:
 	case 1:
 	case 2:
-		display_histogram(p_dc, &pixel_rect);
+		display_histogram(p_dc, &rect);
 		break;
 	case 3:
 		display_dot(p_dc, &rect);

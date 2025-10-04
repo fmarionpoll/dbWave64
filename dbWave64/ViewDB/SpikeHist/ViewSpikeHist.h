@@ -99,6 +99,7 @@ protected:
 	// Implementation
 protected:
 	long plot_histogram(CDC* p_dc, CRect* p_display_rect, int n_bins, long* p_hist0, int orientation = 0, int b_type = 0);
+	void render_for_export(CDC* p_dc, const CSize& resolution) override;
 
 #ifdef _DEBUG
 	void AssertValid() const override;
@@ -125,7 +126,6 @@ protected:
 	afx_msg void on_click_cycle_hist();
 
 protected:
-	void render_for_export(CDC* p_dc, const CRect& pixel_rect) override;
 	afx_msg void on_sel_change_histogram_type();
 	afx_msg void on_en_change_edit_n_stimuli_per_cycle();
 	afx_msg void OnHScroll(UINT n_sb_code, UINT n_pos, CScrollBar* p_scroll_bar);

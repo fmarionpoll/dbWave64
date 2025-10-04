@@ -1961,13 +1961,13 @@ void ViewSpikes::on_en_change_no_spike()
 	}
 }
 
-void ViewSpikes::render_for_export(CDC* p_dc, const CRect& rect)
+void ViewSpikes::render_for_export(CDC* p_dc, const CSize& resolution)
 {
 	serialize_windows_state(b_save);
 
-	const auto r_height = MulDiv(spike_class_listbox_.get_row_height(), rect.Width(),
+	const auto r_height = MulDiv(spike_class_listbox_.get_row_height(), resolution.cx,
 	                            spike_class_listbox_.get_columns_time_width());
-	auto rw_spikes = rect;
+	auto rw_spikes =CRect(0, 0, resolution.cx, resolution.cy);
 	rw_spikes.bottom = r_height;
 	auto rw_text = rw_spikes;
 	auto rw_bars = rw_spikes;

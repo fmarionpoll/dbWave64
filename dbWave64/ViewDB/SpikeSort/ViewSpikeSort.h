@@ -215,6 +215,6 @@ public:
 	DECLARE_MESSAGE_MAP()
 
 protected:
-	void render_for_export(CDC* p_dc, const CRect& pixel_rect) override;
+	void render_for_export(CDC* p_dc, const CSize& resolution) override;
 	
 };

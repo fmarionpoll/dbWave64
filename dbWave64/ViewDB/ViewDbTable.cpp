@@ -217,7 +217,7 @@ void ViewDbTable::on_tcn_sel_change_tab1(NMHDR* p_nmhdr, LRESULT* p_result)
 }
 
 // Default no-op renderer; derived classes should override when using copy_as_emf_to_clipboard
-void ViewDbTable::render_for_export(CDC* /*p_dc*/, const CRect& /*pixel_rect*/)
+void ViewDbTable::render_for_export(CDC* /*p_dc*/, const CSize& /*resolution*/)
 {
 }
 
@@ -248,13 +248,13 @@ void ViewDbTable::draw_text_block(CDC* p_dc, const CRect& device_rect, const int
 }
 
 // Common EMF creation and clipboard copy
-BOOL ViewDbTable::copy_as_emf_to_clipboard(const CRect& pixel_rect, const CString& title)
+BOOL ViewDbTable::copy_as_emf_to_clipboard(const CSize& resolution, const CString& title)
 {
     return GraphicsExport::CopyAsEmfToClipboard(
         this,
-        pixel_rect,
+        resolution,
         title,
-        [this](CDC* dc, const CRect& pr) { this->render_for_export(dc, pr); }
+        [this](CDC* dc, const CSize& pr) { this->render_for_export(dc, pr); }
     );
 }
 
@@ -290,14 +290,14 @@ int ViewDbTable::calc_draw_text_height(CDC* p_dc, const int point_size, const CS
 // CRect rect(0,0,w,h);
 // export_to_png(rect, L"C:\\temp\\export.png");
 
-BOOL ViewDbTable::export_to_png(const CRect& pixel_rect, const CString& file_path, const int bg_color)
+BOOL ViewDbTable::export_to_png(const CSize& resolution, const CString& file_path, const int bg_color)
 {
     return GraphicsExport::ExportToPng(
         this,
-        pixel_rect,
+        resolution,
         file_path,
         bg_color,
-        [this](CDC* dc, const CRect& pr) { this->render_for_export(dc, pr); }
+        [this](CDC* dc, const CSize& pr) { this->render_for_export(dc, pr); }
     );
 }
 void ViewDbTable::OnExportViewToClipboard()
@@ -326,8 +326,8 @@ void ViewDbTable::OnExportViewToClipboard()
 
 		if (dlg.b_graphics) {
 			serialize_windows_state(b_save);
-			CRect rect(0, 0, options_view_data_->hz_resolution, options_view_data_->vt_resolution);;
-			copy_as_emf_to_clipboard(rect, GetDocument()->GetTitle());
+			const CSize resolution( options_view_data_->hz_resolution, options_view_data_->vt_resolution);;
+			copy_as_emf_to_clipboard(resolution, GetDocument()->GetTitle());
 			serialize_windows_state(b_restore);
 		}
 	}
@@ -362,9 +362,9 @@ void ViewDbTable::OnExportViewAsPng()
 		options_view_data_->vt_resolution = dlg.m_n_ordinates;
 		const CString file_path = _T("c:\\temp\\export.png");
 		if (dlg.b_graphics) {
-			const CRect rect(0, 0, options_view_data_->hz_resolution, options_view_data_->vt_resolution);
-			const int bg_color = 0;
-			export_to_png(&rect,  file_path, bg_color);
+			const CSize resolution(options_view_data_->hz_resolution, options_view_data_->vt_resolution);
+			constexpr int bg_color = 0;
+			export_to_png(resolution,  file_path, bg_color);
 		}
 	}
 }

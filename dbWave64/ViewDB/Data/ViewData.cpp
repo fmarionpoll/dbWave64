@@ -1612,7 +1612,7 @@ void ViewData::update_y_zero(const int i_chan, const int y_bias)
 	}
 }
 
-void ViewData::render_for_export(CDC* p_dc, const CRect& rect)
+void ViewData::render_for_export(CDC* p_dc, const CSize& resolution)
 {
 	serialize_windows_state(b_save);
 
@@ -1621,6 +1621,7 @@ void ViewData::render_for_export(CDC* p_dc, const CRect& rect)
 	*old_scope_struct = *new_scope_struct;
 	new_scope_struct->b_draw_frame = options_view_data_->b_frame_rect;
 	new_scope_struct->b_clip_rect = options_view_data_->b_clip_rect;
+	const CRect rect(0, 0, resolution.cx, resolution.cy);
 	chart_data.print(p_dc, &rect);
 	*new_scope_struct = *old_scope_struct;
 

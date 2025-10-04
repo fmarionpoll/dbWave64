@@ -941,7 +941,7 @@ void ChartData::OnSize(const UINT n_type, const int cx, const int cy)
 	}
 }
 
-void ChartData::print(CDC* p_dc, const CRect* p_rect, const BOOL b_center_line)
+void ChartData::print(CDC* p_dc, const CRect* p_rect, const BOOL b_center_line, const int resolution_along_x)
 {
 	// save DC & old client rect
 	const auto n_saved_dc = p_dc->SaveDC();
@@ -974,12 +974,13 @@ void ChartData::print(CDC* p_dc, const CRect* p_rect, const BOOL b_center_line)
 	else
 		get_smooth_data_from_doc(b_center_line);
 
-	// Set anisotropic mapping: logical 0..W x -H..H (centered Y)
-	p_dc->SetMapMode(MM_ANISOTROPIC);
-	p_dc->SetViewportOrg(display_rect_.left, display_rect_.top + display_rect_.Height() / 2);
-	p_dc->SetViewportExt(display_rect_.Width(), -display_rect_.Height());
-	p_dc->SetWindowExt(display_rect_.Width(), display_rect_.Height());
-	p_dc->SetWindowOrg(0, 0);
+    // Set anisotropic mapping: logical 0..W x -H..H (centered Y)
+    p_dc->SetMapMode(MM_ANISOTROPIC); // TODO
+    p_dc->SetWindowOrg(0, 0);
+    p_dc->SetWindowExt(display_rect_.Width(), display_rect_.Height());
+
+    p_dc->SetViewportOrg(display_rect_.left, display_rect_.top + display_rect_.Height() / 2);
+    p_dc->SetViewportExt(display_rect_.Width(), -display_rect_.Height());
 
 	// logical extents
 	const auto y_ve = display_rect_.Height();
@@ -988,12 +989,12 @@ void ChartData::print(CDC* p_dc, const CRect* p_rect, const BOOL b_center_line)
 	const auto p_envelope = envelope_ptr_array_.GetAt(0);
 	p_envelope->fill_envelope_with_abscissa(m_n_pixels_, m_lx_size_);
 
-	// display all channels
-	auto n_elements = 0;
+    // display all channels
 	auto p_x = chan_list_item_ptr_array_[0]->p_envelope_abscissa;
+    bool abscissa_exported = false; // ensure abscissa is exported at least once per draw
 	const BOOL b_poly_line = (p_dc->m_hAttribDC == nullptr) || (p_dc->GetDeviceCaps(LINECAPS) & LC_POLYLINE);
-	auto color = BLACK_COLOR;
-	const auto old_pen = p_dc->SelectObject(&pen_table_[color]);
+	auto color_index = BLACK_COLOR;
+	const auto old_pen = p_dc->SelectObject(&pen_table_[color_index]);
 
 	for (auto i_chan = chan_list_item_ptr_array_.GetUpperBound(); i_chan >= 0; i_chan--) // scan all channels
 	{
@@ -1001,12 +1002,13 @@ void ChartData::print(CDC* p_dc, const CRect* p_rect, const BOOL b_center_line)
 		if (chan_list_item->is_print_visible() == FALSE)
 			continue;
 
-		// abscissa
-		if (p_x != chan_list_item->p_envelope_abscissa)
-		{
-			p_x = chan_list_item->p_envelope_abscissa;
-			p_x->export_to_abscissa(m_poly_points_);
-		}
+        // abscissa: export once initially, and again if the source pointer changes
+        if (!abscissa_exported || p_x != chan_list_item->p_envelope_abscissa)
+        {
+            p_x = chan_list_item->p_envelope_abscissa;
+            p_x->export_to_abscissa(m_poly_points_);
+            abscissa_exported = true;
+        }
 
 		// ordinates
 		const auto p_y = chan_list_item->p_envelope_ordinates;
@@ -1015,25 +1017,25 @@ void ChartData::print(CDC* p_dc, const CRect* p_rect, const BOOL b_center_line)
 		// color
 		const auto y_extent = chan_list_item->get_y_extent();
 		const auto y_zero = chan_list_item->get_y_zero();
-		if (chan_list_item->get_color_index() != color)
+		if (chan_list_item->get_color_index() != color_index)
 		{
-			color = chan_list_item->get_color_index();
-			p_dc->SelectObject(&pen_table_[color]);
+			color_index = chan_list_item->get_color_index();
+			p_dc->SelectObject(&pen_table_[color_index]);
 		}
 
 		// transform y from data bins to logical units centered at 0
-		n_elements = p_x->get_envelope_size();
-		for (auto j = 0; j < n_elements; j++)
-		{
-			const auto p_point = &m_poly_points_[j];
-			p_point->y = MulDiv(p_point->y - y_zero, y_ve, y_extent);
-		}
+		const int n_elements = p_x->get_envelope_size();
+		//for (auto j = 0; j < n_elements; j++)
+		//{
+		//	const auto p_point = &m_poly_points_[j];
+		//	p_point->y = MulDiv(p_point->y - y_zero, y_ve, y_extent);
+		//}
 
 		// draw
-		if (b_poly_line)
+		if (b_poly_line) {
 			p_dc->Polyline(&m_poly_points_[0], n_elements);
-		else
-		{
+		}
+		else {
 			p_dc->MoveTo(m_poly_points_[0]);
 			for (auto j = 0; j < n_elements; j++)
 				p_dc->LineTo(m_poly_points_[j]);
@@ -1044,10 +1046,10 @@ void ChartData::print(CDC* p_dc, const CRect* p_rect, const BOOL b_center_line)
 		{
 			CPen pen_light_grey(PS_SOLID, 0, color_spike_class[SILVER_COLOR]);
 			const auto old_pen2 = p_dc->SelectObject(&pen_light_grey);
-			const int x0 = 0;
 			const int x1 = display_rect_.Width();
 			for (auto j = hz_tags.get_tag_list_size() - 1; j >= 0; j--)
 			{
+				constexpr int x0 = 0;
 				if (hz_tags.get_channel(j) != i_chan)
 					continue;
 				auto k = hz_tags.get_value_int(j);
@@ -1265,6 +1267,7 @@ void ChartData::curve_xor()
 	p_dc->SetMapMode(MM_ANISOTROPIC);
 	p_dc->SetViewportOrg(display_rect_.left, y_vo_);
 	p_dc->SetViewportExt(get_rect_width(), y_ve_);
+
 	p_dc->SetWindowExt(m_xor_x_ext_, m_xor_y_ext_);
 	p_dc->SetWindowOrg(0, 0);
 

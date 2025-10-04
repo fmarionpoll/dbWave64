@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "GraphicsExport.h"
 
-using DrawFn = std::function<void(CDC*, const CRect&)>;
+using DrawFn = std::function<void(CDC*, const CSize&)>;
 
 static BOOL GetScreenDpi(CWnd* owner, int& dpi_x, int& dpi_y)
 {
@@ -14,7 +14,7 @@ static BOOL GetScreenDpi(CWnd* owner, int& dpi_x, int& dpi_y)
 }
 
 BOOL GraphicsExport::CopyAsEmfToClipboard(CWnd* owner_wnd,
-	const CRect& pixel_rect,
+	const CSize& resolution,
 	const CString& title,
 	const DrawFn& draw_fn)
 {
@@ -37,8 +37,8 @@ BOOL GraphicsExport::CopyAsEmfToClipboard(CWnd* owner_wnd,
 
     CMetaFileDC meta_dc;
     CRect himetric_bounds(0, 0,
-        MulDiv(pixel_rect.Width(), 2540, dpi_x),
-        MulDiv(pixel_rect.Height(), 2540, dpi_y));
+        MulDiv(resolution.cx, 2540, dpi_x),
+        MulDiv(resolution.cy, 2540, dpi_y));
 
     CString meta_title = _T("dbWave\0") + title;
     meta_title += _T("\0\0");
@@ -54,7 +54,7 @@ BOOL GraphicsExport::CopyAsEmfToClipboard(CWnd* owner_wnd,
     meta_dc.SetAttribDC(p_ref_dc->GetSafeHdc());
 
     if (draw_fn)
-        draw_fn(&meta_dc, pixel_rect);
+        draw_fn(&meta_dc, resolution);
 
     const auto h_emf = meta_dc.CloseEnhanced();
     if (h_emf == nullptr)
@@ -81,15 +81,15 @@ BOOL GraphicsExport::CopyAsEmfToClipboard(CWnd* owner_wnd,
 }
 
 BOOL GraphicsExport::ExportToPng(CWnd* /*owner_wnd*/,
-	const CRect& pixel_rect,
+	const CSize& resolution,
 	const CString& file_path,
 	const int bg_color,
 	const DrawFn& draw_fn)
 {
 	BITMAPINFO bmi{};
 	bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-	bmi.bmiHeader.biWidth = pixel_rect.Width();
-	bmi.bmiHeader.biHeight = -pixel_rect.Height();
+	bmi.bmiHeader.biWidth = resolution.cx;
+	bmi.bmiHeader.biHeight = -resolution.cy;
 	bmi.bmiHeader.biPlanes = 1;
 	bmi.bmiHeader.biBitCount = 32;
 	bmi.bmiHeader.biCompression = BI_RGB;
@@ -103,18 +103,18 @@ BOOL GraphicsExport::ExportToPng(CWnd* /*owner_wnd*/,
 	mem_dc.CreateCompatibleDC(nullptr);
 	const auto h_old = mem_dc.SelectObject(h_dib);
 
-	CRect r(0, 0, pixel_rect.Width(), pixel_rect.Height());
+	CRect r(0, 0, resolution.cx, resolution.cy);
 	HBRUSH h_br = CreateSolidBrush(bg_color);
 	FillRect(mem_dc.GetSafeHdc(), &r, h_br);
 	DeleteObject(h_br);
 
 	mem_dc.SetMapMode(MM_ANISOTROPIC);
-	mem_dc.SetWindowExt(pixel_rect.Width(), pixel_rect.Height());
+	mem_dc.SetWindowExt(r.Width(), r.Height());
 	mem_dc.SetViewportOrg(0, 0);
-	mem_dc.SetViewportExt(pixel_rect.Width(), pixel_rect.Height());
+	mem_dc.SetViewportExt(r.Width(), r.Height());
 
 	if (draw_fn)
-		draw_fn(&mem_dc, CRect(0, 0, pixel_rect.Width(), pixel_rect.Height()));
+		draw_fn(&mem_dc, resolution);
 
 	BOOL result = FALSE;
 	ULONG_PTR gdiplus_token = 0;

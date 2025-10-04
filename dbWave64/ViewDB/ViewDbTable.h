@@ -92,9 +92,9 @@ protected:
 
 public:
 	// Export helpers (EMF/PNG)
-	BOOL copy_as_emf_to_clipboard(const CRect& pixel_rect, const CString& title);
-	BOOL export_to_png(const CRect& pixel_rect, const CString& file_path, int bg_color = RGB(255,255,255));
-	virtual void render_for_export(CDC* p_dc, const CRect& pixel_rect);
+	BOOL copy_as_emf_to_clipboard(const CSize& resolution, const CString& title);
+	BOOL export_to_png(const CSize& resolution, const CString& file_path, int bg_color = RGB(255,255,255));
+	virtual void render_for_export(CDC* p_dc, const CSize& pixel_rect);
 	virtual bool can_export_view() const { return true; }
 	virtual bool can_export_png() const { return true; }
 	virtual void serialize_windows_state(BOOL save, int tab_index = -1);

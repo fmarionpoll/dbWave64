@@ -133,7 +133,7 @@ public:
 
 	void	plot_data_to_dc(CDC* p_dc) override;
 	void	zoom_data(CRect* previous_rect, CRect* new_rect) override;
-	void	print(CDC* p_dc, const CRect* p_rect, BOOL b_center_line = FALSE);
+	void	print(CDC* p_dc, const CRect* p_rect, const BOOL b_center_line = FALSE, const int resolution_along_x = 2048);
 
 	void	adjust_gain(boolean b_set_span_mv, float span_mv_value) const;
 	void	load_data_within_window(boolean set_time_span, float t_first, float t_last);

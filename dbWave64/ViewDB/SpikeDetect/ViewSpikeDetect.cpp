@@ -1777,7 +1777,7 @@ void ViewSpikeDetection::on_tools_data_series()
 	update_legends();
 }
 
-void ViewSpikeDetection::print_data_cartridge(CDC* p_dc, ChartData* p_data_chart_wnd, const CRect* p_rect)
+void ViewSpikeDetection::print_data_cartridge(CDC* p_dc, ChartData* p_data_chart_wnd, const CRect* p_rect, const CSize& resolution)
 {
     const int saved = p_dc->SaveDC();
 
@@ -1792,7 +1792,7 @@ void ViewSpikeDetection::print_data_cartridge(CDC* p_dc, ChartData* p_data_chart
     p_data_chart_wnd->b_nice_grid = FALSE;
     p_dc->SelectClipRgn(nullptr);
 
-    p_data_chart_wnd->print(p_dc, p_rect, (options_view_data_->b_contours == 1));
+    p_data_chart_wnd->print(p_dc, p_rect, (options_view_data_->b_contours == 1), resolution.cx);
 
     // restore
     p_data_chart_wnd->b_nice_grid = old_nice_grid;
@@ -1801,11 +1801,9 @@ void ViewSpikeDetection::print_data_cartridge(CDC* p_dc, ChartData* p_data_chart
 
 	// data vertical and horizontal bars
 	const auto comments = print_data_bars(p_dc, p_data_chart_wnd, p_rect);
-
 	const int left = p_rect->left;
 	const int top = p_rect->top;
 	p_dc->TextOut(left, top, comments);
-
     p_dc->SetTextAlign(TA_LEFT); // | TA_NOUPDATECP);
 
     p_dc->RestoreDC(saved);
@@ -3000,32 +2998,34 @@ void ViewSpikeDetection::update_tabs()
 	spk_list_tab_ctrl.SetCurSel(m_i_detect_parameters_);
 }
 
-void ViewSpikeDetection::render_for_export(CDC* p_dc, const CRect& pixel_rect)
+void ViewSpikeDetection::render_for_export(CDC* p_dc, const CSize& resolution)
 {
 	serialize_windows_state(b_save);
 
-	CRect rect1;
-	chart_data_.GetWindowRect(&rect1);
-	CRect rect2;
-	chart_data_filtered_.GetWindowRect(&rect2);
-	CRect rect3;
-	chart_spike_bar_.GetWindowRect(&rect3);
-	CRect rect4;
-	chart_spike_shape_.GetWindowRect(&rect4);
+	// minimal text-only change: anchor text to the top-left of the rectangles cluster
+// use the same coordinate space as rectangles (child window screen rects)
+	CRect r1, r2, r3, r4;
+	chart_data_.GetWindowRect(&r1);
+	chart_data_filtered_.GetWindowRect(&r2);
+	chart_spike_bar_.GetWindowRect(&r3);
+	chart_spike_shape_.GetWindowRect(&r4);
+	const int base_x = r4.left;
+	const int base_y = r1.top;
 
-	// Restore initial diagnostic: draw window rectangles in their current coords
-	// (No mapping changes here)
+	CPen temp_pen;
+	temp_pen.CreatePen(PS_SOLID, 0, col_red);
+	const auto old_pen = p_dc->SelectObject(&temp_pen);
+	p_dc->Rectangle(&r1);
+	p_dc->Rectangle(&r2);
+	p_dc->Rectangle(&r3);
+	p_dc->Rectangle(&r4);
+	if (old_pen != nullptr)
+		p_dc->SelectObject(old_pen);
+	temp_pen.DeleteObject();
 
-	// Draw rectangles in the same coordinates as initially
-	p_dc->Rectangle(&rect1);
-	p_dc->Rectangle(&rect2);
-	p_dc->Rectangle(&rect3);
-	p_dc->Rectangle(&rect4);
+	export_comments(p_dc, base_x, base_y);
 
-	// Draw comments using the original routine (no mapping changes here)
-	export_comments(p_dc);
-
-	//// layout rectangles
+	// layout rectangles
 	//const auto rect = pixel_rect;
 	//auto data_rect = rect;
 
@@ -3039,7 +3039,12 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc, const CRect& pixel_rect)
 	//data_rect.top += 3 * options_view_data_->line_height;
 	//data_rect.bottom = data_rect.top + rect_data_height - separator / 2;
 	//data_rect.left +=  rect_spike_width + separator;
-	//print_data_cartridge(p_dc, &chart_data_, &rect1); // &data_rect);
+
+	//rect1.left -= base_x;
+	//rect1.top -= base_y;
+	//rect1.right -= base_x;
+	//rect1.bottom -= base_y;
+	print_data_cartridge(p_dc, &chart_data_, &r1, resolution); // &data_rect);
 
 	//// display curves: detect channel
 	//data_rect.top = data_rect.bottom + separator;
@@ -3074,7 +3079,7 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc, const CRect& pixel_rect)
 	serialize_windows_state(b_restore);
 }
 
-void ViewSpikeDetection::export_comments(CDC* p_dc)
+void ViewSpikeDetection::export_comments(CDC* p_dc, const int base_x, const int base_y)
 {
 	// dc context for export
 	p_old_font_ = nullptr;
@@ -3094,18 +3099,8 @@ void ViewSpikeDetection::export_comments(CDC* p_dc)
 	GetDlgItem(IDC_TIMELAST)->GetWindowText(content2);
 	const CString abscissa = _T("Abscissa: ") + content1 + _T(" - ") + content2 + _T(" s");
 
-	// minimal text-only change: anchor text to the top-left of the rectangles cluster
-	// use the same coordinate space as rectangles (child window screen rects)
-	CRect r1, r2, r3, r4;
-	chart_data_.GetWindowRect(&r1);
-	chart_data_filtered_.GetWindowRect(&r2);
-	chart_spike_bar_.GetWindowRect(&r3);
-	chart_spike_shape_.GetWindowRect(&r4);
-	const int base_x = std::min(std::min(r1.left, r2.left), std::min(r3.left, r4.left));
-	const int base_y = std::min(std::min(r1.top, r2.top), std::min(r3.top, r4.top));
-
 	p_dc->SetTextColor(RGB(0, 0, 0));
 	constexpr int margin = 8;
-	p_dc->TextOut(base_x + margin, base_y + margin, record_description);
-	p_dc->TextOut(base_x + margin, base_y + margin + options_view_data_->line_height, abscissa);
+	p_dc->TextOut(base_x + margin, base_y + margin - 2 * options_view_data_->line_height, record_description);
+	p_dc->TextOut(base_x + margin, base_y + margin - options_view_data_->line_height, abscissa);
 }

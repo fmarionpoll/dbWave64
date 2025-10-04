@@ -53,8 +53,8 @@ BOOL GraphicsExport::CopyAsEmfToClipboard(CWnd* owner_wnd,
     // Provide attribute DC so GetDeviceCaps and similar queries behave predictably during EMF recording
     meta_dc.SetAttribDC(p_ref_dc->GetSafeHdc());
 
-	if (draw_fn)
-		draw_fn(&meta_dc, pixel_rect);
+    if (draw_fn)
+        draw_fn(&meta_dc, pixel_rect);
 
     const auto h_emf = meta_dc.CloseEnhanced();
     if (h_emf == nullptr)

@@ -112,12 +112,13 @@ BEGIN_MESSAGE_MAP(ViewSpikeSort, ViewDbTable)
 
 END_MESSAGE_MAP()
 
-void ViewSpikeSort::render_for_export(CDC* p_dc, const CSize& resolution)
+void ViewSpikeSort::render_for_export(CDC* p_dc)
 {
 	serialize_windows_state(b_save);
 
     // Layout similar to on screen: top measures, middle bars, bottom shape, right histogram
-	const CRect rect(0, 0, resolution.cx, resolution.cy);
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	CRect rect(0, 0, p_print_parms->horizontal_resolution, p_print_parms->vertical_resolution);
     auto area = rect;
     const int separator = std::max(4, rect.Height() / 50);
 
@@ -205,7 +206,7 @@ void ViewSpikeSort::init_charts_from_saved_parameters()
 
 	// load global parameters
 	auto* p_app = static_cast<CdbWaveApp*>(AfxGetApp());
-	spike_classification_ = &(p_app->spk_classification);
+	spike_classification_ = &(p_app->options_spk_classification_data);
 	options_view_data_ = &(p_app->options_view_data);
 
 	// assign values to controls

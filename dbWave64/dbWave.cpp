@@ -385,20 +385,20 @@ BOOL CdbWaveApp::archive_parameter_files(const CString& filename, const BOOL b_r
 
 void CdbWaveApp::serialize_parameters(int n, CArchive& ar)
 {
-	n--; if (n > 0) stimulus_detect.Serialize(ar);
-	n--; if (n > 0) spk_detect_array.Serialize(ar);
+	n--; if (n > 0) options_detect_stimulus_data.Serialize(ar);
+	n--; if (n > 0) options_spk_detect_array_data.Serialize(ar);
 	n--; if (n > 0) options_view_data.Serialize(ar);
-	n--; if (n > 0) options_view_spikes.Serialize(ar);
-	n--; if (n > 0) spk_classification.Serialize(ar);
-	n--; if (n > 0) options_view_data_measure.Serialize(ar);
-	n--; if (n > 0) options_import.Serialize(ar);
+	n--; if (n > 0) options_view_spikes_data.Serialize(ar);
+	n--; if (n > 0) options_spk_classification_data.Serialize(ar);
+	n--; if (n > 0) options_measure_data.Serialize(ar);
+	n--; if (n > 0) options_import_data.Serialize(ar);
 	n--; if (n > 0) options_acq_data.Serialize(ar);
 	n--; if (n > 0) options_output_data.Serialize(ar);
 }
 
-void CdbWaveApp::SetPrinterOrientation()
+void CdbWaveApp::SetPrinterOrientation(options_print& print_parameters)
 {
-	if (options_view_data.horizontal_resolution <= 0 || options_view_data.vertical_resolution <= 0)
+	if (print_parameters.horizontal_resolution <= 0 || print_parameters.vertical_resolution <= 0)
 		return;
 
 	// Get default printer settings.
@@ -413,7 +413,7 @@ void CdbWaveApp::SetPrinterOrientation()
 		if (p_dev_mode)
 		{
 			// Change printer settings in here.
-			if (options_view_data.horizontal_resolution > options_view_data.vertical_resolution)
+			if (print_parameters.horizontal_resolution > print_parameters.vertical_resolution)
 				p_dev_mode->dmOrientation = DMORIENT_LANDSCAPE;
 			else
 				p_dev_mode->dmOrientation = DMORIENT_PORTRAIT;

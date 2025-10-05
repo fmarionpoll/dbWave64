@@ -5,6 +5,7 @@
 
 #include "SpikeListTabCtrl.h"
 #include "dbTableMain.h"
+#include "options_print.h"
 #include "StretchControls.h"
 #include "ViewDB/TableDataService.h"
 #include "ViewDB/TablePrintRenderer.h"
@@ -28,12 +29,9 @@ public:
 	boolean m_auto_detect { false };
 	boolean m_auto_increment {false};
 
-	// Data service abstraction (defaults to DAO-backed via document)
-	std::unique_ptr<ITableDataService> data_service_ {};
-	// Print/export abstraction
-	std::unique_ptr<ITablePrintRenderer> print_renderer_ {};
-	// page format printing parameters (pixel unit)
-	options_view_data* options_view_data_ = nullptr;
+	// Data service abstraction 
+	std::unique_ptr<ITableDataService> data_service {};
+	std::unique_ptr<ITablePrintRenderer> print_renderer {};
 
 	// Framework default print helper (exposes base call for renderer)
 	void framework_default_print(CDC* p_dc, CPrintInfo* p_info);
@@ -81,9 +79,9 @@ protected:
 	CRect print_rect_;
 
 	BOOL OnPreparePrinting(CPrintInfo* p_info) override;
-	void OnBeginPrinting(CDC* p_dc, CPrintInfo* p_info) override;
-	void OnEndPrinting(CDC* p_dc, CPrintInfo* p_info) override;
-	void OnPrint(CDC* p_dc, CPrintInfo* p_info) override;
+	void OnBeginPrinting(CDC* p_dc, CPrintInfo* pInfo) override;
+	void OnEndPrinting(CDC* p_dc, CPrintInfo* pInfo) override;
+	void OnPrint(CDC* p_dc, CPrintInfo* pInfo) override;
 	void OnActivateView(BOOL b_activate, CView* p_activate_view, CView* p_deactive_view) override;
 
 	// parameters for OnSize
@@ -92,9 +90,9 @@ protected:
 
 public:
 	// Export helpers (EMF/PNG)
-	BOOL copy_as_emf_to_clipboard(const CSize& resolution, const CString& title);
-	BOOL export_to_png(const CSize& resolution, const CString& file_path, int bg_color = RGB(255,255,255));
-	virtual void render_for_export(CDC* p_dc, const CSize& pixel_rect);
+	BOOL copy_as_emf_to_clipboard(const CString& title);
+	BOOL export_to_png(const CString& file_path, int bg_color = RGB(255,255,255));
+	virtual void render_for_export(CDC* p_dc);
 	virtual bool can_export_view() const { return true; }
 	virtual bool can_export_png() const { return true; }
 	virtual void serialize_windows_state(BOOL save, int tab_index = -1);

@@ -288,7 +288,7 @@
     <ClCompile Include="options_spk_classification.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OPTIONS_VIEW_DATA.cpp">
+    <ClCompile Include="options_view_data.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="options_view_spikes.cpp">
@@ -300,7 +300,7 @@
     <ClCompile Include="Spike.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="spike_detection_array.cpp">
+    <ClCompile Include="options_spike_detection_array.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SpikeClassGrid.cpp">
@@ -612,6 +612,9 @@
     <ClCompile Include="Controls\EditCtrl.cpp">
       <Filter>Controls</Filter>
     </ClCompile>
+    <ClCompile Include="ViewDB\options_print.cpp">
+      <Filter>ViewDB</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AcqDataDoc.h">
@@ -848,13 +851,13 @@
     <ClInclude Include="options_detect_stimulus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OPTIONS_IMPORT.h">
+    <ClInclude Include="options_import.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="options_input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OPTIONS_MEASURE.h">
+    <ClInclude Include="options_measure.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="options_output.h">
@@ -869,7 +872,7 @@
     <ClInclude Include="options_spk_classification.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OPTIONS_VIEW_DATA.h">
+    <ClInclude Include="options_view_data.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="options_view_spikes.h">
@@ -887,7 +890,7 @@
     <ClInclude Include="Spike.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="spike_detection_array.h">
+    <ClInclude Include="options_spike_detection_array.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SpikeClassGrid.h">
@@ -1288,6 +1291,9 @@
     </ClInclude>
     <ClInclude Include="Controls\EditCtrl.h">
       <Filter>Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\options_print.h">
+      <Filter>ViewDB</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -59,7 +59,7 @@ protected:
 	CEditCtrl mm_selected_channel2_;
 
 	int zoom_integer_ {0};
-	spike_detection_array* spike_detection_array_ {nullptr};
+	options_spike_detection_array* spike_detection_array_ {nullptr};
 	SpikeDetectArray spk_detect_array_;
 	options_detect_spikes* m_p_detect_parameters_ {nullptr};
 	int m_i_detect_parameters_ {0};
@@ -153,7 +153,7 @@ protected:
 	BOOL print_get_file_series_index_from_page(int page, int& file_number, long& l_first);
 	BOOL print_get_next_row(int& file_index, long& l_first, long& very_last);
 	int print_get_n_pages();
-	void print_data_cartridge(CDC* p_dc, ChartData* p_data_chart_wnd, const CRect* p_rect, const CSize& resolution);
+	void print_data_cartridge(CDC* p_dc, ChartData* p_data_chart_wnd, const CRect* p_rect);
 
 	// gain and bias setting: data and functions
 	void on_gain_scroll(UINT n_sb_code, UINT n_pos, int i_id);
@@ -163,7 +163,7 @@ protected:
 	void set_v_bar_mode(const int b_mode, const int i_id);
 	void update_tabs();
 
-	void render_for_export(CDC* p_dc, const CSize& resolution) override;
+	void render_for_export(CDC* p_dc) override;
 	void export_comments(CDC* p_dc, int base_x, int base_y);
 
 	// Generated message map functions

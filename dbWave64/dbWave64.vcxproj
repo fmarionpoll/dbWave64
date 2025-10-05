@@ -146,7 +146,7 @@
     <ClCompile Include="options_scope_channel.cpp" />
     <ClCompile Include="options_scope_struct.cpp" />
     <ClCompile Include="options_spk_classification.cpp" />
-    <ClCompile Include="OPTIONS_VIEW_DATA.cpp" />
+    <ClCompile Include="options_view_data.cpp" />
     <ClCompile Include="options_view_spikes.cpp" />
     <ClCompile Include="output_parameters.cpp" />
     <ClCompile Include="Controls\QuadStateTree.cpp" />
@@ -168,7 +168,7 @@
     <ClCompile Include="SpikeFromChan.cpp" />
     <ClCompile Include="Spikelist.cpp" />
     <ClCompile Include="SpikeListTabCtrl.cpp" />
-    <ClCompile Include="spike_detection_array.cpp" />
+    <ClCompile Include="options_spike_detection_array.cpp" />
     <ClCompile Include="Splash.cpp" />
     <!-- <ClCompile Include="Stage.cpp" /> -->
     <ClCompile Include="StretchControls.cpp" />
@@ -182,6 +182,7 @@
     <ClCompile Include="ViewDB\ListRecords\RecordsListCtrl.cpp" />
     <ClCompile Include="ViewDB\ListRecords\ViewRecordsList.cpp" />
     <ClCompile Include="ViewDB\ListRecords\ViewRecordsListInit.cpp" />
+    <ClCompile Include="ViewDB\options_print.cpp" />
     <ClCompile Include="ViewDB\PanelFilter\PaneldbFilter.cpp" />
     <ClCompile Include="ViewDB\PanelFilter\PaneldbFilterToolBar.cpp" />
     <ClCompile Include="ViewDB\PanelProperties\PaneldbProperties.cpp" />
@@ -359,14 +360,14 @@
     <ClInclude Include="NotedocCntrItem.h" />
     <ClInclude Include="options_detect_spikes.h" />
     <ClInclude Include="options_detect_stimulus.h" />
-    <ClInclude Include="OPTIONS_IMPORT.h" />
+    <ClInclude Include="options_import.h" />
     <ClInclude Include="options_input.h" />
-    <ClInclude Include="OPTIONS_MEASURE.h" />
+    <ClInclude Include="options_measure.h" />
     <ClInclude Include="options_output.h" />
     <ClInclude Include="options_scope_channel.h" />
     <ClInclude Include="options_scope_struct.h" />
     <ClInclude Include="options_spk_classification.h" />
-    <ClInclude Include="OPTIONS_VIEW_DATA.h" />
+    <ClInclude Include="options_view_data.h" />
     <ClInclude Include="options_view_spikes.h" />
     <ClInclude Include="OutlookBar.h" />
     <ClInclude Include="output_parameters.h" />
@@ -391,7 +392,7 @@
     <ClInclude Include="SpikeFromChan.h" />
     <ClInclude Include="Spikelist.h" />
     <ClInclude Include="SpikeListTabCtrl.h" />
-    <ClInclude Include="spike_detection_array.h" />
+    <ClInclude Include="options_spike_detection_array.h" />
     <ClInclude Include="Splash.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="StretchControls.h" />
@@ -409,6 +410,7 @@
     <ClInclude Include="ViewDB\ListRecords\Renderers.h" />
     <ClInclude Include="ViewDB\ListRecords\RowCache.h" />
     <ClInclude Include="ViewDB\ListRecords\ViewRecordsList.h" />
+    <ClInclude Include="ViewDB\options_print.h" />
     <ClInclude Include="ViewDB\PanelFilter\PaneldbFilter.h" />
     <ClInclude Include="ViewDB\PanelFilter\PaneldbFilterToolBar.h" />
     <ClInclude Include="ViewDB\PanelProperties\PaneldbProperties.h" />

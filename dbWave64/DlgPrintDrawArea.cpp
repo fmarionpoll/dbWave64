@@ -4,6 +4,7 @@
 #include "StdAfx.h"
 #include "resource.h"
 #include "./DlgPrintDrawArea.h"
+#include "ViewDB/options_print.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -34,12 +35,12 @@ BOOL DlgPrintDrawArea::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	m_height_doc = options_view_data->height_doc;
-	m_width_doc = options_view_data->width_doc;
-	m_spk_height = options_view_data->spike_height;
-	m_spk_width = options_view_data->spike_width;
-	m_height_separator = options_view_data->height_separator;
-	m_b_filter_dat = options_view_data->b_filter_data_source;
+	m_height_doc = p_print_parameters->height_doc;
+	m_width_doc = p_print_parameters->width_doc;
+	m_spk_height = p_print_parameters->spike_height;
+	m_spk_width = p_print_parameters->spike_width;
+	m_height_separator = p_print_parameters->height_separator;
+	m_b_filter_dat = p_print_parameters->b_filter_data_source;
 	UpdateData(FALSE);
 
 	return TRUE; // return TRUE  unless you set the focus to a control
@@ -49,11 +50,11 @@ void DlgPrintDrawArea::OnOK()
 {
 	UpdateData(TRUE);
 
-	options_view_data->height_doc = m_height_doc;
-	options_view_data->width_doc = m_width_doc;
-	options_view_data->height_separator = m_height_separator;
-	options_view_data->spike_height = m_spk_height;
-	options_view_data->spike_width = m_spk_width;
-	options_view_data->b_filter_data_source = m_b_filter_dat;
+	p_print_parameters->height_doc = m_height_doc;
+	p_print_parameters->width_doc = m_width_doc;
+	p_print_parameters->height_separator = m_height_separator;
+	p_print_parameters->spike_height = m_spk_height;
+	p_print_parameters->spike_width = m_spk_width;
+	p_print_parameters->b_filter_data_source = m_b_filter_dat;
 	CDialog::OnOK();
 }

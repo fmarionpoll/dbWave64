@@ -1,6 +1,7 @@
 #pragma once
-#include "options_view_data.h"
 
+
+class options_print;
 
 class DlgPrintDrawArea : public CDialog
 {
@@ -16,7 +17,7 @@ public:
 	int m_width_doc{ 0 };
 	int m_spk_height{ 0 };
 	int m_spk_width{ 0 };
-	options_view_data* options_view_data{ nullptr };
+	options_print* p_print_parameters{ nullptr };
 	BOOL m_b_filter_dat{ false };
 
 	// Implementation

@@ -87,14 +87,14 @@ BOOL CNoteDoc::open_project_files(CString& cs_path_name)
 	// make sure the correct import options are selected
 	DlgImportOptions dlg;
 	const auto p_app = static_cast<CdbWaveApp*>(AfxGetApp());
-	dlg.m_b_allow_duplicate_files = p_app->options_import.discard_duplicate_files;
-	dlg.m_b_header = p_app->options_import.header_present;
-	dlg.m_b_read_columns = p_app->options_import.read_columns;
+	dlg.m_b_allow_duplicate_files = p_app->options_import_data.discard_duplicate_files;
+	dlg.m_b_header = p_app->options_import_data.header_present;
+	dlg.m_b_read_columns = p_app->options_import_data.read_columns;
 	if (IDOK == dlg.DoModal())
 	{
-		p_app->options_import.discard_duplicate_files =  static_cast<boolean>(dlg.m_b_allow_duplicate_files);
-		p_app->options_import.header_present = static_cast<boolean>(dlg.m_b_header);
-		p_app->options_import.read_columns = static_cast<boolean>(dlg.m_b_read_columns);
+		p_app->options_import_data.discard_duplicate_files =  static_cast<boolean>(dlg.m_b_allow_duplicate_files);
+		p_app->options_import_data.header_present = static_cast<boolean>(dlg.m_b_header);
+		p_app->options_import_data.read_columns = static_cast<boolean>(dlg.m_b_read_columns);
 	}
 
 	// open data files
@@ -129,8 +129,8 @@ BOOL CNoteDoc::open_file_list(CString& cs_path_name, CStringArray& cs_array_file
 
 		if (p_dbwave_doc->open_new_document(dbname))
 		{
-			if (p_app->options_import.read_columns)
-				p_dbwave_doc->import_file_list(cs_descriptions_array, n_columns, p_app->options_import.header_present);
+			if (p_app->options_import_data.read_columns)
+				p_dbwave_doc->import_file_list(cs_descriptions_array, n_columns, p_app->options_import_data.header_present);
 			else
 				p_dbwave_doc->import_file_list(cs_array_files);
 			const auto p_wave_format = (p_app->m_db_wave_view_template)->CreateNewFrame(p_dbwave_doc, nullptr);
@@ -151,7 +151,7 @@ int CNoteDoc::extract_list(CRichEditCtrl& p_edit, CStringArray& cs_array_file_na
 	boolean b_files_not_found = false;
 	CStringArray cs_files_tested;
 	int i_first = 0;
-	if (static_cast<CdbWaveApp*>(AfxGetApp())->options_import.header_present)
+	if (static_cast<CdbWaveApp*>(AfxGetApp())->options_import_data.header_present)
 		i_first = 1;
 
 	int cur_pos = 0;

@@ -1,5 +1,6 @@
 #pragma once
 
+
 #ifndef __AFXWIN_H__
 #error "include 'stdafx.h' before including this file for PCH"
 #endif
@@ -8,13 +9,14 @@
 
 #include "dbMultiDocTemplate.h"
 #include "options_input.h"
-#include "OPTIONS_MEASURE.h"
+#include "options_measure.h"
 #include "options_import.h"
 #include "options_output.h"
 #include "options_view_data.h"
 #include "options_view_spikes.h"
 #include "options_spk_classification.h"
-#include "spike_detection_array.h"
+#include "ViewDB/options_print.h"
+#include "options_spike_detection_array.h"
 #include "options_detect_stimulus.h"
 
 
@@ -53,15 +55,16 @@ public:
 	// Implementation
 	CStringArray m_cs_parameter_files;
 	CString m_comment;
-	options_detect_stimulus stimulus_detect;
-	spike_detection_array spk_detect_array;
-	options_spk_classification spk_classification;
+	options_detect_stimulus options_detect_stimulus_data;
+	options_spike_detection_array options_spk_detect_array_data;
+	options_spk_classification options_spk_classification_data;
 	options_view_data options_view_data;
-	options_view_spikes options_view_spikes;
-	options_measure options_view_data_measure;
-	options_import options_import;
+	options_view_spikes options_view_spikes_data;
+	options_measure options_measure_data;
+	options_import options_import_data;
 	options_input options_acq_data;
 	options_output options_output_data;
+	options_print options_print_data;
 
 	CMemFile* m_p_view_data_memory_file  {nullptr};
 	CArray<CMemFile*, CMemFile*> view_spikes_memory_file_ptr_array;
@@ -74,7 +77,7 @@ public:
 	void default_parameters(BOOL b_read);
 	BOOL archive_parameter_files(const CString& filename, BOOL b_read);
 	void serialize_parameters(int n, CArchive& ar);
-	void SetPrinterOrientation();
+	void SetPrinterOrientation(options_print& print_parameters);
 	static BOOL get_file_names_dlg(int i_ids, LPCSTR sz_title, int* i_filter_index, CStringArray* filenames);
 	void FilePrintSetup();
 	static CString get_my_documents_my_dbwave_path();

@@ -97,7 +97,7 @@ void ViewSpikeHist::OnInitialUpdate()
 
 	// load stored parameters
 	auto p_app = static_cast<CdbWaveApp*>(AfxGetApp());
-	options_view_spikes_ = &(p_app->options_view_spikes); 
+	options_view_spikes_ = &(p_app->options_view_spikes_data); 
 	options_view_data_ = &(p_app->options_view_data); 
 
 	// create local fonts
@@ -195,7 +195,7 @@ void ViewSpikeHist::OnActivateView(const BOOL b_activate, CView* p_activate_view
 	else
 	{
 		auto* p_app = static_cast<CdbWaveApp*>(AfxGetApp());
-		p_app->options_view_spikes.b_all_files = static_cast<CButton*>(GetDlgItem(IDC_CHECK1))->GetCheck();
+		p_app->options_view_spikes_data.b_all_files = static_cast<CButton*>(GetDlgItem(IDC_CHECK1))->GetCheck();
 	}
 	ViewDbTable::OnActivateView(b_activate, p_activate_view, p_deactive_view);
 }
@@ -426,14 +426,15 @@ void ViewSpikeHist::get_file_infos(CString& str_comment)
 		const CString rc("\n"); 
 		if (m_b_print_)
 		{
-			if (options_view_data_->b_doc_name || options_view_data_->b_acq_date_time) 
+			const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+			if (p_print_parms->b_doc_name || p_print_parms->b_acq_date_time) 
 			{
-				if (options_view_data_->b_doc_name) 
+				if (p_print_parms->b_doc_name) 
 				{
 					const auto filename = GetDocument()->db_get_current_spk_file_name(FALSE);
 					str_comment += filename + tab;
 				}
-				if (options_view_data_->b_acq_date_time) 
+				if (p_print_parms->b_acq_date_time) 
 				{
 					const auto date = (p_spike_doc->get_acq_time()).Format("%#d %m %Y %X"); 
 					str_comment += date;
@@ -622,10 +623,11 @@ void ViewSpikeHist::on_en_change_dot_height()
 	}
 }
 
-void  ViewSpikeHist::render_for_export(CDC* p_dc, const CSize& resolution)
+void  ViewSpikeHist::render_for_export(CDC* p_dc)
 {
 	serialize_windows_state(b_save);
-	CRect rect (0, 0, resolution.cx, resolution.cy);
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	CRect rect (0, 0, p_print_parms->horizontal_resolution, p_print_parms->vertical_resolution);
 	switch (m_b_hist_type_)
 	{
 	case 0:
@@ -654,9 +656,10 @@ BOOL ViewSpikeHist::OnPreparePrinting(CPrintInfo* p_info)
 		return FALSE;
 
 	// printing margins
-	if (options_view_data_->vertical_resolution <= 0 || options_view_data_->horizontal_resolution <= 0
-		|| options_view_data_->horizontal_resolution != p_info->m_rectDraw.Width()
-		|| options_view_data_->vertical_resolution != p_info->m_rectDraw.Height())
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	if (p_print_parms->vertical_resolution <= 0 || p_print_parms->horizontal_resolution <= 0
+		|| p_print_parms->horizontal_resolution != p_info->m_rectDraw.Width()
+		|| p_print_parms->vertical_resolution != p_info->m_rectDraw.Height())
 	{
 		// compute printer's page dot resolution
 		CPrintDialog dlg(FALSE); 
@@ -665,13 +668,13 @@ BOOL ViewSpikeHist::OnPreparePrinting(CPrintInfo* p_info)
 		const auto h_dc = dlg.CreatePrinterDC();
 		ASSERT(h_dc != NULL);
 		dc.Attach(h_dc);
-		options_view_data_->horizontal_resolution = dc.GetDeviceCaps(HORZRES);
-		options_view_data_->vertical_resolution = dc.GetDeviceCaps(VERTRES);
+		p_print_parms->horizontal_resolution = dc.GetDeviceCaps(HORZRES);
+		p_print_parms->vertical_resolution = dc.GetDeviceCaps(VERTRES);
 	}
 
 	// how many rows per page?
-	const auto size_row = options_view_data_->height_doc + options_view_data_->height_separator;
-	auto n_rows_per_page = (options_view_data_->vertical_resolution - 2 * options_view_data_->top_page_margin) / size_row;
+	const auto size_row = p_print_parms->height_doc + p_print_parms->height_separator;
+	auto n_rows_per_page = (p_print_parms->vertical_resolution - 2 * p_print_parms->top_page_margin) / size_row;
 	auto n_files = 1;
 	if (m_n_files_ == 1)
 		n_files = GetDocument()->db_get_records_count();
@@ -685,7 +688,7 @@ BOOL ViewSpikeHist::OnPreparePrinting(CPrintInfo* p_info)
 	p_info->SetMaxPage(n_pages); // one-page printing/preview
 	p_info->m_nNumPreviewPages = 1; // preview 1 pages at a time
 	// allow print only selection
-	if (options_view_data_->b_print_selection)
+	if (p_print_parms->b_print_selection)
 		p_info->m_pPD->m_pd.Flags |= PD_SELECTION;
 	else
 		p_info->m_pPD->m_pd.Flags &= ~PD_NOSELECTION;
@@ -693,14 +696,16 @@ BOOL ViewSpikeHist::OnPreparePrinting(CPrintInfo* p_info)
 	// call dialog box
 	const auto flag = DoPreparePrinting(p_info);
 	// set max nb of pages according to selection
-	options_view_data_->b_print_selection = p_info->m_pPD->PrintSelection();
-	if (options_view_data_->b_print_selection)
+	p_print_parms->b_print_selection = p_info->m_pPD->PrintSelection();
+	if (p_print_parms->b_print_selection)
 		p_info->SetMaxPage(1);
 	return flag;
 }
 
 void ViewSpikeHist::OnPrint(CDC* p_dc, CPrintInfo* pInfo)
 {
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+
 	// select font, set print flag, save current file index
 	const auto p_old_font = p_dc->SelectObject(&m_font_print_);
 
@@ -716,23 +721,23 @@ void ViewSpikeHist::OnPrint(CDC* p_dc, CPrintInfo* pInfo)
 	CString ch_date = GetDocument()->db_get_current_spk_file_name(FALSE);
 	ch_date = ch_date.Left(ch_date.GetLength() - 1) + cs_footer;
 	p_dc->SetTextAlign(TA_CENTER); // and print the footer
-	p_dc->TextOut(options_view_data_->horizontal_resolution / 2, options_view_data_->vertical_resolution - 57, ch_date);
+	p_dc->TextOut(p_print_parms->horizontal_resolution / 2, p_print_parms->vertical_resolution - 57, ch_date);
 
 	// define page rectangle (where data and comments are plotted)
 	CRect rect_page; 
-	rect_page.left = options_view_data_->left_page_margin;
-	rect_page.top = options_view_data_->top_page_margin;
+	rect_page.left = p_print_parms->left_page_margin;
+	rect_page.top = p_print_parms->top_page_margin;
 
 	// define data file rectangle - position of the first file
-	const auto r_width = options_view_data_->width_doc; 
-	const auto r_height = options_view_data_->height_doc;
+	const auto r_width = p_print_parms->width_doc; 
+	const auto r_height = p_print_parms->height_doc;
 	CRect r_where(rect_page.left, rect_page.top,
 	              rect_page.left + r_width, rect_page.top + r_height);
 
 	// prepare file loop
 	auto p_dbwave_doc = GetDocument();
 	//long n_records = p_dbwave_doc->db_get_records_count();
-	const auto size_row = options_view_data_->height_doc + options_view_data_->height_separator; 
+	const auto size_row = p_print_parms->height_doc + p_print_parms->height_separator; 
 	auto n_rows_per_page = pInfo->m_rectDraw.Height() / size_row; 
 	if (n_rows_per_page == 0)
 		n_rows_per_page = 1;
@@ -746,7 +751,7 @@ void ViewSpikeHist::OnPrint(CDC* p_dc, CPrintInfo* pInfo)
 	// loop through all files
 	for (auto i_file = file1; i_file < file2; i_file++)
 	{
-		if (options_view_data_->b_frame_rect) 
+		if (p_print_parms->b_frame_rect) 
 		{
 			p_dc->MoveTo(r_where.left, r_where.top);
 			p_dc->LineTo(r_where.right, r_where.top);
@@ -755,7 +760,7 @@ void ViewSpikeHist::OnPrint(CDC* p_dc, CPrintInfo* pInfo)
 			p_dc->LineTo(r_where.left, r_where.top);
 		}
 		m_comment_rect_ = r_where; // calculate where the comments will be printed
-		m_comment_rect_.OffsetRect(options_view_data_->text_separator + m_comment_rect_.Width(), 0);
+		m_comment_rect_.OffsetRect(p_print_parms->text_separator + m_comment_rect_.Width(), 0);
 		m_comment_rect_.right = pInfo->m_rectDraw.right;
 		// refresh data if necessary
 		if (m_n_files_ == 1) //??? (m_n_files > 1)
@@ -781,7 +786,7 @@ void ViewSpikeHist::OnPrint(CDC* p_dc, CPrintInfo* pInfo)
 			break;
 		}
 		// update display rectangle for next row
-		r_where.OffsetRect(0, r_height + options_view_data_->height_separator);
+		r_where.OffsetRect(0, r_height + p_print_parms->height_separator);
 	}
 
 	// restore parameters
@@ -803,7 +808,8 @@ void ViewSpikeHist::OnBeginPrinting(CDC* p_dc, CPrintInfo* pInfo)
 {
 	memset(&m_log_font_, 0, sizeof(LOGFONT)); // prepare font
 	lstrcpy(m_log_font_.lfFaceName, _T("Arial")); // Arial font
-	m_log_font_.lfHeight = options_view_data_->font_size; // font height
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	m_log_font_.lfHeight = p_print_parms->font_size; // font height
 	m_font_print_.CreateFontIndirect(&m_log_font_);
 	p_dc->SetBkMode(TRANSPARENT);
 }

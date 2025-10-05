@@ -80,7 +80,7 @@ BOOL DlgExportData::OnInitDialog()
 	// extra initialization
 	// handle to the instance
 	const CdbWaveApp* p_app = static_cast<CdbWaveApp*>(AfxGetApp()); // pointer to application
-	iiv_o = p_app->options_import; // copy structure / options
+	iiv_o = p_app->options_import_data; // copy structure / options
 
 	// update dependent controls
 	m_combo_export_as.SetCurSel(iiv_o.export_type); // combo-box
@@ -156,7 +156,7 @@ void DlgExportData::OnOK()
 
 	// handle to the instance
 	auto p_app = static_cast<CdbWaveApp*>(AfxGetApp()); 
-	p_app->options_import = iiv_o; 
+	p_app->options_import_data = iiv_o; 
 
 	CDialog::OnOK();
 }

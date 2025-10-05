@@ -142,7 +142,7 @@ void ViewData::OnInitialUpdate()
 	// init relation with document, display data, adjust parameters
 	const auto p_app = static_cast<CdbWaveApp*>(AfxGetApp());
 	options_view_data_ = &(p_app->options_view_data);
-	options_data_measures_ = &(p_app->options_view_data_measure);
+	options_data_measures_ = &(p_app->options_measure_data);
 
 	// set data file
 	ViewDbTable::OnInitialUpdate();
@@ -1074,14 +1074,15 @@ void ViewData::compute_printer_page_size()
 	dc.Attach(h_dc);
 
 	// Get the size of the page in pixels
-	options_view_data_->horizontal_resolution = dc.GetDeviceCaps(HORZRES);
-	options_view_data_->vertical_resolution = dc.GetDeviceCaps(VERTRES);
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	p_print_parms->horizontal_resolution = dc.GetDeviceCaps(HORZRES);
+	p_print_parms->vertical_resolution = dc.GetDeviceCaps(VERTRES);
 
 	// margins (pixels)
-	print_rect_.right = options_view_data_->horizontal_resolution - options_view_data_->right_page_margin;
-	print_rect_.bottom = options_view_data_->vertical_resolution - options_view_data_->bottom_page_margin;
-	print_rect_.left = options_view_data_->left_page_margin;
-	print_rect_.top = options_view_data_->top_page_margin;
+	print_rect_.right = p_print_parms->horizontal_resolution - p_print_parms->right_page_margin;
+	print_rect_.bottom = p_print_parms->vertical_resolution - p_print_parms->bottom_page_margin;
+	print_rect_.left = p_print_parms->left_page_margin;
+	print_rect_.top = p_print_parms->top_page_margin;
 }
 
 void ViewData::print_file_bottom_page(CDC* p_dc, const CPrintInfo* p_info)
@@ -1097,7 +1098,8 @@ void ViewData::print_file_bottom_page(CDC* p_dc, const CPrintInfo* p_info)
 	auto ch_date = cs_dat_file.Left(i_count);
 	ch_date = ch_date.Left(ch_date.GetLength() - 1) + ch;
 	p_dc->SetTextAlign(TA_CENTER);
-	p_dc->TextOut(options_view_data_->horizontal_resolution / 2, options_view_data_->vertical_resolution - 57, ch_date);
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	p_dc->TextOut(p_print_parms->horizontal_resolution / 2, p_print_parms->vertical_resolution - 57, ch_date);
 }
 
 CString ViewData::convert_file_index(const long l_first, const long l_last) const
@@ -1125,7 +1127,8 @@ BOOL ViewData::get_file_series_index_from_page(int page, int& file_number, long&
 	const auto total_rows = n_rows_per_page_ * (page - 1);
 	l_first = l_print_first_;
 	file_number = 0; // file list index
-	if (options_view_data_->b_print_selection) // current file if selection only
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	if (p_print_parms->b_print_selection) // current file if selection only
 		file_number = file_0_;
 	else
 		BOOL success = GetDocument()->db_move_first();
@@ -1151,13 +1154,14 @@ CString ViewData::get_file_infos()
 
 	// document's name, date and time
 	const auto wave_format = m_p_dat_->get_wave_format();
-	if (options_view_data_->b_doc_name || options_view_data_->b_acq_date_time) // print doc infos?
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	if (p_print_parms->b_doc_name || p_print_parms->b_acq_date_time) // print doc infos?
 	{
-		if (options_view_data_->b_doc_name) // print file name
+		if (p_print_parms->b_doc_name) // print file name
 		{
 			str_comment += GetDocument()->db_get_current_dat_file_name() + tab;
 		}
-		if (options_view_data_->b_acq_date_time) // print data acquisition date & time
+		if (p_print_parms->b_acq_date_time) // print data acquisition date & time
 		{
 			const auto date = wave_format->acquisition_time.Format(_T("%#d %B %Y %X")); //("%c");
 			str_comment += date;
@@ -1166,7 +1170,7 @@ CString ViewData::get_file_infos()
 	}
 
 	// document's main comment (print on multiple lines if necessary)
-	if (options_view_data_->b_acq_comment)
+	if (p_print_parms->b_acq_comment)
 		str_comment += wave_format->get_comments(_T(" ")) + rc;
 
 	return str_comment;
@@ -1196,7 +1200,8 @@ CString ViewData::print_bars(CDC* p_dc, const CRect* rect) const
 	ASSERT(vert_bar > 0);
 
 	auto cs_comment = convert_file_index(chart_data.get_data_first_index(), chart_data.get_data_last_index());
-	if (options_view_data_->b_timescale_bar)
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	if (p_print_parms->b_timescale_bar)
 	{
 		// print horizontal bar
 		x_bar_end.x += horizontal_bar;
@@ -1210,7 +1215,7 @@ CString ViewData::print_bars(CDC* p_dc, const CRect* rect) const
 		str_comment += cs_comment + rc;
 	}
 
-	if (options_view_data_->b_voltage_scale_bar)
+	if (p_print_parms->b_voltage_scale_bar)
 	{
 		y_bar_end.y -= vert_bar;
 		p_dc->MoveTo(bar_origin);
@@ -1218,14 +1223,14 @@ CString ViewData::print_bars(CDC* p_dc, const CRect* rect) const
 	}
 
 	// comments, bar value and chan settings for each channel
-	if (options_view_data_->b_channel_comment || options_view_data_->b_voltage_scale_bar || options_view_data_->b_channel_settings)
+	if (p_print_parms->b_channel_comment || p_print_parms->b_voltage_scale_bar || p_print_parms->b_channel_settings)
 	{
 		const auto channels_list_size = chart_data.get_channel_list_size(); 
 		for (auto i_chan = 0; i_chan < channels_list_size; i_chan++) // loop
 		{
 			wsprintf(lpsz_val, _T("chan#%i "), i_chan); 
 			cs_comment = lpsz_val;
-			if (options_view_data_->b_voltage_scale_bar) 
+			if (p_print_parms->b_voltage_scale_bar) 
 			{
 				cs_unit = _T(" V"); 
 				auto z = static_cast<float>(chart_data.get_rect_height()) / 5
@@ -1252,7 +1257,7 @@ CString ViewData::print_bars(CDC* p_dc, const CRect* rect) const
 			str_comment += cs_comment;
 
 			// print chan comment
-			if (options_view_data_->b_channel_comment)
+			if (p_print_parms->b_channel_comment)
 			{
 				str_comment += tab;
 				str_comment += chart_data.get_channel_list_item(i_chan)->get_comment();
@@ -1260,7 +1265,7 @@ CString ViewData::print_bars(CDC* p_dc, const CRect* rect) const
 			str_comment += rc;
 
 			// print amplifiers settings (gain & filter), next line
-			if (options_view_data_->b_channel_settings)
+			if (p_print_parms->b_channel_settings)
 			{
 				CString cs;
 				const WORD chan_count = static_cast<WORD>(chart_data.get_channel_list_item(i_chan)->get_source_chan());
@@ -1280,10 +1285,11 @@ CString ViewData::print_bars(CDC* p_dc, const CRect* rect) const
 BOOL ViewData::OnPreparePrinting(CPrintInfo* p_info)
 {
 	// printing margins
-	if (options_view_data_->vertical_resolution <= 0 // vertical resolution defined ?
-		|| options_view_data_->horizontal_resolution <= 0 // horizontal resolution defined?
-		|| options_view_data_->horizontal_resolution != p_info->m_rectDraw.Width() // same as infos provided
-		|| options_view_data_->vertical_resolution != p_info->m_rectDraw.Height()) // by caller?
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	if (p_print_parms->vertical_resolution <= 0 // vertical resolution defined ?
+		|| p_print_parms->horizontal_resolution <= 0 // horizontal resolution defined?
+		|| p_print_parms->horizontal_resolution != p_info->m_rectDraw.Width() // same as infos provided
+		|| p_print_parms->vertical_resolution != p_info->m_rectDraw.Height()) // by caller?
 		compute_printer_page_size();
 
 	auto pages_count = print_get_n_pages();
@@ -1291,7 +1297,7 @@ BOOL ViewData::OnPreparePrinting(CPrintInfo* p_info)
 	p_info->m_nNumPreviewPages = 1; // preview 1 pages at a time
 	p_info->m_pPD->m_pd.Flags &= ~PD_NOSELECTION; // allow print only selection
 
-	if (options_view_data_->b_print_selection)
+	if (p_print_parms->b_print_selection)
 		p_info->m_pPD->m_pd.Flags |= PD_SELECTION; // set button to selection
 
 	if (!DoPreparePrinting(p_info))
@@ -1300,9 +1306,9 @@ BOOL ViewData::OnPreparePrinting(CPrintInfo* p_info)
 	if (!COleDocObjectItem::OnPreparePrinting(this, p_info))
 		return FALSE;
 
-	if (options_view_data_->b_print_selection != p_info->m_pPD->PrintSelection())
+	if (p_print_parms->b_print_selection != p_info->m_pPD->PrintSelection())
 	{
-		options_view_data_->b_print_selection = p_info->m_pPD->PrintSelection();
+		p_print_parms->b_print_selection = p_info->m_pPD->PrintSelection();
 		pages_count = print_get_n_pages();
 		p_info->SetMaxPage(pages_count);
 	}
@@ -1313,7 +1319,8 @@ BOOL ViewData::OnPreparePrinting(CPrintInfo* p_info)
 int ViewData::print_get_n_pages()
 {
 	// how many rows per page?
-	const auto size_row = options_view_data_->height_doc + options_view_data_->height_separator;
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	const auto size_row = p_print_parms->height_doc + p_print_parms->height_separator;
 	n_rows_per_page_ = print_rect_.Height() / size_row;
 	if (n_rows_per_page_ == 0) // prevent zero pages
 		n_rows_per_page_ = 1;
@@ -1329,7 +1336,7 @@ int ViewData::print_get_n_pages()
 	files_count_ = 1;
 	auto file0 = file_0_;
 	auto file1 = file_0_;
-	if (!options_view_data_->b_print_selection)
+	if (!p_print_parms->b_print_selection)
 	{
 		file0 = 0;
 		files_count_ = p_dbwave_doc->db_get_records_count();
@@ -1388,7 +1395,8 @@ void ViewData::OnBeginPrinting(CDC* p_dc, CPrintInfo* p_info)
 	//---------------------init objects-------------------------------------
 	memset(&log_font_, 0, sizeof(LOGFONT)); // prepare font
 	lstrcpy(log_font_.lfFaceName, _T("Arial")); // Arial font
-	log_font_.lfHeight = options_view_data_->font_size; // font height
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	log_font_.lfHeight = p_print_parms->font_size; // font height
 	p_old_font_ = nullptr;
 	/*BOOL flag = */
 	font_print_.CreateFontIndirect(&log_font_);
@@ -1400,8 +1408,9 @@ void ViewData::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 	p_old_font_ = p_dc->SelectObject(&font_print_);
 
 	// --------------------- RWhere = rectangle/row in which we plot the data, rWidth = row width
-	const auto r_width = options_view_data_->width_doc; // margins
-	const auto r_height = options_view_data_->height_doc; // margins
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	const auto r_width = p_print_parms->width_doc; // margins
+	const auto r_height = p_print_parms->height_doc; // margins
 	CRect r_where(print_rect_.left, // printing rectangle for data
 	              print_rect_.top,
 	              print_rect_.left + r_width,
@@ -1426,8 +1435,8 @@ void ViewData::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 	options_scope_struct old_scope_structure;
 	options_scope_struct* scope_structure = chart_data.get_scope_parameters();
 	old_scope_structure = *scope_structure;
-	scope_structure->b_draw_frame = options_view_data_->b_frame_rect;
-	scope_structure->b_clip_rect = options_view_data_->b_clip_rect;
+	scope_structure->b_draw_frame = p_print_parms->b_frame_rect;
+	scope_structure->b_clip_rect = p_print_parms->b_clip_rect;
 
 	// loop through all files	--------------------------------------------------------
 	const int old_dc = p_dc->SaveDC(); // save DC
@@ -1448,7 +1457,7 @@ void ViewData::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		}
 
 		// update display rectangle for next row
-		r_where.OffsetRect(0, r_height + options_view_data_->height_separator);
+		r_where.OffsetRect(0, r_height + p_print_parms->height_separator);
 
         // restore DC and print comments --------------------------------------------------
         p_dc->SelectClipRgn(nullptr); // no more clipping
@@ -1464,11 +1473,11 @@ void ViewData::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 			cs_comment = convert_file_index(chart_data.get_data_first_index(), chart_data.get_data_last_index());
 
 		// print comments stored into cs_comment
-		comment_rect.OffsetRect(options_view_data_->text_separator + comment_rect.Width(), 0);
+		comment_rect.OffsetRect(p_print_parms->text_separator + comment_rect.Width(), 0);
 		comment_rect.right = print_rect_.right;
 
         // draw via helper with 1:1 mapping in target rect
-        draw_text_block(p_dc, comment_rect, options_view_data_->font_size, cs_comment,
+        draw_text_block(p_dc, comment_rect, p_print_parms->font_size, cs_comment,
                         DT_NOPREFIX | DT_NOCLIP | DT_LEFT | DT_WORDBREAK);
 
 		// update file parameters for next row --------------------------------------------
@@ -1612,16 +1621,17 @@ void ViewData::update_y_zero(const int i_chan, const int y_bias)
 	}
 }
 
-void ViewData::render_for_export(CDC* p_dc, const CSize& resolution)
+void ViewData::render_for_export(CDC* p_dc)
 {
 	serialize_windows_state(b_save);
 
 	const auto old_scope_struct = new options_scope_struct();
 	options_scope_struct* new_scope_struct = chart_data.get_scope_parameters();
 	*old_scope_struct = *new_scope_struct;
-	new_scope_struct->b_draw_frame = options_view_data_->b_frame_rect;
-	new_scope_struct->b_clip_rect = options_view_data_->b_clip_rect;
-	const CRect rect(0, 0, resolution.cx, resolution.cy);
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	new_scope_struct->b_draw_frame = p_print_parms->b_frame_rect;
+	new_scope_struct->b_clip_rect = p_print_parms->b_clip_rect;
+	const CRect rect(0, 0, p_print_parms->horizontal_resolution, p_print_parms->vertical_resolution);
 	chart_data.print(p_dc, &rect);
 	*new_scope_struct = *old_scope_struct;
 

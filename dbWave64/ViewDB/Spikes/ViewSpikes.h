@@ -115,7 +115,7 @@ protected:
 	void OnActivateView(BOOL b_activate, CView* p_activate_view, CView* p_deactivate_view) override;
 
 	// page format printing parameters (pixel unit)
-	options_view_data* options_view_data_ = nullptr; 
+	options_view_data* options_view_data_ = nullptr;
 	options_measure* options_view_data_measure_ = nullptr; 
 	options_spk_classification* spk_classification_parameters_ = nullptr;
 	options_detect_spikes* spk_detection_parameters_ = nullptr; 
@@ -155,7 +155,7 @@ protected:
 	afx_msg void OnLButtonDown(UINT n_flags, CPoint point);
 
 protected:
-	void render_for_export(CDC* p_dc, const CSize& pixel_rect) override;
+	void render_for_export(CDC* p_dc) override;
 	afx_msg void on_gain_button();
 	afx_msg void on_bias_button();
 	afx_msg void on_artefact();

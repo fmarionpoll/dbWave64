@@ -1,5 +1,6 @@
 #pragma once
 #include "options_view_data.h"
+#include "ViewDB/options_print.h"
 
 
 class DlgPrintDataOptions : public CDialog
@@ -17,7 +18,7 @@ public:
 	BOOL m_b_voltage_scale_bar{ false };
 	BOOL m_b_print_selection{ false };
 	BOOL m_b_print_spk_bars{ false };
-	options_view_data* options_view_data{ nullptr };
+	options_print* p_print_parameters{ nullptr };
 
 	// Implementation
 protected:

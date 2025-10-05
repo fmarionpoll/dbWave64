@@ -5,7 +5,6 @@
 
 #include "dbWave.h"
 #include "dbWaveDoc.h"
-#include "DlgCopyAs.h"
 
 
 
@@ -69,12 +68,12 @@ BOOL ViewDbTable::PreCreateWindow(CREATESTRUCT& cs)
 
 CDaoRecordset* ViewDbTable::OnGetRecordset()
 {
-    if (!data_service_)
+    if (!data_service)
     {
         // Default to Dao-backed service constructed from our document
-        data_service_ = std::make_unique<DaoTableDataService>(GetDocument());
+        data_service = std::make_unique<DaoTableDataService>(GetDocument());
     }
-    return data_service_->get_recordset();
+    return data_service->get_recordset();
 }
 
 void ViewDbTable::OnSize(UINT n_type, int cx, int cy)
@@ -123,38 +122,38 @@ void ViewDbTable::OnActivateView(BOOL b_activate, CView* p_activate_view, CView*
 
 BOOL ViewDbTable::OnPreparePrinting(CPrintInfo* p_info)
 {
-    if (!print_renderer_)
-        print_renderer_ = std::make_unique<DefaultTablePrintRenderer>();
-    return print_renderer_->prepare_printing(this, p_info);
+    if (!print_renderer)
+        print_renderer = std::make_unique<DefaultTablePrintRenderer>();
+    return print_renderer->prepare_printing(this, p_info);
 }
 
 void ViewDbTable::OnBeginPrinting(CDC* p_dc, CPrintInfo* pInfo)
 {
-    if (!print_renderer_)
-        print_renderer_ = std::make_unique<DefaultTablePrintRenderer>();
-    print_renderer_->begin_printing(this, p_dc, pInfo);
+    if (!print_renderer)
+        print_renderer = std::make_unique<DefaultTablePrintRenderer>();
+    print_renderer->begin_printing(this, p_dc, pInfo);
 }
 
 void ViewDbTable::OnEndPrinting(CDC* p_dc, CPrintInfo* pInfo)
 {
-    if (!print_renderer_)
-        print_renderer_ = std::make_unique<DefaultTablePrintRenderer>();
-    print_renderer_->end_printing(this, p_dc, pInfo);
+    if (!print_renderer)
+        print_renderer = std::make_unique<DefaultTablePrintRenderer>();
+    print_renderer->end_printing(this, p_dc, pInfo);
 }
 
-void ViewDbTable::OnPrint(CDC* p_dc, CPrintInfo* p_info)
+void ViewDbTable::OnPrint(CDC* p_dc, CPrintInfo* pInfo)
 {
-    if (!print_renderer_)
-        print_renderer_ = std::make_unique<DefaultTablePrintRenderer>();
-    print_renderer_->print_page(this, p_dc, p_info);
+    if (!print_renderer)
+        print_renderer = std::make_unique<DefaultTablePrintRenderer>();
+    print_renderer->print_page(this, p_dc, pInfo);
 }
 
-void ViewDbTable::framework_default_print(CDC* p_dc, CPrintInfo* p_info)
+void ViewDbTable::framework_default_print(CDC* p_dc, CPrintInfo* pInfo)
 {
-    if (p_info->m_bDocObject)
-        COleDocObjectItem::OnPrint(this, p_info, TRUE);
+    if (pInfo->m_bDocObject)
+        COleDocObjectItem::OnPrint(this, pInfo, TRUE);
     else
-        CView::OnPrint(p_dc, p_info);
+        CView::OnPrint(p_dc, pInfo);
 }
 
 void ViewDbTable::save_current_spk_file()
@@ -217,7 +216,7 @@ void ViewDbTable::on_tcn_sel_change_tab1(NMHDR* p_nmhdr, LRESULT* p_result)
 }
 
 // Default no-op renderer; derived classes should override when using copy_as_emf_to_clipboard
-void ViewDbTable::render_for_export(CDC* /*p_dc*/, const CSize& /*resolution*/)
+void ViewDbTable::render_for_export(CDC*)
 {
 }
 
@@ -248,13 +247,9 @@ void ViewDbTable::draw_text_block(CDC* p_dc, const CRect& device_rect, const int
 }
 
 // Common EMF creation and clipboard copy
-BOOL ViewDbTable::copy_as_emf_to_clipboard(const CSize& resolution, const CString& title)
+BOOL ViewDbTable::copy_as_emf_to_clipboard(const CString& title)
 {
-    return GraphicsExport::CopyAsEmfToClipboard(
-        this,
-        resolution,
-        title,
-        [this](CDC* dc, const CSize& pr) { this->render_for_export(dc, pr); }
+    return GraphicsExport::CopyAsEmfToClipboard(this, title, [this](CDC* dc) { this->render_for_export(dc); }
     );
 }
 
@@ -290,47 +285,46 @@ int ViewDbTable::calc_draw_text_height(CDC* p_dc, const int point_size, const CS
 // CRect rect(0,0,w,h);
 // export_to_png(rect, L"C:\\temp\\export.png");
 
-BOOL ViewDbTable::export_to_png(const CSize& resolution, const CString& file_path, const int bg_color)
+BOOL ViewDbTable::export_to_png(const CString& file_path, const int bg_color)
 {
     return GraphicsExport::ExportToPng(
         this,
-        resolution,
         file_path,
         bg_color,
-        [this](CDC* dc, const CSize& pr) { this->render_for_export(dc, pr); }
+        [this](CDC* dc) { this->render_for_export(dc); }
     );
 }
 void ViewDbTable::OnExportViewToClipboard()
 {
-	if (options_view_data_ == nullptr)
-	{
-		const auto p_app = static_cast<CdbWaveApp*>(AfxGetApp());
-		options_view_data_ = &(p_app->options_view_data);
-	}
+	//if (p_options_view_data == nullptr)
+	//{
+	//	const auto p_app = static_cast<CdbWaveApp*>(AfxGetApp());
+	//	p_options_view_data = &(p_app->options_view_data);
+	//}
 		
-	DlgCopyAs dlg;
-	dlg.m_n_abscissa = options_view_data_->hz_resolution;
-	dlg.m_n_ordinates = options_view_data_->vt_resolution;
-	dlg.b_graphics = options_view_data_->b_graphics;
-	dlg.m_i_option = options_view_data_->b_contours;
-	dlg.m_i_unit = options_view_data_->b_units;
+	//DlgCopyAs dlg;
+	//dlg.m_n_abscissa = options_view_data_->hz_resolution;
+	//dlg.m_n_ordinates = options_view_data_->vt_resolution;
+	//dlg.b_graphics = options_view_data_->b_graphics;
+	//dlg.m_i_option = options_view_data_->b_contours;
+	//dlg.m_i_unit = options_view_data_->b_units;
 
-	// invoke dialog box
-	if (IDOK == dlg.DoModal())
-	{
-		options_view_data_->b_graphics = dlg.b_graphics;
-		options_view_data_->b_contours = dlg.m_i_option;
-		options_view_data_->b_units = dlg.m_i_unit;
-		options_view_data_->hz_resolution = dlg.m_n_abscissa;
-		options_view_data_->vt_resolution = dlg.m_n_ordinates;
+	//// invoke dialog box
+	//if (IDOK == dlg.DoModal())
+	//{
+	//	options_view_data_->b_graphics = dlg.b_graphics;
+	//	options_view_data_->b_contours = dlg.m_i_option;
+	//	options_view_data_->b_units = dlg.m_i_unit;
+	//	options_view_data_->hz_resolution = dlg.m_n_abscissa;
+	//	options_view_data_->vt_resolution = dlg.m_n_ordinates;
 
-		if (dlg.b_graphics) {
+		//if (dlg.b_graphics) {
 			serialize_windows_state(b_save);
-			const CSize resolution( options_view_data_->hz_resolution, options_view_data_->vt_resolution);;
-			copy_as_emf_to_clipboard(resolution, GetDocument()->GetTitle());
+			//const CSize resolution( options_view_data_->hz_resolution, options_view_data_->vt_resolution);;
+			copy_as_emf_to_clipboard(GetDocument()->GetTitle());
 			serialize_windows_state(b_restore);
-		}
-	}
+	//	}
+	//}
 }
 
 void ViewDbTable::serialize_windows_state(const BOOL save, int tab_index)
@@ -339,34 +333,33 @@ void ViewDbTable::serialize_windows_state(const BOOL save, int tab_index)
 
 void ViewDbTable::OnExportViewAsPng()
 {
-	if (options_view_data_ == nullptr)
-	{
-		const auto p_app = static_cast<CdbWaveApp*>(AfxGetApp());
-		options_view_data_ = &(p_app->options_view_data);
-	}
+	//if (p_options_view_data == nullptr)
+	//{
+	//	const auto p_app = static_cast<CdbWaveApp*>(AfxGetApp());
+	//	p_options_view_data = &(p_app->options_view_data);
+	//}
 
-	DlgCopyAs dlg;
-	dlg.m_n_abscissa = options_view_data_->hz_resolution;
-	dlg.m_n_ordinates = options_view_data_->vt_resolution;
-	dlg.b_graphics = options_view_data_->b_graphics;
-	dlg.m_i_option = options_view_data_->b_contours;
-	dlg.m_i_unit = options_view_data_->b_units;
+	//DlgCopyAs dlg;
+	//dlg.m_n_abscissa = options_view_data_->hz_resolution;
+	//dlg.m_n_ordinates = options_view_data_->vt_resolution;
+	//dlg.b_graphics = options_view_data_->b_graphics;
+	//dlg.m_i_option = options_view_data_->b_contours;
+	//dlg.m_i_unit = options_view_data_->b_units;
 
-	// invoke dialog box
-	if (IDOK == dlg.DoModal())
-	{
-		options_view_data_->b_graphics = dlg.b_graphics;
-		options_view_data_->b_contours = dlg.m_i_option;
-		options_view_data_->b_units = dlg.m_i_unit;
-		options_view_data_->hz_resolution = dlg.m_n_abscissa;
-		options_view_data_->vt_resolution = dlg.m_n_ordinates;
+	//// invoke dialog box
+	//if (IDOK == dlg.DoModal())
+	//{
+	//	options_view_data_->b_graphics = dlg.b_graphics;
+	//	options_view_data_->b_contours = dlg.m_i_option;
+	//	options_view_data_->b_units = dlg.m_i_unit;
+	//	options_view_data_->hz_resolution = dlg.m_n_abscissa;
+	//	options_view_data_->vt_resolution = dlg.m_n_ordinates;
 		const CString file_path = _T("c:\\temp\\export.png");
-		if (dlg.b_graphics) {
-			const CSize resolution(options_view_data_->hz_resolution, options_view_data_->vt_resolution);
+		//if (dlg.b_graphics) {
 			constexpr int bg_color = 0;
-			export_to_png(resolution,  file_path, bg_color);
-		}
-	}
+			export_to_png(file_path, bg_color);
+	//	}
+	//}
 }
 
 void ViewDbTable::OnUpdateExportViewToClipBoard(CCmdUI* pCmdUI)

@@ -601,7 +601,7 @@ void ViewSpikeDetection::define_sub_classed_items()
 void ViewSpikeDetection::OnInitialUpdate()
 {
 	const auto p_app = static_cast<CdbWaveApp*>(AfxGetApp());
-	spike_detection_array_ = &(p_app->spk_detect_array); 
+	spike_detection_array_ = &(p_app->options_spk_detect_array_data); 
 	options_view_data_ = &(p_app->options_view_data);
 
 	m_ruler_bar_abscissa.attach_scope_wnd(&chart_data_filtered_, TRUE);
@@ -1777,7 +1777,7 @@ void ViewSpikeDetection::on_tools_data_series()
 	update_legends();
 }
 
-void ViewSpikeDetection::print_data_cartridge(CDC* p_dc, ChartData* p_data_chart_wnd, const CRect* p_rect, const CSize& resolution)
+void ViewSpikeDetection::print_data_cartridge(CDC* p_dc, ChartData* p_data_chart_wnd, const CRect* p_rect)
 {
     const int saved = p_dc->SaveDC();
 
@@ -1792,7 +1792,7 @@ void ViewSpikeDetection::print_data_cartridge(CDC* p_dc, ChartData* p_data_chart
     p_data_chart_wnd->b_nice_grid = FALSE;
     p_dc->SelectClipRgn(nullptr);
 
-    p_data_chart_wnd->print(p_dc, p_rect, (options_view_data_->b_contours == 1), resolution.cx);
+    p_data_chart_wnd->print(p_dc, p_rect, (options_view_data_->b_contours == 1));
 
     // restore
     p_data_chart_wnd->b_nice_grid = old_nice_grid;
@@ -1875,14 +1875,15 @@ void ViewSpikeDetection::print_compute_page_size()
 	dc.Attach(h_dc);
 
 	// Get the size of the page in pixels
-	options_view_data_->horizontal_resolution = dc.GetDeviceCaps(HORZRES);
-	options_view_data_->vertical_resolution = dc.GetDeviceCaps(VERTRES);
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	p_print_parms->horizontal_resolution = dc.GetDeviceCaps(HORZRES);
+	p_print_parms->vertical_resolution = dc.GetDeviceCaps(VERTRES);
 
 	// margins (pixels)
-	print_rect_.right = options_view_data_->horizontal_resolution - options_view_data_->right_page_margin;
-	print_rect_.bottom = options_view_data_->vertical_resolution - options_view_data_->bottom_page_margin;
-	print_rect_.left = options_view_data_->left_page_margin;
-	print_rect_.top = options_view_data_->top_page_margin;
+	print_rect_.right = p_print_parms->horizontal_resolution - p_print_parms->right_page_margin;
+	print_rect_.bottom = p_print_parms->vertical_resolution - p_print_parms->bottom_page_margin;
+	print_rect_.left = p_print_parms->left_page_margin;
+	print_rect_.top = p_print_parms->top_page_margin;
 }
 
 void ViewSpikeDetection::print_file_bottom_page(CDC* p_dc, const CPrintInfo* p_info)
@@ -1894,7 +1895,8 @@ void ViewSpikeDetection::print_file_bottom_page(CDC* p_dc, const CPrintInfo* p_i
 		t.GetDay(), t.GetMonth(), t.GetYear());
 	const auto ch_date = GetDocument()->db_get_current_spk_file_name();
 	p_dc->SetTextAlign(TA_CENTER);
-	p_dc->TextOut(options_view_data_->horizontal_resolution / 2, options_view_data_->vertical_resolution - 57, ch_date);
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	p_dc->TextOut(p_print_parms->horizontal_resolution / 2, p_print_parms->vertical_resolution - 57, ch_date);
 }
 
 CString ViewSpikeDetection::print_convert_file_index(const long l_first, const long l_last) const
@@ -1923,7 +1925,8 @@ BOOL ViewSpikeDetection::print_get_file_series_index_from_page(const int page, i
 	const auto total_rows = n_rows_per_page_ * (page - 1);
 	l_first = l_print_first_;
 	file_number = 0; 
-	if (options_view_data_->b_print_selection) 
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	if (p_print_parms->b_print_selection)
 		file_number = file_0_;
 	else
 		BOOL success = GetDocument()->db_move_first();
@@ -1982,12 +1985,13 @@ CString ViewSpikeDetection::print_get_file_infos()
 	// document's name, date and time
 	const auto p_data_file = GetDocument()->m_p_data_doc;
 	const auto wave_format = p_data_file->get_wave_format();
-	if (options_view_data_->b_doc_name || options_view_data_->b_acq_date_time)
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	if (p_print_parms->b_doc_name || p_print_parms->b_acq_date_time)
 	{
-		if (options_view_data_->b_doc_name) 
+		if (p_print_parms->b_doc_name) 
 			str_comment += GetDocument()->db_get_current_dat_file_name() + tab;
 
-		if (options_view_data_->b_acq_date_time) 
+		if (p_print_parms->b_acq_date_time) 
 		{
 			const auto date = (wave_format->acquisition_time).Format(_T("%#d %B %Y %X")); 
 			str_comment += date;
@@ -1996,7 +2000,7 @@ CString ViewSpikeDetection::print_get_file_infos()
 	}
 
 	// document's main comment (print on multiple lines if necessary)
-	if (options_view_data_->b_acq_comment)
+	if (p_print_parms->b_acq_comment)
 		str_comment += GetDocument()->export_database_data(); 
 
 	return str_comment;
@@ -2016,7 +2020,8 @@ CString ViewSpikeDetection::print_data_bars(CDC* p_dc, const ChartData* p_data_c
 	auto str_comment = print_convert_file_index(p_data_chart_wnd->get_data_first_index(), p_data_chart_wnd->get_data_last_index());
 
 	///// horizontal time bar ///////////////////////////
-	if (options_view_data_->b_timescale_bar)
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	if (p_print_parms->b_timescale_bar)
 	{
 		// convert bar size into time units and back into pixels
 		cs_unit = _T(" s"); 
@@ -2047,7 +2052,7 @@ CString ViewSpikeDetection::print_data_bars(CDC* p_dc, const ChartData* p_data_c
 	const auto z_nice = static_cast<float>(NiceUnit::nice_unit(z_scale));
 	i_vertical_bar = static_cast<int>(z_nice * y_scale_factor / volts_per_pixel); // compute how many pixels it makes
 
-	if (options_view_data_->b_voltage_scale_bar)
+	if (p_print_parms->b_voltage_scale_bar)
 	{
 		i_vertical_bar = MulDiv(i_vertical_bar, p_rect->Height(), p_data_chart_wnd->get_rect_height());
 		p_dc->MoveTo(p_rect->left + bar_origin.x, p_rect->bottom - bar_origin.y);
@@ -2055,7 +2060,7 @@ CString ViewSpikeDetection::print_data_bars(CDC* p_dc, const ChartData* p_data_c
 	}
 
 	// comments, bar value and chan settings for each channel
-	if (options_view_data_->b_channel_comment || options_view_data_->b_voltage_scale_bar || options_view_data_->b_channel_settings)
+	if (p_print_parms->b_channel_comment || p_print_parms->b_voltage_scale_bar || p_print_parms->b_channel_settings)
 	{
 		const auto channel_list_size = p_data_chart_wnd->get_channel_list_size();
 		for (auto channel_index = 0; channel_index < channel_list_size; channel_index++) // loop
@@ -2066,7 +2071,7 @@ CString ViewSpikeDetection::print_data_bars(CDC* p_dc, const ChartData* p_data_c
 
 			cs.Format(_T("chan#%i "), channel_index); 
 			str_comment += cs;
-			if (options_view_data_->b_voltage_scale_bar) 
+			if (p_print_parms->b_voltage_scale_bar) 
 			{
 				const auto z = static_cast<float>(i_vertical_bar) * p_data_chart_wnd->get_channel_list_volts_per_pixel(channel_index);
 				const auto x = z / y_scale_factor;
@@ -2075,14 +2080,14 @@ CString ViewSpikeDetection::print_data_bars(CDC* p_dc, const ChartData* p_data_c
 				str_comment += cs;
 			}
 			// print chan comment
-			if (options_view_data_->b_channel_comment)
+			if (p_print_parms->b_channel_comment)
 			{
 				str_comment += tab;
 				str_comment += channel_item->get_comment();
 			}
 			str_comment += rc;
 			// print amplifiers settings (gain & filter), next line
-			if (options_view_data_->b_channel_settings)
+			if (p_print_parms->b_channel_settings)
 			{
 				const auto source_channel = channel_item->get_source_chan();
 				const auto wave_chan_array = GetDocument()->m_p_data_doc->get_wave_channels_array();
@@ -2107,7 +2112,8 @@ CString ViewSpikeDetection::print_spk_shape_bars(CDC* p_dc, const CRect* p_rect,
 	int k;
 
 	///// vertical voltage bars ///////////////////////////
-	if (options_view_data_->b_voltage_scale_bar && p_spk_list->get_spikes_count() > 0)
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	if (p_print_parms->b_voltage_scale_bar && p_spk_list->get_spikes_count() > 0)
 	{
 		// the following assume that spikes are higher than 1 mV...
 		const CString cs_unit = _T("mV");
@@ -2134,7 +2140,7 @@ CString ViewSpikeDetection::print_spk_shape_bars(CDC* p_dc, const CRect* p_rect,
 		// compute coordinates of the rect
 		CRect rect_vertical_bar; 
 		const auto bar_width = CSize(5, 5);
-		rect_vertical_bar.left = p_rect->left - options_view_data_->text_separator;
+		rect_vertical_bar.left = p_rect->left - p_print_parms->text_separator;
 		rect_vertical_bar.right = rect_vertical_bar.left + bar_width.cx;
 		rect_vertical_bar.top = p_rect->top + (p_rect->Height() - vertical_bar) / 2;
 		rect_vertical_bar.bottom = rect_vertical_bar.top + vertical_bar;
@@ -2237,9 +2243,10 @@ BOOL ViewSpikeDetection::OnPreparePrinting(CPrintInfo* p_info)
 	serialize_windows_state(b_save);
 
 	// printing margins
-	if (options_view_data_->vertical_resolution <= 0 || options_view_data_->horizontal_resolution <= 0
-		|| options_view_data_->horizontal_resolution != p_info->m_rectDraw.Width()
-		|| options_view_data_->vertical_resolution != p_info->m_rectDraw.Height())
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	if (p_print_parms->vertical_resolution <= 0 || p_print_parms->horizontal_resolution <= 0
+		|| p_print_parms->horizontal_resolution != p_info->m_rectDraw.Width()
+		|| p_print_parms->vertical_resolution != p_info->m_rectDraw.Height())
 		print_compute_page_size();
 
 	// nb print pages?
@@ -2254,9 +2261,9 @@ BOOL ViewSpikeDetection::OnPreparePrinting(CPrintInfo* p_info)
 	if (!COleDocObjectItem::OnPreparePrinting(this, p_info))
 		return FALSE;
 
-	if (options_view_data_->b_print_selection != p_info->m_pPD->PrintSelection())
+	if (p_print_parms->b_print_selection != p_info->m_pPD->PrintSelection())
 	{
-		options_view_data_->b_print_selection = p_info->m_pPD->PrintSelection();
+		p_print_parms->b_print_selection = p_info->m_pPD->PrintSelection();
 		n_pages = print_get_n_pages();
 		p_info->SetMaxPage(n_pages);
 	}
@@ -2266,7 +2273,8 @@ BOOL ViewSpikeDetection::OnPreparePrinting(CPrintInfo* p_info)
 int ViewSpikeDetection::print_get_n_pages()
 {
 	// how many rows per page?
-	const auto size_row = options_view_data_->height_doc + options_view_data_->height_separator;
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	const auto size_row = p_print_parms->height_doc + p_print_parms->height_separator;
 	n_rows_per_page_ = print_rect_.Height() / size_row;
 	if (n_rows_per_page_ == 0)
 		n_rows_per_page_ = 1;
@@ -2282,7 +2290,7 @@ int ViewSpikeDetection::print_get_n_pages()
 	files_count_ = 1;
 	auto i_file_0 = file_0_;
 	auto i_file_1 = file_0_;
-	if (!options_view_data_->b_print_selection)
+	if (!p_print_parms->b_print_selection)
 	{
 		i_file_0 = 0;
 		files_count_ = p_document->db_get_records_count();
@@ -2348,7 +2356,8 @@ void ViewSpikeDetection::print_create_font()
 	//---------------------init objects-------------------------------------
 	memset(&log_font_, 0, sizeof(LOGFONT)); // prepare font
 	lstrcpy(log_font_.lfFaceName, _T("Arial")); // Arial font
-	log_font_.lfHeight = options_view_data_->font_size; // font height
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	log_font_.lfHeight = p_print_parms->font_size; // font height
 	p_old_font_ = nullptr;
 	font_print_.CreateFontIndirect(&log_font_);
 }
@@ -2358,8 +2367,9 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 	p_old_font_ = p_dc->SelectObject(&font_print_);
 
 	// --------------------- RWhere = rectangle/row in which we plot the data, rWidth = row width
-	const auto r_width = options_view_data_->width_doc; // page margins
-	const auto r_height = options_view_data_->height_doc; // page margins
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	const auto r_width = p_print_parms->width_doc; // page margins
+	const auto r_height = p_print_parms->height_doc; // page margins
 	CRect r_where(print_rect_.left, // printing rectangle for one line of data
 		print_rect_.top,
 		print_rect_.left + r_width,
@@ -2368,20 +2378,20 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 	rw2.OffsetRect(-r_where.left, -r_where.top); // set RW2 origin = 0,0
 
 	// define spike shape area (rect): same height as data area
-	auto r_spk_height = options_view_data_->spike_height;
-	auto r_spk_width = options_view_data_->spike_width;
+	auto r_spk_height = p_print_parms->spike_height;
+	auto r_spk_width = p_print_parms->spike_width;
 	if (r_spk_height == 0)
 	{
-		r_spk_height = r_height - options_view_data_->font_size * 4;
+		r_spk_height = r_height - p_print_parms->font_size * 4;
 		r_spk_width = r_spk_height / 2;
 		r_spk_width = std::max(r_spk_width, MulDiv(r_where.Width(), 10, 100));
-		options_view_data_->spike_height = r_spk_height;
-		options_view_data_->spike_width = r_spk_width;
+		p_print_parms->spike_height = r_spk_height;
+		p_print_parms->spike_width = r_spk_width;
 	}
 
 	// save current draw mode (it will be modified to print only one channel)
 
-	if (!options_view_data_->b_filter_data_source)
+	if (!p_print_parms->b_filter_data_source)
 		chart_data_filtered_.set_channel_list_transform_mode(0, 0);
 
     // bottom page footer (leave chart mapping; draw text via helper if needed)
@@ -2410,9 +2420,9 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		// load data and adjust display rectangle ----------------------------------------
 		// set data rectangle to half height to the row height
 		rect_data_ = r_where;
-		if (options_view_data_->b_print_spk_bars)
+		if (p_print_parms->b_print_spk_bars)
 			rect_data_.bottom = rect_data_.top + r_where.Height() / 2;
-		rect_data_.left += (r_spk_width + options_view_data_->text_separator);
+		rect_data_.left += (r_spk_width + p_print_parms->text_separator);
 		const auto old_size = rect_data_.Width(); 
 
 		// make sure enough data fit into this rectangle, otherwise clip rect
@@ -2424,7 +2434,7 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		//--|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||--------
 
 		// if option requested, clip output to rect
-		if (options_view_data_->b_clip_rect) // clip curve display
+		if (p_print_parms->b_clip_rect) // clip curve display
 			p_dc->IntersectClipRect(&rect_data_); // (eventually)
 
 		// print detected channel only data
@@ -2435,7 +2445,7 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		p_dc->SelectClipRgn(nullptr);
 
 		// print spike bars 
-		if (options_view_data_->b_print_spk_bars)
+		if (p_print_parms->b_print_spk_bars)
 		{
 			CRect bars_rect = r_where; 
 			bars_rect.top = rect_data_.bottom;
@@ -2449,7 +2459,7 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		// print spike shape within a square (same width as height) 
 		rect_spike_ = r_where; 
 		rect_spike_.right = rect_spike_.left + r_spk_width;
-		rect_spike_.left += options_view_data_->text_separator;
+		rect_spike_.left += p_print_parms->text_separator;
 		rect_spike_.bottom = rect_spike_.top + r_spk_height; 
 
 		chart_spike_shape_.set_time_intervals(index_first_data_point, l_last);
@@ -2475,22 +2485,22 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		}
 
 		// print comments stored into cs_comment
-		comment_rect.OffsetRect(options_view_data_->text_separator + comment_rect.Width(), 0);
+		comment_rect.OffsetRect(p_print_parms->text_separator + comment_rect.Width(), 0);
 		comment_rect.right = print_rect_.right;
 
         // draw via helper (1:1 mapping in target rect)
         constexpr UINT format_parameters = DT_NOPREFIX | DT_NOCLIP | DT_LEFT | DT_WORDBREAK;
-        draw_text_block(p_dc, comment_rect, options_view_data_->font_size, cs_comment, format_parameters);
+        draw_text_block(p_dc, comment_rect, p_print_parms->font_size, cs_comment, format_parameters);
 
 		// print comments & bar / spike shape
 		cs_comment.Empty();
 		rect_spike_.right = rect_spike_.left + r_spk_height;
 		cs_comment = print_spk_shape_bars(p_dc, &rect_spike_, b_all);
 		rect_spike_.right = rect_spike_.left + r_spk_width;
-		rect_spike_.left -= options_view_data_->text_separator;
+		rect_spike_.left -= p_print_parms->text_separator;
 		rect_spike_.top = rect_spike_.bottom;
 		rect_spike_.bottom += log_font_.lfHeight * 3;
-        draw_text_block(p_dc, rect_spike_, options_view_data_->font_size, cs_comment, format_parameters);
+        draw_text_block(p_dc, rect_spike_, p_print_parms->font_size, cs_comment, format_parameters);
 		const auto ui_flag = p_dc->SetTextAlign(TA_LEFT | TA_NOUPDATECP);
 		p_dc->SetTextAlign(ui_flag);
 		//--_____________________________________________________________________--------
@@ -2498,7 +2508,7 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 
 		// update file parameters for next row --------------------------------------------
 
-		r_where.OffsetRect(0, r_height + options_view_data_->height_separator);
+		r_where.OffsetRect(0, r_height + p_print_parms->height_separator);
 		const auto i_file = file_index;
 		if (!print_get_next_row(file_index, index_first_data_point, index_last_data_point))
 		{
@@ -2514,7 +2524,7 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 
 	// end of file loop : restore initial conditions
 	chart_data_filtered_.get_channel_list_item(0)->set_flag_print_visible(1);
-	if (!options_view_data_->b_filter_data_source)
+	if (!p_print_parms->b_filter_data_source)
 		chart_data_filtered_.set_channel_list_transform_mode(0, m_p_detect_parameters_->detect_transform);
 
 	if (p_old_font_ != nullptr)
@@ -2998,7 +3008,7 @@ void ViewSpikeDetection::update_tabs()
 	spk_list_tab_ctrl.SetCurSel(m_i_detect_parameters_);
 }
 
-void ViewSpikeDetection::render_for_export(CDC* p_dc, const CSize& resolution)
+void ViewSpikeDetection::render_for_export(CDC* p_dc)
 {
 	serialize_windows_state(b_save);
 
@@ -3044,7 +3054,7 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc, const CSize& resolution)
 	//rect1.top -= base_y;
 	//rect1.right -= base_x;
 	//rect1.bottom -= base_y;
-	print_data_cartridge(p_dc, &chart_data_, &r1, resolution); // &data_rect);
+	print_data_cartridge(p_dc, &chart_data_, &r1); // &data_rect);
 
 	//// display curves: detect channel
 	//data_rect.top = data_rect.bottom + separator;
@@ -3083,13 +3093,14 @@ void ViewSpikeDetection::export_comments(CDC* p_dc, const int base_x, const int 
 {
 	// dc context for export
 	p_old_font_ = nullptr;
-	const auto old_font_size = options_view_data_->font_size;
-	options_view_data_->font_size = 10;
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	const auto old_font_size = p_print_parms->font_size;
+	p_print_parms->font_size = 10;
 	print_create_font();
 	p_dc->SetBkMode(TRANSPARENT);
-	options_view_data_->font_size = old_font_size;
+	p_print_parms->font_size = old_font_size;
 	p_old_font_ = p_dc->SelectObject(&font_print_);
-	options_view_data_->line_height = log_font_.lfHeight + 5;
+	p_print_parms->line_height = log_font_.lfHeight + 5;
 
 	// comments and descriptors
 	const CString record_description= GetDocument()->export_database_data(1);
@@ -3101,6 +3112,6 @@ void ViewSpikeDetection::export_comments(CDC* p_dc, const int base_x, const int 
 
 	p_dc->SetTextColor(RGB(0, 0, 0));
 	constexpr int margin = 8;
-	p_dc->TextOut(base_x + margin, base_y + margin - 2 * options_view_data_->line_height, record_description);
-	p_dc->TextOut(base_x + margin, base_y + margin - options_view_data_->line_height, abscissa);
+	p_dc->TextOut(base_x + margin, base_y + margin - 2 * p_print_parms->line_height, record_description);
+	p_dc->TextOut(base_x + margin, base_y + margin - p_print_parms->line_height, abscissa);
 }

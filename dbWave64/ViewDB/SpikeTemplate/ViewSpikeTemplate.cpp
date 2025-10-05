@@ -156,8 +156,8 @@ void ViewSpikeTemplates::OnInitialUpdate()
 	// load global parameters
 	const auto p_app = static_cast<CdbWaveApp*>(AfxGetApp());
 	options_view_data_ = &(p_app->options_view_data);
-	options_view_data_measure_ = &(p_app->options_view_data_measure);
-	spike_classification_parameters_ = &(p_app->spk_classification);
+	options_view_data_measure_ = &(p_app->options_measure_data);
+	spike_classification_parameters_ = &(p_app->options_spk_classification_data);
 	if (spike_classification_parameters_->p_template != nullptr)
 		m_template_list_ = *static_cast<CTemplateListWnd*>(spike_classification_parameters_->p_template);
 

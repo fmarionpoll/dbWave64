@@ -1,7 +1,9 @@
 #include "StdAfx.h"
 #include "GraphicsExport.h"
 
-using DrawFn = std::function<void(CDC*, const CSize&)>;
+#include "dbWave.h"
+
+using DrawFn = std::function<void(CDC*)>;
 
 static BOOL GetScreenDpi(CWnd* owner, int& dpi_x, int& dpi_y)
 {
@@ -13,10 +15,7 @@ static BOOL GetScreenDpi(CWnd* owner, int& dpi_x, int& dpi_y)
 	return TRUE;
 }
 
-BOOL GraphicsExport::CopyAsEmfToClipboard(CWnd* owner_wnd,
-	const CSize& resolution,
-	const CString& title,
-	const DrawFn& draw_fn)
+BOOL GraphicsExport::CopyAsEmfToClipboard(CWnd* owner_wnd, const CString& title, const DrawFn& draw_fn)
 {
     // Use a reference device context (CDC*) so the metafile inherits mapping from a real device
     CDC* p_ref_dc = nullptr;
@@ -35,10 +34,11 @@ BOOL GraphicsExport::CopyAsEmfToClipboard(CWnd* owner_wnd,
     const int dpi_x = p_ref_dc->GetDeviceCaps(LOGPIXELSX);
     const int dpi_y = p_ref_dc->GetDeviceCaps(LOGPIXELSY);
 
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
     CMetaFileDC meta_dc;
     CRect himetric_bounds(0, 0,
-        MulDiv(resolution.cx, 2540, dpi_x),
-        MulDiv(resolution.cy, 2540, dpi_y));
+        MulDiv(p_print_parms->horizontal_resolution, 2540, dpi_x),
+        MulDiv(p_print_parms->vertical_resolution, 2540, dpi_y));
 
     CString meta_title = _T("dbWave\0") + title;
     meta_title += _T("\0\0");
@@ -54,7 +54,7 @@ BOOL GraphicsExport::CopyAsEmfToClipboard(CWnd* owner_wnd,
     meta_dc.SetAttribDC(p_ref_dc->GetSafeHdc());
 
     if (draw_fn)
-        draw_fn(&meta_dc, resolution);
+        draw_fn(&meta_dc);
 
     const auto h_emf = meta_dc.CloseEnhanced();
     if (h_emf == nullptr)
@@ -81,15 +81,16 @@ BOOL GraphicsExport::CopyAsEmfToClipboard(CWnd* owner_wnd,
 }
 
 BOOL GraphicsExport::ExportToPng(CWnd* /*owner_wnd*/,
-	const CSize& resolution,
 	const CString& file_path,
 	const int bg_color,
 	const DrawFn& draw_fn)
 {
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+
 	BITMAPINFO bmi{};
 	bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-	bmi.bmiHeader.biWidth = resolution.cx;
-	bmi.bmiHeader.biHeight = -resolution.cy;
+	bmi.bmiHeader.biWidth = p_print_parms->horizontal_resolution;
+	bmi.bmiHeader.biHeight = -p_print_parms->vertical_resolution;
 	bmi.bmiHeader.biPlanes = 1;
 	bmi.bmiHeader.biBitCount = 32;
 	bmi.bmiHeader.biCompression = BI_RGB;
@@ -103,7 +104,7 @@ BOOL GraphicsExport::ExportToPng(CWnd* /*owner_wnd*/,
 	mem_dc.CreateCompatibleDC(nullptr);
 	const auto h_old = mem_dc.SelectObject(h_dib);
 
-	CRect r(0, 0, resolution.cx, resolution.cy);
+	CRect r(0, 0, p_print_parms->horizontal_resolution, p_print_parms->vertical_resolution);
 	HBRUSH h_br = CreateSolidBrush(bg_color);
 	FillRect(mem_dc.GetSafeHdc(), &r, h_br);
 	DeleteObject(h_br);
@@ -114,7 +115,7 @@ BOOL GraphicsExport::ExportToPng(CWnd* /*owner_wnd*/,
 	mem_dc.SetViewportExt(r.Width(), r.Height());
 
 	if (draw_fn)
-		draw_fn(&mem_dc, resolution);
+		draw_fn(&mem_dc);
 
 	BOOL result = FALSE;
 	ULONG_PTR gdiplus_token = 0;

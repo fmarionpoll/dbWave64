@@ -30,7 +30,7 @@ BOOL DlgFindFiles::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	m_p_file_names->RemoveAll();
-	m_path = static_cast<CdbWaveApp*>(AfxGetApp())->options_import.path;
+	m_path = static_cast<CdbWaveApp*>(AfxGetApp())->options_import_data.path;
 	if (m_pdbDoc)
 		m_path = m_pdbDoc->proposed_data_path_name;
 	m_mfc_browse_control.SetWindowText(m_path);
@@ -54,7 +54,7 @@ BOOL DlgFindFiles::OnInitDialog()
 	else
 	{
 		auto p_app = static_cast<CdbWaveApp*>(AfxGetApp()); // load browse parameters
-		static_cast<CButton*>(GetDlgItem(IDC_CHECKDISCARD))->SetCheck(p_app->options_import.discard_duplicate_files);
+		static_cast<CButton*>(GetDlgItem(IDC_CHECKDISCARD))->SetCheck(p_app->options_import_data.discard_duplicate_files);
 	}
 	UpdateData(FALSE);
 	m_file_ext.SetCurSel(m_sel_init); // select first item / file extensions
@@ -69,8 +69,8 @@ void DlgFindFiles::OnOK()
 
 	m_mfc_browse_control.GetWindowText(m_path);
 	auto p_app = static_cast<CdbWaveApp*>(AfxGetApp());
-	p_app->options_import.path = m_path;
-	p_app->options_import.discard_duplicate_files = static_cast<CButton*>(GetDlgItem(IDC_CHECKDISCARD))->GetCheck();
+	p_app->options_import_data.path = m_path;
+	p_app->options_import_data.discard_duplicate_files = static_cast<CButton*>(GetDlgItem(IDC_CHECKDISCARD))->GetCheck();
 
 	CDialog::OnOK();
 }

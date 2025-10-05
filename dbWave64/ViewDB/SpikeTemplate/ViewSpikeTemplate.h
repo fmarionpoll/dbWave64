@@ -49,7 +49,7 @@ protected:
 
 	ChartSpikeShape m_chart_spk_wnd_shape_;
 
-	options_view_data* options_view_data_  {nullptr}; 
+	options_view_data* options_view_data_  {nullptr};
 	options_measure* options_view_data_measure_  {nullptr}; 
 	options_spk_classification* spike_classification_parameters_  {nullptr}; 
 	SCROLLINFO scroll_file_pos_infos_{};

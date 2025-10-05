@@ -1,7 +1,6 @@
 #pragma once
 #include <afxwin.h>
-
-#include "options_view_data.h"
+#include "ViewDB/options_print.h"
 
 class DlgPrintDataComment :
     public CDialog
@@ -24,7 +23,7 @@ public:
 	BOOL m_b_doc_name;
 	int m_font_size;
 	int m_text_separator;
-	options_view_data* options_view_data;
+	options_print* p_print_parameters;
 
 	// Implementation
 protected:

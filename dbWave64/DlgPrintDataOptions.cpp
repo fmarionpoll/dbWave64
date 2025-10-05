@@ -32,12 +32,12 @@ BOOL DlgPrintDataOptions::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	m_b_frame_rect = options_view_data->b_frame_rect;
-	m_b_clip_rect = options_view_data->b_clip_rect;
-	m_b_time_scale_bar = options_view_data->b_timescale_bar;
-	m_b_voltage_scale_bar = options_view_data->b_voltage_scale_bar;
-	m_b_print_selection = options_view_data->b_print_selection;
-	m_b_print_spk_bars = options_view_data->b_print_spk_bars;
+	m_b_frame_rect = p_print_parameters->b_frame_rect;
+	m_b_clip_rect = p_print_parameters->b_clip_rect;
+	m_b_time_scale_bar = p_print_parameters->b_timescale_bar;
+	m_b_voltage_scale_bar = p_print_parameters->b_voltage_scale_bar;
+	m_b_print_selection = p_print_parameters->b_print_selection;
+	m_b_print_spk_bars = p_print_parameters->b_print_spk_bars;
 
 	UpdateData(FALSE);
 	return TRUE; // return TRUE  unless you set the focus to a control
@@ -47,12 +47,12 @@ void DlgPrintDataOptions::OnOK()
 {
 	UpdateData(TRUE);
 
-	options_view_data->b_frame_rect = m_b_frame_rect;
-	options_view_data->b_clip_rect = m_b_clip_rect;
-	options_view_data->b_timescale_bar = m_b_time_scale_bar;
-	options_view_data->b_voltage_scale_bar = m_b_voltage_scale_bar;
-	options_view_data->b_print_selection = m_b_print_selection;
-	options_view_data->b_print_spk_bars = m_b_print_spk_bars;
+	p_print_parameters->b_frame_rect = m_b_frame_rect;
+	p_print_parameters->b_clip_rect = m_b_clip_rect;
+	p_print_parameters->b_timescale_bar = m_b_time_scale_bar;
+	p_print_parameters->b_voltage_scale_bar = m_b_voltage_scale_bar;
+	p_print_parameters->b_print_selection = m_b_print_selection;
+	p_print_parameters->b_print_spk_bars = m_b_print_spk_bars;
 
 	CDialog::OnOK();
 }

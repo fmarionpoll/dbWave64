@@ -11,7 +11,7 @@ DlgPrintDataComments::DlgPrintDataComments(CWnd* p_parent /*=NULL*/)
 	m_b_doc_name = FALSE;
 	m_font_size = 0;
 	m_text_separator = 0;
-	options_view_data = nullptr;
+	p_print_parameters = nullptr;
 }
 
 void DlgPrintDataComments::DoDataExchange(CDataExchange* pDX)
@@ -34,13 +34,13 @@ void DlgPrintDataComments::OnOK()
 {
 	UpdateData(TRUE);
 
-	options_view_data->b_acq_comment = m_b_acq_comment;
-	options_view_data->b_acq_date_time = m_b_acq_date_time;
-	options_view_data->b_channel_comment = m_b_channels_comment;
-	options_view_data->b_channel_settings = m_b_channel_settings;
-	options_view_data->b_doc_name = m_b_doc_name;
-	options_view_data->text_separator = m_text_separator;
-	options_view_data->font_size = m_font_size;
+	p_print_parameters->b_acq_comment = m_b_acq_comment;
+	p_print_parameters->b_acq_date_time = m_b_acq_date_time;
+	p_print_parameters->b_channel_comment = m_b_channels_comment;
+	p_print_parameters->b_channel_settings = m_b_channel_settings;
+	p_print_parameters->b_doc_name = m_b_doc_name;
+	p_print_parameters->text_separator = m_text_separator;
+	p_print_parameters->font_size = m_font_size;
 
 	CDialog::OnOK();
 }
@@ -49,13 +49,13 @@ BOOL DlgPrintDataComments::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	m_b_acq_comment = options_view_data->b_acq_comment;
-	m_b_acq_date_time = options_view_data->b_acq_date_time;
-	m_b_channels_comment = options_view_data->b_channel_comment;
-	m_b_channel_settings = options_view_data->b_channel_settings;
-	m_b_doc_name = options_view_data->b_doc_name;
-	m_font_size = options_view_data->font_size;
-	m_text_separator = options_view_data->text_separator;
+	m_b_acq_comment = p_print_parameters->b_acq_comment;
+	m_b_acq_date_time = p_print_parameters->b_acq_date_time;
+	m_b_channels_comment = p_print_parameters->b_channel_comment;
+	m_b_channel_settings = p_print_parameters->b_channel_settings;
+	m_b_doc_name = p_print_parameters->b_doc_name;
+	m_font_size = p_print_parameters->font_size;
+	m_text_separator = p_print_parameters->text_separator;
 
 	UpdateData(FALSE);
 	return TRUE; // return TRUE  unless you set the focus to a control

@@ -487,8 +487,8 @@ void ViewSpikes::OnInitialUpdate()
 	// load global parameters
 	auto* p_app = static_cast<CdbWaveApp*>(AfxGetApp());
 	options_view_data_ = &(p_app->options_view_data); 
-	options_view_data_measure_ = &(p_app->options_view_data_measure); 
-	spk_classification_parameters_ = &(p_app->spk_classification); 
+	options_view_data_measure_ = &(p_app->options_measure_data); 
+	spk_classification_parameters_ = &(p_app->options_spk_classification_data); 
 
 	m_class_destination = spk_classification_parameters_->v_dest_class;
 	m_class_source = spk_classification_parameters_->v_source_class;
@@ -794,14 +794,15 @@ void ViewSpikes::print_compute_page_size()
 	dc.Attach(h_dc);
 
 	// Get the size of the page in pixels
-	options_view_data_->horizontal_resolution = dc.GetDeviceCaps(HORZRES);
-	options_view_data_->vertical_resolution = dc.GetDeviceCaps(VERTRES);
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	p_print_parms->horizontal_resolution = dc.GetDeviceCaps(HORZRES);
+	p_print_parms->vertical_resolution = dc.GetDeviceCaps(VERTRES);
 
 	// margins (pixels)
-	print_rect_.right = options_view_data_->horizontal_resolution - options_view_data_->right_page_margin;
-	print_rect_.bottom = options_view_data_->vertical_resolution - options_view_data_->bottom_page_margin;
-	print_rect_.left = options_view_data_->left_page_margin;
-	print_rect_.top = options_view_data_->top_page_margin;
+	print_rect_.right = p_print_parms->horizontal_resolution - p_print_parms->right_page_margin;
+	print_rect_.bottom = p_print_parms->vertical_resolution - p_print_parms->bottom_page_margin;
+	print_rect_.left = p_print_parms->left_page_margin;
+	print_rect_.top = p_print_parms->top_page_margin;
 }
 
 void ViewSpikes::print_file_bottom_page(CDC* p_dc, const CPrintInfo* p_info)
@@ -813,7 +814,8 @@ void ViewSpikes::print_file_bottom_page(CDC* p_dc, const CPrintInfo* p_info)
 	          t.GetDay(), t.GetMonth(), t.GetYear());
 	const auto ch_date = GetDocument()->db_get_current_spk_file_name();
 	p_dc->SetTextAlign(TA_CENTER);
-	p_dc->TextOut(options_view_data_->horizontal_resolution / 2, options_view_data_->vertical_resolution - 57, ch_date);
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	p_dc->TextOut(p_print_parms->horizontal_resolution / 2, p_print_parms->vertical_resolution - 57, ch_date);
 }
 
 CString ViewSpikes::print_convert_file_index(const long l_first, const long l_last) const
@@ -847,7 +849,8 @@ long ViewSpikes::print_get_file_series_index_from_page(const int page, int* file
 
 	const auto max_row = n_rows_per_page_ * page; 
 	auto i_file = 0; 
-	if (options_view_data_->b_print_selection)
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	if (p_print_parms->b_print_selection)
 		i_file = file_0_;
 
 	if (GetDocument()->db_set_current_record_position(i_file)) {
@@ -885,11 +888,12 @@ CString ViewSpikes::print_get_file_infos()
 	const auto p_wave_format = &p_spk_doc->m_wave_format; // get data description
 
 	// document's name, date and time
-	if (options_view_data_->b_doc_name || options_view_data_->b_acq_date_time) // print doc infos?
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	if (p_print_parms->b_doc_name || p_print_parms->b_acq_date_time) // print doc infos?
 	{
-		if (options_view_data_->b_doc_name) // print file name
+		if (p_print_parms->b_doc_name) // print file name
 			str_comment += GetDocument()->db_get_current_spk_file_name(FALSE) + tab;
-		if (options_view_data_->b_acq_date_time) // print data acquisition date & time
+		if (p_print_parms->b_acq_date_time) // print data acquisition date & time
 		{
 			const auto acquisition_time = p_spk_doc->get_acq_time();
 			const auto date = acquisition_time.Format(_T("%#d %m %Y %X")); //("%x %X");
@@ -900,7 +904,7 @@ CString ViewSpikes::print_get_file_infos()
 	}
 
 	// document's main comment (print on multiple lines if necessary)
-	if (options_view_data_->b_acq_comment)
+	if (p_print_parms->b_acq_comment)
 	{
 		str_comment += p_wave_format->get_comments(_T(" ")); // cs_comment
 		str_comment += rc;
@@ -928,7 +932,8 @@ CString ViewSpikes::print_bars(CDC* p_dc, const CRect* rect) const
 	auto cs_comment = print_convert_file_index(ii_first, ii_last);
 
 	///// horizontal time bar ///////////////////////////
-	if (options_view_data_->b_timescale_bar)
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	if (p_print_parms->b_timescale_bar)
 	{
 		constexpr auto horizontal_bar = 100;
 		// print horizontal bar
@@ -947,7 +952,7 @@ CString ViewSpikes::print_bars(CDC* p_dc, const CRect* rect) const
 	}
 
 	///// vertical voltage bars ///////////////////////////
-	if (options_view_data_->b_voltage_scale_bar)
+	if (p_print_parms->b_voltage_scale_bar)
 	{
 		constexpr auto vertical_bar = 100;
 		rect_vertical_bar.left = rect->left + bar_origin.x;
@@ -958,7 +963,7 @@ CString ViewSpikes::print_bars(CDC* p_dc, const CRect* rect) const
 	}
 
 	// comments, bar value and chan settings for each channel
-	if (options_view_data_->b_channel_comment || options_view_data_->b_voltage_scale_bar || options_view_data_->b_channel_settings)
+	if (p_print_parms->b_channel_comment || p_print_parms->b_voltage_scale_bar || p_print_parms->b_channel_settings)
 	{
 		/*
 				int imax = m_sourceView.get_channel_list_size();	// number of data channels
@@ -1049,13 +1054,14 @@ BOOL ViewSpikes::OnPreparePrinting(CPrintInfo* p_info)
 	ar.Close(); // close archive
 
 	// printing margins
-	if (options_view_data_->vertical_resolution <= 0 || options_view_data_->horizontal_resolution <= 0
-		|| options_view_data_->horizontal_resolution != p_info->m_rectDraw.Width()
-		|| options_view_data_->vertical_resolution != p_info->m_rectDraw.Height())
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	if (p_print_parms->vertical_resolution <= 0 || p_print_parms->horizontal_resolution <= 0
+		|| p_print_parms->horizontal_resolution != p_info->m_rectDraw.Width()
+		|| p_print_parms->vertical_resolution != p_info->m_rectDraw.Height())
 		print_compute_page_size();
 
 	// how many rows per page?
-	const auto size_row = options_view_data_->height_doc + options_view_data_->height_separator;
+	const auto size_row = p_print_parms->height_doc + p_print_parms->height_separator;
 	n_rows_per_page_ = print_rect_.Height() / size_row;
 	if (n_rows_per_page_ == 0) // prevent zero pages
 		n_rows_per_page_ = 1;
@@ -1072,7 +1078,7 @@ BOOL ViewSpikes::OnPreparePrinting(CPrintInfo* p_info)
 	print_last_ = file_0_;
 	files_count_ = 1;
 
-	if (!options_view_data_->b_print_selection)
+	if (!p_print_parms->b_print_selection)
 	{
 		print_first_ = 0;
 		files_count_ = p_dbwave_doc->db_get_records_count();
@@ -1134,14 +1140,14 @@ BOOL ViewSpikes::OnPreparePrinting(CPrintInfo* p_info)
 	p_info->m_nNumPreviewPages = 1; 
 	p_info->m_pPD->m_pd.Flags &= ~PD_NOSELECTION; 
 
-	if (options_view_data_->b_print_selection)
+	if (p_print_parms->b_print_selection)
 		p_info->m_pPD->m_pd.Flags |= PD_SELECTION; 
 
 	// call dialog box
 	const auto flag = DoPreparePrinting(p_info);
 	// set max nb of pages according to selection
-	options_view_data_->b_print_selection = p_info->m_pPD->PrintSelection();
-	if (options_view_data_->b_print_selection)
+	p_print_parms->b_print_selection = p_info->m_pPD->PrintSelection();
+	if (p_print_parms->b_print_selection)
 	{
 		n_pages = 1;
 		files_count_ = 1;
@@ -1175,7 +1181,8 @@ void ViewSpikes::OnBeginPrinting(CDC* p_dc, CPrintInfo* p_info)
 	//---------------------init objects-------------------------------------
 	memset(&log_font_, 0, sizeof(LOGFONT)); 
 	lstrcpy(log_font_.lfFaceName, _T("Arial"));
-	log_font_.lfHeight = options_view_data_->font_size; 
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	log_font_.lfHeight = p_print_parms->font_size;
 	p_old_font_ = nullptr;
 	font_print_.CreateFontIndirect(&log_font_);
 	p_dc->SetBkMode(TRANSPARENT);
@@ -1202,10 +1209,11 @@ void ViewSpikes::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 	}
 	auto very_last = p_spk_doc->get_acq_size() - 1; 
 
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
 	CRect r_where(print_rect_.left,
 	              print_rect_.top, 
-	              print_rect_.left + options_view_data_->width_doc,
-	              print_rect_.top + options_view_data_->height_doc);
+	              print_rect_.left + p_print_parms->width_doc,
+	              print_rect_.top + p_print_parms->height_doc);
 
 	// loop through all files	--------------------------------------------------------
 	for (int i = 0; i < n_rows_per_page_; i++)
@@ -1217,7 +1225,7 @@ void ViewSpikes::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		// set first rectangle where data will be printed
 
         auto comment_rect = r_where;
-		if (options_view_data_->b_frame_rect) 
+		if (p_print_parms->b_frame_rect) 
 		{
 			p_dc->MoveTo(r_where.left, r_where.top);
 			p_dc->LineTo(r_where.right, r_where.top); 
@@ -1272,7 +1280,7 @@ void ViewSpikes::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 
 		if (p_data_doc_ != nullptr)
 		{
-			if (options_view_data_->b_clip_rect)
+			if (p_print_parms->b_clip_rect)
 				p_dc->IntersectClipRect(&rw_bars); 
 			chart_data_wnd_.get_data_from_doc(l_first, l_last);
 			chart_data_wnd_.center_chan(0);
@@ -1351,7 +1359,7 @@ void ViewSpikes::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		// ------------------------ print stimulus
 
 		// update display rectangle for next row
-		r_where.OffsetRect(0, options_view_data_->height_doc + options_view_data_->height_separator);
+		r_where.OffsetRect(0, p_print_parms->height_doc + p_print_parms->height_separator);
 
         // restore DC ------------------------------------------------------
         p_dc->RestoreDC(old_dc); // restore Display context
@@ -1368,11 +1376,11 @@ void ViewSpikes::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		}
 
 		// print comments stored into cs_comment
-		comment_rect.OffsetRect(options_view_data_->text_separator + comment_rect.Width(), 0);
+		comment_rect.OffsetRect(p_print_parms->text_separator + comment_rect.Width(), 0);
 		comment_rect.right = print_rect_.right;
 
         // draw via helper (1:1 mapping in target rect)
-        draw_text_block(p_dc, comment_rect, options_view_data_->font_size, cs_comment,
+        draw_text_block(p_dc, comment_rect, p_print_parms->font_size, cs_comment,
                         DT_NOPREFIX | DT_LEFT | DT_WORDBREAK);
 
 		// update file parameters for next row --------------------------------------------
@@ -1961,13 +1969,13 @@ void ViewSpikes::on_en_change_no_spike()
 	}
 }
 
-void ViewSpikes::render_for_export(CDC* p_dc, const CSize& resolution)
+void ViewSpikes::render_for_export(CDC* p_dc)
 {
 	serialize_windows_state(b_save);
-
-	const auto r_height = MulDiv(spike_class_listbox_.get_row_height(), resolution.cx,
+	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	const auto r_height = MulDiv(spike_class_listbox_.get_row_height(), p_print_parms->horizontal_resolution,
 	                            spike_class_listbox_.get_columns_time_width());
-	auto rw_spikes =CRect(0, 0, resolution.cx, resolution.cy);
+	auto rw_spikes = CRect(0, 0, p_print_parms ->horizontal_resolution, p_print_parms -> vertical_resolution);
 	rw_spikes.bottom = r_height;
 	auto rw_text = rw_spikes;
 	auto rw_bars = rw_spikes;

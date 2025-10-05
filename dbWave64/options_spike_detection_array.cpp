@@ -1,20 +1,20 @@
 ﻿#include "stdafx.h"
-#include "spike_detection_array.h"
+#include "options_spike_detection_array.h"
 
-IMPLEMENT_SERIAL(spike_detection_array, CObject, 0)
+IMPLEMENT_SERIAL(options_spike_detection_array, CObject, 0)
 
-spike_detection_array::spike_detection_array()
+options_spike_detection_array::options_spike_detection_array()
 {
 	b_changed = FALSE;
 	w_version_ = 4;
 }
 
-spike_detection_array::~spike_detection_array()
+options_spike_detection_array::~options_spike_detection_array()
 {
 	delete_all();
 }
 
-void spike_detection_array::delete_all()
+void options_spike_detection_array::delete_all()
 {
 	auto pos = chan_array_map_.GetStartPosition();
 	void* ptr = nullptr;
@@ -32,7 +32,7 @@ void spike_detection_array::delete_all()
 
 // check if array is ok, if not, increase size of array
 // create empty CPtrArray if necessary
-SpikeDetectArray* spike_detection_array::get_chan_array(const int acq_chan)
+SpikeDetectArray* options_spike_detection_array::get_chan_array(const int acq_chan)
 {
 	void* ptr = nullptr;
 	if (!chan_array_map_.Lookup(static_cast<WORD>(acq_chan), ptr))
@@ -44,13 +44,13 @@ SpikeDetectArray* spike_detection_array::get_chan_array(const int acq_chan)
 	return static_cast<SpikeDetectArray*>(ptr);
 }
 
-void spike_detection_array::set_chan_array(const int acq_chan, SpikeDetectArray* p_spk)
+void options_spike_detection_array::set_chan_array(const int acq_chan, SpikeDetectArray* p_spk)
 {
 	void* ptr = p_spk;
 	chan_array_map_.SetAt(static_cast<WORD>(acq_chan), ptr);
 }
 
-void spike_detection_array::Serialize(CArchive& ar)
+void options_spike_detection_array::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{

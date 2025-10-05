@@ -4,9 +4,9 @@
 // array of spike detection parameters
 // 2 dimensions
 
-class spike_detection_array : public CObject
+class options_spike_detection_array : public CObject
 {
-	DECLARE_SERIAL(spike_detection_array)
+	DECLARE_SERIAL(options_spike_detection_array)
 public:
 	BOOL b_changed; // flag set TRUE if contents has changed
 	void set_chan_array(int acq_chan, SpikeDetectArray* p_spk);
@@ -18,8 +18,8 @@ protected:
 	void delete_all(); 
 
 public:
-	spike_detection_array();
-	~spike_detection_array() override;
+	options_spike_detection_array();
+	~options_spike_detection_array() override;
 	void Serialize(CArchive& ar) override;
 };
 

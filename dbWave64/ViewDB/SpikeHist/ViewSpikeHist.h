@@ -99,7 +99,7 @@ protected:
 	// Implementation
 protected:
 	long plot_histogram(CDC* p_dc, CRect* p_display_rect, int n_bins, long* p_hist0, int orientation = 0, int b_type = 0);
-	void render_for_export(CDC* p_dc, const CSize& resolution) override;
+	void render_for_export(CDC* p_dc) override;
 
 #ifdef _DEBUG
 	void AssertValid() const override;

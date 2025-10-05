@@ -175,8 +175,7 @@ void CChildFrame::on_options_browse_mode()
 void CChildFrame::on_options_print_margins()
 {
 	DlgPrintMargins dlg;
-	const auto p_source = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_view_data);
-	dlg.options_view_data = p_source;
+	dlg.p_print_parameters = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
 	dlg.DoModal();
 }
 
@@ -210,7 +209,7 @@ void CChildFrame::on_tools_export_number_of_spikes()
 {
 	DlgExportSpikeInfos dlg;
 	const auto p_app = static_cast<CdbWaveApp*>(AfxGetApp());
-	dlg.options_view_spikes = &p_app->options_view_spikes;
+	dlg.options_view_spikes = &p_app->options_view_spikes_data;
 	if (IDOK == dlg.DoModal())
 	{
 		UpdateWindow();
@@ -283,10 +282,10 @@ void CChildFrame::export_ascii(const int option)
 	case 1:
 	{
 		auto flag = FALSE;
-		if (p_app->options_view_spikes.b_export_to_excel)
+		if (p_app->options_view_spikes_data.b_export_to_excel)
 			flag = export_to_excel_and_build_pivot(option);
 
-		if (!p_app->options_view_spikes.b_export_to_excel || !flag)
+		if (!p_app->options_view_spikes_data.b_export_to_excel || !flag)
 		{
 			CMultiDocTemplate* note_view_template = p_app->m_note_view_template;
 			const auto p_dbWave_doc_export = note_view_template->OpenDocumentFile(nullptr);
@@ -910,7 +909,7 @@ BOOL CChildFrame::export_to_excel_and_build_pivot(int option)
 		cs1 = cs2 + _T("!") + cs1;
 
 		auto* p_app = static_cast<CdbWaveApp*>(AfxGetApp());
-		if (p_app->options_view_spikes.b_export_pivot)
+		if (p_app->options_view_spikes_data.b_export_pivot)
 		{
 			CString cs_bin;
 			build_excel_pivot(&o_app, &odata_sheet, cs1, _T("pivot_cnt"), static_cast<short>(-4112), col2);
@@ -962,7 +961,7 @@ void CChildFrame::build_excel_pivot(void* po_app, void* p_odata_sheet, CString c
 
 	// get options
 	auto* p_app = static_cast<CdbWaveApp*>(AfxGetApp());
-	const auto option_view_spikes = &(p_app->options_view_spikes);
+	const auto option_view_spikes = &(p_app->options_view_spikes_data);
 
 	// add fields to pivot table
 	if (option_view_spikes->b_acq_comments)

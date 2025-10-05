@@ -1384,7 +1384,7 @@ boolean CdbWaveDoc::import_file_single(const CString & cs_filename, long& m_id, 
 	const auto t = record.p_wave_format->acquisition_time;
 	COleDateTime o_time;
 	o_time.SetDateTime(t.GetYear(), t.GetMonth(), t.GetDay(), t.GetHour(), t.GetMinute(), t.GetSecond());
-	if (!static_cast<CdbWaveApp*>(AfxGetApp())->options_import.discard_duplicate_files)
+	if (!static_cast<CdbWaveApp*>(AfxGetApp())->options_import_data.discard_duplicate_files)
 	{
 		if (!db_table->m_main_table_set.check_if_acq_date_time_is_unique(&o_time))
 			return false;
@@ -1737,7 +1737,7 @@ void CdbWaveDoc::export_spk_descriptors(CSharedFile * p_sf, SpikeList * p_spike_
 	const CString cs_tab = _T("\t");
 
 	const auto* p_app = static_cast<CdbWaveApp*>(AfxGetApp());
-	const auto options_view_spikes = &(p_app->options_view_spikes);
+	const auto options_view_spikes = &(p_app->options_view_spikes_data);
 
 	const auto cs_file_comment = _T("\r\n") + export_database_data();
 	p_sf->Write(cs_file_comment, cs_file_comment.GetLength() * sizeof(TCHAR));
@@ -1786,7 +1786,7 @@ void CdbWaveDoc::export_spk_descriptors(CSharedFile * p_sf, SpikeList * p_spike_
 CString CdbWaveDoc::export_database_data(const int option) const
 {
 	const auto p_app = static_cast<CdbWaveApp*>(AfxGetApp());
-	const auto options_view_spikes = &(p_app->options_view_spikes);
+	const auto options_view_spikes = &(p_app->options_view_spikes_data);
 	CString separator = _T("\t");
 	if (option == 1)
 		separator = _T(" | ");
@@ -1880,7 +1880,7 @@ void CdbWaveDoc::export_number_of_spikes(CSharedFile * p_sf)
 	}
 
 	auto* p_app = static_cast<CdbWaveApp*>(AfxGetApp());
-	const auto options_view_spikes = &(p_app->options_view_spikes);
+	const auto options_view_spikes = &(p_app->options_view_spikes_data);
 
 	// export description of the type of data exported
 	const auto i_old_list = m_p_spk_doc->get_index_current_spike_list();

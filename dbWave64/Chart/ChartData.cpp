@@ -5,6 +5,8 @@
 #include "resource.h"
 #include "ChartData.h"
 
+#include "ViewDB/options_print.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -941,7 +943,7 @@ void ChartData::OnSize(const UINT n_type, const int cx, const int cy)
 	}
 }
 
-void ChartData::print(CDC* p_dc, const CRect* p_rect, const BOOL b_center_line)
+void ChartData::print(CDC* p_dc, const CRect* p_rect, const options_print* options_print_data)
 {
 	// save DC & old client rect
 	const auto n_saved_dc = p_dc->SaveDC();
@@ -969,15 +971,16 @@ void ChartData::print(CDC* p_dc, const CRect* p_rect, const BOOL b_center_line)
 
 	// change horizontal resolution and load data
 	resize_channels(display_rect_.Width(), m_lx_size_);
-	if (!b_center_line)
+	if (!options_print_data->b_center_line)
 		get_data_from_doc();
 	else
-		get_smooth_data_from_doc(b_center_line);
+		get_smooth_data_from_doc(options_print_data->b_center_line);
 
 	// Set anisotropic mapping: logical 0..W x -H..H (centered Y)
 	p_dc->SetMapMode(MM_ANISOTROPIC);
 	p_dc->SetViewportOrg(display_rect_.left, display_rect_.top + display_rect_.Height() / 2);
 	p_dc->SetViewportExt(display_rect_.Width(), -display_rect_.Height());
+
 	p_dc->SetWindowExt(display_rect_.Width(), display_rect_.Height());
 	p_dc->SetWindowOrg(0, 0);
 

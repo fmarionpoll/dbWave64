@@ -39,6 +39,8 @@ options_print& options_print::operator =(const options_print& arg)
 		b_print_spk_bars = arg.b_print_spk_bars;
 		spike_height = arg.spike_height;
 		spike_width = arg.spike_width;
+		b_contours = arg.b_contours;
+		b_center_line = arg.b_center_line;
 	}
 	return *this;
 }
@@ -74,6 +76,10 @@ void options_print::Serialize(CArchive& ar)
 		w_print_flags += b_print_spk_bars * w_2_power; //1024
 		w_2_power += w_2_power;
 		w_print_flags += b_filter_data_source * w_2_power; //2048
+		w_2_power += w_2_power;
+		w_print_flags += b_contours * w_2_power; //4096
+		w_2_power += w_2_power;
+		w_print_flags += b_center_line * w_2_power; //8192
 		ar << w_print_flags;
 
 		// print parameters
@@ -127,6 +133,10 @@ void options_print::Serialize(CArchive& ar)
 		b_print_spk_bars = ((w_print_flags & w_mult) > 0);
 		w_mult += w_mult;
 		b_filter_data_source = ((w_print_flags & w_mult) > 0);
+		w_mult += w_mult;
+		b_contours = ((w_print_flags & w_mult) > 0);
+		w_mult += w_mult;
+		b_center_line = ((w_print_flags & w_mult) > 0);
 
 		// print parameters
 		WORD w1;

@@ -1792,7 +1792,9 @@ void ViewSpikeDetection::print_data_cartridge(CDC* p_dc, ChartData* p_data_chart
     p_data_chart_wnd->b_nice_grid = FALSE;
     p_dc->SelectClipRgn(nullptr);
 
-    p_data_chart_wnd->print(p_dc, p_rect, (options_view_data_->b_contours == 1));
+	const auto options_print_data = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	options_print_data->b_contours = true;
+    p_data_chart_wnd->print(p_dc, p_rect, options_print_data);
 
     // restore
     p_data_chart_wnd->b_nice_grid = old_nice_grid;
@@ -2367,9 +2369,9 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 	p_old_font_ = p_dc->SelectObject(&font_print_);
 
 	// --------------------- RWhere = rectangle/row in which we plot the data, rWidth = row width
-	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
-	const auto r_width = p_print_parms->width_doc; // page margins
-	const auto r_height = p_print_parms->height_doc; // page margins
+	const auto options_print_data = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	const auto r_width = options_print_data->width_doc; // page margins
+	const auto r_height = options_print_data->height_doc; // page margins
 	CRect r_where(print_rect_.left, // printing rectangle for one line of data
 		print_rect_.top,
 		print_rect_.left + r_width,
@@ -2378,20 +2380,20 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 	rw2.OffsetRect(-r_where.left, -r_where.top); // set RW2 origin = 0,0
 
 	// define spike shape area (rect): same height as data area
-	auto r_spk_height = p_print_parms->spike_height;
-	auto r_spk_width = p_print_parms->spike_width;
+	auto r_spk_height = options_print_data->spike_height;
+	auto r_spk_width = options_print_data->spike_width;
 	if (r_spk_height == 0)
 	{
-		r_spk_height = r_height - p_print_parms->font_size * 4;
+		r_spk_height = r_height - options_print_data->font_size * 4;
 		r_spk_width = r_spk_height / 2;
 		r_spk_width = std::max(r_spk_width, MulDiv(r_where.Width(), 10, 100));
-		p_print_parms->spike_height = r_spk_height;
-		p_print_parms->spike_width = r_spk_width;
+		options_print_data->spike_height = r_spk_height;
+		options_print_data->spike_width = r_spk_width;
 	}
 
 	// save current draw mode (it will be modified to print only one channel)
 
-	if (!p_print_parms->b_filter_data_source)
+	if (!options_print_data->b_filter_data_source)
 		chart_data_filtered_.set_channel_list_transform_mode(0, 0);
 
     // bottom page footer (leave chart mapping; draw text via helper if needed)
@@ -2420,9 +2422,9 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		// load data and adjust display rectangle ----------------------------------------
 		// set data rectangle to half height to the row height
 		rect_data_ = r_where;
-		if (p_print_parms->b_print_spk_bars)
+		if (options_print_data->b_print_spk_bars)
 			rect_data_.bottom = rect_data_.top + r_where.Height() / 2;
-		rect_data_.left += (r_spk_width + p_print_parms->text_separator);
+		rect_data_.left += (r_spk_width + options_print_data->text_separator);
 		const auto old_size = rect_data_.Width(); 
 
 		// make sure enough data fit into this rectangle, otherwise clip rect
@@ -2434,18 +2436,18 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		//--|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||--------
 
 		// if option requested, clip output to rect
-		if (p_print_parms->b_clip_rect) // clip curve display
+		if (options_print_data->b_clip_rect) // clip curve display
 			p_dc->IntersectClipRect(&rect_data_); // (eventually)
 
 		// print detected channel only data
 		chart_data_filtered_.get_channel_list_item(0)->set_flag_print_visible(chan_0_draw_mode);
 		chart_data_filtered_.resize_channels(rect_data_.Width(), 0);
 		chart_data_filtered_.get_data_from_doc(index_first_data_point, l_last);
-		chart_data_filtered_.print(p_dc, &rect_data_);
+		chart_data_filtered_.print(p_dc, &rect_data_, options_print_data);
 		p_dc->SelectClipRgn(nullptr);
 
 		// print spike bars 
-		if (p_print_parms->b_print_spk_bars)
+		if (options_print_data->b_print_spk_bars)
 		{
 			CRect bars_rect = r_where; 
 			bars_rect.top = rect_data_.bottom;
@@ -2459,7 +2461,7 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		// print spike shape within a square (same width as height) 
 		rect_spike_ = r_where; 
 		rect_spike_.right = rect_spike_.left + r_spk_width;
-		rect_spike_.left += p_print_parms->text_separator;
+		rect_spike_.left += options_print_data->text_separator;
 		rect_spike_.bottom = rect_spike_.top + r_spk_height; 
 
 		chart_spike_shape_.set_time_intervals(index_first_data_point, l_last);
@@ -2485,22 +2487,22 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		}
 
 		// print comments stored into cs_comment
-		comment_rect.OffsetRect(p_print_parms->text_separator + comment_rect.Width(), 0);
+		comment_rect.OffsetRect(options_print_data->text_separator + comment_rect.Width(), 0);
 		comment_rect.right = print_rect_.right;
 
         // draw via helper (1:1 mapping in target rect)
         constexpr UINT format_parameters = DT_NOPREFIX | DT_NOCLIP | DT_LEFT | DT_WORDBREAK;
-        draw_text_block(p_dc, comment_rect, p_print_parms->font_size, cs_comment, format_parameters);
+        draw_text_block(p_dc, comment_rect, options_print_data->font_size, cs_comment, format_parameters);
 
 		// print comments & bar / spike shape
 		cs_comment.Empty();
 		rect_spike_.right = rect_spike_.left + r_spk_height;
 		cs_comment = print_spk_shape_bars(p_dc, &rect_spike_, b_all);
 		rect_spike_.right = rect_spike_.left + r_spk_width;
-		rect_spike_.left -= p_print_parms->text_separator;
+		rect_spike_.left -= options_print_data->text_separator;
 		rect_spike_.top = rect_spike_.bottom;
 		rect_spike_.bottom += log_font_.lfHeight * 3;
-        draw_text_block(p_dc, rect_spike_, p_print_parms->font_size, cs_comment, format_parameters);
+        draw_text_block(p_dc, rect_spike_, options_print_data->font_size, cs_comment, format_parameters);
 		const auto ui_flag = p_dc->SetTextAlign(TA_LEFT | TA_NOUPDATECP);
 		p_dc->SetTextAlign(ui_flag);
 		//--_____________________________________________________________________--------
@@ -2508,7 +2510,7 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 
 		// update file parameters for next row --------------------------------------------
 
-		r_where.OffsetRect(0, r_height + p_print_parms->height_separator);
+		r_where.OffsetRect(0, r_height + options_print_data->height_separator);
 		const auto i_file = file_index;
 		if (!print_get_next_row(file_index, index_first_data_point, index_last_data_point))
 		{
@@ -2524,7 +2526,7 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 
 	// end of file loop : restore initial conditions
 	chart_data_filtered_.get_channel_list_item(0)->set_flag_print_visible(1);
-	if (!p_print_parms->b_filter_data_source)
+	if (!options_print_data->b_filter_data_source)
 		chart_data_filtered_.set_channel_list_transform_mode(0, m_p_detect_parameters_->detect_transform);
 
 	if (p_old_font_ != nullptr)
@@ -3013,7 +3015,7 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc)
 	serialize_windows_state(b_save);
 
 	// minimal text-only change: anchor text to the top-left of the rectangles cluster
-// use the same coordinate space as rectangles (child window screen rects)
+	// use the same coordinate space as rectangles (child window screen rects)
 	CRect r1, r2, r3, r4;
 	chart_data_.GetWindowRect(&r1);
 	chart_data_filtered_.GetWindowRect(&r2);

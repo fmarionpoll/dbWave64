@@ -1,6 +1,8 @@
 ﻿#include "StdAfx.h"
 #include "options_view_data.h"
 
+#include "dbWave.h"
+
 
 IMPLEMENT_SERIAL(options_view_data, CObject, 0 /* schema number*/)
 
@@ -78,6 +80,7 @@ void options_view_data::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
+		m_w_version = 6;
 		ar << m_w_version;
 
 		// how data are displayed from file to file
@@ -187,7 +190,7 @@ void options_view_data::Serialize(CArchive& ar)
 		WORD version;
 		ar >> version;
 		if (version < 6)
-			return; // version not supported
+			read_version_before_6(ar, version); // version not supported
 
 		// how data are displayed from file to file
 		WORD wBrowseFlags;
@@ -343,3 +346,317 @@ void options_view_data::Serialize(CArchive& ar)
 		}
 	}
 }
+
+void options_view_data::read_version_before_6(CArchive& ar, WORD version)
+{
+	const auto options_print_data = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	// print options
+	WORD wPrintFlags, wMult;
+	ar >> wPrintFlags;
+	wMult = 1;
+	options_print_data->b_acq_comment = ((wPrintFlags & wMult) > 0);
+	wMult += wMult;
+	options_print_data->b_acq_date_time = ((wPrintFlags & wMult) > 0);
+	wMult += wMult;
+	options_print_data->b_channel_comment = ((wPrintFlags & wMult) > 0);
+	wMult += wMult;
+	options_print_data->b_channel_settings = ((wPrintFlags & wMult) > 0);
+	wMult += wMult;
+	options_print_data->b_doc_name = ((wPrintFlags & wMult) > 0);
+	wMult += wMult;
+	options_print_data->b_frame_rect = ((wPrintFlags & wMult) > 0);
+	wMult += wMult;
+	options_print_data->b_clip_rect = ((wPrintFlags & wMult) > 0);
+	wMult += wMult;
+	options_print_data->b_timescale_bar = ((wPrintFlags & wMult) > 0);
+	wMult += wMult;
+	options_print_data->b_voltage_scale_bar = ((wPrintFlags & wMult) > 0);
+	wMult += wMult;
+	options_print_data->b_print_selection = ((wPrintFlags & wMult) > 0);
+	wMult += wMult;
+	options_print_data->b_print_spk_bars = ((wPrintFlags & wMult) > 0);
+	wMult += wMult;
+	options_print_data->b_filter_data_source = ((wPrintFlags & wMult) > 0);
+
+	// print parameters
+	WORD w1;
+	ar >> w1;
+	options_print_data->horizontal_resolution = w1;
+	ar >> w1;
+	options_print_data->vertical_resolution = w1;
+	ar >> w1;
+	options_print_data->height_doc = w1;
+	ar >> w1;
+	options_print_data->width_doc = w1;
+	ar >> w1;
+	options_print_data->left_page_margin = w1;
+	ar >> w1;
+	options_print_data->bottom_page_margin = w1;
+	ar >> w1;
+	options_print_data->right_page_margin = w1;
+	ar >> w1;
+	options_print_data->top_page_margin = w1;
+	ar >> w1;
+	options_print_data->height_separator = w1;
+	ar >> w1;
+	options_print_data->text_separator = w1;
+	ar >> w1;
+	options_print_data->font_size = w1;
+
+	// how data are displayed from file to file
+	WORD wBrowseFlags;
+	ar >> wBrowseFlags;
+	wMult = 1;
+	b_all_channels = ((wBrowseFlags & wMult) > 0);
+	wMult += wMult;
+	b_complete_record = ((wBrowseFlags & wMult) > 0);
+	wMult += wMult;
+	b_multiple_rows = ((wBrowseFlags & wMult) > 0);
+	wMult += wMult;
+	b_split_curves = ((wBrowseFlags & wMult) > 0);
+	wMult += wMult;
+	b_maximize_gain = ((wBrowseFlags & wMult) > 0);
+	wMult += wMult;
+	b_center_curves = ((wBrowseFlags & wMult) > 0);
+	wMult += wMult;
+	b_keep_for_each_file = ((wBrowseFlags & wMult) > 0);
+	wMult += wMult;
+	b_display_old_detect_p = ((wBrowseFlags & wMult) > 0);
+	wMult += wMult;
+	b_filter_dat = ((wBrowseFlags & wMult) > 0);
+	wMult += wMult;
+	b_detect_while_browse = ((wBrowseFlags & wMult) > 0);
+	wMult += wMult;
+	b_goto_record_id = ((wBrowseFlags & wMult) > 0);
+	wMult += wMult;
+	b_display_file_name = ((wBrowseFlags & wMult) > 0);
+	wMult += wMult;
+	b_set_time_span = ((wBrowseFlags & wMult) > 0);
+	wMult += wMult;
+	b_set_mv_span = ((wBrowseFlags & wMult) > 0);
+	wMult += wMult;
+	b_display_all_classes = ((wBrowseFlags & wMult) > 0);
+
+	// export textual infos from data files
+	WORD wInfoFlags;
+	ar >> wInfoFlags;
+	wMult = 1;
+	b_acq_comments = ((wInfoFlags & wMult) > 0);
+	wMult += wMult;
+	b_acq_date = ((wInfoFlags & wMult) > 0);
+	wMult += wMult;
+	b_acq_time = ((wInfoFlags & wMult) > 0);
+	wMult += wMult;
+	b_file_size = ((wInfoFlags & wMult) > 0);
+	wMult += wMult;
+	b_acq_channel_comment = ((wInfoFlags & wMult) > 0);
+	wMult += wMult;
+	b_acq_channel_setting = ((wInfoFlags & wMult) > 0);
+	wMult += wMult;
+	b_units = ((wInfoFlags & wMult) > 0);
+	wMult += wMult;
+	b_contours = ((wInfoFlags & wMult) > 0);
+	wMult += wMult;
+	b_graphics = ((wInfoFlags & wMult) > 0);
+	wMult += wMult;
+	b_to_excel = ((wInfoFlags & wMult) > 0);
+	wMult += wMult;
+	b_data_base_columns = ((wInfoFlags & wMult) > 0);
+
+	if (version > 4)
+	{
+		WORD n_int_items;
+		ar >> n_int_items;
+		int nb_int_items = n_int_items;
+		ar >> hz_resolution;
+		nb_int_items--; //1
+		ar >> vt_resolution;
+		nb_int_items--; //2
+		ar >> unit_mode;
+		nb_int_items--; //3
+		ar >> options_print_data->spike_height;
+		nb_int_items--; //4
+		ar >> options_print_data->spike_width;
+		nb_int_items--; //5
+		ar >> n_filter_index;
+		nb_int_items--; //6
+		ar >> col0_width;
+		nb_int_items--; //7
+		ar >> row0_height;
+		nb_int_items--; //8
+		ar >> b_col0_visible;
+		nb_int_items--; //9
+		ar >> b_row0_visible;
+		nb_int_items--; //10
+		ar >> i_row_height;
+		nb_int_items--; //11
+		ar >> display_mode;
+		nb_int_items--; //12
+		if (nb_int_items > 0) ar >> spike_class;
+		nb_int_items--;
+
+		ar >> nb_int_items;
+		i_column_width.SetSize(nb_int_items);
+		for (auto ii = 0; ii < nb_int_items; ii++)
+			ar >> i_column_width[ii];
+		int n_float_items;
+		ar >> n_float_items;
+		ar >> t_first;
+		n_float_items--;
+		ar >> t_last;
+		n_float_items--;
+		ar >> mv_span;
+		n_float_items--;
+
+		ar >> n_scope_items;
+		if (n_scope_items > 0)
+		{
+			view_data.Serialize(ar);
+			n_scope_items--;
+			view_spk_detect_data.Serialize(ar);
+			n_scope_items--;
+			view_spk_detect_spk.Serialize(ar);
+			n_scope_items--;
+			view_spk_detect_bars.Serialize(ar);
+			n_scope_items--;
+			view_ad_continuous.Serialize(ar);
+			n_scope_items--;
+			spk_view_data.Serialize(ar);
+			n_scope_items--;
+			spk_view_spk.Serialize(ar);
+			n_scope_items--;
+			spk_view_bars.Serialize(ar);
+			n_scope_items--;
+			spk_sort1_spk.Serialize(ar);
+			n_scope_items--;
+			spk_sort1_parameters.Serialize(ar);
+			n_scope_items--;
+			spk_sort1_hist.Serialize(ar);
+			n_scope_items--;
+			if (n_scope_items > 0)
+			{
+				db_view_data.Serialize(ar);
+				n_scope_items--;
+			}
+			if (n_scope_items > 0)
+			{
+				db_view_bars.Serialize(ar);
+				n_scope_items--;
+			}
+			if (n_scope_items > 0)
+			{
+				db_view_shape.Serialize(ar);
+				n_scope_items--;
+			}
+			if (n_scope_items > 0)
+			{
+				spk_sort1_bars.Serialize(ar);
+				n_scope_items--;
+			}
+			if (n_scope_items > 0)
+			{
+				view_spk_detect_filtered.Serialize(ar);
+				n_scope_items--;
+			}
+			ASSERT(n_scope_items == 0);
+		}
+	}
+	else if (version >= 2)
+	{
+		WORD ww1;
+		ar >> ww1;
+		int nb_int_items = ww1;
+		if (nb_int_items > 0) ar >> hz_resolution;
+		nb_int_items--;
+		if (nb_int_items > 0)
+		{
+			ar >> vt_resolution;
+			nb_int_items--;
+			ar >> unit_mode;
+			nb_int_items--;
+		}
+		if (nb_int_items > 0)
+		{
+			ar >> options_print_data->spike_height;
+			nb_int_items--;
+			ar >> options_print_data->spike_width;
+			nb_int_items--;
+		}
+		if (nb_int_items > 0)
+			ar >> n_filter_index;
+		nb_int_items--;
+		if (nb_int_items > 0)
+		{
+			for (auto ii = 0; ii < 8; ii++)
+			{
+				ar >> i_column_width[ii];
+				nb_int_items--;
+			}
+		}
+		if (nb_int_items > 0)
+		{
+			ar >> col0_width;
+			nb_int_items--;
+			ar >> row0_height;
+			nb_int_items--;
+			ar >> b_col0_visible;
+			nb_int_items--;
+			ar >> b_row0_visible;
+			nb_int_items--;
+		}
+
+		ar >> n_scope_items;
+		if (n_scope_items > 0)
+		{
+			view_data.Serialize(ar);
+			n_scope_items--;
+			view_spk_detect_data.Serialize(ar);
+			n_scope_items--;
+			view_spk_detect_spk.Serialize(ar);
+			n_scope_items--;
+			view_spk_detect_bars.Serialize(ar);
+			n_scope_items--;
+			view_ad_continuous.Serialize(ar);
+			n_scope_items--;
+			spk_view_data.Serialize(ar);
+			n_scope_items--;
+			spk_view_spk.Serialize(ar);
+			n_scope_items--;
+			spk_view_bars.Serialize(ar);
+			n_scope_items--;
+			spk_sort1_spk.Serialize(ar);
+			n_scope_items--;
+			spk_sort1_parameters.Serialize(ar);
+			n_scope_items--;
+			spk_sort1_hist.Serialize(ar);
+			n_scope_items--;
+			if (n_scope_items > 0)
+			{
+				db_view_data.Serialize(ar);
+				n_scope_items--;
+			}
+			if (n_scope_items > 0)
+			{
+				db_view_bars.Serialize(ar);
+				n_scope_items--;
+			}
+			if (n_scope_items > 0)
+			{
+				db_view_shape.Serialize(ar);
+				n_scope_items--;
+			}
+			if (n_scope_items > 0)
+			{
+				spk_sort1_bars.Serialize(ar);
+				n_scope_items--;
+			}
+			if (n_scope_items > 0)
+			{
+				view_spk_detect_filtered.Serialize(ar);
+				n_scope_items--;
+			}
+			ASSERT(n_scope_items == 0);
+		}
+	}
+}
+

@@ -1440,6 +1440,8 @@ void ViewData::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 
 	// loop through all files	--------------------------------------------------------
 	const int old_dc = p_dc->SaveDC(); // save DC
+	const auto options_print_data = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+
 	for (auto i = 0; i < n_rows_per_page_; i++)
 	{
 		// first : set rectangle where data will be printed
@@ -1453,7 +1455,7 @@ void ViewData::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 			l_last = std::min(l_last, very_last);
 			chart_data.get_data_from_doc(l_first, l_last); // load data from file
 			update_channels_display_parameters();
-			chart_data.print(p_dc, &r_where); // print data
+			chart_data.print(p_dc, &r_where, options_print_data); // print data
 		}
 
 		// update display rectangle for next row
@@ -1628,11 +1630,11 @@ void ViewData::render_for_export(CDC* p_dc)
 	const auto old_scope_struct = new options_scope_struct();
 	options_scope_struct* new_scope_struct = chart_data.get_scope_parameters();
 	*old_scope_struct = *new_scope_struct;
-	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
-	new_scope_struct->b_draw_frame = p_print_parms->b_frame_rect;
-	new_scope_struct->b_clip_rect = p_print_parms->b_clip_rect;
-	const CRect rect(0, 0, p_print_parms->horizontal_resolution, p_print_parms->vertical_resolution);
-	chart_data.print(p_dc, &rect);
+	const auto options_print_data = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	new_scope_struct->b_draw_frame = options_print_data->b_frame_rect;
+	new_scope_struct->b_clip_rect = options_print_data->b_clip_rect;
+	const CRect rect(0, 0, options_print_data->horizontal_resolution, options_print_data->vertical_resolution);
+	chart_data.print(p_dc, &rect, options_print_data);
 	*new_scope_struct = *old_scope_struct;
 
 	// comments and bars

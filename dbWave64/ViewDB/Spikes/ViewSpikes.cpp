@@ -1209,11 +1209,11 @@ void ViewSpikes::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 	}
 	auto very_last = p_spk_doc->get_acq_size() - 1; 
 
-	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	const auto options_print_data = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
 	CRect r_where(print_rect_.left,
 	              print_rect_.top, 
-	              print_rect_.left + p_print_parms->width_doc,
-	              print_rect_.top + p_print_parms->height_doc);
+	              print_rect_.left + options_print_data->width_doc,
+	              print_rect_.top + options_print_data->height_doc);
 
 	// loop through all files	--------------------------------------------------------
 	for (int i = 0; i < n_rows_per_page_; i++)
@@ -1225,7 +1225,7 @@ void ViewSpikes::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		// set first rectangle where data will be printed
 
         auto comment_rect = r_where;
-		if (p_print_parms->b_frame_rect) 
+		if (options_print_data->b_frame_rect) 
 		{
 			p_dc->MoveTo(r_where.left, r_where.top);
 			p_dc->LineTo(r_where.right, r_where.top); 
@@ -1280,11 +1280,11 @@ void ViewSpikes::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 
 		if (p_data_doc_ != nullptr)
 		{
-			if (p_print_parms->b_clip_rect)
+			if (options_print_data->b_clip_rect)
 				p_dc->IntersectClipRect(&rw_bars); 
 			chart_data_wnd_.get_data_from_doc(l_first, l_last);
 			chart_data_wnd_.center_chan(0);
-			chart_data_wnd_.print(p_dc, &rw_bars); 
+			chart_data_wnd_.print(p_dc, &rw_bars, options_print_data);
 			p_dc->SelectClipRgn(nullptr);
 
 			extent = chart_data_wnd_.get_channel_list_item(0)->get_y_extent();
@@ -1359,7 +1359,7 @@ void ViewSpikes::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		// ------------------------ print stimulus
 
 		// update display rectangle for next row
-		r_where.OffsetRect(0, p_print_parms->height_doc + p_print_parms->height_separator);
+		r_where.OffsetRect(0, options_print_data->height_doc + options_print_data->height_separator);
 
         // restore DC ------------------------------------------------------
         p_dc->RestoreDC(old_dc); // restore Display context
@@ -1376,11 +1376,11 @@ void ViewSpikes::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		}
 
 		// print comments stored into cs_comment
-		comment_rect.OffsetRect(p_print_parms->text_separator + comment_rect.Width(), 0);
+		comment_rect.OffsetRect(options_print_data->text_separator + comment_rect.Width(), 0);
 		comment_rect.right = print_rect_.right;
 
         // draw via helper (1:1 mapping in target rect)
-        draw_text_block(p_dc, comment_rect, p_print_parms->font_size, cs_comment,
+        draw_text_block(p_dc, comment_rect, options_print_data->font_size, cs_comment,
                         DT_NOPREFIX | DT_LEFT | DT_WORDBREAK);
 
 		// update file parameters for next row --------------------------------------------
@@ -1972,10 +1972,10 @@ void ViewSpikes::on_en_change_no_spike()
 void ViewSpikes::render_for_export(CDC* p_dc)
 {
 	serialize_windows_state(b_save);
-	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
-	const auto r_height = MulDiv(spike_class_listbox_.get_row_height(), p_print_parms->horizontal_resolution,
+	const auto options_print_data = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	const auto r_height = MulDiv(spike_class_listbox_.get_row_height(), options_print_data->horizontal_resolution,
 	                            spike_class_listbox_.get_columns_time_width());
-	auto rw_spikes = CRect(0, 0, p_print_parms ->horizontal_resolution, p_print_parms -> vertical_resolution);
+	auto rw_spikes = CRect(0, 0, options_print_data ->horizontal_resolution, options_print_data -> vertical_resolution);
 	rw_spikes.bottom = r_height;
 	auto rw_text = rw_spikes;
 	auto rw_bars = rw_spikes;
@@ -1988,7 +1988,7 @@ void ViewSpikes::render_for_export(CDC* p_dc)
 	if (p_data_doc_ != nullptr)
 	{
 		chart_data_wnd_.center_chan(0);
-		chart_data_wnd_.print(p_dc, &rw_bars);
+		chart_data_wnd_.print(p_dc, &rw_bars, options_print_data);
 		rw_spikes.OffsetRect(0, r_height);
 		rw_bars.OffsetRect(0, r_height);
 		rw_text.OffsetRect(0, r_height);

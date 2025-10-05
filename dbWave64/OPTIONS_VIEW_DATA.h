@@ -10,6 +10,7 @@ class options_view_data final : public CObject
 	~options_view_data() override;
 	options_view_data& operator =(const options_view_data& arg);
 	void Serialize(CArchive& ar) override;
+	void read_version_before_6(CArchive& ar, WORD version);
 
 	BOOL b_changed{false}; // flag set TRUE if contents has changed
 	WORD m_w_version{6}; // version number

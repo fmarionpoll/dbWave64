@@ -117,8 +117,8 @@ void ViewSpikeSort::render_for_export(CDC* p_dc)
 	serialize_windows_state(b_save);
 
     // Layout similar to on screen: top measures, middle bars, bottom shape, right histogram
-	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
-	CRect rect(0, 0, p_print_parms->horizontal_resolution, p_print_parms->vertical_resolution);
+	const auto options_print_data = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+	CRect rect(0, 0, options_print_data->horizontal_resolution, options_print_data->vertical_resolution);
     auto area = rect;
     const int separator = std::max(4, rect.Height() / 50);
 

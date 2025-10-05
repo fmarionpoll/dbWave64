@@ -150,6 +150,7 @@ protected:
 	CString print_data_bars(CDC* p_dc, const ChartData* p_data_chart_wnd, const CRect* p_rect);
 	CString print_spk_shape_bars(CDC* p_dc, const CRect* p_rect, BOOL b_all);
 	void print_create_font();
+	void print_delete_font();
 	BOOL print_get_file_series_index_from_page(int page, int& file_number, long& l_first);
 	BOOL print_get_next_row(int& file_index, long& l_first, long& very_last);
 	int print_get_n_pages();

@@ -320,7 +320,6 @@ void ViewDbTable::OnExportViewToClipboard()
 
 		//if (dlg.b_graphics) {
 			serialize_windows_state(b_save);
-			//const CSize resolution( options_view_data_->hz_resolution, options_view_data_->vt_resolution);;
 			copy_as_emf_to_clipboard(GetDocument()->GetTitle());
 			serialize_windows_state(b_restore);
 	//	}

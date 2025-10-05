@@ -2355,13 +2355,18 @@ void ViewSpikeDetection::OnBeginPrinting(CDC* p_dc, CPrintInfo* p_info)
 
 void ViewSpikeDetection::print_create_font()
 {
-	//---------------------init objects-------------------------------------
+	
 	memset(&log_font_, 0, sizeof(LOGFONT)); // prepare font
 	lstrcpy(log_font_.lfFaceName, _T("Arial")); // Arial font
 	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
 	log_font_.lfHeight = p_print_parms->font_size; // font height
 	p_old_font_ = nullptr;
 	font_print_.CreateFontIndirect(&log_font_);
+}
+
+void ViewSpikeDetection::print_delete_font()
+{
+	font_print_.DeleteObject();
 }
 
 void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
@@ -3023,6 +3028,19 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc)
 	chart_spike_shape_.GetWindowRect(&r4);
 	const int base_x = r4.left;
 	const int base_y = r1.top;
+	r1.OffsetRect(-base_x, -base_y);
+	r2.OffsetRect(-base_x, -base_y);
+	r3.OffsetRect(-base_x, -base_y);
+	r4.OffsetRect(-base_x, -base_y);
+
+	CRect rectResult;
+	rectResult.UnionRect(&r1, &r2);
+	rectResult.UnionRect(&rectResult, &r3);
+	rectResult.UnionRect(&rectResult, &r4);
+
+	auto& opts = static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data;
+	opts.horizontal_resolution = rectResult.Width();
+	opts.vertical_resolution = rectResult.Height();
 
 	CPen temp_pen;
 	temp_pen.CreatePen(PS_SOLID, 0, col_red);
@@ -3035,7 +3053,7 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc)
 		p_dc->SelectObject(old_pen);
 	temp_pen.DeleteObject();
 
-	export_comments(p_dc, base_x, base_y);
+	export_comments(p_dc, 0, 0);
 
 	// layout rectangles
 	//const auto rect = pixel_rect;
@@ -3052,16 +3070,11 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc)
 	//data_rect.bottom = data_rect.top + rect_data_height - separator / 2;
 	//data_rect.left +=  rect_spike_width + separator;
 
-	//rect1.left -= base_x;
-	//rect1.top -= base_y;
-	//rect1.right -= base_x;
-	//rect1.bottom -= base_y;
-	print_data_cartridge(p_dc, &chart_data_, &r1); // &data_rect);
+	print_data_cartridge(p_dc, &chart_data_, &r1); 
 
-	//// display curves: detect channel
-	//data_rect.top = data_rect.bottom + separator;
-	//data_rect.bottom = data_rect.top + rect_data_height;
-	//print_data_cartridge(p_dc, &chart_data_filtered_, &rect2); // &data_rect);
+	// display curves: detect channel
+
+	print_data_cartridge(p_dc, &chart_data_filtered_, &r2); // &data_rect);
 
 	//// display spike bars
 	//auto rect_bars = data_rect;
@@ -3099,6 +3112,7 @@ void ViewSpikeDetection::export_comments(CDC* p_dc, const int base_x, const int 
 	const auto old_font_size = p_print_parms->font_size;
 	p_print_parms->font_size = 10;
 	print_create_font();
+
 	p_dc->SetBkMode(TRANSPARENT);
 	p_print_parms->font_size = old_font_size;
 	p_old_font_ = p_dc->SelectObject(&font_print_);
@@ -3116,4 +3130,6 @@ void ViewSpikeDetection::export_comments(CDC* p_dc, const int base_x, const int 
 	constexpr int margin = 8;
 	p_dc->TextOut(base_x + margin, base_y + margin - 2 * p_print_parms->line_height, record_description);
 	p_dc->TextOut(base_x + margin, base_y + margin - p_print_parms->line_height, abscissa);
+
+	print_delete_font();
 }

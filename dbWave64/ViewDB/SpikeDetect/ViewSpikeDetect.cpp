@@ -1796,7 +1796,7 @@ void ViewSpikeDetection::print_data_cartridge(CDC* p_dc, ChartData* p_data_chart
 
 	const auto options_print_data = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
 	options_print_data->b_contours = true;
-    p_data_chart_wnd->print(p_dc, p_rect, options_print_data);
+    p_data_chart_wnd->print_data_to_dc(p_dc, p_rect, options_print_data);
 
     // restore
     p_data_chart_wnd->b_nice_grid = old_nice_grid;
@@ -1905,13 +1905,13 @@ void ViewSpikeDetection::print_file_bottom_page(CDC* p_dc, const CPrintInfo* p_i
 
 CString ViewSpikeDetection::print_convert_file_index(const long l_first, const long l_last) const
 {
-	CString cs_unit = _T(" s");
+	CString cs_unit = _T(" s ");
 	CString cs_comment;
 	float x_scale_factor;
-	const auto x1 = NiceUnit::change_unit(static_cast<float>(l_first) /									m_sampling_rate_, &cs_unit, &x_scale_factor);
+	const auto x1 = NiceUnit::change_unit(static_cast<float>(l_first) /m_sampling_rate_, &cs_unit, &x_scale_factor);
 	double d;
 	const auto fraction1 = modf(x1, &d) * 1000.f;
-		//static_cast<int>((x1 - static_cast<int>(x1)) * static_cast<float>(1000.));
+		//static_cast<int>((x1 - static_cast<int>(x1)) * (1000.f));
 	// separate fractional part
 	const auto x2 = static_cast<float>(l_last) / (m_sampling_rate_ * x_scale_factor);
 	const auto fraction2 = modf(x2, &d) * 1000.;
@@ -2037,7 +2037,7 @@ CString ViewSpikeDetection::print_data_bars(CDC* p_dc, const ChartData* p_data_c
 		i_horizontal_bar = static_cast<int>((static_cast<float>(k) * x_scale_factor) / time_per_pixel);
 		// compute how many pixels it makes
 		// print out the scale and units
-		cs.Format(_T("horz bar = %i %s"), k, (LPCTSTR)cs_unit);
+		cs.Format(_T(" horz bar = %i %s"), k, (LPCTSTR)cs_unit);
 		str_comment += cs + rc;
 		// draw horizontal line
 		i_horizontal_bar = MulDiv(i_horizontal_bar, p_rect->Width(), p_data_chart_wnd->get_rect_width());
@@ -2450,7 +2450,7 @@ void ViewSpikeDetection::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 		chart_data_filtered_.get_channel_list_item(0)->set_flag_print_visible(chan_0_draw_mode);
 		chart_data_filtered_.resize_channels(rect_data_.Width(), 0);
 		chart_data_filtered_.get_data_from_doc(index_first_data_point, l_last);
-		chart_data_filtered_.print(p_dc, &rect_data_, options_print_data);
+		chart_data_filtered_.print_data_to_dc(p_dc, &rect_data_, options_print_data);
 		p_dc->SelectClipRgn(nullptr);
 
 		// print spike bars 
@@ -3128,7 +3128,7 @@ void ViewSpikeDetection::export_comments(CDC* p_dc, const int base_x, const int 
 	GetDlgItem(IDC_TIMELAST)->GetWindowText(content2);
 	const CString abscissa = _T("Abscissa: ") + content1 + _T(" - ") + content2 + _T(" s");
 
-	p_dc->SetTextColor(RGB(0, 0, 0));
+	p_dc->SetTextColor(col_blue);
 	constexpr int margin = 8;
 	p_dc->TextOut(base_x + margin, base_y + margin - 2 * p_print_parms->line_height, record_description);
 	p_dc->TextOut(base_x + margin, base_y + margin - p_print_parms->line_height, abscissa);

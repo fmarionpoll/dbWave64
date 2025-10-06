@@ -1455,7 +1455,7 @@ void ViewData::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 			l_last = std::min(l_last, very_last);
 			chart_data.get_data_from_doc(l_first, l_last); // load data from file
 			update_channels_display_parameters();
-			chart_data.print(p_dc, &r_where, options_print_data); // print data
+			chart_data.print_data_to_dc(p_dc, &r_where, options_print_data); // print data
 		}
 
 		// update display rectangle for next row
@@ -1634,7 +1634,7 @@ void ViewData::render_for_export(CDC* p_dc)
 	new_scope_struct->b_draw_frame = options_print_data->b_frame_rect;
 	new_scope_struct->b_clip_rect = options_print_data->b_clip_rect;
 	const CRect rect(0, 0, options_print_data->horizontal_resolution, options_print_data->vertical_resolution);
-	chart_data.print(p_dc, &rect, options_print_data);
+	chart_data.print_data_to_dc(p_dc, &rect, options_print_data);
 	*new_scope_struct = *old_scope_struct;
 
 	// comments and bars

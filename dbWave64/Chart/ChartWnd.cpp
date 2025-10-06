@@ -95,7 +95,7 @@ ChartWnd::ChartWnd()
 	ChartWnd::set_mouse_cursor_type(0);
 
 	client_rect_ = CRect(0, 0, 10, 10); // minimal size of the button
-	adjust_display_rect(&client_rect_);
+	display_rect_ = expand_rect_if_rulers_are_present(&client_rect_);
 
 	cx_mouse_jitter_ = GetSystemMetrics(SM_CXDOUBLECLK);
 	cy_mouse_jitter_ = GetSystemMetrics(SM_CYDOUBLECLK);
@@ -142,7 +142,7 @@ void ChartWnd::PreSubclassWindow()
 
 	// at this stage, assume that m_hWnd is valid
 	::GetClientRect(m_hWnd, &client_rect_);
-	adjust_display_rect(&client_rect_);
+	display_rect_ = expand_rect_if_rulers_are_present(&client_rect_);
 	x_viewport_origin_ = display_rect_.left;
 	x_viewport_extent_ = display_rect_.Width();
 	y_vo_ = display_rect_.Height() / 2;
@@ -185,7 +185,7 @@ void ChartWnd::set_display_area_size(const int cx, const int cy)
 	// update coordinates
 	client_rect_.bottom = cy;
 	client_rect_.right = cx;
-	adjust_display_rect(&client_rect_);
+	display_rect_ = expand_rect_if_rulers_are_present(&client_rect_);
 	x_viewport_origin_ = display_rect_.left;
 	x_viewport_extent_ = display_rect_.Width();
 	y_vo_ = display_rect_.Height() / 2;
@@ -510,16 +510,17 @@ void ChartWnd::draw_grid_nicely_spaced(CDC* p_dc)
 	}
 }
 
-void ChartWnd::adjust_display_rect(const CRect* p_rect)
+CRect ChartWnd::expand_rect_if_rulers_are_present(const CRect* p_rect) const
 {
-	display_rect_ = *p_rect;
+	CRect rect = *p_rect;
 	if (b_nice_grid)
 	{
 		if (y_ruler_bar == nullptr)
-			display_rect_.left += ordinates_width;
+			rect.left += ordinates_width;
 		if (x_ruler_bar == nullptr)
-			display_rect_.bottom -= abscissa_height;
+			rect.bottom -= abscissa_height;
 	}
+	return rect;
 }
 
 void ChartWnd::draw_grid(CDC* p_dc)

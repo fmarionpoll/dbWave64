@@ -172,7 +172,7 @@ public:
 	void reflect_mouse_move_message(const HWND h_window) { h_wnd_reflect_ = h_window; }
 	void set_cursor_max_on_dbl_click(const int imax) { cursor_index_max_ = imax; }
 	void draw_grid(CDC* p_dc);
-	void adjust_display_rect(const CRect* p_rect);
+	CRect expand_rect_if_rulers_are_present(const CRect* p_rect) const;
 	BOOL get_b_draw_frame() const { return scope_structure_.b_draw_frame; }
 	void set_b_draw_frame(const BOOL flag) { scope_structure_.b_draw_frame = flag; }
 	CRect get_defined_rect() const { return {pt_first_.x, pt_first_.y, pt_last_.x, pt_last_.y}; }

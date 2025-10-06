@@ -944,28 +944,22 @@ void ChartData::OnSize(const UINT n_type, const int cx, const int cy)
 	}
 }
 
-void ChartData::print(CDC* p_dc, const CRect* p_rect, const options_print* options_print_data)
+void ChartData::print_data_to_dc(CDC* p_dc, const CRect* p_rect, const options_print* options_print_data)
 {
 	// save DC & old client rect
 	const auto n_saved_dc = p_dc->SaveDC();
 	ASSERT(n_saved_dc != 0);
 	const auto old_rect = client_rect_;
-
 	// exit early if no data defined (keep MM_TEXT/default)
 	if (!is_defined())
 	{
-		p_dc->TextOut(10, 10, _T("No data"));
+		p_dc->TextOut(p_rect->left, p_rect->top + (10 * 3), _T("No data"));
 		p_dc->RestoreDC(n_saved_dc);
-		client_rect_ = old_rect;
-		adjust_display_rect(&client_rect_);
 		return;
 	}
 
     client_rect_ = *p_rect;
-    adjust_display_rect(p_rect);
-
-    // Debug: capture map mode before we change it
-    const int mm_before = p_dc->GetMapMode();
+    display_rect_ = expand_rect_if_rulers_are_present(p_rect);
 
     // Set anisotropic mapping: logical 0..W x -H..H (centered Y) onto device rect
     p_dc->SetMapMode(MM_ANISOTROPIC);
@@ -987,7 +981,6 @@ void ChartData::print(CDC* p_dc, const CRect* p_rect, const options_print* optio
         const CPoint wo = p_dc->GetWindowOrg();
         const CSize we = p_dc->GetWindowExt();
 
-        TRACE(_T("[ChartData::print] mm_before=%d, mm_after=%d\n"), mm_before, mm_after);
         TRACE(_T("  display_rect=[L=%d T=%d R=%d B=%d] size=[%d x %d]\n"),
               display_rect_.left, display_rect_.top, display_rect_.right, display_rect_.bottom, w_dev, h_dev);
         TRACE(_T("  WindowOrg=(%d,%d) WindowExt=(%d,%d)\n"), wo.x, wo.y, we.cx, we.cy);
@@ -1171,7 +1164,7 @@ void ChartData::print(CDC* p_dc, const CRect* p_rect, const options_print* optio
 	p_dc->SelectObject(old_pen);
 	p_dc->RestoreDC(n_saved_dc);
 	client_rect_ = old_rect;
-	adjust_display_rect(&client_rect_);
+	display_rect_ = expand_rect_if_rulers_are_present(&client_rect_);
 }
 
 BOOL ChartData::copy_as_text(const int i_option, const int i_unit, const int n_abscissa)

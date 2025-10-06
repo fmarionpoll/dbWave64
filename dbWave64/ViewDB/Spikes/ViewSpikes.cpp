@@ -1286,7 +1286,7 @@ void ViewSpikes::OnPrint(CDC* p_dc, CPrintInfo* p_info)
 				p_dc->IntersectClipRect(&rw_bars); 
 			chart_data_wnd_.get_data_from_doc(l_first, l_last);
 			chart_data_wnd_.center_chan(0);
-			chart_data_wnd_.print(p_dc, &rw_bars, options_print_data);
+			chart_data_wnd_.print_data_to_dc(p_dc, &rw_bars, options_print_data);
 			p_dc->SelectClipRgn(nullptr);
 
 			extent = chart_data_wnd_.get_channel_list_item(0)->get_y_extent();
@@ -1990,7 +1990,7 @@ void ViewSpikes::render_for_export(CDC* p_dc)
 	if (p_data_doc_ != nullptr)
 	{
 		chart_data_wnd_.center_chan(0);
-		chart_data_wnd_.print(p_dc, &rw_bars, options_print_data);
+		chart_data_wnd_.print_data_to_dc(p_dc, &rw_bars, options_print_data);
 		rw_spikes.OffsetRect(0, r_height);
 		rw_bars.OffsetRect(0, r_height);
 		rw_text.OffsetRect(0, r_height);

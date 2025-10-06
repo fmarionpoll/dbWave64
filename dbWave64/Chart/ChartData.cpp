@@ -975,7 +975,6 @@ void ChartData::print_data_to_dc(CDC* p_dc, const CRect* p_rect, const options_p
     // Debug: dump mapping state and sanity LP<->DP transforms
 #ifdef _DEBUG
     {
-        const int mm_after = p_dc->GetMapMode();
         const CPoint vo = p_dc->GetViewportOrg();
         const CSize ve = p_dc->GetViewportExt();
         const CPoint wo = p_dc->GetWindowOrg();

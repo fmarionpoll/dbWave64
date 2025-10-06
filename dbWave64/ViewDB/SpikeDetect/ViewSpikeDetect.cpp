@@ -3044,16 +3044,16 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc)
 	opts.horizontal_resolution = rectResult.Width();
 	opts.vertical_resolution = rectResult.Height();
 
-	CPen temp_pen;
-	temp_pen.CreatePen(PS_SOLID, 0, col_red);
-	const auto old_pen = p_dc->SelectObject(&temp_pen);
-	p_dc->Rectangle(&r1);
+	//CPen temp_pen;
+	//temp_pen.CreatePen(PS_SOLID, 0, col_red);
+	//const auto old_pen = p_dc->SelectObject(&temp_pen);
+	//p_dc->Rectangle(&r1);
 	//p_dc->Rectangle(&r2);
 	//p_dc->Rectangle(&r3);
 	//p_dc->Rectangle(&r4);
-	if (old_pen != nullptr)
-		p_dc->SelectObject(old_pen);
-	temp_pen.DeleteObject();
+	//if (old_pen != nullptr)
+	//	p_dc->SelectObject(old_pen);
+	//temp_pen.DeleteObject();
 
 	export_comments(p_dc, 0, 0);
 
@@ -3128,7 +3128,7 @@ void ViewSpikeDetection::export_comments(CDC* p_dc, const int base_x, const int 
 	GetDlgItem(IDC_TIMELAST)->GetWindowText(content2);
 	const CString abscissa = _T("Abscissa: ") + content1 + _T(" - ") + content2 + _T(" s");
 
-	p_dc->SetTextColor(col_blue);
+	p_dc->SetTextColor(col_black);
 	constexpr int margin = 8;
 	p_dc->TextOut(base_x + margin, base_y + margin - 2 * p_print_parms->line_height, record_description);
 	p_dc->TextOut(base_x + margin, base_y + margin - p_print_parms->line_height, abscissa);

@@ -189,8 +189,10 @@ void options_view_data::Serialize(CArchive& ar)
 	{
 		WORD version;
 		ar >> version;
-		if (version < 6)
+		if (version < 6) {
 			read_version_before_6(ar, version); // version not supported
+			return;
+		}
 
 		// how data are displayed from file to file
 		WORD wBrowseFlags;

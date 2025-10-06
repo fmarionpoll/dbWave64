@@ -1037,7 +1037,7 @@ void ChartData::print(CDC* p_dc, const CRect* p_rect, const options_print* optio
         // Also draw device-space corner markers in MM_TEXT to visually validate placement
         const int saved_text = p_dc->SaveDC();
         p_dc->SetMapMode(MM_TEXT);
-        const COLORREF dbg = RGB(0,0,255);
+        const COLORREF dbg = col_blue;
         p_dc->FillSolidRect(display_rect_.left-2,  display_rect_.top-2,  5, 5, dbg);
         p_dc->FillSolidRect(display_rect_.right-3, display_rect_.top-2,  5, 5, dbg);
         p_dc->FillSolidRect(display_rect_.left-2,  display_rect_.bottom-3, 5, 5, dbg);

@@ -57,7 +57,7 @@
     <ClCompile Include="AcqWaveChan.cpp" />
     <ClCompile Include="AcqWaveChanArray.cpp" />
     <ClCompile Include="AcqWaveFormat.cpp" />
-    <ClCompile Include="ChildFrm.cpp" />
+    <ClCompile Include="ChildFrame.cpp" />
     <ClCompile Include="Controls\cdxCRot90DC.cpp" />
     <ClCompile Include="Controls\cdxCRotBevelLine.cpp" />
     <ClCompile Include="GridCtrl\GridComboEdit.cpp" />
@@ -216,7 +216,7 @@
     <ClInclude Include="Chart\ChartSpikeShape.h" />
     <ClInclude Include="Chart\ChartSpikeXY.h" />
     <ClInclude Include="Chart\ChartWnd.h" />
-    <ClInclude Include="ChildFrm.h" />
+    <ClInclude Include="ChildFrame.h" />
     <ClInclude Include="ColorNames.h" />
     <ClInclude Include="Controls\cdxCRot90DC.h" />
     <ClInclude Include="Controls\cdxCRotBevelLine.h" />

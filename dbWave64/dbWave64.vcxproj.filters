@@ -78,7 +78,7 @@
     <ClCompile Include="AcqWaveFormat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ChildFrm.cpp">
+    <ClCompile Include="ChildFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dbMultiDocTemplate.cpp">
@@ -635,7 +635,7 @@
     <ClInclude Include="chanlistitem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ChildFrm.h">
+    <ClInclude Include="ChildFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ColorNames.h">

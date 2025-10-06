@@ -1055,116 +1055,117 @@ void ChartData::print(CDC* p_dc, const CRect* p_rect, const options_print* optio
     p_dc->MoveTo(0, 0);
     p_dc->LineTo(w_dev, 0);
 
-	//// prepare background and clip in device coords
-	//erase_background(p_dc);
-	//if (scope_structure_.b_clip_rect)
-	//	p_dc->IntersectClipRect(display_rect_);
-	//else
-	//	p_dc->SelectClipRgn(nullptr);
+	// prepare background and clip in device coords
+	erase_background(p_dc);
+	if (scope_structure_.b_clip_rect)
+		p_dc->IntersectClipRect(display_rect_);
+	else
+		p_dc->SelectClipRgn(nullptr);
 
-	//// change horizontal resolution and load data
-	//resize_channels(display_rect_.Width()*4, m_lx_size_);
-	//if (!options_print_data->b_center_line)
-	//	get_data_from_doc();
-	//else
-	//	get_smooth_data_from_doc(options_print_data->b_center_line);
+	// change horizontal resolution and load data
+	resize_channels(display_rect_.Width()*4, m_lx_size_);
+	if (!options_print_data->b_center_line)
+		get_data_from_doc();
+	else
+		get_smooth_data_from_doc(options_print_data->b_center_line);
 
-	//// ensure abscissa envelope uses logical 0..W
-	//const auto p_envelope = envelope_ptr_array_.GetAt(0);
-	//p_envelope->fill_envelope_with_abscissa(m_n_pixels_, m_lx_size_);
+	// ensure abscissa envelope uses logical 0..W
+	const auto p_envelope = envelope_ptr_array_.GetAt(0);
+	p_envelope->fill_envelope_with_abscissa(m_n_pixels_, m_lx_size_);
 
-	//// display all channels
-	//auto n_elements = 0;
-	//auto p_x = chan_list_item_ptr_array_[0]->p_envelope_abscissa;
-	//const BOOL b_poly_line = (p_dc->m_hAttribDC == nullptr) || (p_dc->GetDeviceCaps(LINECAPS) & LC_POLYLINE);
-	//auto color = BLACK_COLOR;
-	//const auto old_pen = p_dc->SelectObject(&pen_table_[color]);
+	// display all channels
+	auto n_elements = 0;
+	auto p_x = chan_list_item_ptr_array_[0]->p_envelope_abscissa;
+	const BOOL b_poly_line = (p_dc->m_hAttribDC == nullptr) || (p_dc->GetDeviceCaps(LINECAPS) & LC_POLYLINE);
+	auto color = BLACK_COLOR;
+	//const auto old_pen =
+	p_dc->SelectObject(&pen_table_[color]);
 
-	//for (auto i_chan = chan_list_item_ptr_array_.GetUpperBound(); i_chan >= 0; i_chan--) // scan all channels
-	//{
-	//	const auto chan_list_item = chan_list_item_ptr_array_[i_chan];
-	//	if (chan_list_item->is_print_visible() == FALSE)
-	//		continue;
+	for (auto i_chan = chan_list_item_ptr_array_.GetUpperBound(); i_chan >= 0; i_chan--) // scan all channels
+	{
+		const auto chan_list_item = chan_list_item_ptr_array_[i_chan];
+		if (chan_list_item->is_print_visible() == FALSE)
+			continue;
 
-	//	// abscissa
-	//	if (p_x != chan_list_item->p_envelope_abscissa)
-	//	{
-	//		p_x = chan_list_item->p_envelope_abscissa;
-	//		p_x->export_to_abscissa(m_poly_points_);
-	//	}
+		// abscissa
+		if (p_x != chan_list_item->p_envelope_abscissa)
+		{
+			p_x = chan_list_item->p_envelope_abscissa;
+			p_x->export_to_abscissa(m_poly_points_);
+		}
 
-	//	// ordinates
-	//	const auto p_y = chan_list_item->p_envelope_ordinates;
-	//	p_y->export_to_ordinates(m_poly_points_);
+		// ordinates
+		const auto p_y = chan_list_item->p_envelope_ordinates;
+		p_y->export_to_ordinates(m_poly_points_);
 
-	//	// color
-	//	const auto y_extent = chan_list_item->get_y_extent();
-	//	const auto y_zero = chan_list_item->get_y_zero();
-	//	if (chan_list_item->get_color_index() != color)
-	//	{
-	//		color = chan_list_item->get_color_index();
-	//		p_dc->SelectObject(&pen_table_[color]);
-	//	}
+		// color
+		const auto y_extent = chan_list_item->get_y_extent();
+		const auto y_zero = chan_list_item->get_y_zero();
+		if (chan_list_item->get_color_index() != color)
+		{
+			color = chan_list_item->get_color_index();
+			p_dc->SelectObject(&pen_table_[color]);
+		}
 
-	//	// transform y from data bins to logical units centered at 0
-	//	n_elements = p_x->get_envelope_size();
-	//	for (auto j = 0; j < n_elements; j++)
-	//	{
-	//		const auto p_point = &m_poly_points_[j];
-	//		p_point->y = MulDiv(p_point->y - y_zero, y_ve, y_extent);
-	//	}
+		// transform y from data bins to logical units centered at 0
+		n_elements = p_x->get_envelope_size();
+		for (auto j = 0; j < n_elements; j++)
+		{
+			const auto p_point = &m_poly_points_[j];
+			p_point->y = MulDiv(p_point->y - y_zero, y_ve, y_extent);
+		}
 
-	//	// draw
-	//	if (b_poly_line)
-	//		p_dc->Polyline(&m_poly_points_[0], n_elements);
-	//	else
-	//	{
-	//		p_dc->MoveTo(m_poly_points_[0]);
-	//		for (auto j = 0; j < n_elements; j++)
-	//			p_dc->LineTo(m_poly_points_[j]);
-	//	}
+		// draw
+		if (b_poly_line)
+			p_dc->Polyline(&m_poly_points_[0], n_elements);
+		else
+		{
+			p_dc->MoveTo(m_poly_points_[0]);
+			for (auto j = 0; j < n_elements; j++)
+				p_dc->LineTo(m_poly_points_[j]);
+		}
 
-	//	// horizontal tags for this channel (logical coords)
-	//	if (hz_tags.get_tag_list_size() > 0)
-	//	{
-	//		CPen pen_light_grey(PS_SOLID, 0, color_spike_class[SILVER_COLOR]);
-	//		const auto old_pen2 = p_dc->SelectObject(&pen_light_grey);
-	//		const int x0 = 0;
-	//		const int x1 = display_rect_.Width();
-	//		for (auto j = hz_tags.get_tag_list_size() - 1; j >= 0; j--)
-	//		{
-	//			if (hz_tags.get_channel(j) != i_chan)
-	//				continue;
-	//			auto k = hz_tags.get_value_int(j);
-	//			k = MulDiv(k - y_zero, y_ve, y_extent);
-	//			p_dc->MoveTo(x0, k);
-	//			p_dc->LineTo(x1, k);
-	//		}
-	//		p_dc->SelectObject(old_pen2);
-	//	}
+		// horizontal tags for this channel (logical coords)
+		if (hz_tags.get_tag_list_size() > 0)
+		{
+			CPen pen_light_grey(PS_SOLID, 0, color_spike_class[SILVER_COLOR]);
+			const auto old_pen2 = p_dc->SelectObject(&pen_light_grey);
+			const int x0 = 0;
+			const int x1 = display_rect_.Width();
+			for (auto j = hz_tags.get_tag_list_size() - 1; j >= 0; j--)
+			{
+				if (hz_tags.get_channel(j) != i_chan)
+					continue;
+				auto k = hz_tags.get_value_int(j);
+				k = MulDiv(k - y_zero, y_ve, y_extent);
+				p_dc->MoveTo(x0, k);
+				p_dc->LineTo(x1, k);
+			}
+			p_dc->SelectObject(old_pen2);
+		}
 
-	//	// highlights
-	//	highlight_data(p_dc, i_chan);
-	//}
+		// highlights
+		highlight_data(p_dc, i_chan);
+	}
 
-	//// vertical tags across the full height (logical coords)
-	//if (vt_tags.get_tag_list_size() > 0)
-	//{
-	//	CPen pen_light_grey(PS_SOLID, 0, color_spike_class[SILVER_COLOR]);
-	//	const auto p_old_pen = p_dc->SelectObject(&pen_light_grey);
-	//	const int y_top = y_ve / 2;
-	//	const int y_bottom = -y_ve / 2;
-	//	for (auto j = vt_tags.get_tag_list_size() - 1; j >= 0; j--)
-	//	{
-	//		const auto lk = vt_tags.get_tag_value_long(j);
-	//		if (lk < m_lx_first_ || lk > m_lx_last_)
-	//			continue;
-	//		const int k = MulDiv(static_cast<int>(lk - m_lx_first_), display_rect_.Width(), (m_lx_last_ - m_lx_first_ + 1));
-	//		p_dc->MoveTo(k, y_top);
-	//		p_dc->LineTo(k, y_bottom);
-	//	}
-	//	p_dc->SelectObject(p_old_pen);
-	//}
+	// vertical tags across the full height (logical coords)
+	if (vt_tags.get_tag_list_size() > 0)
+	{
+		CPen pen_light_grey(PS_SOLID, 0, color_spike_class[SILVER_COLOR]);
+		const auto p_old_pen = p_dc->SelectObject(&pen_light_grey);
+		const int y_top = y_ve / 2;
+		const int y_bottom = -y_ve / 2;
+		for (auto j = vt_tags.get_tag_list_size() - 1; j >= 0; j--)
+		{
+			const auto lk = vt_tags.get_tag_value_long(j);
+			if (lk < m_lx_first_ || lk > m_lx_last_)
+				continue;
+			const int k = MulDiv(static_cast<int>(lk - m_lx_first_), display_rect_.Width(), (m_lx_last_ - m_lx_first_ + 1));
+			p_dc->MoveTo(k, y_top);
+			p_dc->LineTo(k, y_bottom);
+		}
+		p_dc->SelectObject(p_old_pen);
+	}
 
 	// restore DC
 	p_dc->SelectObject(old_pen);

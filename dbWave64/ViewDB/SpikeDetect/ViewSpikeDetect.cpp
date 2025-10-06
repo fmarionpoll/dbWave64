@@ -3048,9 +3048,9 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc)
 	temp_pen.CreatePen(PS_SOLID, 0, col_red);
 	const auto old_pen = p_dc->SelectObject(&temp_pen);
 	p_dc->Rectangle(&r1);
-	p_dc->Rectangle(&r2);
-	p_dc->Rectangle(&r3);
-	p_dc->Rectangle(&r4);
+	//p_dc->Rectangle(&r2);
+	//p_dc->Rectangle(&r3);
+	//p_dc->Rectangle(&r4);
 	if (old_pen != nullptr)
 		p_dc->SelectObject(old_pen);
 	temp_pen.DeleteObject();
@@ -3076,7 +3076,7 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc)
 
 	// display curves: detect channel
 
-	print_data_cartridge(p_dc, &chart_data_filtered_, &r2); // &data_rect);
+	//print_data_cartridge(p_dc, &chart_data_filtered_, &r2); // &data_rect);
 
 	//// display spike bars
 	//auto rect_bars = data_rect;

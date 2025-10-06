@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "MainFrm.h"
-//#include "ChildFrm.h"
+//#include "ChildFrame.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

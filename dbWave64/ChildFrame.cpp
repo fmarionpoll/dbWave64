@@ -32,7 +32,7 @@
 #include "DlgExportData.h"
 
 
-#include "ChildFrm.h"
+#include "ChildFrame.h"
 
 #include <algorithm>
 

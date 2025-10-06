@@ -11,7 +11,7 @@
 
 #include "chart/ChartData.h"
 #include "data_acquisition/ViewADcontinuous.h"
-#include "ChildFrm.h"
+#include "ChildFrame.h"
 #include "dbWave.h"
 #include "DlgADInputParms.h"
 #include "DlgConfirmSave.h"

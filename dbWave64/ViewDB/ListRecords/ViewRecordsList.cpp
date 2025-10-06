@@ -5,7 +5,7 @@
 #include "dbWave.h"
 #include "resource.h"
 #include "Adapters.h"
-#include "ChildFrm.h"
+#include "ChildFrame.h"
 #include "MainFrm.h"
 #include "RegistryManager.h"
 

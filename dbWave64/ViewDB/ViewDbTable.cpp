@@ -32,6 +32,9 @@ BEGIN_MESSAGE_MAP(ViewDbTable, CDaoRecordView)
 	ON_UPDATE_COMMAND_UI(ID_EXPORT_VIEW_TO_CLIPBOARD, &ViewDbTable::OnUpdateExportViewToClipBoard)
 	ON_COMMAND(ID_EXPORT_VIEW_AS_PNG, &ViewDbTable::OnExportViewAsPng)
 	ON_UPDATE_COMMAND_UI(ID_EXPORT_VIEW_TO_CLIPBOARD, &ViewDbTable::OnUpdateExportViewAsPng)
+	//ON_COMMAND(ID_FILE_PRINT, ViewDbTable::OnFilePrint)
+	//ON_COMMAND(ID_FILE_PRINT_DIRECT, ViewDbTable::OnFilePrint)
+	//ON_COMMAND(ID_FILE_PRINT_PREVIEW, ViewDbTable::OnFilePrintPreview)
 END_MESSAGE_MAP()
 
 //  drawing
@@ -296,34 +299,9 @@ BOOL ViewDbTable::export_to_png(const CString& file_path, const int bg_color)
 }
 void ViewDbTable::OnExportViewToClipboard()
 {
-	//if (p_options_view_data == nullptr)
-	//{
-	//	const auto p_app = static_cast<CdbWaveApp*>(AfxGetApp());
-	//	p_options_view_data = &(p_app->options_view_data);
-	//}
-		
-	//DlgCopyAs dlg;
-	//dlg.m_n_abscissa = options_view_data_->hz_resolution;
-	//dlg.m_n_ordinates = options_view_data_->vt_resolution;
-	//dlg.b_graphics = options_view_data_->b_graphics;
-	//dlg.m_i_option = options_view_data_->b_contours;
-	//dlg.m_i_unit = options_view_data_->b_units;
-
-	//// invoke dialog box
-	//if (IDOK == dlg.DoModal())
-	//{
-	//	options_view_data_->b_graphics = dlg.b_graphics;
-	//	options_view_data_->b_contours = dlg.m_i_option;
-	//	options_view_data_->b_units = dlg.m_i_unit;
-	//	options_view_data_->hz_resolution = dlg.m_n_abscissa;
-	//	options_view_data_->vt_resolution = dlg.m_n_ordinates;
-
-		//if (dlg.b_graphics) {
-			serialize_windows_state(b_save);
-			copy_as_emf_to_clipboard(GetDocument()->GetTitle());
-			serialize_windows_state(b_restore);
-	//	}
-	//}
+	serialize_windows_state(b_save);
+	copy_as_emf_to_clipboard(GetDocument()->GetTitle());
+	serialize_windows_state(b_restore);
 }
 
 void ViewDbTable::serialize_windows_state(const BOOL save, int tab_index)
@@ -353,10 +331,10 @@ void ViewDbTable::OnExportViewAsPng()
 	//	options_view_data_->b_units = dlg.m_i_unit;
 	//	options_view_data_->hz_resolution = dlg.m_n_abscissa;
 	//	options_view_data_->vt_resolution = dlg.m_n_ordinates;
-		const CString file_path = _T("c:\\temp\\export.png");
+	const CString file_path = _T("c:\\temp\\export.png");
 		//if (dlg.b_graphics) {
-			constexpr int bg_color = 0;
-			export_to_png(file_path, bg_color);
+	constexpr int bg_color = 0;
+	export_to_png(file_path, bg_color);
 	//	}
 	//}
 }

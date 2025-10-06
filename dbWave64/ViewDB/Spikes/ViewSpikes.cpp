@@ -70,8 +70,6 @@ BEGIN_MESSAGE_MAP(ViewSpikes, ViewDbTable)
 	ON_COMMAND(ID_FORMAT_NEXT_FRAME, &ViewSpikes::on_format_next_frame)
 	ON_COMMAND(ID_RECORD_SHIFT_LEFT, &ViewSpikes::on_h_scroll_left)
 	ON_COMMAND(ID_RECORD_SHIFT_RIGHT, &ViewSpikes::on_h_scroll_right)
-	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_PREVIEW, CView::OnFilePrintPreview)
 
 	ON_EN_CHANGE(IDC_NSPIKES, &ViewSpikes::on_en_change_no_spike)
 	ON_EN_CHANGE(IDC_SPIKE_CLASS, &ViewSpikes::on_en_change_spike_class)
@@ -88,6 +86,10 @@ BEGIN_MESSAGE_MAP(ViewSpikes, ViewDbTable)
 
 	ON_BN_CLICKED(IDC_SAMECLASS, &ViewSpikes::on_bn_clicked_same_class)
 	ON_BN_CLICKED(IDC_ZOOM_ON_OFF, &ViewSpikes::on_zoom)
+
+	ON_COMMAND(ID_FILE_PRINT, ViewDbTable::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_DIRECT, ViewDbTable::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_PREVIEW, ViewDbTable::OnFilePrintPreview)
 END_MESSAGE_MAP()
 
 void ViewSpikes::OnActivateView(BOOL b_activate, CView* p_activate_view, CView* p_deactivate_view)

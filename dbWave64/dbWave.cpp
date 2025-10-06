@@ -4,7 +4,7 @@
 
 #include <winspool.h>
 #include "MainFrm.h"
-#include "ChildFrm.h"
+#include "ChildFrame.h"
 #include "ViewDB/Data/ViewData.h"
 #include "ViewDB/Spikes/ViewSpikes.h"
 #include "ViewDB/ListRecords/ViewRecordsList.h"

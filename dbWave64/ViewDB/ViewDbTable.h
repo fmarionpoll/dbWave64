@@ -93,9 +93,15 @@ public:
 	BOOL copy_as_emf_to_clipboard(const CString& title);
 	BOOL export_to_png(const CString& file_path, int bg_color = RGB(255,255,255));
 	virtual void render_for_export(CDC* p_dc);
+	// Compute desired export pixel bounds (width/height). Default: view client rect
+	virtual CRect compute_export_bounds();
 	virtual bool can_export_view() const { return true; }
 	virtual bool can_export_png() const { return true; }
 	virtual void serialize_windows_state(BOOL save, int tab_index = -1);
+
+	// Anisotropic export mapping helpers (1:1 logical mapping to export bounds)
+	int begin_anisotropic_export(CDC* p_dc, const CRect& export_bounds) const;
+	void end_anisotropic_export(CDC* p_dc, int saved_dc) const;
 
 	// Text helpers (device-independent in MM_ANISOTROPIC)
 	void draw_text_block(CDC* p_dc, const CRect& device_rect, int point_size, const CString& text, UINT draw_text_flags, LPCTSTR font_face = _T("Arial")) const;

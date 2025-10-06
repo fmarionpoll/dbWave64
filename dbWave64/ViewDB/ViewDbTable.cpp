@@ -252,6 +252,14 @@ void ViewDbTable::draw_text_block(CDC* p_dc, const CRect& device_rect, const int
 // Common EMF creation and clipboard copy
 BOOL ViewDbTable::copy_as_emf_to_clipboard(const CString& title)
 {
+    // Ensure export pixel size is set BEFORE EMF is created
+    auto& opts = static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data;
+    const CRect px = compute_export_bounds();
+    opts.horizontal_resolution = std::max(1, px.Width());
+    opts.vertical_resolution   = std::max(1, px.Height());
+#ifdef _DEBUG
+    TRACE(_T("[copy_as_emf_to_clipboard] TargetPx=(%d,%d)\n"), opts.horizontal_resolution, opts.vertical_resolution);
+#endif
     return GraphicsExport::CopyAsEmfToClipboard(this, title, [this](CDC* dc) { this->render_for_export(dc); }
     );
 }
@@ -296,6 +304,52 @@ BOOL ViewDbTable::export_to_png(const CString& file_path, const int bg_color)
         bg_color,
         [this](CDC* dc) { this->render_for_export(dc); }
     );
+}
+
+CRect ViewDbTable::compute_export_bounds()
+{
+	CRect client{};
+	GetClientRect(&client);
+	return client;
+}
+
+int ViewDbTable::begin_anisotropic_export(CDC* p_dc, const CRect& export_bounds) const
+{
+	const int saved = p_dc->SaveDC();
+	p_dc->SetMapMode(MM_ANISOTROPIC);
+	// Define logical space 0..W, 0..H mapped to export_bounds at origin
+	const int w = export_bounds.Width();
+	const int h = export_bounds.Height();
+	p_dc->SetWindowOrg(0, 0);
+	p_dc->SetWindowExt(w, h);
+	p_dc->SetViewportOrg(0, 0);
+	p_dc->SetViewportExt(w, h);
+	// Clip to the logical export area
+	p_dc->SelectClipRgn(nullptr);
+	p_dc->IntersectClipRect(0, 0, w, h);
+#ifdef _DEBUG
+	{
+		const int mm = p_dc->GetMapMode();
+		const CPoint vo = p_dc->GetViewportOrg();
+		const CSize ve = p_dc->GetViewportExt();
+		const CPoint wo = p_dc->GetWindowOrg();
+		const CSize we = p_dc->GetWindowExt();
+		CRect clip_box; const int clip_type = p_dc->GetClipBox(&clip_box);
+		CString msg;
+		msg.Format(_T("[begin_aniso] mm=%d bounds=[%d,%d,%d,%d] WO=(%d,%d) WE=(%d,%d) VO=(%d,%d) VE=(%d,%d) CLIP=%d [%d,%d,%d,%d]\n"),
+			mm, export_bounds.left, export_bounds.top, export_bounds.right, export_bounds.bottom,
+			wo.x, wo.y, we.cx, we.cy, vo.x, vo.y, ve.cx, ve.cy, clip_type,
+			clip_box.left, clip_box.top, clip_box.right, clip_box.bottom);
+		AfxOutputDebugString(msg);
+	}
+#endif
+	return saved;
+}
+
+void ViewDbTable::end_anisotropic_export(CDC* p_dc, const int saved_dc) const
+{
+	if (saved_dc)
+		p_dc->RestoreDC(saved_dc);
 }
 void ViewDbTable::OnExportViewToClipboard()
 {

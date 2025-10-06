@@ -165,6 +165,7 @@ protected:
 	void update_tabs();
 
 	void render_for_export(CDC* p_dc) override;
+	CRect compute_export_bounds() override;
 	void export_comments(CDC* p_dc, int base_x, int base_y);
 
 	// Generated message map functions

@@ -31,14 +31,19 @@ BOOL GraphicsExport::CopyAsEmfToClipboard(CWnd* owner_wnd, const CString& title,
         used_screen_dc = true;
     }
 
-    const int dpi_x = p_ref_dc->GetDeviceCaps(LOGPIXELSX);
-    const int dpi_y = p_ref_dc->GetDeviceCaps(LOGPIXELSY);
+    int dpi_x = p_ref_dc->GetDeviceCaps(LOGPIXELSX);
+    int dpi_y = p_ref_dc->GetDeviceCaps(LOGPIXELSY);
 
 	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+    // Guard DPI and ensure non-zero EMF frame at least 96 DPI
+    if (dpi_x <= 0) dpi_x = 96;
+    if (dpi_y <= 0) dpi_y = 96;
+    const int px_w = std::max(1, p_print_parms->horizontal_resolution);
+    const int px_h = std::max(1, p_print_parms->vertical_resolution);
     CMetaFileDC meta_dc;
     CRect himetric_bounds(0, 0,
-        MulDiv(p_print_parms->horizontal_resolution, 2540, dpi_x),
-        MulDiv(p_print_parms->vertical_resolution, 2540, dpi_y));
+        MulDiv(px_w, 2540, dpi_x),
+        MulDiv(px_h, 2540, dpi_y));
 
     CString meta_title = _T("dbWave\0") + title;
     meta_title += _T("\0\0");
@@ -54,7 +59,17 @@ BOOL GraphicsExport::CopyAsEmfToClipboard(CWnd* owner_wnd, const CString& title,
     meta_dc.SetAttribDC(p_ref_dc->GetSafeHdc());
 
     if (draw_fn)
+    {
+#ifdef _DEBUG
+        const int dpix = p_ref_dc->GetDeviceCaps(LOGPIXELSX);
+        const int dpiy = p_ref_dc->GetDeviceCaps(LOGPIXELSY);
+        TRACE(_T("[CopyAsEmfToClipboard] DPI=(%d,%d) HIMETRIC=(%ld,%ld) TargetPx=(%d,%d)\n"),
+              dpix, dpiy, himetric_bounds.right, himetric_bounds.bottom,
+              static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data.horizontal_resolution,
+              static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data.vertical_resolution);
+#endif
         draw_fn(&meta_dc);
+    }
 
     const auto h_emf = meta_dc.CloseEnhanced();
     if (h_emf == nullptr)

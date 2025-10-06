@@ -950,7 +950,7 @@ void ChartData::print_data_to_dc(CDC* p_dc, const CRect* p_rect, const options_p
 	const auto n_saved_dc = p_dc->SaveDC();
 	ASSERT(n_saved_dc != 0);
 	const auto old_rect = client_rect_;
-	// exit early if no data defined (keep MM_TEXT/default)
+	// exit early if no data defined 
 	if (!is_defined())
 	{
 		p_dc->TextOut(p_rect->left, p_rect->top + (10 * 3), _T("No data"));
@@ -961,80 +961,31 @@ void ChartData::print_data_to_dc(CDC* p_dc, const CRect* p_rect, const options_p
     client_rect_ = *p_rect;
     display_rect_ = expand_rect_if_rulers_are_present(p_rect);
 
-    // Set anisotropic mapping: logical 0..W x -H..H (centered Y) onto device rect
-    p_dc->SetMapMode(MM_ANISOTROPIC);
-    const int w_dev = display_rect_.Width();
-    const int h_dev = display_rect_.Height();
-    // define logical space first (1:1 test mapping)
-    p_dc->SetWindowOrg(0, 0);
-    p_dc->SetWindowExt(w_dev, h_dev);
-    // map to device rectangle (account for top)
-    p_dc->SetViewportOrg(display_rect_.left, display_rect_.top + h_dev / 2);
-    p_dc->SetViewportExt(w_dev, -h_dev);
-
-    // Debug: dump mapping state and sanity LP<->DP transforms
-#ifdef _DEBUG
-    {
-        const CPoint vo = p_dc->GetViewportOrg();
-        const CSize ve = p_dc->GetViewportExt();
-        const CPoint wo = p_dc->GetWindowOrg();
-        const CSize we = p_dc->GetWindowExt();
-
-        TRACE(_T("  display_rect=[L=%d T=%d R=%d B=%d] size=[%d x %d]\n"),
-              display_rect_.left, display_rect_.top, display_rect_.right, display_rect_.bottom, w_dev, h_dev);
-        TRACE(_T("  WindowOrg=(%d,%d) WindowExt=(%d,%d)\n"), wo.x, wo.y, we.cx, we.cy);
-        TRACE(_T("  ViewportOrg=(%d,%d) ViewportExt=(%d,%d)\n"), vo.x, vo.y, ve.cx, ve.cy);
-
-        // Device/EMF context
-        const int tech   = p_dc->GetDeviceCaps(TECHNOLOGY);
-        const int dpix   = p_dc->GetDeviceCaps(LOGPIXELSX);
-        const int dpiy   = p_dc->GetDeviceCaps(LOGPIXELSY);
-        const int horz   = p_dc->GetDeviceCaps(HORZRES);
-        const int vert   = p_dc->GetDeviceCaps(VERTRES);
-        const int rcap   = p_dc->GetDeviceCaps(RASTERCAPS);
-        CRect clip_box; const int clip_type = p_dc->GetClipBox(&clip_box);
-        TRACE(_T("  TECH=%d LOGPIXELS=(%d,%d) RES=(%d x %d) RASTERCAPS=0x%08X CLIP=%d [L=%d T=%d R=%d B=%d]\n"),
-              tech, dpix, dpiy, horz, vert, rcap, clip_type,
-              clip_box.left, clip_box.top, clip_box.right, clip_box.bottom);
-
-        // Sanity LP -> DP
-        CPoint lp1(0, h_dev/2); CPoint dp1 = lp1; p_dc->LPtoDP(&dp1);
-        CPoint lp2(w_dev, 0);   CPoint dp2 = lp2; p_dc->LPtoDP(&dp2);
-        TRACE(_T("  LP(0,%d)->DP=(%d,%d) expected=(%d,%d)\n"), h_dev/2, dp1.x, dp1.y, display_rect_.left, display_rect_.top);
-        TRACE(_T("  LP(%d,0)->DP=(%d,%d) expected=(%d,%d)\n"), w_dev, dp2.x, dp2.y, display_rect_.right, display_rect_.top + h_dev/2);
-
-        // Sanity DP -> LP
-        CPoint dp3(display_rect_.left, display_rect_.top); CPoint lp3 = dp3; p_dc->DPtoLP(&lp3);
-        CPoint dp4(display_rect_.right, display_rect_.top + h_dev/2); CPoint lp4 = dp4; p_dc->DPtoLP(&lp4);
-        TRACE(_T("  DP(L,T)->LP=(%d,%d) expected=(0,%d)\n"), lp3.x, lp3.y, h_dev/2);
-        TRACE(_T("  DP(R,cy)->LP=(%d,%d) expected=(%d,0)\n"), lp4.x, lp4.y, w_dev);
-
-        // EMF page target (from app options)
-        const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
-        TRACE(_T("  PAGE target HxV = (%d x %d) pixels\n"), p_print_parms->horizontal_resolution, p_print_parms->vertical_resolution);
-    }
-#endif
+	// Set anisotropic mapping: logical 0..W x -H..H (centered Y) onto device rect
+	p_dc->SetMapMode(MM_ANISOTROPIC);
+	const int w_dev = display_rect_.Width();
+	const int h_dev = display_rect_.Height();
+	p_dc->SetWindowOrg(0, 0);
+	p_dc->SetWindowExt(w_dev, h_dev);
+	p_dc->SetViewportOrg(display_rect_.left, display_rect_.top + h_dev / 2);
+	p_dc->SetViewportExt(w_dev, -h_dev);
 
     // Ensure clip region is sane for this mapping and limited to our logical rect
     p_dc->SelectClipRgn(nullptr);
     p_dc->IntersectClipRect(0, -h_dev/2, w_dev, +h_dev/2);
-
 #ifdef _DEBUG
     {
-        // Re-read clip after intersect (in logical units)
-        CRect clip_box2; const int clip_type2 = p_dc->GetClipBox(&clip_box2);
-        TRACE(_T("  CLIP(after)=%d [L=%d T=%d R=%d B=%d] (logical)\n"),
-              clip_type2, clip_box2.left, clip_box2.top, clip_box2.right, clip_box2.bottom);
-
-        // Also draw device-space corner markers in MM_TEXT to visually validate placement
-        const int saved_text = p_dc->SaveDC();
-        p_dc->SetMapMode(MM_TEXT);
-        const COLORREF dbg = col_blue;
-        p_dc->FillSolidRect(display_rect_.left-2,  display_rect_.top-2,  5, 5, dbg);
-        p_dc->FillSolidRect(display_rect_.right-3, display_rect_.top-2,  5, 5, dbg);
-        p_dc->FillSolidRect(display_rect_.left-2,  display_rect_.bottom-3, 5, 5, dbg);
-        p_dc->FillSolidRect(display_rect_.right-3, display_rect_.bottom-3,5, 5, dbg);
-        p_dc->RestoreDC(saved_text);
+        const CPoint vo = p_dc->GetViewportOrg();
+        const CSize  ve = p_dc->GetViewportExt();
+        const CPoint wo = p_dc->GetWindowOrg();
+        const CSize  we = p_dc->GetWindowExt();
+        CRect clip_box; const int clip_type = p_dc->GetClipBox(&clip_box);
+        CString msg;
+        msg.Format(_T("[ChartData::print_data_to_dc] DR=[L=%d T=%d R=%d B=%d] WO=(%d,%d) WE=(%d,%d) VO=(%d,%d) VE=(%d,%d) CLIP=%d [%d,%d,%d,%d]\n"),
+              display_rect_.left, display_rect_.top, display_rect_.right, display_rect_.bottom,
+              wo.x, wo.y, we.cx, we.cy, vo.x, vo.y, ve.cx, ve.cy, clip_type,
+              clip_box.left, clip_box.top, clip_box.right, clip_box.bottom);
+        AfxOutputDebugString(msg);
     }
 #endif
 
@@ -1107,15 +1058,30 @@ void ChartData::print_data_to_dc(CDC* p_dc, const CRect* p_rect, const options_p
 			p_point->y = MulDiv(p_point->y - y_zero, y_ve, y_extent);
 		}
 
-		// draw
-		if (b_poly_line)
-			p_dc->Polyline(&m_poly_points_[0], n_elements);
-		else
-		{
-			p_dc->MoveTo(m_poly_points_[0]);
-			for (auto j = 0; j < n_elements; j++)
-				p_dc->LineTo(m_poly_points_[j]);
-		}
+    // draw
+    if (b_poly_line)
+    {
+        // Guard hairlines in EMF: use a width-2 pen temporarily
+        const bool is_emf = (::GetObjectType(p_dc->GetSafeHdc()) == OBJ_ENHMETADC);
+        CPen tempPen;
+        const auto oldPenSel = p_dc->GetCurrentPen();
+        if (is_emf && oldPenSel != nullptr)
+        {
+            LOGPEN lp{}; oldPenSel->GetLogPen(&lp);
+            const int width = (lp.lopnWidth.x <= 1) ? 2 : lp.lopnWidth.x;
+            tempPen.CreatePen(lp.lopnStyle, width, lp.lopnColor);
+            p_dc->SelectObject(&tempPen);
+        }
+        p_dc->Polyline(&m_poly_points_[0], n_elements);
+        if (tempPen.GetSafeHandle() != nullptr)
+            p_dc->SelectObject(oldPenSel);
+    }
+    else
+    {
+        p_dc->MoveTo(m_poly_points_[0]);
+        for (auto j = 0; j < n_elements; j++)
+            p_dc->LineTo(m_poly_points_[j]);
+    }
 
 		// horizontal tags for this channel (logical coords)
 		if (hz_tags.get_tag_list_size() > 0)

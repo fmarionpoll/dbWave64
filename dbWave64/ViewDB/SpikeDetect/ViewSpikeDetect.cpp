@@ -3021,89 +3021,91 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc)
 {
 	serialize_windows_state(b_save);
 
-	// minimal text-only change: anchor text to the top-left of the rectangles cluster
-	// use the same coordinate space as rectangles (child window screen rects)
+	// Compute export bounds from child windows in screen coords and rebase to (0,0)
 	CRect r1, r2, r3, r4;
-	chart_data_.GetWindowRect(&r1);
-	chart_data_filtered_.GetWindowRect(&r2);
-	chart_spike_bar_.GetWindowRect(&r3);
-	chart_spike_shape_.GetWindowRect(&r4);
-	const int base_x = r4.left;
-	const int base_y = r1.top;
-	r1.OffsetRect(-base_x, -base_y);
-	r2.OffsetRect(-base_x, -base_y);
-	r3.OffsetRect(-base_x, -base_y);
-	r4.OffsetRect(-base_x, -base_y);
+	chart_data_.GetClientRect(&r1); ::MapWindowPoints(chart_data_.m_hWnd, nullptr, (LPPOINT)&r1, 2);
+	chart_data_filtered_.GetClientRect(&r2); ::MapWindowPoints(chart_data_filtered_.m_hWnd, nullptr, (LPPOINT)&r2, 2);
+	chart_spike_bar_.GetClientRect(&r3); ::MapWindowPoints(chart_spike_bar_.m_hWnd, nullptr, (LPPOINT)&r3, 2);
+	chart_spike_shape_.GetClientRect(&r4); ::MapWindowPoints(chart_spike_shape_.m_hWnd, nullptr, (LPPOINT)&r4, 2);
+	CRect bounds;
+	bounds.UnionRect(&r1, &r2);
+	bounds.UnionRect(&bounds, &r3);
+	bounds.UnionRect(&bounds, &r4);
+	const int min_left = bounds.left;
+	const int min_top = bounds.top;
 
-	CRect rectResult;
-	rectResult.UnionRect(&r1, &r2);
-	rectResult.UnionRect(&rectResult, &r3);
-	rectResult.UnionRect(&rectResult, &r4);
+	r1.OffsetRect(-min_left, -min_top);
+	r2.OffsetRect(-min_left, -min_top);
+	r3.OffsetRect(-min_left, -min_top);
+	r4.OffsetRect(-min_left, -min_top);
 
 	auto& opts = static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data;
-	opts.horizontal_resolution = rectResult.Width();
-	opts.vertical_resolution = rectResult.Height();
+	opts.horizontal_resolution = bounds.Width();
+	opts.vertical_resolution = bounds.Height();
 
-	//CPen temp_pen;
-	//temp_pen.CreatePen(PS_SOLID, 0, col_red);
-	//const auto old_pen = p_dc->SelectObject(&temp_pen);
-	//p_dc->Rectangle(&r1);
-	//p_dc->Rectangle(&r2);
-	//p_dc->Rectangle(&r3);
-	//p_dc->Rectangle(&r4);
-	//if (old_pen != nullptr)
-	//	p_dc->SelectObject(old_pen);
-	//temp_pen.DeleteObject();
+	// Set MM_ANISOTROPIC mapping for the entire export area once (logical 0..W x 0..H)
+	const int saved_export_dc = begin_anisotropic_export(p_dc, bounds);
+
+#ifdef _DEBUG
+	// If exporting to EMF, draw visible background and frames unconditionally to validate mapping
+	if (::GetObjectType(p_dc->GetSafeHdc()) == OBJ_ENHMETADC)
+	{
+		p_dc->FillSolidRect(0, 0, bounds.Width(), bounds.Height(), RGB(255, 240, 200));
+		{
+			CPen border(PS_SOLID, 4, RGB(200, 0, 0));
+			const auto old = p_dc->SelectObject(&border);
+			p_dc->Rectangle(0, 0, bounds.right - 1, bounds.bottom - 1);
+			if (old) p_dc->SelectObject(old);
+		}
+		{
+			CBrush b1; b1.CreateSolidBrush(RGB(220,240,255));
+			CBrush b2; b2.CreateSolidBrush(RGB(220,255,220));
+			CBrush b3; b3.CreateSolidBrush(RGB(255,230,220));
+			CBrush b4; b4.CreateSolidBrush(RGB(240,220,255));
+			p_dc->FillRect(&r1, &b1); p_dc->FrameRect(&r1, &b1);
+			p_dc->FillRect(&r2, &b2); p_dc->FrameRect(&r2, &b2);
+			p_dc->FillRect(&r3, &b3); p_dc->FrameRect(&r3, &b3);
+			p_dc->FillRect(&r4, &b4); p_dc->FrameRect(&r4, &b4);
+		}
+		{
+			// Device-corner markers to validate mapping coverage
+			const int s = p_dc->SaveDC();
+			p_dc->SetMapMode(MM_TEXT);
+			const COLORREF m = RGB(0,0,255);
+			p_dc->FillSolidRect(0, 0, 6, 6, m);
+			p_dc->FillSolidRect(bounds.right - 6, 0, 6, 6, m);
+			p_dc->FillSolidRect(0, bounds.bottom - 6, 6, 6, m);
+			p_dc->FillSolidRect(bounds.right - 6, bounds.bottom - 6, 6, 6, m);
+			p_dc->RestoreDC(s);
+		}
+	}
+#endif
 
 	export_comments(p_dc, 0, 0);
 
-	// layout rectangles
-	//const auto rect = pixel_rect;
-	//auto data_rect = rect;
+	// display curves : data (and other subviews as needed) in logical coords
+	print_data_cartridge(p_dc, &chart_data_, &r1);
+	print_data_cartridge(p_dc, &chart_data_filtered_, &r2);
+	chart_spike_bar_.print(p_dc, &r3);
+	chart_spike_shape_.print(p_dc, &r4);
 
-	//const auto rect_spike_width = MulDiv(chart_spike_shape_.get_rect_width(), data_rect.Width(),
-	//	chart_spike_shape_.get_rect_width() + chart_data_filtered_.get_rect_width());
-	//const auto rect_data_height = MulDiv(chart_data_filtered_.get_rect_height(), data_rect.Height(),
-	//	chart_data_filtered_.get_rect_height() * 2 + chart_spike_bar_.get_rect_height());
-	//const auto separator = rect_spike_width / 10;
-
-	//// display curves : data
-	//data_rect.top += 3 * options_view_data_->line_height;
-	//data_rect.bottom = data_rect.top + rect_data_height - separator / 2;
-	//data_rect.left +=  rect_spike_width + separator;
-
-	print_data_cartridge(p_dc, &chart_data_, &r1); 
-
-	// display curves: detect channel
-
-	//print_data_cartridge(p_dc, &chart_data_filtered_, &r2); // &data_rect);
-
-	//// display spike bars
-	//auto rect_bars = data_rect;
-	//rect_bars.top = data_rect.bottom + separator;
-	//rect_bars.bottom = rect.bottom - 2 * options_view_data_->line_height;
-	//chart_spike_bar_.print(p_dc, &rect3); // &rect_bars);
-
-	//// display spike shapes
-	//auto rect_spikes = rect;
-	//rect_spikes.left += separator;
-	//rect_spikes.right = rect.left + rect_spike_width;
-	//rect_spikes.bottom = rect.bottom - 2 * options_view_data_->line_height;
-	//rect_spikes.top = rect_spikes.bottom - rect_bars.Height();
-	//chart_spike_shape_.print(p_dc, &rect_spikes);
-	//const CString spike_shapes_comments = print_spk_shape_bars(p_dc, &rect4, TRUE); // &rect_spikes, TRUE);
-
-	//auto rect_comment = rect;
-	//rect_comment.right = data_rect.left;
-	//rect_comment.top = rect_spikes.bottom;
-	//constexpr UINT n_format = DT_NOPREFIX | DT_NOCLIP | DT_LEFT | DT_WORDBREAK;
-	//p_dc->DrawText(spike_shapes_comments, spike_shapes_comments.GetLength(), rect_comment, n_format);
-
-	//if (p_old_font_ != nullptr)
-	//	p_dc->SelectObject(p_old_font_);
-	//font_print_.DeleteObject();
-
+	end_anisotropic_export(p_dc, saved_export_dc);
 	serialize_windows_state(b_restore);
+}
+
+CRect ViewSpikeDetection::compute_export_bounds()
+{
+	CRect r1, r2, r3, r4;
+	chart_data_.GetClientRect(&r1); ::MapWindowPoints(chart_data_.m_hWnd, nullptr, (LPPOINT)&r1, 2);
+	chart_data_filtered_.GetClientRect(&r2); ::MapWindowPoints(chart_data_filtered_.m_hWnd, nullptr, (LPPOINT)&r2, 2);
+	chart_spike_bar_.GetClientRect(&r3); ::MapWindowPoints(chart_spike_bar_.m_hWnd, nullptr, (LPPOINT)&r3, 2);
+	chart_spike_shape_.GetClientRect(&r4); ::MapWindowPoints(chart_spike_shape_.m_hWnd, nullptr, (LPPOINT)&r4, 2);
+	CRect bounds;
+	bounds.UnionRect(&r1, &r2);
+	bounds.UnionRect(&bounds, &r3);
+	bounds.UnionRect(&bounds, &r4);
+	// Return pixel extents (width/height) only; origin ignored by caller
+	return CRect(0, 0, bounds.Width(), bounds.Height());
 }
 
 void ViewSpikeDetection::export_comments(CDC* p_dc, const int base_x, const int base_y)

@@ -105,6 +105,9 @@ public:
 					/ static_cast<float>(get_rect_width());
 	}
 
+	// Pixels per volt for the first channel within the given device rectangle height
+	double get_pixels_per_volt(const CRect& rc) const;
+
 	int get_channel_list_bin_to_y_pixel(const int chan, const int bin) {
 		return MulDiv(bin - chan_list_item_ptr_array_[chan]->get_y_zero(), y_ve_,
 		              chan_list_item_ptr_array_[chan]->get_y_extent()) + y_vo_;
@@ -137,6 +140,9 @@ public:
 	void	print_data_to_dc(CDC* p_dc, const CRect* p_rect, const options_print* options_print_data);
 	void	print_data_to_dc_export_mm_text(CDC* p_dc, const CRect* p_rect, const options_print* options_print_data);
 	void	zoom_data(CRect* previous_rect, CRect* new_rect) override;
+
+	// Drawing helper: split long polylines into safe chunks
+	void	draw_polyline_chunked(CDC* p_dc, const CPoint* points, int count, int max_segment_points = 16000) const;
 	
 	void	adjust_gain(boolean b_set_span_mv, float span_mv_value) const;
 	void	load_data_within_window(boolean set_time_span, float t_first, float t_last);

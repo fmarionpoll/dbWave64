@@ -168,6 +168,14 @@ protected:
 	CRect compute_export_bounds() override;
 	void export_comments(CDC* p_dc, int base_x, int base_y);
 
+		// EMF export helpers
+		void layout_export_regions_mm_text(CDC* p_dc, const CRect& bounds, CRect& r1, CRect& r2, CRect& r3, CRect& r4, CRect& r_comments);
+		void draw_threshold_line_export(CDC* p_dc, const CRect& r2);
+		void draw_spike_bars_export(CDC* p_dc, const CRect& r3);
+		void draw_spike_shapes_export(CDC* p_dc, const CRect& r4);
+		void draw_axes_export(CDC* p_dc, const CRect& rc);
+		void draw_scale_bar_export(CDC* p_dc, const CRect& rc, double dt_seconds, double px_per_volt, CString* out_label = nullptr);
+
 	// Generated message map functions
 public:
 	afx_msg void OnHScroll(UINT n_sb_code, UINT n_pos, CScrollBar* p_scroll_bar);

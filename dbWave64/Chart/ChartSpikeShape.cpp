@@ -286,6 +286,18 @@ void ChartSpikeShape::draw_spike_on_dc(const Spike* spike, CDC * p_dc)
 	p_dc->RestoreDC(n_saved_dc);
 }
 
+double ChartSpikeShape::get_pixels_per_volt(const CRect& rc) const
+{
+    SpikeList* list = p_spike_list_;
+    if (!list || list->get_spikes_count() <= 0)
+        return 0.0;
+    int v_max = 1, v_min = 0;
+    list->get_total_max_min(TRUE, &v_max, &v_min);
+    const int y_we = std::max(1, v_max - v_min + 1);
+    const double v_per_bin = std::max(1e-12, static_cast<double>(list->get_acq_volts_per_bin()));
+    return static_cast<double>(rc.Height()) / (static_cast<double>(y_we) * v_per_bin);
+}
+
 void ChartSpikeShape::move_vt_track(const int i_track, const int value)
 {
 	Tag* p_tag = vt_tags.get_tag(i_track);

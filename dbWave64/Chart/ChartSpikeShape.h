@@ -55,6 +55,9 @@ public:
 	int display_ex_data(int* p_data, const int color = 9);
 	void display_flagged_spikes(BOOL b_highlight);
 
+	// Pixels per volt based on total amplitude extent and acquisition volts/bin
+	double get_pixels_per_volt(const CRect& rc) const;
+
 	void plot_data_to_dc(CDC* p_dc) override;
 	void display_spike_data(CDC* p_dc, const Spike* spike);
 	void zoom_data(CRect* r_from, CRect* r_dest) override;

@@ -42,4 +42,5 @@ class options_print final : public CObject
 	int spike_height{ 0 }; //
 	int spike_width{ 0 }; //
 	int line_height{ 0 };
+	int export_resolution_scale{ 4 }; // EMF export: multiply logical horizontal resolution
 };

@@ -42,6 +42,9 @@ public:
 	void plot_data_to_dc(CDC* p_dc) override;
 	void display_temporary_tag(CDC* p_dc);
 	void display_vt_tags_long_values(CDC* p_dc);
+
+	// Pixels per volt based on current spike list amplitude and acquisition volts/bin
+	double get_pixels_per_volt(const CRect& rc) const;
 	
 	void zoom_data(CRect* prev_rect, CRect* new_rect) override;
 

@@ -369,6 +369,24 @@ void ChartSpikeBar::display_spike(const Spike* spike)
 	draw_spike(spike, color_spike_class[color_index]);
 }
 
+double ChartSpikeBar::get_pixels_per_volt(const CRect& rc) const
+{
+    SpikeList* list = p_spike_list_;
+    if (!list || list->get_spikes_count() <= 0)
+        return 0.0;
+    int amax = 1;
+    for (int i = 0; i < list->get_spikes_count(); ++i)
+    {
+        const Spike* sp = list->get_spike(i);
+        if (!sp) continue;
+        int ymax = 0, ymin = 0; sp->get_max_min(&ymax, &ymin);
+        amax = std::max(amax, abs(ymax - ymin));
+    }
+    // Use acquisition volts per bin from spike list
+    const double v_per_bin = std::max(1e-12, static_cast<double>(list->get_acq_volts_per_bin()));
+    return static_cast<double>(rc.Height()) / (static_cast<double>(amax) * v_per_bin);
+}
+
 void ChartSpikeBar::draw_spike(const Spike* spike, const COLORREF& color)
 {
 	CClientDC dc(this);

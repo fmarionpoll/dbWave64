@@ -603,9 +603,6 @@
     <ClCompile Include="ViewDB\TableDataService.cpp">
       <Filter>ViewDB</Filter>
     </ClCompile>
-    <ClCompile Include="ViewDB\GraphicsExport.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ViewDB\TablePrintRenderer.cpp">
       <Filter>ViewDB</Filter>
     </ClCompile>
@@ -613,6 +610,9 @@
       <Filter>Controls</Filter>
     </ClCompile>
     <ClCompile Include="ViewDB\options_print.cpp">
+      <Filter>ViewDB</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\GraphicsExport.cpp">
       <Filter>ViewDB</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1283,9 +1283,6 @@
     <ClInclude Include="ViewDB\TableDataService.h">
       <Filter>ViewDB</Filter>
     </ClInclude>
-    <ClInclude Include="ViewDB\GraphicsExport.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ViewDB\TablePrintRenderer.h">
       <Filter>ViewDB</Filter>
     </ClInclude>
@@ -1293,6 +1290,9 @@
       <Filter>Controls</Filter>
     </ClInclude>
     <ClInclude Include="ViewDB\options_print.h">
+      <Filter>ViewDB</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\GraphicsExport.h">
       <Filter>ViewDB</Filter>
     </ClInclude>
   </ItemGroup>

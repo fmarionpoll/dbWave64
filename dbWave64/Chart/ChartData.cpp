@@ -12,6 +12,22 @@
 #define new DEBUG_NEW
 #endif
 
+void ChartData::draw_polyline_chunked(CDC* p_dc, const CPoint* points, const int count, const int max_segment_points) const
+{
+    if (!p_dc || !points || count < 2)
+        return;
+    const int max_seg = std::max(2, max_segment_points);
+    int start = 0;
+    while (start < count - 1)
+    {
+        const int seg = std::min(max_seg, count - start);
+        if (seg < 2)
+            break;
+        p_dc->Polyline(points + start, seg);
+        start += seg - 1; // overlap last point to keep continuity
+    }
+}
+
 IMPLEMENT_SERIAL(ChartData, ChartWnd, 1)
 
 ChartData::ChartData()
@@ -871,8 +887,8 @@ void ChartData::plot_data_to_dc(CDC* p_dc)
 		highlight_data(p_dc, i_channel);
 	}
 
-	// restore DC
-	p_dc->SelectObject(old_pen);
+    // restore DC
+    p_dc->SelectObject(old_pen);
 	p_dc->RestoreDC(n_saved_dc);
 
 	if (vt_tags.get_tag_list_size() > 0)
@@ -929,6 +945,17 @@ void ChartData::display_vt_tags_long_value(CDC* p_dc)
 
 	p_dc->SelectObject(old_pen);
 	p_dc->SetROP2(old_rop2);
+}
+
+// Pixels per volt for the first channel within the given device rectangle height
+double ChartData::get_pixels_per_volt(const CRect& rc) const
+{
+    if (get_channel_list_size() <= 0)
+        return 0.0;
+    const CChanlistItem* chan = get_channel_list_item(0);
+    const int y_extent = std::max(1, chan->get_y_extent());
+    const double v_per_bin = std::max(1e-12, static_cast<double>(chan->get_volts_per_bin()));
+    return static_cast<double>(rc.Height()) / (static_cast<double>(y_extent) * v_per_bin);
 }
 
 void ChartData::OnSize(const UINT n_type, const int cx, const int cy)
@@ -996,23 +1023,16 @@ void ChartData::print_data_to_dc(CDC* p_dc, const CRect* p_rect, const options_p
     }
 #endif
 
-	// test
-	CPen pen;
-	pen.CreatePen(PS_SOLID, 0, col_yellow);
-	const auto old_pen = p_dc->SelectObject(&pen);
-    const auto y_ve = display_rect_.Height();
-    p_dc->Rectangle(0, +y_ve / 2, w_dev, -y_ve / 2);
-    p_dc->MoveTo(0, 0);
-    p_dc->LineTo(w_dev, 0);
+    // debug border removed per cosmetic update
 
-	// prepare background and clip in device coords
+    // prepare background and clip in device coords
 	erase_background(p_dc);
 	if (scope_structure_.b_clip_rect)
 		p_dc->IntersectClipRect(display_rect_);
 	else
 		p_dc->SelectClipRgn(nullptr);
 
-	// change horizontal resolution and load data
+    // change horizontal resolution and load data
 	resize_channels(display_rect_.Width()*4, m_lx_size_);
 	if (!options_print_data->b_center_line)
 		get_data_from_doc();
@@ -1023,7 +1043,8 @@ void ChartData::print_data_to_dc(CDC* p_dc, const CRect* p_rect, const options_p
 	const auto p_envelope = envelope_ptr_array_.GetAt(0);
 	p_envelope->fill_envelope_with_abscissa(m_n_pixels_, m_lx_size_);
 
-	// display all channels
+    // display all channels
+    const int y_ve = display_rect_.Height();
 	auto n_elements = 0;
 	auto p_x = chan_list_item_ptr_array_[0]->p_envelope_abscissa;
 	const BOOL b_poly_line = (p_dc->m_hAttribDC == nullptr) || (p_dc->GetDeviceCaps(LINECAPS) & LC_POLYLINE);
@@ -1079,7 +1100,8 @@ void ChartData::print_data_to_dc(CDC* p_dc, const CRect* p_rect, const options_p
             tempPen.CreatePen(lp.lopnStyle, width, lp.lopnColor);
             p_dc->SelectObject(&tempPen);
         }
-        p_dc->Polyline(&m_poly_points_[0], n_elements);
+        // Draw in chunks to avoid Polyline limits (GDI can be sensitive to very long arrays)
+        draw_polyline_chunked(p_dc, m_poly_points_.GetData(), n_elements);
         if (tempPen.GetSafeHandle() != nullptr)
             p_dc->SelectObject(oldPenSel);
     }
@@ -1133,7 +1155,6 @@ void ChartData::print_data_to_dc(CDC* p_dc, const CRect* p_rect, const options_p
 	}
 
 	// restore DC
-	p_dc->SelectObject(old_pen);
 	p_dc->RestoreDC(n_saved_dc);
 	client_rect_ = old_rect;
 	display_rect_ = expand_rect_if_rulers_are_present(&client_rect_);
@@ -1206,7 +1227,7 @@ void ChartData::print_data_to_dc_export_mm_text(CDC* p_dc, const CRect* p_rect, 
         // Draw polyline with width>=2 to avoid hairlines in EMF
         CPen data_pen; data_pen.CreatePen(PS_SOLID, 3, RGB(200, 0, 0));
         const auto old_pen2 = p_dc->SelectObject(&data_pen);
-        p_dc->Polyline(m_poly_points_.GetData(), out_count);
+        draw_polyline_chunked(p_dc, m_poly_points_.GetData(), out_count);
         if (old_pen2) p_dc->SelectObject(old_pen2);
         data_pen.DeleteObject();
     }

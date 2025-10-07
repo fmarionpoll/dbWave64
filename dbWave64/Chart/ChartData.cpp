@@ -946,6 +946,13 @@ void ChartData::OnSize(const UINT n_type, const int cx, const int cy)
 
 void ChartData::print_data_to_dc(CDC* p_dc, const CRect* p_rect, const options_print* options_print_data)
 {
+    // Temporary: when recording to EMF, bypass nested anisotropic mappings
+    // and use an export-only MM_TEXT path to validate visibility and scale.
+    if (p_dc && ::GetObjectType(p_dc->GetSafeHdc()) == OBJ_ENHMETADC)
+    {
+        print_data_to_dc_export_mm_text(p_dc, p_rect, options_print_data);
+        return;
+    }
 	// save DC & old client rect
 	const auto n_saved_dc = p_dc->SaveDC();
 	ASSERT(n_saved_dc != 0);
@@ -1130,6 +1137,81 @@ void ChartData::print_data_to_dc(CDC* p_dc, const CRect* p_rect, const options_p
 	p_dc->RestoreDC(n_saved_dc);
 	client_rect_ = old_rect;
 	display_rect_ = expand_rect_if_rulers_are_present(&client_rect_);
+}
+
+// Export-only simplified path: draw diagnostics in MM_TEXT and plot basic waveforms using device points
+void ChartData::print_data_to_dc_export_mm_text(CDC* p_dc, const CRect* p_rect, const options_print* /*options_print_data*/)
+{
+    const int saved = p_dc->SaveDC();
+    ASSERT(saved != 0);
+
+    client_rect_ = *p_rect;
+    display_rect_ = expand_rect_if_rulers_are_present(p_rect);
+
+    const int w = display_rect_.Width();
+    const int h = display_rect_.Height();
+
+    p_dc->SetMapMode(MM_TEXT);
+    p_dc->SelectClipRgn(nullptr);
+
+    // Render real data as downsampled polyline in MM_TEXT without nested mappings
+    if (is_defined() && m_p_data_file_ != nullptr && get_data_size() > 1)
+    {
+        // Prepare data similarly to the main print path
+        resize_channels(display_rect_.Width() * 4, m_lx_size_);
+        get_data_from_doc();
+
+        // Use last channel as representative
+        const int i_chan = std::max(0, get_channel_list_size() - 1);
+        const auto chan_item = get_channel_list_item(i_chan);
+        const int y_extent = chan_item->get_y_extent();
+        const int y_zero = chan_item->get_y_zero();
+
+        // Ensure abscissa envelope uses pixel-wide logical domain
+        const auto p_x_env = chan_item->p_envelope_abscissa;
+        const auto p_y_env = chan_item->p_envelope_ordinates;
+        p_x_env->fill_envelope_with_abscissa(m_n_pixels_, m_lx_size_);
+
+        // Export to temp point buffer
+        const int n_elements = p_x_env->get_envelope_size();
+        if (n_elements <= 0)
+        {
+            p_dc->RestoreDC(saved);
+            return;
+        }
+
+        if (m_poly_points_.GetSize() != n_elements)
+            m_poly_points_.SetSize(n_elements);
+        p_x_env->export_to_abscissa(m_poly_points_);
+        p_y_env->export_to_ordinates(m_poly_points_);
+
+        // Downsample if needed
+        const int kMaxPoints = 2000;
+        const int stride = (n_elements > kMaxPoints) ? std::max(1, (n_elements + kMaxPoints - 1) / kMaxPoints) : 1;
+
+        // Convert to device coordinates
+        // X: scale envelope x (0..m_n_pixels_) into display_rect_.left..right
+        // Y: center-based mapping: top + h/2 - ((bin - y_zero) * h / y_extent)
+        CPoint* src = m_poly_points_.GetData();
+        int out_count = 0;
+        for (int i = 0; i < n_elements; i += stride)
+        {
+            const int x_log = src[i].x;
+            const int y_bin = src[i].y;
+            const int x_dp = display_rect_.left + MulDiv(x_log, w, std::max(1, m_n_pixels_));
+            const int y_dp = display_rect_.top + h / 2 - MulDiv(y_bin - y_zero, h, std::max(1, y_extent));
+            src[out_count++] = CPoint(x_dp, y_dp);
+        }
+
+        // Draw polyline with width>=2 to avoid hairlines in EMF
+        CPen data_pen; data_pen.CreatePen(PS_SOLID, 3, RGB(200, 0, 0));
+        const auto old_pen2 = p_dc->SelectObject(&data_pen);
+        p_dc->Polyline(m_poly_points_.GetData(), out_count);
+        if (old_pen2) p_dc->SelectObject(old_pen2);
+        data_pen.DeleteObject();
+    }
+
+    p_dc->RestoreDC(saved);
 }
 
 BOOL ChartData::copy_as_text(const int i_option, const int i_unit, const int n_abscissa)

@@ -68,7 +68,25 @@ BOOL GraphicsExport::CopyAsEmfToClipboard(CWnd* owner_wnd, const CString& title,
               static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data.horizontal_resolution,
               static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data.vertical_resolution);
 #endif
+        // Pre-diagnostics: prove page visibility independent of nested mappings
+        const int px_w = std::max(1, p_print_parms->horizontal_resolution);
+        const int px_h = std::max(1, p_print_parms->vertical_resolution);
+        const int saved_diag_pre = meta_dc.SaveDC();
+        meta_dc.SetMapMode(MM_TEXT);
+        // Background (no outline) and thick frame
+        meta_dc.FillSolidRect(0, 0, px_w, px_h, RGB(255, 255, 200));
+        CPen pre_frame_pen; pre_frame_pen.CreatePen(PS_SOLID, 6, RGB(255, 0, 0));
+        const auto p_old_pen_pre = meta_dc.SelectObject(&pre_frame_pen);
+        const auto p_old_brush_pre = meta_dc.SelectStockObject(HOLLOW_BRUSH);
+        meta_dc.Rectangle(0, 0, px_w, px_h);
+        if (p_old_brush_pre) meta_dc.SelectObject(p_old_brush_pre);
+        if (p_old_pen_pre) meta_dc.SelectObject(p_old_pen_pre);
+        pre_frame_pen.DeleteObject();
+        meta_dc.RestoreDC(saved_diag_pre);
+
         draw_fn(&meta_dc);
+
+        // Post-diagnostics removed to minimize duplicate frames in viewers
     }
 
     const auto h_emf = meta_dc.CloseEnhanced();
@@ -78,6 +96,23 @@ BOOL GraphicsExport::CopyAsEmfToClipboard(CWnd* owner_wnd, const CString& title,
         else if (owner_wnd && p_ref_dc) owner_wnd->ReleaseDC(p_ref_dc);
         return FALSE;
     }
+
+#ifdef _DEBUG
+    // Optional: Save EMF to %TEMP% for inspection
+    TCHAR temp_path[MAX_PATH] = {0};
+    if (GetTempPath(MAX_PATH, temp_path) > 0)
+    {
+        SYSTEMTIME st{}; GetLocalTime(&st);
+        TCHAR emf_path[MAX_PATH] = {0};
+        _stprintf_s(emf_path, _T("%sdbwave_emf_%04d%02d%02d_%02d%02d%02d.emf"), temp_path,
+                    st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond);
+        const HENHMETAFILE h_copy = CopyEnhMetaFile(h_emf, emf_path);
+        if (h_copy) DeleteEnhMetaFile(h_copy);
+#ifdef _DEBUG
+        TRACE(_T("[CopyAsEmfToClipboard] Saved EMF to %s\n"), emf_path);
+#endif
+    }
+#endif
 
 	if (OpenClipboard(owner_wnd ? owner_wnd->GetSafeHwnd() : nullptr))
 	{

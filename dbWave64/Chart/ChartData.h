@@ -135,6 +135,7 @@ public:
 
 	void	plot_data_to_dc(CDC* p_dc) override;
 	void	print_data_to_dc(CDC* p_dc, const CRect* p_rect, const options_print* options_print_data);
+	void	print_data_to_dc_export_mm_text(CDC* p_dc, const CRect* p_rect, const options_print* options_print_data);
 	void	zoom_data(CRect* previous_rect, CRect* new_rect) override;
 	
 	void	adjust_gain(boolean b_set_span_mv, float span_mv_value) const;

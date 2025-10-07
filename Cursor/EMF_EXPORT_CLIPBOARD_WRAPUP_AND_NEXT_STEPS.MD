@@ -8,7 +8,7 @@
 
 ### Current Symptoms
 - CorelDraw: tiny object (previously ~8×10 px) reporting ~188 objects inside (so content recorded, but visually tiny/clustered).
-- PowerPoint: large rectangle appears but mostly blank; when zooming massively, some elements visible (background, a bit of signal, 2 ruler lines, spike bars superimposed).
+- PowerPoint: large rectangle appears but mostly blank.
 - Our DEBUG traces show:
   - begin_aniso (top-level) sets MM_ANISOTROPIC with 1:1 logical mapping over a 1038×873 logical page; CLIP=[0,0,1038,873].
   - ChartData::print_data_to_dc applies its own MM_ANISOTROPIC mapping per sub-rect (876×352, 876×364), Y flipped, with clip boxes consistent with logical [-H/2..+H/2].

@@ -55,6 +55,9 @@ public:
 	int display_ex_data(int* p_data, const int color = 9);
 	void display_flagged_spikes(BOOL b_highlight);
 
+	// Export-only: draw spike shapes into MM_TEXT device coordinates within rect
+	void export_to_emf(CDC* p_dc, const CRect& rect) const;
+
 	// Pixels per volt based on total amplitude extent and acquisition volts/bin
 	double get_pixels_per_volt(const CRect& rc) const;
 

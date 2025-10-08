@@ -12,7 +12,7 @@
 #define new DEBUG_NEW
 #endif
 
-void ChartData::draw_polyline_chunked(CDC* p_dc, const CPoint* points, const int count, const int max_segment_points) const
+void ChartData::draw_polyline_chunked(CDC* p_dc, const CPoint* points, const int count, const int max_segment_points)
 {
     if (!p_dc || !points || count < 2)
         return;
@@ -60,7 +60,7 @@ void ChartData::remove_all_channel_list_items()
 	chan_list_item_ptr_array_.RemoveAll();
 }
 
-int ChartData::add_channel_list_item(int ns, int mode)
+int ChartData::add_channel_list_item(int ns, const int mode)
 {
 	// first time??	create Envelope(0) with abscissa series
 	if (chan_list_item_ptr_array_.GetSize() == 0)
@@ -947,6 +947,30 @@ void ChartData::display_vt_tags_long_value(CDC* p_dc)
 	p_dc->SetROP2(old_rop2);
 }
 
+void ChartData::draw_threshold_line_export_mm_text(CDC* p_dc, const CRect& r, const float threshold_volts, const int channel_index) const
+{
+    const int s2 = p_dc->SaveDC();
+    p_dc->SetMapMode(MM_TEXT);
+    p_dc->SelectClipRgn(nullptr);
+    CPen pen_th(PS_DOT, 2, RGB(200,0,0));
+    const auto oldp = p_dc->SelectObject(&pen_th);
+    int y_th = r.top + r.Height() / 2;
+    if (get_channel_list_size() > 0 && channel_index >= 0 && channel_index < get_channel_list_size())
+    {
+        const auto chan = get_channel_list_item(channel_index);
+        const int y_zero = chan->get_y_zero();
+        const int y_extent = chan->get_y_extent();
+        const int thr_bins = chan->convert_volts_to_data_bins(threshold_volts);
+        const int bin_value = y_zero + thr_bins;
+        const int h = r.Height();
+        y_th = r.top + h / 2 - MulDiv(bin_value - y_zero, h, std::max(1, y_extent));
+    }
+    p_dc->MoveTo(r.left, y_th);
+    p_dc->LineTo(r.right, y_th);
+    if (oldp) p_dc->SelectObject(oldp);
+    p_dc->RestoreDC(s2);
+}
+
 // Pixels per volt for the first channel within the given device rectangle height
 double ChartData::get_pixels_per_volt(const CRect& rc) const
 {
@@ -977,7 +1001,7 @@ void ChartData::print_data_to_dc(CDC* p_dc, const CRect* p_rect, const options_p
     // and use an export-only MM_TEXT path to validate visibility and scale.
     if (p_dc && ::GetObjectType(p_dc->GetSafeHdc()) == OBJ_ENHMETADC)
     {
-        print_data_to_dc_export_mm_text(p_dc, p_rect, options_print_data);
+        export_to_emf(p_dc, p_rect, options_print_data);
         return;
     }
 	// save DC & old client rect
@@ -1042,11 +1066,11 @@ void ChartData::print_data_to_dc(CDC* p_dc, const CRect* p_rect, const options_p
 	// ensure abscissa envelope uses logical 0..W
 	const auto p_envelope = envelope_ptr_array_.GetAt(0);
 	p_envelope->fill_envelope_with_abscissa(m_n_pixels_, m_lx_size_);
+	TRACE("Print: n_pixels=%d, l_size=%ld, first=%ld, last=%ld\n", m_n_pixels_, m_lx_size_, m_lx_first_, m_lx_last_);
 
     // display all channels
     const int y_ve = display_rect_.Height();
-	auto n_elements = 0;
-	auto p_x = chan_list_item_ptr_array_[0]->p_envelope_abscissa;
+    auto p_x = chan_list_item_ptr_array_[0]->p_envelope_abscissa;
 	const BOOL b_poly_line = (p_dc->m_hAttribDC == nullptr) || (p_dc->GetDeviceCaps(LINECAPS) & LC_POLYLINE);
 	auto color = BLACK_COLOR;
 	//const auto old_pen =
@@ -1079,7 +1103,7 @@ void ChartData::print_data_to_dc(CDC* p_dc, const CRect* p_rect, const options_p
 		}
 
 		// transform y from data bins to logical units centered at 0
-		n_elements = p_x->get_envelope_size();
+		const auto n_elements = p_x->get_envelope_size();
 		for (auto j = 0; j < n_elements; j++)
 		{
 			const auto p_point = &m_poly_points_[j];
@@ -1117,10 +1141,10 @@ void ChartData::print_data_to_dc(CDC* p_dc, const CRect* p_rect, const options_p
 		{
 			CPen pen_light_grey(PS_SOLID, 0, color_spike_class[SILVER_COLOR]);
 			const auto old_pen2 = p_dc->SelectObject(&pen_light_grey);
-			const int x0 = 0;
 			const int x1 = display_rect_.Width();
 			for (auto j = hz_tags.get_tag_list_size() - 1; j >= 0; j--)
 			{
+				constexpr int x0 = 0;
 				if (hz_tags.get_channel(j) != i_chan)
 					continue;
 				auto k = hz_tags.get_value_int(j);
@@ -1161,7 +1185,7 @@ void ChartData::print_data_to_dc(CDC* p_dc, const CRect* p_rect, const options_p
 }
 
 // Export-only simplified path: draw diagnostics in MM_TEXT and plot basic waveforms using device points
-void ChartData::print_data_to_dc_export_mm_text(CDC* p_dc, const CRect* p_rect, const options_print* /*options_print_data*/)
+void ChartData::export_to_emf(CDC* p_dc, const CRect* p_rect, const options_print* /*options_print_data*/)
 {
     const int saved = p_dc->SaveDC();
     ASSERT(saved != 0);

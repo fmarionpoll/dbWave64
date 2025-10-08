@@ -43,8 +43,14 @@ public:
 	void display_temporary_tag(CDC* p_dc);
 	void display_vt_tags_long_values(CDC* p_dc);
 
+	// Export-only: draw spike bars into MM_TEXT device coordinates within rect
+	void print_bars_to_dc_export_mm_text(CDC* p_dc, const CRect& rect);
+
 	// Pixels per volt based on current spike list amplitude and acquisition volts/bin
 	double get_pixels_per_volt(const CRect& rc) const;
+
+	// EMF export helper: draw bars in MM_TEXT within given device rect
+	void export_to_emf(CDC* p_dc, const CRect& rect) const;
 	
 	void zoom_data(CRect* prev_rect, CRect* new_rect) override;
 

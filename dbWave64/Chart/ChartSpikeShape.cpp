@@ -182,6 +182,46 @@ void ChartSpikeShape::display_spike_data(CDC* p_dc, const Spike* spike)
 	}
 }
 
+void ChartSpikeShape::export_to_emf(CDC* p_dc, const CRect& r4) const
+{
+    const int s4 = p_dc->SaveDC();
+    p_dc->SetMapMode(MM_TEXT);
+    p_dc->SelectClipRgn(nullptr);
+    SpikeList* spk_list = p_spike_list_;
+    if (spk_list && spk_list->get_spikes_count() > 0)
+    {
+        // Determine amplitude mapping from total max/min
+        int v_max = 1, v_min = 0;
+        spk_list->get_total_max_min(TRUE, &v_max, &v_min);
+        const int y_we = std::max(1, v_max - v_min + 1);
+        const int y_wo = (v_max + v_min) / 2;
+        const int samples = spk_list->get_spike_length();
+        const int max_waveforms = 40;
+        const int n = spk_list->get_spikes_count();
+        const int stride = (n > max_waveforms) ? std::max(1, n / max_waveforms) : 1;
+        CArray<CPoint, CPoint> pts;
+        pts.SetSize(samples);
+        for (int i = 0, drawn = 0; i < n && drawn < max_waveforms; i += stride, ++drawn)
+        {
+            const Spike* sp = spk_list->get_spike(i);
+            if (!sp) continue;
+            const int* data = sp->get_p_data();
+            if (!data) continue;
+            for (int k = 0; k < samples; ++k)
+            {
+                const int x = r4.left + MulDiv(k, r4.Width(), std::max(1, samples - 1));
+                const int y = r4.top + r4.Height() / 2 - MulDiv(data[k] - y_wo, r4.Height(), y_we);
+                pts[k] = CPoint(x, y);
+            }
+            CPen pen(PS_SOLID, 2, RGB(120,120,120));
+            const auto oldp = p_dc->SelectObject(&pen);
+            p_dc->Polyline(pts.GetData(), samples);
+            if (oldp) p_dc->SelectObject(oldp);
+        }
+    }
+    p_dc->RestoreDC(s4);
+}
+
 void ChartSpikeShape::draw_flagged_spikes(CDC * p_dc)
 {
 	const auto n_saved_dc = p_dc->SaveDC();

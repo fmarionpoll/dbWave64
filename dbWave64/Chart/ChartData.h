@@ -138,15 +138,18 @@ public:
 
 	void	plot_data_to_dc(CDC* p_dc) override;
 	void	print_data_to_dc(CDC* p_dc, const CRect* p_rect, const options_print* options_print_data);
-	void	print_data_to_dc_export_mm_text(CDC* p_dc, const CRect* p_rect, const options_print* options_print_data);
+	void	export_to_emf(CDC* p_dc, const CRect* p_rect, const options_print* options_print_data);
 	void	zoom_data(CRect* previous_rect, CRect* new_rect) override;
 
-	// Drawing helper: split long polylines into safe chunks
-	void	draw_polyline_chunked(CDC* p_dc, const CPoint* points, int count, int max_segment_points = 16000) const;
-	
+	// Export-only: draw a horizontal threshold line in MM_TEXT for channel index (default 0)
+	void	draw_threshold_line_export_mm_text(CDC* p_dc, const CRect& rect, float threshold_volts, int channel_index = 0) const;
+
 	void	adjust_gain(boolean b_set_span_mv, float span_mv_value) const;
 	void	load_data_within_window(boolean set_time_span, float t_first, float t_last);
 	void	load_all_channels(int data_transform);
+
+private:
+	static void	draw_polyline_chunked(CDC* p_dc, const CPoint* points, int count, int max_segment_points = 16000);
 
 protected:
 	void	highlight_data(CDC* p_dc, int chan);

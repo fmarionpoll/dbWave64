@@ -1797,11 +1797,7 @@ void ViewSpikeDetection::print_data_cartridge(CDC* p_dc, ChartData* p_data_chart
 
     const auto options_print_data = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
     options_print_data->b_contours = true;
-    const bool k_export_mm_text_experimental = true;
-    if (k_export_mm_text_experimental)
-        p_data_chart_wnd->print_data_to_dc_export_mm_text(p_dc, p_rect, options_print_data);
-    else
-        p_data_chart_wnd->print_data_to_dc(p_dc, p_rect, options_print_data);
+    p_data_chart_wnd->print_data_to_dc(p_dc, p_rect, options_print_data);
 
     // restore
     p_data_chart_wnd->b_nice_grid = old_nice_grid;
@@ -3053,23 +3049,23 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc)
 	if (is_emf)
 	{
 		CRect r_comments;
-		layout_export_regions_mm_text(p_dc, bounds, r1, r2, r3, r4, r_comments);
+		emf_layout_export_regions(p_dc, bounds, r1, r2, r3, r4, r_comments);
 
 		// Draw actual chart content for main data areas using simplified MM_TEXT renderer
 		const auto options_print_data = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
-		chart_data_.print_data_to_dc_export_mm_text(p_dc, &r1, options_print_data);
-		chart_data_filtered_.print_data_to_dc_export_mm_text(p_dc, &r2, options_print_data);
-
-		// Threshold, bars, shapes
-		draw_threshold_line_export(p_dc, r2);
-		draw_spike_bars_export(p_dc, r3);
-		draw_spike_shapes_export(p_dc, r4);
+		chart_data_.export_to_emf(p_dc, &r1, options_print_data);
+		chart_data_filtered_.export_to_emf(p_dc, &r2, options_print_data);
+		const float thr_v = m_p_detect_parameters_->detect_threshold_mv / 1000.0f;
+		auto chan = m_p_detect_parameters_->detect_channel;
+		chart_data_filtered_.draw_threshold_line_export_mm_text(p_dc, r2, thr_v, chan);
+		chart_spike_bar_.export_to_emf(p_dc, r3);
+		chart_spike_shape_.export_to_emf(p_dc, r4);
 
 		// Axes
-		draw_axes_export(p_dc, r1);
-		draw_axes_export(p_dc, r2);
-		draw_axes_export(p_dc, r3);
-		draw_axes_export(p_dc, r4);
+		draw_axes_export_to_emf(p_dc, r1);
+		draw_axes_export_to_emf(p_dc, r2);
+		draw_axes_export_to_emf(p_dc, r3);
+		draw_axes_export_to_emf(p_dc, r4);
 
         // Scale bars per region (L-shaped) + labels
 		const double sr = (m_sampling_rate_ > 0.0f) ? static_cast<double>(m_sampling_rate_) : 1.0;
@@ -3087,10 +3083,10 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc)
 		const double px_per_v4 = chart_spike_shape_.get_pixels_per_volt(r4);
 
         CString lab1, lab2, lab3, lab4;
-        draw_scale_bar_export(p_dc, r1, dt1, px_per_v1, &lab1);
-        draw_scale_bar_export(p_dc, r2, dt2, px_per_v2, &lab2);
-        draw_scale_bar_export(p_dc, r3, dt3, px_per_v3, &lab3);
-        draw_scale_bar_export(p_dc, r4, dt4, px_per_v4, &lab4);
+        draw_scale_bar_to_emf(p_dc, r1, dt1, px_per_v1, &lab1);
+        draw_scale_bar_to_emf(p_dc, r2, dt2, px_per_v2, &lab2);
+        draw_scale_bar_to_emf(p_dc, r3, dt3, px_per_v3, &lab3);
+        draw_scale_bar_to_emf(p_dc, r4, dt4, px_per_v4, &lab4);
 
         // Comments on the right of r4, 1 line below scale bar labels
         int line_h = 14;
@@ -3100,7 +3096,7 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc)
             if (tm.tmHeight > 0) line_h = tm.tmHeight + 2;
         }
         // two comment lines placed a line below top inside comments rect
-        export_comments(p_dc, r_comments.left, r_comments.top + line_h);
+        export_comments_to_emf(p_dc, r_comments.left, r_comments.top + line_h);
 
         // Add number of spikes displayed in comments area
         if (spk_list)
@@ -3120,22 +3116,21 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc)
             f.DeleteObject();
             p_dc->RestoreDC(s);
         }
+	}
+	else {
+		// Set MM_ANISOTROPIC mapping for the entire export area once (logical 0..W x 0..H)
+		const int saved_export_dc = begin_anisotropic_export(p_dc, bounds);
+		export_comments_to_emf(p_dc, 0, 0);
 
-		serialize_windows_state(b_restore);
-		return;
+		// display curves : data (and other subviews as needed) in logical coords
+		print_data_cartridge(p_dc, &chart_data_, &r1);
+		print_data_cartridge(p_dc, &chart_data_filtered_, &r2);
+		chart_spike_bar_.print(p_dc, &r3);
+		chart_spike_shape_.print(p_dc, &r4);
+
+		end_anisotropic_export(p_dc, saved_export_dc);
 	}
 
-    // Set MM_ANISOTROPIC mapping for the entire export area once (logical 0..W x 0..H)
-    const int saved_export_dc = begin_anisotropic_export(p_dc, bounds);
-	export_comments(p_dc, 0, 0);
-
-    // display curves : data (and other subviews as needed) in logical coords
-    print_data_cartridge(p_dc, &chart_data_, &r1);
-    print_data_cartridge(p_dc, &chart_data_filtered_, &r2);
-    chart_spike_bar_.print(p_dc, &r3);
-    chart_spike_shape_.print(p_dc, &r4);
-
-	end_anisotropic_export(p_dc, saved_export_dc);
 	serialize_windows_state(b_restore);
 }
 
@@ -3154,7 +3149,7 @@ CRect ViewSpikeDetection::compute_export_bounds()
 	return CRect(0, 0, bounds.Width(), bounds.Height());
 }
 
-void ViewSpikeDetection::export_comments(CDC* p_dc, const int base_x, const int base_y)
+void ViewSpikeDetection::export_comments_to_emf(CDC* p_dc, const int base_x, const int base_y)
 {
 	// dc context for export
 	const int saved = p_dc->SaveDC();
@@ -3193,7 +3188,7 @@ void ViewSpikeDetection::export_comments(CDC* p_dc, const int base_x, const int 
 	p_dc->RestoreDC(saved);
 }
 
-void ViewSpikeDetection::layout_export_regions_mm_text(CDC* p_dc, const CRect& bounds, CRect& r1, CRect& r2, CRect& r3, CRect& r4, CRect& r_comments)
+void ViewSpikeDetection::emf_layout_export_regions(CDC* p_dc, const CRect& bounds, CRect& r1, CRect& r2, CRect& r3, CRect& r4, CRect& r_comments)
 {
 	const int s = p_dc->SaveDC();
 	p_dc->SetMapMode(MM_TEXT);
@@ -3226,126 +3221,7 @@ void ViewSpikeDetection::layout_export_regions_mm_text(CDC* p_dc, const CRect& b
 	p_dc->RestoreDC(s);
 }
 
-void ViewSpikeDetection::draw_threshold_line_export(CDC* p_dc, const CRect& r2)
-{
-	const int s2 = p_dc->SaveDC();
-	p_dc->SetMapMode(MM_TEXT);
-	p_dc->SelectClipRgn(nullptr);
-	CPen pen_th(PS_DOT, 2, RGB(200,0,0));
-	const auto oldp = p_dc->SelectObject(&pen_th);
-	int y_th = r2.top + r2.Height() / 2;
-	if (chart_data_filtered_.get_channel_list_size() > 0 && m_p_detect_parameters_)
-	{
-		const auto chan = chart_data_filtered_.get_channel_list_item(0);
-		const int y_zero = chan->get_y_zero();
-		const int y_extent = chan->get_y_extent();
-		const float thr_v = m_p_detect_parameters_->detect_threshold_mv / 1000.0f;
-		const int thr_bins = chan->convert_volts_to_data_bins(thr_v);
-		const int bin_value = y_zero + thr_bins;
-		const int h = r2.Height();
-		y_th = r2.top + h / 2 - MulDiv(bin_value - y_zero, h, std::max(1, y_extent));
-	}
-	p_dc->MoveTo(r2.left, y_th);
-	p_dc->LineTo(r2.right, y_th);
-	if (oldp) p_dc->SelectObject(oldp);
-	p_dc->RestoreDC(s2);
-}
-
-void ViewSpikeDetection::draw_spike_bars_export(CDC* p_dc, const CRect& r3)
-{
-	const int s3 = p_dc->SaveDC();
-	p_dc->SetMapMode(MM_TEXT);
-	p_dc->SelectClipRgn(nullptr);
-	SpikeList* spk_list = chart_spike_bar_.get_spike_list();
-	if (spk_list && spk_list->get_spikes_count() > 0)
-	{
-		const long t0 = chart_spike_bar_.get_time_first();
-		const long t1 = chart_spike_bar_.get_time_last();
-		const long dt = std::max<long>(1, t1 - t0);
-		// Find max amplitude for normalization
-		int amax = 1;
-		for (int i = 0; i < spk_list->get_spikes_count(); ++i)
-		{
-			const Spike* sp = spk_list->get_spike(i);
-			if (!sp) continue;
-			int ymax=0, ymin=0; sp->get_max_min(&ymax, &ymin);
-			amax = std::max(amax, abs(ymax - ymin));
-		}
-		const int n = spk_list->get_spikes_count();
-		const int step = (n > 400) ? std::max(1, n / 400) : 1; // cap bars
-		CPen pen_bars(PS_SOLID, 2, RGB(20,20,20));
-		const auto oldp = p_dc->SelectObject(&pen_bars);
-		BeginPath(p_dc->GetSafeHdc());
-		for (int i = 0; i < n; i += step)
-		{
-			const Spike* sp = spk_list->get_spike(i);
-			if (!sp) continue;
-			const long t = sp->get_time();
-			if (t < t0 || t > t1) continue;
-			int ymax=0, ymin=0; sp->get_max_min(&ymax, &ymin);
-			const int ampl = std::max(1, abs(ymax - ymin));
-			const int x = r3.left + MulDiv(static_cast<int>(t - t0), r3.Width(), static_cast<int>(dt));
-			const int hbar = std::max(4, MulDiv(ampl, r3.Height(), amax));
-			const int y0 = r3.bottom - hbar;
-			const int y1 = r3.bottom - 1;
-			MoveToEx(p_dc->GetSafeHdc(), x, y0, nullptr);
-			LineTo(p_dc->GetSafeHdc(), x, y1);
-		}
-		EndPath(p_dc->GetSafeHdc());
-		StrokePath(p_dc->GetSafeHdc());
-		// Baseline across bars area (midline)
-		CPen base_pen(PS_DOT, 1, RGB(120,120,120));
-		const auto oldb = p_dc->SelectObject(&base_pen);
-		const int y_base = r3.top + r3.Height() / 2;
-		p_dc->MoveTo(r3.left, y_base);
-		p_dc->LineTo(r3.right, y_base);
-		if (oldb) p_dc->SelectObject(oldb);
-		if (oldp) p_dc->SelectObject(oldp);
-	}
-	p_dc->RestoreDC(s3);
-}
-
-void ViewSpikeDetection::draw_spike_shapes_export(CDC* p_dc, const CRect& r4)
-{
-	const int s4 = p_dc->SaveDC();
-	p_dc->SetMapMode(MM_TEXT);
-	p_dc->SelectClipRgn(nullptr);
-	SpikeList* spk_list = chart_spike_bar_.get_spike_list();
-	if (spk_list && spk_list->get_spikes_count() > 0)
-	{
-		// Determine amplitude mapping from total max/min
-		int v_max = 1, v_min = 0;
-		spk_list->get_total_max_min(TRUE, &v_max, &v_min);
-		const int y_we = std::max(1, v_max - v_min + 1);
-		const int y_wo = (v_max + v_min) / 2;
-		const int samples = spk_list->get_spike_length();
-		const int max_waveforms = 40;
-		const int n = spk_list->get_spikes_count();
-		const int stride = (n > max_waveforms) ? std::max(1, n / max_waveforms) : 1;
-		CArray<CPoint, CPoint> pts;
-		pts.SetSize(samples);
-		for (int i = 0, drawn = 0; i < n && drawn < max_waveforms; i += stride, ++drawn)
-		{
-			const Spike* sp = spk_list->get_spike(i);
-			if (!sp) continue;
-			const int* data = sp->get_p_data();
-			if (!data) continue;
-			for (int k = 0; k < samples; ++k)
-			{
-				const int x = r4.left + MulDiv(k, r4.Width(), std::max(1, samples - 1));
-				const int y = r4.top + r4.Height() / 2 - MulDiv(data[k] - y_wo, r4.Height(), y_we);
-				pts[k] = CPoint(x, y);
-			}
-			CPen pen(PS_SOLID, 2, RGB(120,120,120));
-			const auto oldp = p_dc->SelectObject(&pen);
-			p_dc->Polyline(pts.GetData(), samples);
-			if (oldp) p_dc->SelectObject(oldp);
-		}
-	}
-	p_dc->RestoreDC(s4);
-}
-
-void ViewSpikeDetection::draw_axes_export(CDC* p_dc, const CRect& rc)
+void ViewSpikeDetection::draw_axes_export_to_emf(CDC* p_dc, const CRect& rc)
 {
 	const int sA = p_dc->SaveDC();
 	p_dc->SetMapMode(MM_TEXT);
@@ -3368,7 +3244,7 @@ void ViewSpikeDetection::draw_axes_export(CDC* p_dc, const CRect& rc)
 	p_dc->RestoreDC(sA);
 }
 
-void ViewSpikeDetection::draw_scale_bar_export(CDC* p_dc, const CRect& rc, const double dt_seconds, const double px_per_volt, CString* out_label)
+void ViewSpikeDetection::draw_scale_bar_to_emf(CDC* p_dc, const CRect& rc, const double dt_seconds, const double px_per_volt, CString* out_label)
 {
 	const int s = p_dc->SaveDC();
 	p_dc->SetMapMode(MM_TEXT);

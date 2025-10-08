@@ -129,6 +129,60 @@ void ChartSpikeBar::display_vt_tags_long_values(CDC* p_dc)
 	p_dc->SelectObject(old_pen);
 }
 
+void ChartSpikeBar::print_bars_to_dc_export_mm_text(CDC* p_dc, const CRect& r3)
+{
+    const int s3 = p_dc->SaveDC();
+    p_dc->SetMapMode(MM_TEXT);
+    p_dc->SelectClipRgn(nullptr);
+    SpikeList* spk_list = get_spike_list();
+    if (spk_list && spk_list->get_spikes_count() > 0)
+    {
+        const long t0 = get_time_first();
+        const long t1 = get_time_last();
+        const long dt = std::max<long>(1, t1 - t0);
+        // Find max amplitude for normalization
+        int amax = 1;
+        for (int i = 0; i < spk_list->get_spikes_count(); ++i)
+        {
+            const Spike* sp = spk_list->get_spike(i);
+            if (!sp) continue;
+            int ymax=0, ymin=0; sp->get_max_min(&ymax, &ymin);
+            amax = std::max(amax, abs(ymax - ymin));
+        }
+        const int n = spk_list->get_spikes_count();
+        const int step = (n > 400) ? std::max(1, n / 400) : 1; // cap bars
+        CPen pen_bars(PS_SOLID, 2, RGB(20,20,20));
+        const auto oldp = p_dc->SelectObject(&pen_bars);
+        BeginPath(p_dc->GetSafeHdc());
+        for (int i = 0; i < n; i += step)
+        {
+            const Spike* sp = spk_list->get_spike(i);
+            if (!sp) continue;
+            const long t = sp->get_time();
+            if (t < t0 || t > t1) continue;
+            int ymax=0, ymin=0; sp->get_max_min(&ymax, &ymin);
+            const int ampl = std::max(1, abs(ymax - ymin));
+            const int x = r3.left + MulDiv(static_cast<int>(t - t0), r3.Width(), static_cast<int>(dt));
+            const int hbar = std::max(4, MulDiv(ampl, r3.Height(), amax));
+            const int y0 = r3.bottom - hbar;
+            const int y1 = r3.bottom - 1;
+            MoveToEx(p_dc->GetSafeHdc(), x, y0, nullptr);
+            LineTo(p_dc->GetSafeHdc(), x, y1);
+        }
+        EndPath(p_dc->GetSafeHdc());
+        StrokePath(p_dc->GetSafeHdc());
+        // Baseline across bars area (midline)
+        CPen base_pen(PS_DOT, 1, RGB(120,120,120));
+        const auto oldb = p_dc->SelectObject(&base_pen);
+        const int y_base = r3.top + r3.Height() / 2;
+        p_dc->MoveTo(r3.left, y_base);
+        p_dc->LineTo(r3.right, y_base);
+        if (oldb) p_dc->SelectObject(oldb);
+        if (oldp) p_dc->SelectObject(oldp);
+    }
+    p_dc->RestoreDC(s3);
+}
+
 void ChartSpikeBar::display_stimulus(CDC* p_dc, const CRect* rect) const
 {
 	CPen blue_pen;
@@ -385,6 +439,52 @@ double ChartSpikeBar::get_pixels_per_volt(const CRect& rc) const
     // Use acquisition volts per bin from spike list
     const double v_per_bin = std::max(1e-12, static_cast<double>(list->get_acq_volts_per_bin()));
     return static_cast<double>(rc.Height()) / (static_cast<double>(amax) * v_per_bin);
+}
+
+void ChartSpikeBar::export_to_emf(CDC* p_dc, const CRect& r3) const
+{
+    const int s3 = p_dc->SaveDC();
+    p_dc->SetMapMode(MM_TEXT);
+    p_dc->SelectClipRgn(nullptr);
+    SpikeList* spk_list = p_spike_list_;
+    if (spk_list && spk_list->get_spikes_count() > 0)
+    {
+        const long t0 = l_first_;
+        const long t1 = l_last_;
+        const long dt = std::max<long>(1, t1 - t0);
+        int amax = 1;
+        for (int i = 0; i < spk_list->get_spikes_count(); ++i)
+        {
+            const Spike* sp = spk_list->get_spike(i);
+            if (!sp) continue;
+            int ymax=0, ymin=0; sp->get_max_min(&ymax, &ymin);
+            amax = std::max(amax, abs(ymax - ymin));
+        }
+        const int n = spk_list->get_spikes_count();
+        const int step = (n > 400) ? std::max(1, n / 400) : 1; // cap bars
+        CPen pen_bars(PS_SOLID, 2, RGB(20,20,20));
+        const auto oldp = p_dc->SelectObject(&pen_bars);
+        BeginPath(p_dc->GetSafeHdc());
+        for (int i = 0; i < n; i += step)
+        {
+            const Spike* sp = spk_list->get_spike(i);
+            if (!sp) continue;
+            const long t = sp->get_time();
+            if (t < t0 || t > t1) continue;
+            int ymax=0, ymin=0; sp->get_max_min(&ymax, &ymin);
+            const int ampl = std::max(1, abs(ymax - ymin));
+            const int x = r3.left + MulDiv(static_cast<int>(t - t0), r3.Width(), static_cast<int>(dt));
+            const int hbar = std::max(4, MulDiv(ampl, r3.Height(), amax));
+            const int y0 = r3.bottom - hbar;
+            const int y1 = r3.bottom - 1;
+            MoveToEx(p_dc->GetSafeHdc(), x, y0, nullptr);
+            LineTo(p_dc->GetSafeHdc(), x, y1);
+        }
+        EndPath(p_dc->GetSafeHdc());
+        StrokePath(p_dc->GetSafeHdc());
+        if (oldp) p_dc->SelectObject(oldp);
+    }
+    p_dc->RestoreDC(s3);
 }
 
 void ChartSpikeBar::draw_spike(const Spike* spike, const COLORREF& color)

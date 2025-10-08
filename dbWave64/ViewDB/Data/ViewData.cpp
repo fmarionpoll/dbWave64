@@ -1625,53 +1625,21 @@ void ViewData::update_y_zero(const int i_chan, const int y_bias)
 
 void ViewData::render_for_export(CDC* p_dc)
 {
-	serialize_windows_state(b_save);
+    serialize_windows_state(b_save);
 
-	const auto old_scope_struct = new options_scope_struct();
-	options_scope_struct* new_scope_struct = chart_data.get_scope_parameters();
-	*old_scope_struct = *new_scope_struct;
-	const auto options_print_data = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
-	new_scope_struct->b_draw_frame = options_print_data->b_frame_rect;
-	new_scope_struct->b_clip_rect = options_print_data->b_clip_rect;
-	const CRect rect(0, 0, options_print_data->horizontal_resolution, options_print_data->vertical_resolution);
-	chart_data.print_data_to_dc(p_dc, &rect, options_print_data);
-	*new_scope_struct = *old_scope_struct;
+    const auto options_print_data = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+    const CRect full_rect(0, 0, options_print_data->horizontal_resolution, options_print_data->vertical_resolution);
 
-	// comments and bars
-	LOGFONT lf{};
-	GetObject(GetStockObject(SYSTEM_FONT), sizeof(LOGFONT), &lf);
-	CFont font;
-	font.CreateFontIndirect(&lf);
-	const auto p_old_font = p_dc->SelectObject(&font);
-	const int line_height = lf.lfHeight + 5;
-	auto y_pixels_row = 0;
-	constexpr auto x_column = 10;
+    // Temporarily apply frame/clip options, then restore
+    const auto old_scope = new options_scope_struct();
+    options_scope_struct* scope = chart_data.get_scope_parameters();
+    *old_scope = *scope;
+    scope->b_draw_frame = options_print_data->b_frame_rect;
+    scope->b_clip_rect = options_print_data->b_clip_rect;
 
-	CString comments = _T("Abscissa: ");
-	CString content;
-	content.Format(_T("%g - %g s"), m_time_first_abscissa, m_time_last_abscissa);
-	comments += content;
-	p_dc->TextOut(x_column, y_pixels_row, comments);
-	y_pixels_row += line_height;
-	comments.Format(_T("Vertical bar (ch. 0) = %g mV"), chart_data.y_ruler.get_scale_increment());
-	p_dc->TextOut(x_column, y_pixels_row, comments);
-	y_pixels_row += line_height;
-	comments.Format(_T("Horizontal bar = %g s"), chart_data.x_ruler.get_scale_increment());
-	p_dc->TextOut(x_column, y_pixels_row, comments);
-	y_pixels_row += line_height;
+    // Unified EMF export flow: content -> axes -> scale bar
+    render_region(p_dc, chart_data, full_rect, options_print_data);
 
-	const auto p_old_brush = static_cast<CBrush*>(p_dc->SelectStockObject(BLACK_BRUSH));
-	p_dc->MoveTo(0, y_pixels_row);
-	const auto bottom = chart_data.y_ruler.get_scale_unit_pixels(rect.Height());
-	p_dc->LineTo(0, y_pixels_row - bottom);
-	p_dc->MoveTo(0, y_pixels_row);
-	const auto left = chart_data.x_ruler.get_scale_unit_pixels(rect.Width());
-	p_dc->LineTo(left, y_pixels_row);
-
-	p_dc->SelectObject(p_old_brush);
-	if (p_old_font != nullptr)
-		p_dc->SelectObject(p_old_font);
-	font.DeleteObject();
-
-	serialize_windows_state(b_restore);
+    *scope = *old_scope;
+    serialize_windows_state(b_restore);
 }

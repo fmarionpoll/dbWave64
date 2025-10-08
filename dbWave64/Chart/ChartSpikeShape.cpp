@@ -267,6 +267,12 @@ void ChartSpikeShape::export_to_emf(CDC* p_dc, const CRect& r4) const
     p_dc->RestoreDC(s4);
 }
 
+void ChartSpikeShape::export_to_emf(CDC* p_dc, const CRect* rect, const options_print* /*options_print_data*/)
+{
+    if (!rect) return;
+    export_to_emf(p_dc, *rect);
+}
+
 void ChartSpikeShape::draw_flagged_spikes(CDC * p_dc)
 {
 	const auto n_saved_dc = p_dc->SaveDC();

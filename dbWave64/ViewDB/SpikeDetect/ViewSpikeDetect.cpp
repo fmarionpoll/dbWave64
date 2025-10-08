@@ -3036,54 +3036,20 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc)
 		// Calculate layout rectangles - mapping mode set by individual draw functions
 		CRect r_comments;
 		emf_layout_export_regions(p_dc, bounds, r1, r2, r3, r4, r_comments);
-
-		// Calculate data rectangles (excluding scale bar margins) using helper
-		CRect data_r1 = EmfExportHelper::GetDataRectangle(r1);
-		CRect data_r2 = EmfExportHelper::GetDataRectangle(r2);
-		CRect data_r3 = EmfExportHelper::GetDataRectangle(r3);
-		CRect data_r4 = EmfExportHelper::GetDataRectangle(r4);
-
-#ifdef _DEBUG
-		TRACE(_T("[render_for_export] r1=(%d,%d,%d,%d) r2=(%d,%d,%d,%d) r3=(%d,%d,%d,%d) r4=(%d,%d,%d,%d)\n"),
-		      r1.left, r1.top, r1.right, r1.bottom,
-		      r2.left, r2.top, r2.right, r2.bottom,
-		      r3.left, r3.top, r3.right, r3.bottom,
-		      r4.left, r4.top, r4.right, r4.bottom);
-#endif
-
-		// Draw actual chart content for main data areas using simplified MM_TEXT renderer
 		const auto options_print_data = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
-		chart_data_.export_to_emf(p_dc, &data_r1, options_print_data);
-		chart_data_filtered_.export_to_emf(p_dc, &data_r2, options_print_data);
+
+		// Render all regions via shared helper (data rect computed inside)
+		render_region(p_dc, chart_data_,         r1, options_print_data);
+		render_region(p_dc, chart_data_filtered_, r2, options_print_data);
+		render_region(p_dc, chart_spike_bar_,     r3, options_print_data);
+		render_region(p_dc, chart_spike_shape_,   r4, options_print_data);
+
+		// Threshold overlay on filtered data region
 		const float thr_v = m_p_detect_parameters_->detect_threshold_mv / 1000.0f;
 		auto chan = m_p_detect_parameters_->detect_channel;
+		// Compute data rect for overlay positioning
+		const CRect data_r2 = EmfExportHelper::GetDataRectangle(r2);
 		chart_data_filtered_.draw_threshold_line_export_mm_text(p_dc, data_r2, thr_v, chan);
-		chart_spike_bar_.export_to_emf(p_dc, data_r3);
-		chart_spike_shape_.export_to_emf(p_dc, data_r4);
-
-		// Axes (draw on data rectangles) - now handled by each chart class
-		chart_data_.draw_axes_to_emf(p_dc, data_r1);
-		chart_data_filtered_.draw_axes_to_emf(p_dc, data_r2);
-		chart_spike_bar_.draw_axes_to_emf(p_dc, data_r3);
-		chart_spike_shape_.draw_axes_to_emf(p_dc, data_r4);
-
-        // Scale bars per region (L-shaped) + labels - now handled by each chart class
-		// Ask each window for its physical time extent (proper units)
-		const double dt1 = chart_data_.get_time_extent_seconds();
-		const double dt2 = chart_data_filtered_.get_time_extent_seconds();
-		const double dt3 = chart_spike_bar_.get_time_extent_seconds();
-		const double dt4 = chart_spike_shape_.get_time_extent_seconds();
-
-		const double px_per_v1 = chart_data_.get_pixels_per_volt(r1);
-		const double px_per_v2 = chart_data_filtered_.get_pixels_per_volt(r2);
-		const double px_per_v3 = chart_spike_bar_.get_pixels_per_volt(r3);
-		const double px_per_v4 = chart_spike_shape_.get_pixels_per_volt(r4);
-
-        CString lab1, lab2, lab3, lab4;
-        chart_data_.draw_scale_bar_to_emf(p_dc, r1, dt1, px_per_v1, &lab1);
-        chart_data_filtered_.draw_scale_bar_to_emf(p_dc, r2, dt2, px_per_v2, &lab2);
-        chart_spike_bar_.draw_scale_bar_to_emf(p_dc, r3, dt3, px_per_v3, &lab3);
-        chart_spike_shape_.draw_scale_bar_to_emf(p_dc, r4, dt4, px_per_v4, &lab4);
 
         // Comments on the right of r4, 1 line below scale bar labels
         int line_h = 14;

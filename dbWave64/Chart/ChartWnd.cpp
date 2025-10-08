@@ -1139,10 +1139,26 @@ void ChartWnd::draw_axes_to_emf(CDC* p_dc, const CRect& rc) const
 	EmfExportHelper::DrawAxes(p_dc, rc);
 }
 
-void ChartWnd::draw_scale_bar_to_emf(CDC* p_dc, const CRect& rc, const double dt_seconds, const double px_per_volt, CString* out_label) const
+void ChartWnd::draw_scale_bar_to_emf(CDC* p_dc, const CRect& rc, CString* out_label) const
 {
-	// Delegate to helper class for centralized implementation
+	// Gather required physical parameters from the chart itself for readability
+	const double dt_seconds = get_time_extent_seconds();
+	const double px_per_volt = get_pixels_per_volt(rc);
 	EmfExportHelper::DrawScaleBar(p_dc, rc, dt_seconds, px_per_volt, out_label);
+}
+
+
+void ChartWnd::export_to_emf(CDC* p_dc, const CRect* data_rect, const options_print* /*options_print_data*/)
+{
+	// Base implementation: no-op. Derived charts should override to draw their content
+	UNREFERENCED_PARAMETER(p_dc);
+	UNREFERENCED_PARAMETER(data_rect);
+}
+
+void ChartWnd::export_to_emf(CDC* p_dc, const CRect& data_rect, const options_print* options_print_data)
+{
+	// Forward to pointer overload for convenience
+	export_to_emf(p_dc, &data_rect, options_print_data);
 }
 
 

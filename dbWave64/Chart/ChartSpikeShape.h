@@ -1,5 +1,6 @@
 #pragma once
 #include "ChartSpike.h"
+class options_print; // fwd decl
 
 
 //constexpr auto DISPLAY_TIME_INTERVAL = 0; // mask: ON: display spikes within spk index range/OFF=within time interval;
@@ -57,6 +58,8 @@ public:
 
 	// Export-only: draw spike shapes into MM_TEXT device coordinates within rect
 	void export_to_emf(CDC* p_dc, const CRect& rect) const;
+	// Override unified export API used by views
+	void export_to_emf(CDC* p_dc, const CRect* rect, const options_print* options_print_data) override;
 
 	// Pixels per volt based on total amplitude extent and acquisition volts/bin
 	double get_pixels_per_volt(const CRect& rc) const;

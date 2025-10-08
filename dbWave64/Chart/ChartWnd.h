@@ -27,6 +27,8 @@ constexpr auto NB_CURSORS = 6;
 #include "Controls/RulerBar.h"
 #include "options_scope_struct.h"
 
+class options_print; // fwd decl
+
 // CChartWnd window
 
 class ChartWnd : public CWnd
@@ -124,10 +126,15 @@ public:
 	
 	// EMF export helpers - virtual so derived classes can customize
 	virtual void draw_axes_to_emf(CDC* p_dc, const CRect& rc) const;
-	virtual void draw_scale_bar_to_emf(CDC* p_dc, const CRect& rc, double dt_seconds, double px_per_volt, CString* out_label) const;
+	virtual void draw_scale_bar_to_emf(CDC* p_dc, const CRect& rc, CString* out_label) const;
+	// Unified export entry-point used by views to render chart content into EMF
+	virtual void export_to_emf(CDC* p_dc, const CRect* data_rect, const options_print* options_print_data);
+	virtual void export_to_emf(CDC* p_dc, const CRect& data_rect, const options_print* options_print_data);
 	
 	// Physical extent methods - virtual so derived classes provide accurate values
 	virtual double get_time_extent_seconds() const { return 0.0; }  // Override in derived classes
+	// Pixels-per-volt query, default 0.0 (no vertical scale). Override in derived classes where relevant
+	virtual double get_pixels_per_volt(const CRect& rc) const { return 0.0; }
 	
 	virtual options_scope_struct* get_scope_parameters();
 	virtual void set_scope_parameters(options_scope_struct* p_struct);

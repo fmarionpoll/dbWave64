@@ -515,6 +515,12 @@ void ChartSpikeBar::export_to_emf(CDC* p_dc, const CRect& r3) const
     p_dc->RestoreDC(s3);
 }
 
+void ChartSpikeBar::export_to_emf(CDC* p_dc, const CRect* rect, const options_print* /*options_print_data*/)
+{
+    if (!rect) return;
+    export_to_emf(p_dc, *rect);
+}
+
 void ChartSpikeBar::draw_spike(const Spike* spike, const COLORREF& color)
 {
 	CClientDC dc(this);

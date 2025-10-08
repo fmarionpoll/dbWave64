@@ -5,6 +5,8 @@
 
 #include "dbWave.h"
 #include "dbWaveDoc.h"
+#include "EmfExportHelper.h"
+#include "Chart/ChartWnd.h"
 
 
 
@@ -157,6 +159,15 @@ void ViewDbTable::framework_default_print(CDC* p_dc, CPrintInfo* pInfo)
         COleDocObjectItem::OnPrint(this, pInfo, TRUE);
     else
         CView::OnPrint(p_dc, pInfo);
+}
+
+void ViewDbTable::render_region(CDC* p_dc, ChartWnd& chart, const CRect& full_rect, const options_print* opts) const
+{
+    // Compute data rect from full rect (reserve margins for scale bar)
+    const CRect data_rect = EmfExportHelper::GetDataRectangle(full_rect);
+    chart.export_to_emf(p_dc, &data_rect, opts);
+    chart.draw_axes_to_emf(p_dc, data_rect);
+    chart.draw_scale_bar_to_emf(p_dc, full_rect, nullptr);
 }
 
 void ViewDbTable::save_current_spk_file()

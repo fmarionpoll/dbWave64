@@ -117,9 +117,8 @@ void ViewSpikeSort::render_for_export(CDC* p_dc)
 	serialize_windows_state(b_save);
 
     // Layout similar to on screen: top measures, middle bars, bottom shape, right histogram
-	const auto options_print_data = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
-	CRect rect(0, 0, options_print_data->horizontal_resolution, options_print_data->vertical_resolution);
-    auto area = rect;
+    const auto options_print_data = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
+    CRect rect(0, 0, options_print_data->horizontal_resolution, options_print_data->vertical_resolution);
     const int separator = std::max(4, rect.Height() / 50);
 
     // Split vertically into three rows for measures, bars, shapes
@@ -135,11 +134,11 @@ void ViewSpikeSort::render_for_export(CDC* p_dc)
     r_shapes.right -= right_w + separator;
     CRect r_hist(rect.right - right_w, rect.top, rect.right, rect.bottom);
 
-    // Render charts
-    chart_measures_.print(p_dc, &r_measures);
-    chart_spike_bar_.print(p_dc, &r_bars);
-    chart_shape_.print(p_dc, &r_shapes);
-    chart_histogram_.plot_data_to_dc(p_dc); // uses its own display_rect; approximate fallback
+    // Render charts via shared EMF helper
+    render_region(p_dc, chart_measures_, r_measures, options_print_data);
+    render_region(p_dc, chart_spike_bar_, r_bars, options_print_data);
+    render_region(p_dc, chart_shape_, r_shapes, options_print_data);
+    chart_histogram_.plot_data_to_dc(p_dc); // simple fallback for histogram
 
 	serialize_windows_state(b_restore);
 }

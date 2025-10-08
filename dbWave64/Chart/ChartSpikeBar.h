@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ChartSpike.h"
+class options_print; // fwd decl
 
 
 class ChartSpikeBar : public ChartSpike
@@ -54,6 +55,8 @@ public:
 
 	// EMF export helper: draw bars in MM_TEXT within given device rect
 	void export_to_emf(CDC* p_dc, const CRect& rect) const;
+	// Override unified export API used by views
+	void export_to_emf(CDC* p_dc, const CRect* rect, const options_print* options_print_data) override;
 	
 	void zoom_data(CRect* prev_rect, CRect* new_rect) override;
 

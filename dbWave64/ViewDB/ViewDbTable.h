@@ -103,6 +103,9 @@ public:
 	int begin_anisotropic_export(CDC* p_dc, const CRect& export_bounds) const;
 	void end_anisotropic_export(CDC* p_dc, int saved_dc) const;
 
+	// Shared helper: render one EMF region (content -> axes -> scale bar)
+	void render_region(CDC* p_dc, ChartWnd& chart, const CRect& full_rect, const options_print* opts) const;
+
 	// Text helpers (device-independent in MM_ANISOTROPIC)
 	void draw_text_block(CDC* p_dc, const CRect& device_rect, int point_size, const CString& text, UINT draw_text_flags, LPCTSTR font_face = _T("Arial")) const;
 	static int get_line_height_for_point_size(CDC* p_dc, int point_size, LPCTSTR font_face = _T("Arial"));

@@ -48,6 +48,9 @@ public:
 
 	// Pixels per volt based on current spike list amplitude and acquisition volts/bin
 	double get_pixels_per_volt(const CRect& rc) const;
+	
+	// Physical extent in seconds for EMF export scale bars
+	double get_time_extent_seconds() const override;
 
 	// EMF export helper: draw bars in MM_TEXT within given device rect
 	void export_to_emf(CDC* p_dc, const CRect& rect) const;

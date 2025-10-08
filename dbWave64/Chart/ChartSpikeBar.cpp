@@ -441,47 +441,75 @@ double ChartSpikeBar::get_pixels_per_volt(const CRect& rc) const
     return static_cast<double>(rc.Height()) / (static_cast<double>(amax) * v_per_bin);
 }
 
+double ChartSpikeBar::get_time_extent_seconds() const
+{
+    if (!p_spike_list_ || l_last_ <= l_first_)
+        return 0.0;
+    const double sampling_rate = static_cast<double>(p_spike_list_->get_acq_sampling_rate());
+    if (sampling_rate <= 0.0)
+        return 0.0;
+    return static_cast<double>(l_last_ - l_first_) / sampling_rate;
+}
+
 void ChartSpikeBar::export_to_emf(CDC* p_dc, const CRect& r3) const
 {
     const int s3 = p_dc->SaveDC();
     p_dc->SetMapMode(MM_TEXT);
     p_dc->SelectClipRgn(nullptr);
+    
+    const HDC hdc = p_dc->GetSafeHdc();
     SpikeList* spk_list = p_spike_list_;
     if (spk_list && spk_list->get_spikes_count() > 0)
     {
         const long t0 = l_first_;
         const long t1 = l_last_;
         const long dt = std::max<long>(1, t1 - t0);
-        int amax = 1;
-        for (int i = 0; i < spk_list->get_spikes_count(); ++i)
-        {
-            const Spike* sp = spk_list->get_spike(i);
-            if (!sp) continue;
-            int ymax=0, ymin=0; sp->get_max_min(&ymax, &ymin);
-            amax = std::max(amax, abs(ymax - ymin));
-        }
+        
+        // Compute y coordinate system like display_bars does (lines 248-253)
+        int value_max, value_min;
+        spk_list->get_total_max_min(TRUE, &value_max, &value_min);
+        const int y_extent = value_max - value_min;
+        const int y_offset = (value_max + value_min) / 2;
+        // Negate viewport extent so positive voltages go UP (negative Y in MM_TEXT)
+        const int y_viewport_extent = -r3.Height();
+        const int y_viewport_offset = r3.top + r3.Height() / 2;
+        
+        // Draw horizontal baseline at zero volts (like lines 256-258)
+        const int baseline = MulDiv(spk_list->get_acq_bin_zero() - y_offset, y_viewport_extent, y_extent) + y_viewport_offset;
+        CPen baseline_pen(PS_SOLID, 1, RGB(0, 0, 0));
+        const auto oldp_base = p_dc->SelectObject(&baseline_pen);
+        p_dc->MoveTo(r3.left, baseline);
+        p_dc->LineTo(r3.right, baseline);
+        p_dc->SelectObject(oldp_base);
+        
+        // Draw spike bars
         const int n = spk_list->get_spikes_count();
         const int step = (n > 400) ? std::max(1, n / 400) : 1; // cap bars
         CPen pen_bars(PS_SOLID, 2, RGB(20,20,20));
         const auto oldp = p_dc->SelectObject(&pen_bars);
-        BeginPath(p_dc->GetSafeHdc());
+        BeginPath(hdc);
         for (int i = 0; i < n; i += step)
         {
             const Spike* sp = spk_list->get_spike(i);
             if (!sp) continue;
             const long t = sp->get_time();
             if (t < t0 || t > t1) continue;
-            int ymax=0, ymin=0; sp->get_max_min(&ymax, &ymin);
-            const int ampl = std::max(1, abs(ymax - ymin));
+            
+            // Compute x position
             const int x = r3.left + MulDiv(static_cast<int>(t - t0), r3.Width(), static_cast<int>(dt));
-            const int hbar = std::max(4, MulDiv(ampl, r3.Height(), amax));
-            const int y0 = r3.bottom - hbar;
-            const int y1 = r3.bottom - 1;
-            MoveToEx(p_dc->GetSafeHdc(), x, y0, nullptr);
-            LineTo(p_dc->GetSafeHdc(), x, y1);
+            
+            // Compute max and min positions like display_bars does (lines 314-319)
+            int ymax = 0, ymin = 0;
+            sp->get_max_min(&ymax, &ymin);
+            const int y_max_pos = MulDiv(ymax - y_offset, y_viewport_extent, y_extent) + y_viewport_offset;
+            const int y_min_pos = MulDiv(ymin - y_offset, y_viewport_extent, y_extent) + y_viewport_offset;
+            
+            // Draw bar from min to max
+            MoveToEx(hdc, x, y_min_pos, nullptr);
+            LineTo(hdc, x, y_max_pos);
         }
-        EndPath(p_dc->GetSafeHdc());
-        StrokePath(p_dc->GetSafeHdc());
+        EndPath(hdc);
+        StrokePath(hdc);
         if (oldp) p_dc->SelectObject(oldp);
     }
     p_dc->RestoreDC(s3);

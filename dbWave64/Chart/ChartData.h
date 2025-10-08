@@ -107,6 +107,9 @@ public:
 
 	// Pixels per volt for the first channel within the given device rectangle height
 	double get_pixels_per_volt(const CRect& rc) const;
+	
+	// Physical extent in seconds for EMF export scale bars
+	double get_time_extent_seconds() const override;
 
 	int get_channel_list_bin_to_y_pixel(const int chan, const int bin) {
 		return MulDiv(bin - chan_list_item_ptr_array_[chan]->get_y_zero(), y_ve_,

@@ -170,8 +170,6 @@ protected:
 
 		// EMF export helpers
 		void emf_layout_export_regions(CDC* p_dc, const CRect& bounds, CRect& r1, CRect& r2, CRect& r3, CRect& r4, CRect& r_comments);
-		void draw_axes_export_to_emf(CDC* p_dc, const CRect& rc);
-		void draw_scale_bar_to_emf(CDC* p_dc, const CRect& rc, double dt_seconds, double px_per_volt, CString* out_label = nullptr);
 
 	// Generated message map functions
 public:

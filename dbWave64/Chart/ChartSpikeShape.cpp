@@ -196,17 +196,60 @@ void ChartSpikeShape::export_to_emf(CDC* p_dc, const CRect& r4) const
         const int y_we = std::max(1, v_max - v_min + 1);
         const int y_wo = (v_max + v_min) / 2;
         const int samples = spk_list->get_spike_length();
-        const int max_waveforms = 40;
-        const int n = spk_list->get_spikes_count();
-        const int stride = (n > max_waveforms) ? std::max(1, n / max_waveforms) : 1;
-        CArray<CPoint, CPoint> pts;
-        pts.SetSize(samples);
-        for (int i = 0, drawn = 0; i < n && drawn < max_waveforms; i += stride, ++drawn)
+        
+        // Determine which spikes to display based on range mode
+        int i_first = 0;
+        int i_last = spk_list->get_spikes_count() - 1;
+        if (range_mode_ == RANGE_INDEX)
+        {
+            i_first = index_first_spike_;
+            i_last = index_last_spike_;
+        }
+        
+        // Count spikes within time range
+        int spikes_in_range = 0;
+        for (int i = i_first; i <= i_last; ++i)
         {
             const Spike* sp = spk_list->get_spike(i);
             if (!sp) continue;
+            
+            // Filter by time range if applicable
+            if (range_mode_ == RANGE_TIME_INTERVALS)
+            {
+                const long spike_time = sp->get_time();
+                if (spike_time < l_first_ || spike_time > l_last_)
+                    continue;
+            }
+            spikes_in_range++;
+        }
+        
+        const int max_waveforms = 40;
+        const int stride = (spikes_in_range > max_waveforms) ? std::max(1, spikes_in_range / max_waveforms) : 1;
+        CArray<CPoint, CPoint> pts;
+        pts.SetSize(samples);
+        
+        for (int i = i_first, drawn = 0; i <= i_last && drawn < max_waveforms; ++i)
+        {
+            const Spike* sp = spk_list->get_spike(i);
+            if (!sp) continue;
+            
+            // Filter by time range if applicable
+            if (range_mode_ == RANGE_TIME_INTERVALS)
+            {
+                const long spike_time = sp->get_time();
+                if (spike_time < l_first_)
+                    continue;
+                if (spike_time > l_last_)
+                    break;
+            }
+            
+            // Apply stride for downsampling
+            if ((i - i_first) % stride != 0)
+                continue;
+            
             const int* data = sp->get_p_data();
             if (!data) continue;
+            
             for (int k = 0; k < samples; ++k)
             {
                 const int x = r4.left + MulDiv(k, r4.Width(), std::max(1, samples - 1));
@@ -217,6 +260,8 @@ void ChartSpikeShape::export_to_emf(CDC* p_dc, const CRect& r4) const
             const auto oldp = p_dc->SelectObject(&pen);
             p_dc->Polyline(pts.GetData(), samples);
             if (oldp) p_dc->SelectObject(oldp);
+            
+            drawn++;
         }
     }
     p_dc->RestoreDC(s4);
@@ -803,6 +848,52 @@ float ChartSpikeShape::get_extent_ms()
 		return 1.f;
 	get_extents();
 	return (static_cast<float>(1000.0 * x_we_) / p_spike_list_->get_acq_sampling_rate());
+}
+
+double ChartSpikeShape::get_time_extent_seconds() const
+{
+	if (!p_spike_list_)
+		return 0.0;
+	const double sampling_rate = static_cast<double>(p_spike_list_->get_acq_sampling_rate());
+	if (sampling_rate <= 0.0)
+		return 0.0;
+	// Use spike length directly (x_we_ might not be initialized during export)
+	const int spike_length = p_spike_list_->get_spike_length();
+	return static_cast<double>(spike_length) / sampling_rate;
+}
+
+int ChartSpikeShape::get_displayed_spike_count() const
+{
+	if (!p_spike_list_)
+		return 0;
+	
+	int i_first = 0;
+	int i_last = p_spike_list_->get_spikes_count() - 1;
+	
+	if (range_mode_ == RANGE_INDEX)
+	{
+		i_first = index_first_spike_;
+		i_last = index_last_spike_;
+	}
+	
+	// Count spikes within range
+	int count = 0;
+	for (int i = i_first; i <= i_last; ++i)
+	{
+		const Spike* sp = p_spike_list_->get_spike(i);
+		if (!sp) continue;
+		
+		// Filter by time range if applicable
+		if (range_mode_ == RANGE_TIME_INTERVALS)
+		{
+			const long spike_time = sp->get_time();
+			if (spike_time < l_first_ || spike_time > l_last_)
+				continue;
+		}
+		count++;
+	}
+	
+	return count;
 }
 
 

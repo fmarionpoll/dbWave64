@@ -60,6 +60,12 @@ public:
 
 	// Pixels per volt based on total amplitude extent and acquisition volts/bin
 	double get_pixels_per_volt(const CRect& rc) const;
+	
+	// Physical extent in seconds for EMF export scale bars
+	double get_time_extent_seconds() const override;
+	
+	// Get count of spikes within current display range
+	int get_displayed_spike_count() const;
 
 	void plot_data_to_dc(CDC* p_dc) override;
 	void display_spike_data(CDC* p_dc, const Spike* spike);

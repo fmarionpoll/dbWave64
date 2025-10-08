@@ -2,7 +2,7 @@
 #include "NiceUnit.h"
 #include "algorithmUtils.h"
 
-TCHAR NiceUnit::cs_unit_[] = { _T("GM  m�pf  ") };
+TCHAR NiceUnit::cs_unit_[] = { _T("GM  m\u00B5pf  ") };  // \u00B5 is Unicode micro sign µ
 int NiceUnit::units_power_[] = { 9, 6, 0, 0, -3, -6, -9, -12, 0 };
 int NiceUnit::max_index_ = 8;
 int NiceUnit::nice_intervals_[] = { 1, 5, 10, 20, 25, 30, 40, 50, 75, 100, 200, 250, 300, 400, 500, 0 };

@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <cmath>
 
+#include "EmfExportHelper.h"
 #include "NiceUnit.h"
 #include "DlgDataSeries.h"
 #include "DlgProgress.h"
@@ -3022,60 +3023,56 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc)
 {
 	serialize_windows_state(b_save);
 
-    // Compute export bounds from child windows, then override with full-page layout for EMF export
+    // Use the pre-calculated bounds from compute_export_bounds instead of recalculating
+    const auto& opts = static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data;
+    CRect bounds(0, 0, opts.horizontal_resolution, opts.vertical_resolution);
+    
+    // r1-r4 will be calculated by emf_layout_export_regions to fill this bounds
     CRect r1, r2, r3, r4;
-    chart_data_.GetClientRect(&r1); ::MapWindowPoints(chart_data_.m_hWnd, nullptr, (LPPOINT)&r1, 2);
-    chart_data_filtered_.GetClientRect(&r2); ::MapWindowPoints(chart_data_filtered_.m_hWnd, nullptr, (LPPOINT)&r2, 2);
-    chart_spike_bar_.GetClientRect(&r3); ::MapWindowPoints(chart_spike_bar_.m_hWnd, nullptr, (LPPOINT)&r3, 2);
-    chart_spike_shape_.GetClientRect(&r4); ::MapWindowPoints(chart_spike_shape_.m_hWnd, nullptr, (LPPOINT)&r4, 2);
-    CRect bounds;
-    bounds.UnionRect(&r1, &r2);
-    bounds.UnionRect(&bounds, &r3);
-    bounds.UnionRect(&bounds, &r4);
-    const int min_left = bounds.left;
-    const int min_top = bounds.top;
-
-    r1.OffsetRect(-min_left, -min_top);
-    r2.OffsetRect(-min_left, -min_top);
-    r3.OffsetRect(-min_left, -min_top);
-    r4.OffsetRect(-min_left, -min_top);
-
-    auto& opts = static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data;
-	opts.horizontal_resolution = bounds.Width();
-	opts.vertical_resolution = bounds.Height();
-	opts.export_resolution_scale = 4; // upscale EMF export resolution by 4x
 
 	const bool is_emf = (::GetObjectType(p_dc->GetSafeHdc()) == OBJ_ENHMETADC);
 	if (is_emf)
 	{
+		// Calculate layout rectangles - mapping mode set by individual draw functions
 		CRect r_comments;
 		emf_layout_export_regions(p_dc, bounds, r1, r2, r3, r4, r_comments);
 
+		// Calculate data rectangles (excluding scale bar margins) using helper
+		CRect data_r1 = EmfExportHelper::GetDataRectangle(r1);
+		CRect data_r2 = EmfExportHelper::GetDataRectangle(r2);
+		CRect data_r3 = EmfExportHelper::GetDataRectangle(r3);
+		CRect data_r4 = EmfExportHelper::GetDataRectangle(r4);
+
+#ifdef _DEBUG
+		TRACE(_T("[render_for_export] r1=(%d,%d,%d,%d) r2=(%d,%d,%d,%d) r3=(%d,%d,%d,%d) r4=(%d,%d,%d,%d)\n"),
+		      r1.left, r1.top, r1.right, r1.bottom,
+		      r2.left, r2.top, r2.right, r2.bottom,
+		      r3.left, r3.top, r3.right, r3.bottom,
+		      r4.left, r4.top, r4.right, r4.bottom);
+#endif
+
 		// Draw actual chart content for main data areas using simplified MM_TEXT renderer
 		const auto options_print_data = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
-		chart_data_.export_to_emf(p_dc, &r1, options_print_data);
-		chart_data_filtered_.export_to_emf(p_dc, &r2, options_print_data);
+		chart_data_.export_to_emf(p_dc, &data_r1, options_print_data);
+		chart_data_filtered_.export_to_emf(p_dc, &data_r2, options_print_data);
 		const float thr_v = m_p_detect_parameters_->detect_threshold_mv / 1000.0f;
 		auto chan = m_p_detect_parameters_->detect_channel;
-		chart_data_filtered_.draw_threshold_line_export_mm_text(p_dc, r2, thr_v, chan);
-		chart_spike_bar_.export_to_emf(p_dc, r3);
-		chart_spike_shape_.export_to_emf(p_dc, r4);
+		chart_data_filtered_.draw_threshold_line_export_mm_text(p_dc, data_r2, thr_v, chan);
+		chart_spike_bar_.export_to_emf(p_dc, data_r3);
+		chart_spike_shape_.export_to_emf(p_dc, data_r4);
 
-		// Axes
-		draw_axes_export_to_emf(p_dc, r1);
-		draw_axes_export_to_emf(p_dc, r2);
-		draw_axes_export_to_emf(p_dc, r3);
-		draw_axes_export_to_emf(p_dc, r4);
+		// Axes (draw on data rectangles) - now handled by each chart class
+		chart_data_.draw_axes_to_emf(p_dc, data_r1);
+		chart_data_filtered_.draw_axes_to_emf(p_dc, data_r2);
+		chart_spike_bar_.draw_axes_to_emf(p_dc, data_r3);
+		chart_spike_shape_.draw_axes_to_emf(p_dc, data_r4);
 
-        // Scale bars per region (L-shaped) + labels
-		const double sr = (m_sampling_rate_ > 0.0f) ? static_cast<double>(m_sampling_rate_) : 1.0;
-		double dt1 = static_cast<double>(chart_data_.get_data_last_index() - chart_data_.get_data_first_index()) / sr;
-		double dt2 = static_cast<double>(chart_data_filtered_.get_data_last_index() - chart_data_filtered_.get_data_first_index()) / sr;
-		double dt3 = static_cast<double>(std::max<long>(0, chart_spike_bar_.get_time_last() - chart_spike_bar_.get_time_first())) / sr;
-		SpikeList* spk_list = chart_spike_bar_.get_spike_list();
-		double dt4 = 0.0;
-		if (spk_list)
-			dt4 = static_cast<double>(spk_list->get_spike_length()) / sr;
+        // Scale bars per region (L-shaped) + labels - now handled by each chart class
+		// Ask each window for its physical time extent (proper units)
+		const double dt1 = chart_data_.get_time_extent_seconds();
+		const double dt2 = chart_data_filtered_.get_time_extent_seconds();
+		const double dt3 = chart_spike_bar_.get_time_extent_seconds();
+		const double dt4 = chart_spike_shape_.get_time_extent_seconds();
 
 		const double px_per_v1 = chart_data_.get_pixels_per_volt(r1);
 		const double px_per_v2 = chart_data_filtered_.get_pixels_per_volt(r2);
@@ -3083,10 +3080,10 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc)
 		const double px_per_v4 = chart_spike_shape_.get_pixels_per_volt(r4);
 
         CString lab1, lab2, lab3, lab4;
-        draw_scale_bar_to_emf(p_dc, r1, dt1, px_per_v1, &lab1);
-        draw_scale_bar_to_emf(p_dc, r2, dt2, px_per_v2, &lab2);
-        draw_scale_bar_to_emf(p_dc, r3, dt3, px_per_v3, &lab3);
-        draw_scale_bar_to_emf(p_dc, r4, dt4, px_per_v4, &lab4);
+        chart_data_.draw_scale_bar_to_emf(p_dc, r1, dt1, px_per_v1, &lab1);
+        chart_data_filtered_.draw_scale_bar_to_emf(p_dc, r2, dt2, px_per_v2, &lab2);
+        chart_spike_bar_.draw_scale_bar_to_emf(p_dc, r3, dt3, px_per_v3, &lab3);
+        chart_spike_shape_.draw_scale_bar_to_emf(p_dc, r4, dt4, px_per_v4, &lab4);
 
         // Comments on the right of r4, 1 line below scale bar labels
         int line_h = 14;
@@ -3099,22 +3096,12 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc)
         export_comments_to_emf(p_dc, r_comments.left, r_comments.top + line_h);
 
         // Add number of spikes displayed in comments area
-        if (spk_list)
+        const int spike_count = chart_spike_shape_.get_displayed_spike_count();
+        if (spike_count > 0)
         {
-            const int s = p_dc->SaveDC();
-            p_dc->SetMapMode(MM_TEXT);
-            p_dc->SelectClipRgn(nullptr);
-            p_dc->SetBkMode(TRANSPARENT);
-            p_dc->SetTextColor(RGB(0,0,0));
-            LOGFONT lf{}; lf.lfHeight = -MulDiv(6, p_dc->GetDeviceCaps(LOGPIXELSY), 72); lf.lfWeight = FW_NORMAL; lf.lfCharSet = DEFAULT_CHARSET; lstrcpyn(lf.lfFaceName, _T("Arial"), LF_FACESIZE);
-            CFont f; f.CreateFontIndirect(&lf);
-            CFont* oldF = p_dc->SelectObject(&f);
             CString cs;
-            cs.Format(_T("Spikes displayed: %d"), spk_list->get_spikes_count());
-            p_dc->TextOut(r_comments.left + 8, r_comments.top + 2 * line_h, cs);
-            if (oldF) p_dc->SelectObject(oldF);
-            f.DeleteObject();
-            p_dc->RestoreDC(s);
+            cs.Format(_T("Spikes displayed: %d"), spike_count);
+            EmfExportHelper::DrawText(p_dc, cs, r_comments.left + 8, r_comments.top + 2 * line_h);
         }
 	}
 	else {
@@ -3136,6 +3123,7 @@ void ViewSpikeDetection::render_for_export(CDC* p_dc)
 
 CRect ViewSpikeDetection::compute_export_bounds()
 {
+	// Get screen window bounds for aspect ratio
 	CRect r1, r2, r3, r4;
 	chart_data_.GetClientRect(&r1); ::MapWindowPoints(chart_data_.m_hWnd, nullptr, (LPPOINT)&r1, 2);
 	chart_data_filtered_.GetClientRect(&r2); ::MapWindowPoints(chart_data_filtered_.m_hWnd, nullptr, (LPPOINT)&r2, 2);
@@ -3145,7 +3133,18 @@ CRect ViewSpikeDetection::compute_export_bounds()
 	bounds.UnionRect(&r1, &r2);
 	bounds.UnionRect(&bounds, &r3);
 	bounds.UnionRect(&bounds, &r4);
-	// Return pixel extents (width/height) only; origin ignored by caller
+	
+#ifdef _DEBUG
+	TRACE(_T("[compute_export_bounds] Screen bounds: %d x %d\n"), bounds.Width(), bounds.Height());
+#endif
+	
+	// CRITICAL: Set export_resolution_scale to 1 HERE (before EMF is created)
+	// The default is 4, which creates a 4x larger frame than content
+	auto& opts = static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data;
+	opts.export_resolution_scale = 1;
+	
+	// Return screen bounds - will be used for both EMF frame and layout
+	// This ensures consistency between frame size and drawing coordinates
 	return CRect(0, 0, bounds.Width(), bounds.Height());
 }
 
@@ -3176,7 +3175,7 @@ void ViewSpikeDetection::export_comments_to_emf(CDC* p_dc, const int base_x, con
 
 	p_dc->SetTextColor(col_black);
 	constexpr int margin = 8;
-	LOGFONT lf{}; lf.lfHeight = -MulDiv(6, p_dc->GetDeviceCaps(LOGPIXELSY), 72); lf.lfWeight = FW_NORMAL; lf.lfCharSet = DEFAULT_CHARSET; lstrcpyn(lf.lfFaceName, _T("Arial"), LF_FACESIZE);
+	LOGFONT lf{}; lf.lfHeight = -MulDiv(8, p_dc->GetDeviceCaps(LOGPIXELSY), 72); lf.lfWeight = FW_NORMAL; lf.lfCharSet = DEFAULT_CHARSET; lstrcpyn(lf.lfFaceName, _T("Arial"), LF_FACESIZE);
 	CFont f; f.CreateFontIndirect(&lf);
 	CFont* oldF = p_dc->SelectObject(&f);
 	p_dc->TextOut(base_x + margin, base_y + margin - 2 * p_print_parms->line_height, record_description);
@@ -3212,128 +3211,5 @@ void ViewSpikeDetection::emf_layout_export_regions(CDC* p_dc, const CRect& bound
 	const int square = std::min(row_h4, W - 2 * margin - comments_col_w);
 	r4 = CRect(margin, y, margin + square, y + square);
 	r_comments = CRect(r4.right + sep, y, W - margin, y + square);
-	// Optional faint backgrounds for readability
-	p_dc->FillSolidRect(&r1, RGB(245,248,255));
-	p_dc->FillSolidRect(&r2, RGB(245,255,245));
-	p_dc->FillSolidRect(&r3, RGB(255,245,245));
-	p_dc->FillSolidRect(&r4, RGB(252,252,252));
-	p_dc->FillSolidRect(&r_comments, RGB(250,250,250));
-	p_dc->RestoreDC(s);
-}
-
-void ViewSpikeDetection::draw_axes_export_to_emf(CDC* p_dc, const CRect& rc)
-{
-	const int sA = p_dc->SaveDC();
-	p_dc->SetMapMode(MM_TEXT);
-	p_dc->SelectClipRgn(nullptr);
-	CPen ax(PS_SOLID, 1, RGB(100,100,100));
-	const auto old = p_dc->SelectObject(&ax);
-	// border
-	p_dc->MoveTo(rc.left, rc.top); p_dc->LineTo(rc.right, rc.top);
-	p_dc->LineTo(rc.right, rc.bottom); p_dc->LineTo(rc.left, rc.bottom);
-	p_dc->LineTo(rc.left, rc.top);
-	// ticks
-	for (int i = 1; i < 5; ++i)
-	{
-		const int xt = rc.left + MulDiv(i, rc.Width(), 5);
-		const int yt = rc.top + MulDiv(i, rc.Height(), 5);
-		p_dc->MoveTo(xt, rc.bottom); p_dc->LineTo(xt, rc.bottom - 6);
-		p_dc->MoveTo(rc.left, yt); p_dc->LineTo(rc.left + 6, yt);
-	}
-	if (old) p_dc->SelectObject(old);
-	p_dc->RestoreDC(sA);
-}
-
-void ViewSpikeDetection::draw_scale_bar_to_emf(CDC* p_dc, const CRect& rc, const double dt_seconds, const double px_per_volt, CString* out_label)
-{
-	const int s = p_dc->SaveDC();
-	p_dc->SetMapMode(MM_TEXT);
-	p_dc->SelectClipRgn(nullptr);
-
-	constexpr int margin = 8;
-	const int x0 = rc.left + margin;
-	const int y0 = rc.bottom - margin;
-
-	int horiz_px = 0;
-    double span_s = 0.0;
-	if (dt_seconds > 0.0)
-	{
-		const float target_t = static_cast<float>(dt_seconds * 0.2); // ~20% of view
-		CString u; float scale = 1.0f;
-		const float scaled = NiceUnit::change_unit(target_t, &u, &scale);
-		const int nice_int = NiceUnit::nice_unit(scaled);
-        span_s = static_cast<double>(nice_int) * static_cast<double>(scale);
-		span_s = std::min(span_s, dt_seconds);
-		horiz_px = std::max(12, static_cast<int>(std::lround(span_s / dt_seconds * static_cast<double>(rc.Width()))));
-	}
-
-	int vert_px = 0;
-    double span_v = 0.0;
-	if (px_per_volt > 0.0)
-	{
-		const double view_volts = static_cast<double>(rc.Height()) / px_per_volt;
-		const float target_v = static_cast<float>(view_volts * 0.25); // ~25% of height
-		CString u; float scale = 1.0f;
-		const float scaled = NiceUnit::change_unit(target_v, &u, &scale);
-		const int nice_int = NiceUnit::nice_unit(scaled);
-        span_v = static_cast<double>(nice_int) * static_cast<double>(scale);
-		vert_px = std::max(12, static_cast<int>(std::lround(span_v * px_per_volt)));
-	}
-
-	CPen pen(PS_SOLID, 2, RGB(0,0,0));
-	const auto oldp = p_dc->SelectObject(&pen);
-	if (vert_px > 0)
-	{
-		p_dc->MoveTo(x0, y0);
-		p_dc->LineTo(x0, y0 - vert_px);
-	}
-	if (horiz_px > 0)
-	{
-		p_dc->MoveTo(x0, y0);
-		p_dc->LineTo(x0 + horiz_px, y0);
-	}
-	if (oldp) p_dc->SelectObject(oldp);
-
-    // Optional label like: "vert=1 mV, horz=200 ms"
-    if (out_label)
-    {
-        CString text;
-        CString unit_v, unit_t; float sc_v = 1.0f, sc_t = 1.0f;
-        // Prepare nice strings using chosen spans
-        if (span_v > 0.0)
-        {
-            const float scaled_v = NiceUnit::change_unit(static_cast<float>(span_v), &unit_v, &sc_v);
-            const int nice_v = NiceUnit::nice_unit(scaled_v);
-            const double val_v = static_cast<double>(nice_v) * static_cast<double>(sc_v);
-            text.AppendFormat(_T("vert=%g %sV"), val_v * 1000.0 >= 1.0 && unit_v == _T(" ") ? val_v * 1000.0 : val_v,
-                              (unit_v == _T(" ") ? _T("m") : unit_v));
-        }
-        if (span_s > 0.0)
-        {
-            if (!text.IsEmpty()) text.Append(_T(", "));
-            const float scaled_t = NiceUnit::change_unit(static_cast<float>(span_s), &unit_t, &sc_t);
-            const int nice_t = NiceUnit::nice_unit(scaled_t);
-            const double val_t = static_cast<double>(nice_t) * static_cast<double>(sc_t);
-            text.AppendFormat(_T("horz=%g %ss"), val_t * 1000.0 >= 1.0 && unit_t == _T(" ") ? val_t * 1000.0 : val_t,
-                              (unit_t == _T(" ") ? _T("m") : unit_t));
-        }
-        *out_label = text;
-
-        if (!text.IsEmpty())
-        {
-            const int s2 = p_dc->SaveDC();
-            p_dc->SetMapMode(MM_TEXT);
-            p_dc->SelectClipRgn(nullptr);
-            p_dc->SetBkMode(TRANSPARENT);
-            p_dc->SetTextColor(RGB(0,0,0));
-            LOGFONT lf{}; lf.lfHeight = -MulDiv(6, p_dc->GetDeviceCaps(LOGPIXELSY), 72); lf.lfWeight = FW_NORMAL; lf.lfCharSet = DEFAULT_CHARSET; lstrcpyn(lf.lfFaceName, _T("Arial"), LF_FACESIZE);
-            CFont f; f.CreateFontIndirect(&lf);
-            CFont* oldF = p_dc->SelectObject(&f);
-            p_dc->TextOut(x0 + 4, y0 - vert_px - 14, text);
-            if (oldF) p_dc->SelectObject(oldF);
-            f.DeleteObject();
-            p_dc->RestoreDC(s2);
-        }
-    }
 	p_dc->RestoreDC(s);
 }

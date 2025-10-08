@@ -121,6 +121,14 @@ public:
 	void display_text_bottom_left(CDC* p_dc, const CString& text, const COLORREF& color) const;
 	// Draw a text block within deviceRect using MM_ANISOTROPIC with 1:1 logical mapping to the rect.
 	// point_size is in typographic points; font_face should be a common face (e.g., "Arial").
+	
+	// EMF export helpers - virtual so derived classes can customize
+	virtual void draw_axes_to_emf(CDC* p_dc, const CRect& rc) const;
+	virtual void draw_scale_bar_to_emf(CDC* p_dc, const CRect& rc, double dt_seconds, double px_per_volt, CString* out_label) const;
+	
+	// Physical extent methods - virtual so derived classes provide accurate values
+	virtual double get_time_extent_seconds() const { return 0.0; }  // Override in derived classes
+	
 	virtual options_scope_struct* get_scope_parameters();
 	virtual void set_scope_parameters(options_scope_struct* p_struct);
 	virtual int set_mouse_cursor_type(int cursor_type);

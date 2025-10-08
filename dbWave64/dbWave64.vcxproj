@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="ADAcqDataDoc.cpp" />
     <ClCompile Include="chanlistitem.cpp" />
+    <ClCompile Include="EmfExportHelper.cpp" />
     <ClCompile Include="Chart\ChartData.cpp" />
     <ClCompile Include="Chart\ChartDataAD.cpp" />
     <ClCompile Include="Chart\ChartSpike.cpp" />
@@ -284,6 +285,8 @@
     <ClInclude Include="dbWave_constants.h" />
     <ClInclude Include="dbWave_structures.h" />
     <ClInclude Include="db_spike.h" />
+    <ClInclude Include="EmfExportHelper.h" />
+    <ClInclude Include="EmfLayoutConstants.h" />
     <ClInclude Include="DlgAbout.h" />
     <ClInclude Include="DlgBrowseFile.h" />
     <ClInclude Include="DlgChartProps.h" />

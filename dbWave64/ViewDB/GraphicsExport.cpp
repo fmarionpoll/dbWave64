@@ -37,9 +37,8 @@ BOOL GraphicsExport::CopyAsEmfToClipboard(CWnd* owner_wnd, const CString& title,
     int dpi_y = p_ref_dc->GetDeviceCaps(LOGPIXELSY);
 
 	const auto p_print_parms = &(static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data);
-    // Guard DPI and ensure EMF frame uses at least 300 DPI for better precision
-    dpi_x = std::max(dpi_x, 300);
-    dpi_y = std::max(dpi_y, 300);
+    // Keep screen DPI for EMF frame - PowerPoint interprets this naturally
+    // Don't override with fixed DPI; let it use the reference DC's actual DPI
     const int scale = std::max(1, p_print_parms->export_resolution_scale);
     const int px_w = std::max(1, p_print_parms->horizontal_resolution * scale);
     const int px_h = std::max(1, p_print_parms->vertical_resolution * scale);
@@ -48,6 +47,11 @@ BOOL GraphicsExport::CopyAsEmfToClipboard(CWnd* owner_wnd, const CString& title,
     const CRect himetric_bounds(0, 0,
         MulDiv(px_w, 2540, dpi_x),
         MulDiv(px_h, 2540, dpi_y));
+
+#ifdef _DEBUG
+    TRACE(_T("[CopyAsEmfToClipboard] px_w=%d, px_h=%d, scale=%d, DPI=%d×%d, HiMetric=%d×%d\n"),
+          px_w, px_h, scale, dpi_x, dpi_y, himetric_bounds.Width(), himetric_bounds.Height());
+#endif
 
     CString meta_title = _T("dbWave\0") + title;
     meta_title += _T("\0\0");

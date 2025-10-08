@@ -982,6 +982,16 @@ double ChartData::get_pixels_per_volt(const CRect& rc) const
     return static_cast<double>(rc.Height()) / (static_cast<double>(y_extent) * v_per_bin);
 }
 
+double ChartData::get_time_extent_seconds() const
+{
+    if (!m_p_data_file_ || m_lx_last_ <= m_lx_first_)
+        return 0.0;
+    const double sampling_rate = static_cast<double>(m_p_data_file_->get_wave_format()->sampling_rate_per_channel);
+    if (sampling_rate <= 0.0)
+        return 0.0;
+    return static_cast<double>(m_lx_last_ - m_lx_first_) / sampling_rate;
+}
+
 void ChartData::OnSize(const UINT n_type, const int cx, const int cy)
 {
 	ChartWnd::OnSize(n_type, cx, cy);
@@ -1190,11 +1200,20 @@ void ChartData::export_to_emf(CDC* p_dc, const CRect* p_rect, const options_prin
     const int saved = p_dc->SaveDC();
     ASSERT(saved != 0);
 
+    // Save original client rectangle to restore after export
+    const CRect old_client_rect = client_rect_;
+
     client_rect_ = *p_rect;
     display_rect_ = expand_rect_if_rulers_are_present(p_rect);
 
     const int w = display_rect_.Width();
     const int h = display_rect_.Height();
+
+#ifdef _DEBUG
+    TRACE(_T("[ChartData::export_to_emf] rect: (%d,%d,%d,%d), display_rect: (%d,%d,%d,%d)\n"),
+          p_rect->left, p_rect->top, p_rect->right, p_rect->bottom,
+          display_rect_.left, display_rect_.top, display_rect_.right, display_rect_.bottom);
+#endif
 
     p_dc->SetMapMode(MM_TEXT);
     p_dc->SelectClipRgn(nullptr);
@@ -1202,7 +1221,7 @@ void ChartData::export_to_emf(CDC* p_dc, const CRect* p_rect, const options_prin
     // Render real data as downsampled polyline in MM_TEXT without nested mappings
     if (is_defined() && m_p_data_file_ != nullptr && get_data_size() > 1)
     {
-        // Prepare data similarly to the main print path
+        // Prepare data with 4x envelope resolution for quality
         resize_channels(display_rect_.Width() * 4, m_lx_size_);
         get_data_from_doc();
 
@@ -1230,31 +1249,35 @@ void ChartData::export_to_emf(CDC* p_dc, const CRect* p_rect, const options_prin
         p_x_env->export_to_abscissa(m_poly_points_);
         p_y_env->export_to_ordinates(m_poly_points_);
 
-        // Downsample if needed
-        const int kMaxPoints = 2000;
-        const int stride = (n_elements > kMaxPoints) ? std::max(1, (n_elements + kMaxPoints - 1) / kMaxPoints) : 1;
-
-        // Convert to device coordinates
+        // Convert ALL points to device coordinates (no downsampling)
         // X: scale envelope x (0..m_n_pixels_) into display_rect_.left..right
         // Y: center-based mapping: top + h/2 - ((bin - y_zero) * h / y_extent)
         CPoint* src = m_poly_points_.GetData();
-        int out_count = 0;
-        for (int i = 0; i < n_elements; i += stride)
+        for (int i = 0; i < n_elements; i++)
         {
             const int x_log = src[i].x;
             const int y_bin = src[i].y;
             const int x_dp = display_rect_.left + MulDiv(x_log, w, std::max(1, m_n_pixels_));
             const int y_dp = display_rect_.top + h / 2 - MulDiv(y_bin - y_zero, h, std::max(1, y_extent));
-            src[out_count++] = CPoint(x_dp, y_dp);
+            src[i] = CPoint(x_dp, y_dp);
         }
 
-        // Draw polyline with width>=2 to avoid hairlines in EMF
-        CPen data_pen; data_pen.CreatePen(PS_SOLID, 3, RGB(200, 0, 0));
+        // Draw polyline with width>=2 to avoid hairlines in EMF, with rounded caps/joins
+        LOGBRUSH lb;
+        lb.lbStyle = BS_SOLID;
+        lb.lbColor = RGB(200, 0, 0);
+        lb.lbHatch = 0;
+        CPen data_pen;
+        data_pen.CreatePen(PS_GEOMETRIC | PS_SOLID | PS_ENDCAP_ROUND | PS_JOIN_ROUND, 3, &lb);
         const auto old_pen2 = p_dc->SelectObject(&data_pen);
-        draw_polyline_chunked(p_dc, m_poly_points_.GetData(), out_count);
+        draw_polyline_chunked(p_dc, m_poly_points_.GetData(), n_elements);
         if (old_pen2) p_dc->SelectObject(old_pen2);
         data_pen.DeleteObject();
     }
+
+    // Restore original rectangles (same pattern as print_data_to_dc)
+    client_rect_ = old_client_rect;
+    display_rect_ = expand_rect_if_rulers_are_present(&client_rect_);
 
     p_dc->RestoreDC(saved);
 }

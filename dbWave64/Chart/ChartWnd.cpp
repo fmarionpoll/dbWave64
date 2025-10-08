@@ -3,6 +3,7 @@
 #include "ChartWnd.h"
 #include "DlgChartProps.h"
 #include "ColorNames.h"
+#include "EmfExportHelper.h"
 #include <algorithm>
 #include <cmath>
 
@@ -1130,6 +1131,18 @@ void ChartWnd::set_x_scale_unit_value(float x)
 void ChartWnd::set_y_scale_unit_value(float y)
 {
 	scope_structure_.y_scale_unit_value = y;
+}
+
+void ChartWnd::draw_axes_to_emf(CDC* p_dc, const CRect& rc) const
+{
+	// Delegate to helper class for centralized implementation
+	EmfExportHelper::DrawAxes(p_dc, rc);
+}
+
+void ChartWnd::draw_scale_bar_to_emf(CDC* p_dc, const CRect& rc, const double dt_seconds, const double px_per_volt, CString* out_label) const
+{
+	// Delegate to helper class for centralized implementation
+	EmfExportHelper::DrawScaleBar(p_dc, rc, dt_seconds, px_per_volt, out_label);
 }
 
 

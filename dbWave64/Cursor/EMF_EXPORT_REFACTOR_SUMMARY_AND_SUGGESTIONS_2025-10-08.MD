@@ -47,3 +47,4 @@ Next steps (optional)
 - Implement preview dialog and minimal export options (resolution, frame, scale-bar visibility).
 - Add `print_item_emf` for `ViewSpikes` using `render_region` per class row.
 - Document the API in `EMF_EXPORT_API.md` with updated examples.
+

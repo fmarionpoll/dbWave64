@@ -713,3 +713,73 @@ void ChartSpikeBar::Serialize(CArchive& archive)
 }
 
 
+// Pixels per volt based on current spike list amplitude and acquisition volts/bin
+double ChartSpikeBar::get_pixels_per_volt(const CRect& rc) const
+{
+    SpikeList* list = p_spike_list_;
+    if (!list || list->get_spikes_count() <= 0)
+        return 0.0;
+    int amax = 1;
+    for (int i = 0; i < list->get_spikes_count(); ++i)
+    {
+        const Spike* sp = list->get_spike(i);
+        if (!sp) continue;
+        int ymax = 0, ymin = 0; sp->get_max_min(&ymax, &ymin);
+        amax = std::max(amax, abs(ymax - ymin));
+    }
+    const double v_per_bin = std::max(1e-12, static_cast<double>(list->get_acq_volts_per_bin()));
+    return static_cast<double>(rc.Height()) / (static_cast<double>(amax) * v_per_bin);
+}
+
+// Physical extent in seconds for EMF export scale bars
+double ChartSpikeBar::get_time_extent_seconds() const
+{
+    if (!p_spike_list_ || l_last_ <= l_first_)
+        return 0.0;
+    const double sampling_rate = static_cast<double>(p_spike_list_->get_acq_sampling_rate());
+    if (sampling_rate <= 0.0)
+        return 0.0;
+    return static_cast<double>(l_last_ - l_first_) / sampling_rate;
+}
+
+// Export-only: draw spike bars into MM_TEXT device coordinates within rect
+void ChartSpikeBar::export_to_emf(CDC* p_dc, const CRect& rect) const
+{
+    const int saved = p_dc->SaveDC();
+    p_dc->SetMapMode(MM_TEXT);
+    p_dc->SelectClipRgn(nullptr);
+    p_dc->IntersectClipRect(&rect);
+
+    // Set mapping relative to the target rect (positive up)
+    auto* self = const_cast<ChartSpikeBar*>(this);
+    const int old_y_vo = self->y_vo_;
+    const int old_y_ve = self->y_ve_;
+    const int old_x_wo = self->x_wo_;
+    const int old_x_we = self->x_we_;
+
+    self->y_vo_ = rect.top + rect.Height() / 2;
+    self->y_ve_ = -rect.Height();
+    self->x_wo_ = rect.left;
+    self->x_we_ = rect.Width();
+
+    // Draw content into rect
+    self->display_bars(p_dc, &rect);
+    if (p_spike_doc_ != nullptr && p_spike_doc_->m_stimulus_intervals.n_items > 0)
+        self->display_stimulus(p_dc, &rect);
+
+    // Restore previous mapping values
+    self->y_vo_ = old_y_vo;
+    self->y_ve_ = old_y_ve;
+    self->x_wo_ = old_x_wo;
+    self->x_we_ = old_x_we;
+
+    p_dc->RestoreDC(saved);
+}
+
+// Override unified export API used by views
+void ChartSpikeBar::export_to_emf(CDC* p_dc, const CRect* rect, const options_print* /*options_print_data*/)
+{
+    if (!rect) return;
+    export_to_emf(p_dc, *rect);
+}
+

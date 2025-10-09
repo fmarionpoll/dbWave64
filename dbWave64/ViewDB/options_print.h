@@ -43,4 +43,6 @@ class options_print final : public CObject
 	int spike_width{ 0 }; //
 	int line_height{ 0 };
 	int export_resolution_scale{ 4 }; // EMF export: multiply logical horizontal resolution
+	// UI/preview options
+	boolean b_preview_before_copy{ true };
 };

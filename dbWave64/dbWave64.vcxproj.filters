@@ -615,6 +615,12 @@
     <ClCompile Include="ViewDB\GraphicsExport.cpp">
       <Filter>ViewDB</Filter>
     </ClCompile>
+    <ClCompile Include="ViewDB\ExportPreview.cpp">
+      <Filter>ViewDB</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDB\EmfExportHelper.cpp">
+      <Filter>ViewDB</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AcqDataDoc.h">
@@ -1293,6 +1299,15 @@
       <Filter>ViewDB</Filter>
     </ClInclude>
     <ClInclude Include="ViewDB\GraphicsExport.h">
+      <Filter>ViewDB</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\ExportPreview.h">
+      <Filter>ViewDB</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\EmfExportHelper.h">
+      <Filter>ViewDB</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\EmfLayoutConstants.h">
       <Filter>ViewDB</Filter>
     </ClInclude>
   </ItemGroup>

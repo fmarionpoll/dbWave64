@@ -96,9 +96,10 @@ void options_print::Serialize(CArchive& ar)
 		ar << static_cast<WORD>(font_size); // font size (pixels)
 
 		// export int(s) WORD = nb of items
-		ar << static_cast<WORD>(2);
+		ar << static_cast<WORD>(3);
 		ar << spike_height; //4
 		ar << spike_width; //5
+		ar << static_cast<int>(b_preview_before_copy);
 
 	}
 	else
@@ -169,5 +170,6 @@ void options_print::Serialize(CArchive& ar)
 		nb_int_items--;
 		ar >> spike_width;
 		nb_int_items--;
+		if (nb_int_items > 0) { int v=0; ar >> v; b_preview_before_copy = (v!=0); nb_int_items--; }
 	}
 }

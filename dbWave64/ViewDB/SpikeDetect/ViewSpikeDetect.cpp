@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <cmath>
 
-#include "EmfExportHelper.h"
+#include "ViewDB/EmfExportHelper.h"
 #include "NiceUnit.h"
 #include "DlgDataSeries.h"
 #include "DlgProgress.h"

@@ -1,6 +1,5 @@
 #include "StdAfx.h"
 #include <algorithm>
-#include <cstdlib>
 #include <strsafe.h>
 #include "resource.h"
 #include "ChartData.h"

@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "GraphicsExport.h"
+#include "ExportPreview.h"
 
 #include "dbWave.h"
 
@@ -71,20 +72,34 @@ BOOL GraphicsExport::CopyAsEmfToClipboard(CWnd* owner_wnd, const CString& title,
         return FALSE;
     }
 
-	if (OpenClipboard(owner_wnd ? owner_wnd->GetSafeHwnd() : nullptr))
-	{
-		EmptyClipboard();
-		SetClipboardData(CF_ENHMETAFILE, h_emf);
-		CloseClipboard();
+    // Preview before copying: show a simple preview window with actions if enabled
+    // If preview window takes ownership, it will delete the handle; otherwise copy now.
+    if (owner_wnd)
+    {
+        auto& opts2 = static_cast<CdbWaveApp*>(AfxGetApp())->options_print_data;
+        if (opts2.b_preview_before_copy && ExportPreviewWindow::Show(owner_wnd, h_emf, CRect(0,0,px_w,px_h), title))
+        {
+            // Preview window owns h_emf now
+            if (used_screen_dc) ::ReleaseDC(nullptr, screen_dc.Detach());
+            else if (owner_wnd && p_ref_dc) owner_wnd->ReleaseDC(p_ref_dc);
+            return TRUE;
+        }
+    }
+
+    if (OpenClipboard(owner_wnd ? owner_wnd->GetSafeHwnd() : nullptr))
+    {
+        EmptyClipboard();
+        SetClipboardData(CF_ENHMETAFILE, h_emf);
+        CloseClipboard();
         if (used_screen_dc) ::ReleaseDC(nullptr, screen_dc.Detach());
         else if (owner_wnd && p_ref_dc) owner_wnd->ReleaseDC(p_ref_dc);
-		return TRUE;
-	}
-	// Clipboard busy; delete handle to avoid leak
-	DeleteEnhMetaFile(h_emf);
+        return TRUE;
+    }
+    // Clipboard busy; delete handle to avoid leak
+    DeleteEnhMetaFile(h_emf);
     if (used_screen_dc) ::ReleaseDC(nullptr, screen_dc.Detach());
     else if (owner_wnd && p_ref_dc) owner_wnd->ReleaseDC(p_ref_dc);
-	return FALSE;
+    return FALSE;
 }
 
 BOOL GraphicsExport::ExportToPng(CWnd* /*owner_wnd*/,

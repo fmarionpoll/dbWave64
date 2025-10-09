@@ -3,7 +3,7 @@
 #include "ChartWnd.h"
 #include "DlgChartProps.h"
 #include "ColorNames.h"
-#include "EmfExportHelper.h"
+#include "ViewDB/EmfExportHelper.h"
 #include <algorithm>
 #include <cmath>
 

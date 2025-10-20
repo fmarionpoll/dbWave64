@@ -2,6 +2,7 @@
 #include "ExportPreview.h"
 #include <afxdlgs.h>
 #include "ExportOptions.h"
+#include <string>
 
 #include "dbWave.h"
 
@@ -247,7 +248,19 @@ void ExportPreviewWindow::OnSavePng()
                 CLSID clsid{};
                 for (UINT i=0;i<num;i++) if (wcscmp(p_codecs[i].MimeType, L"image/png")==0) { clsid = p_codecs[i].Clsid; break; }
                 if (!IsEqualCLSID(clsid, CLSID{}))
+                {
+#ifdef UNICODE
                     saved = (Gdiplus::Ok == bmp.Save(dlg.GetPathName(), &clsid, nullptr));
+#else
+                    const CString pathA = dlg.GetPathName();
+                    const LPCSTR pszA = pathA.GetString();
+                    const int wlen = MultiByteToWideChar(CP_ACP, 0, pszA, -1, nullptr, 0);
+                    std::wstring pathW(wlen, L'\0');
+                    if (wlen > 0)
+                        MultiByteToWideChar(CP_ACP, 0, pszA, -1, &pathW[0], wlen);
+                    saved = (Gdiplus::Ok == bmp.Save(pathW.c_str(), &clsid, nullptr));
+#endif
+                }
             }
             if (p_codecs) free(p_codecs);
         }

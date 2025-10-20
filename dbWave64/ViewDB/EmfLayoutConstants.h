@@ -36,7 +36,7 @@ namespace EmfLayout {
 	constexpr COLORREF COLOR_TEXT = RGB(0, 0, 0);           // Black for text
 	
 	// Font specification
-	constexpr WCHAR FONT_FACE[] = L"Arial";
+	constexpr TCHAR FONT_FACE[] = _T("Arial");
 	constexpr int FONT_WEIGHT = FW_NORMAL;
 	constexpr BYTE FONT_CHARSET = ANSI_CHARSET;  // ANSI for better compatibility with µ character
 }

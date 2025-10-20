@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "GraphicsExport.h"
 #include "ExportPreview.h"
+#include <string>
 
 #include "dbWave.h"
 
@@ -158,10 +159,20 @@ BOOL GraphicsExport::ExportToPng(CWnd* /*owner_wnd*/,
 					if (wcscmp(p_codecs[i].MimeType, L"image/png") == 0)
 					{ png_clsid = p_codecs[i].Clsid; break; }
 				}
-				if (!IsEqualCLSID(png_clsid, CLSID{}))
-				{
-					result = (Gdiplus::Ok == bitmap.Save(file_path, &png_clsid, nullptr));
-				}
+                if (!IsEqualCLSID(png_clsid, CLSID{}))
+                {
+#ifdef UNICODE
+                    result = (Gdiplus::Ok == bitmap.Save(file_path, &png_clsid, nullptr));
+#else
+                    const CString pathA = file_path;
+                    const LPCSTR pszA = pathA.GetString();
+                    const int wlen = MultiByteToWideChar(CP_ACP, 0, pszA, -1, nullptr, 0);
+                    std::wstring pathW(wlen, L'\0');
+                    if (wlen > 0)
+                        MultiByteToWideChar(CP_ACP, 0, pszA, -1, &pathW[0], wlen);
+                    result = (Gdiplus::Ok == bitmap.Save(pathW.c_str(), &png_clsid, nullptr));
+#endif
+                }
 			}
 			if (p_codecs) free(p_codecs);
 		}

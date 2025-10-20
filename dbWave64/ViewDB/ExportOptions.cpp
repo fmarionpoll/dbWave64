@@ -97,3 +97,5 @@ void ExportOptionsWindow::OnDestroy()
 {
     CWnd::OnDestroy();
 }
+
+

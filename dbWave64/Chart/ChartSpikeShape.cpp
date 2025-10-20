@@ -182,97 +182,6 @@ void ChartSpikeShape::display_spike_data(CDC* p_dc, const Spike* spike)
 	}
 }
 
-void ChartSpikeShape::export_to_emf(CDC* p_dc, const CRect& r4) const
-{
-    const int s4 = p_dc->SaveDC();
-    p_dc->SetMapMode(MM_TEXT);
-    p_dc->SelectClipRgn(nullptr);
-    SpikeList* spk_list = p_spike_list_;
-    if (spk_list && spk_list->get_spikes_count() > 0)
-    {
-        // Determine amplitude mapping from total max/min
-        int v_max = 1, v_min = 0;
-        spk_list->get_total_max_min(TRUE, &v_max, &v_min);
-        const int y_we = std::max(1, v_max - v_min + 1);
-        const int y_wo = (v_max + v_min) / 2;
-        const int samples = spk_list->get_spike_length();
-        
-        // Determine which spikes to display based on range mode
-        int i_first = 0;
-        int i_last = spk_list->get_spikes_count() - 1;
-        if (range_mode_ == RANGE_INDEX)
-        {
-            i_first = index_first_spike_;
-            i_last = index_last_spike_;
-        }
-        
-        // Count spikes within time range
-        int spikes_in_range = 0;
-        for (int i = i_first; i <= i_last; ++i)
-        {
-            const Spike* sp = spk_list->get_spike(i);
-            if (!sp) continue;
-            
-            // Filter by time range if applicable
-            if (range_mode_ == RANGE_TIME_INTERVALS)
-            {
-                const long spike_time = sp->get_time();
-                if (spike_time < l_first_ || spike_time > l_last_)
-                    continue;
-            }
-            spikes_in_range++;
-        }
-        
-        const int max_waveforms = 40;
-        const int stride = (spikes_in_range > max_waveforms) ? std::max(1, spikes_in_range / max_waveforms) : 1;
-        CArray<CPoint, CPoint> pts;
-        pts.SetSize(samples);
-        
-        for (int i = i_first, drawn = 0; i <= i_last && drawn < max_waveforms; ++i)
-        {
-            const Spike* sp = spk_list->get_spike(i);
-            if (!sp) continue;
-            
-            // Filter by time range if applicable
-            if (range_mode_ == RANGE_TIME_INTERVALS)
-            {
-                const long spike_time = sp->get_time();
-                if (spike_time < l_first_)
-                    continue;
-                if (spike_time > l_last_)
-                    break;
-            }
-            
-            // Apply stride for downsampling
-            if ((i - i_first) % stride != 0)
-                continue;
-            
-            const int* data = sp->get_p_data();
-            if (!data) continue;
-            
-            for (int k = 0; k < samples; ++k)
-            {
-                const int x = r4.left + MulDiv(k, r4.Width(), std::max(1, samples - 1));
-                const int y = r4.top + r4.Height() / 2 - MulDiv(data[k] - y_wo, r4.Height(), y_we);
-                pts[k] = CPoint(x, y);
-            }
-            CPen pen(PS_SOLID, 2, RGB(120,120,120));
-            const auto oldp = p_dc->SelectObject(&pen);
-            p_dc->Polyline(pts.GetData(), samples);
-            if (oldp) p_dc->SelectObject(oldp);
-            
-            drawn++;
-        }
-    }
-    p_dc->RestoreDC(s4);
-}
-
-void ChartSpikeShape::export_to_emf(CDC* p_dc, const CRect* rect, const options_print* /*options_print_data*/)
-{
-    if (!rect) return;
-    export_to_emf(p_dc, *rect);
-}
-
 void ChartSpikeShape::draw_flagged_spikes(CDC * p_dc)
 {
 	const auto n_saved_dc = p_dc->SaveDC();
@@ -375,18 +284,6 @@ void ChartSpikeShape::draw_spike_on_dc(const Spike* spike, CDC * p_dc)
 
 	p_dc->SelectObject(old_pen);
 	p_dc->RestoreDC(n_saved_dc);
-}
-
-double ChartSpikeShape::get_pixels_per_volt(const CRect& rc) const
-{
-    SpikeList* list = p_spike_list_;
-    if (!list || list->get_spikes_count() <= 0)
-        return 0.0;
-    int v_max = 1, v_min = 0;
-    list->get_total_max_min(TRUE, &v_max, &v_min);
-    const int y_we = std::max(1, v_max - v_min + 1);
-    const double v_per_bin = std::max(1e-12, static_cast<double>(list->get_acq_volts_per_bin()));
-    return static_cast<double>(rc.Height()) / (static_cast<double>(y_we) * v_per_bin);
 }
 
 void ChartSpikeShape::move_vt_track(const int i_track, const int value)
@@ -856,50 +753,83 @@ float ChartSpikeShape::get_extent_ms()
 	return (static_cast<float>(1000.0 * x_we_) / p_spike_list_->get_acq_sampling_rate());
 }
 
+
+// Pixels per volt based on current y extent (data bins) and acquisition volts/bin
+double ChartSpikeShape::get_pixels_per_volt(const CRect& rc) const
+{
+    if (!p_spike_list_)
+        return 0.0;
+    const int y_extent_bins = std::max(1, y_we_);
+    const double volts_per_bin = std::max(1e-12, static_cast<double>(p_spike_list_->get_acq_volts_per_bin()));
+    return static_cast<double>(rc.Height()) / (static_cast<double>(y_extent_bins) * volts_per_bin);
+}
+
+// Physical extent in seconds for EMF export scale bars
 double ChartSpikeShape::get_time_extent_seconds() const
 {
-	if (!p_spike_list_)
-		return 0.0;
-	const double sampling_rate = static_cast<double>(p_spike_list_->get_acq_sampling_rate());
-	if (sampling_rate <= 0.0)
-		return 0.0;
-	// Use spike length directly (x_we_ might not be initialized during export)
-	const int spike_length = p_spike_list_->get_spike_length();
-	return static_cast<double>(spike_length) / sampling_rate;
+    if (!p_spike_list_)
+        return 0.0;
+    const double sampling_rate = static_cast<double>(p_spike_list_->get_acq_sampling_rate());
+    if (sampling_rate <= 0.0)
+        return 0.0;
+    return static_cast<double>(x_we_) / sampling_rate;
 }
 
+// Count spikes displayed under current range and plot mode
 int ChartSpikeShape::get_displayed_spike_count() const
 {
-	if (!p_spike_list_)
-		return 0;
-	
-	int i_first = 0;
-	int i_last = p_spike_list_->get_spikes_count() - 1;
-	
-	if (range_mode_ == RANGE_INDEX)
-	{
-		i_first = index_first_spike_;
-		i_last = index_last_spike_;
-	}
-	
-	// Count spikes within range
-	int count = 0;
-	for (int i = i_first; i <= i_last; ++i)
-	{
-		const Spike* sp = p_spike_list_->get_spike(i);
-		if (!sp) continue;
-		
-		// Filter by time range if applicable
-		if (range_mode_ == RANGE_TIME_INTERVALS)
-		{
-			const long spike_time = sp->get_time();
-			if (spike_time < l_first_ || spike_time > l_last_)
-				continue;
-		}
-		count++;
-	}
-	
-	return count;
+    if (!p_spike_list_)
+        return 0;
+
+    int count = 0;
+    int i_first = 0;
+    int i_last = p_spike_list_->get_spikes_count() - 1;
+    if (range_mode_ == RANGE_INDEX)
+    {
+        i_first = std::max(0, index_first_spike_);
+        i_last = std::min(i_last, index_last_spike_);
+    }
+
+    for (int i = i_first; i <= i_last; ++i)
+    {
+        const Spike* spike = p_spike_list_->get_spike(i);
+        if (!spike) continue;
+
+        if (range_mode_ == RANGE_TIME_INTERVALS)
+        {
+            const long t = spike->get_time();
+            if (t < l_first_ || t > l_last_)
+                continue;
+        }
+
+        const int spike_class = spike->get_class_id();
+        if (plot_mode_ == PLOT_ONE_CLASS_ONLY && spike_class != selected_class_)
+            continue;
+
+        // All other modes display the spike (possibly with different color)
+        ++count;
+    }
+    return count;
 }
 
+// Export-only: draw spike shapes into MM_TEXT device coordinates within rect
+void ChartSpikeShape::export_to_emf(CDC* p_dc, const CRect& rect) const
+{
+    const int saved = p_dc->SaveDC();
+    p_dc->SetMapMode(MM_TEXT);
+    p_dc->SelectClipRgn(nullptr);
+    p_dc->IntersectClipRect(&rect);
+
+    auto* self = const_cast<ChartSpikeShape*>(this);
+    self->print(p_dc, &rect);
+
+    p_dc->RestoreDC(saved);
+}
+
+// Override unified export API used by views
+void ChartSpikeShape::export_to_emf(CDC* p_dc, const CRect* rect, const options_print* /*options_print_data*/)
+{
+    if (!rect) return;
+    export_to_emf(p_dc, *rect);
+}
 

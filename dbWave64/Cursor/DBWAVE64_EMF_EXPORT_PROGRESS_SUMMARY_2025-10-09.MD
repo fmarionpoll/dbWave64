@@ -55,3 +55,5 @@
 - Cleaner, consistent EMF export across views.
 - Faster onboarding for new views and charts.
 - Better user experience with preview, PNG/Print support, and configurable options.
+
+

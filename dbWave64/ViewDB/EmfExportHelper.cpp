@@ -262,9 +262,9 @@ void EmfExportHelper::DrawText(CDC* p_dc, const CString& text, const int x, cons
 	if (font)
 		old_font = p_dc->SelectObject(font);
 	
-	// Use TextOutW (wide character version) to ensure Unicode support
-	const int length = text.GetLength();
-	::TextOutW(p_dc->GetSafeHdc(), x, y, text, length);
+    // Use generic TextOut to honor ANSI/UNICODE build settings
+    const int length = text.GetLength();
+    p_dc->TextOut(x, y, text, length);
 	
 	if (old_font && font)
 		p_dc->SelectObject(old_font);

@@ -1,6 +1,6 @@
 #include "pch.h"
 #define DBVIEW2_TEST
-#include "../dbWave64/dbView2/Adapters.h"
+#include "../dbWave64/ViewDB/ListRecords/Adapters.h"
 
 TEST(RendererAdapters, DataRendererCreatesBitmapEvenIfMissingFile)
 {

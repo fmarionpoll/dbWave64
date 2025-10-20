@@ -1,12 +1,12 @@
 #include "pch.h"
 #include <gtest/gtest.h>
-#include "../dbWave64/dbView2/RowCache.h"
+#include "../dbWave64/ViewDB/ListRecords/RowCache.h"
 
 class FakeProvider : public IDbWaveDataProvider
 {
 public:
-	int getRecordsCount() const override { return 100; }
-	RowMeta getRowMeta(int index) override
+	int get_records_count() const override { return 100; }
+	RowMeta get_row_meta(int index) override
 	{
 		RowMeta m; m.index = index; m.insect_id = 42; return m;
 	}

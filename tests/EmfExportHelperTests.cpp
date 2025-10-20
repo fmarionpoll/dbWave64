@@ -270,3 +270,6 @@ TEST_F(EmfExportHelperTests, Performance_ScaleBarCalculation)
 	EXPECT_LT(duration.count(), 100);
 }
 
+
+
+

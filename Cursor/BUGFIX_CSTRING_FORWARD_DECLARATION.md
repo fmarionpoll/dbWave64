@@ -58,3 +58,6 @@ Replaced forward declarations with proper MFC header include:
 ✅ No linter errors
 ✅ All functionality preserved
 
+
+
+

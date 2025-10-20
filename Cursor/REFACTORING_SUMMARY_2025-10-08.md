@@ -397,3 +397,6 @@ Successfully transformed EMF export from scattered, duplicated code into a clean
 - `EMF_EXPORT_API.md` - Complete API reference
 - `tests/EmfExportHelperTests.cpp` - Test suite
 
+
+
+

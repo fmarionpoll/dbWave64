@@ -274,3 +274,5 @@ TEST_F(EmfExportHelperTests, Performance_ScaleBarCalculation)
 
 
 
+
+

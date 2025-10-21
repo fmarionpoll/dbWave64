@@ -251,7 +251,7 @@ BOOL CMainFrame::create_outlook_bar()
 	CImageList img1;
 	img1.Create(IDB_NAVIGATIONLARGE, 32, 0, col_fuchsia);
 
-#define N_BUTTONS 9
+#define N_BUTTONS 8
 	constexpr WORD dw_style = TBSTYLE_BUTTON | TBSTYLE_AUTOSIZE;
 	constexpr struct
 	{

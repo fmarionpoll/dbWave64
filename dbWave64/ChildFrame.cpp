@@ -42,6 +42,7 @@
 #include "DlgLoadSaveOptions.h"
 #include "DlgPrintMargins.h"
 #include "FilenameCleanupUtils.h"
+#include "ViewADcontinuous.h"
 #include "ViewDB/Data/ViewData.h"
 #include "ViewDB/SpikeDetect/ViewSpikeDetect.h"
 #include "ViewDB/SpikeHist/ViewSpikeHist.h"
@@ -69,8 +70,9 @@ BEGIN_MESSAGE_MAP(CChildFrame, CMDIChildWndEx)
 	ON_COMMAND(ID_OPTIONS_LOAD_SAVE_OPTIONS, &CChildFrame::on_options_load_save_options)
 	ON_MESSAGE(WM_MYMESSAGE, &CChildFrame::on_my_message)
 	ON_WM_CREATE()
-	ON_COMMAND_RANGE(ID_VIEW_DATABASE, ID_VIEW_ACQUIRE_DATA, &CChildFrame::replace_view_index) //ID_VIEW_ACQUIRE_DATA, &CChildFrame::replace_view_index)
-	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_DATABASE, ID_VIEW_ACQUIRE_DATA, &CChildFrame::on_update_view_menu) // ID_VIEW_ACQUIRE_DATA, &CChildFrame::on_update_view_menu)
+
+	ON_COMMAND_RANGE(ID_VIEW_DATABASE, ID_VIEW_ACQUIRE_DATA, &CChildFrame::replace_view_index) 
+	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_DATABASE, ID_VIEW_ACQUIRE_DATA, &CChildFrame::on_update_view_menu)
 
 	ON_COMMAND(ID_TOOLS_EXPORT_DATA_COMMENTS, &CChildFrame::on_tools_export_data_comments)
 	ON_COMMAND(ID_TOOLS_EXPORT_DATA_AS_TEXT, &CChildFrame::on_tools_export_data_as_text)
@@ -382,10 +384,10 @@ void CChildFrame::replace_view_index(UINT n_id)
 		if (!p_db_wave_doc->db_get_current_spk_file_name(TRUE).IsEmpty())
 			replace_view(RUNTIME_CLASS(ViewSpikeHist), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_spike_view);
 		break;
-	//case ID_VIEW_ACQUIRE_DATA:
-	//	replace_view(RUNTIME_CLASS(ViewADcontinuous), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_data_view);
-	//	b_active_panes = FALSE;
-	//	break;
+	case ID_VIEW_ACQUIRE_DATA:
+		replace_view(RUNTIME_CLASS(ViewADcontinuous), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_data_view);
+		b_active_panes = FALSE;
+		break;
 
 	default:
 		n_id = 0;

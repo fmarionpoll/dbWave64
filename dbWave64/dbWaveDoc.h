@@ -99,7 +99,7 @@ public:
 	BOOL	import_data_files_from_another_data_base(const CString& other_data_base_file_name, boolean copy_data_to_new_sub_directory) const;
 	BOOL	copy_files_to_directory(const CString& path);
 
-	void set_prop_sheet_state(const ViewRecordsListState& state);
+	//void set_prop_sheet_state(const ViewRecordsListState& state);
 	ViewRecordsListState* get_prop_sheet_state() { return &viewdbWaveState_; };
 
 protected:
@@ -143,7 +143,7 @@ public:
 	void	update_all_views_db_wave(CView* p_sender, LPARAM l_hint, CObject* p_hint);
 	// Persist/restore per-database view state
 	void	persist_db_view_state();
-	void	restore_db_view_state();
+	//void	restore_db_view_state();
 
 	~CdbWaveDoc() ;
 #ifdef _DEBUG

@@ -34,8 +34,9 @@ BOOL DlgAbout::OnInitDialog()
 	}
 
 	CFileVersion c_fv;
-	const CString cs_app_name = _T("dbwave2.exe");
-	c_fv.open(cs_app_name);
+	TCHAR module_path[MAX_PATH] = { 0 };
+	::GetModuleFileName(NULL, module_path, MAX_PATH);
+	c_fv.open(module_path);
 	GetDlgItem(IDC_DBWAVEVERSION)->SetWindowText(c_fv.get_product_version());
 	GetDlgItem(IDC_STATIC7)->SetWindowText(c_fv.get_legal_copyright());
 

@@ -14,6 +14,7 @@
 #include "options_input.h"
 #include "options_output.h"
 #include "ViewDB/ViewDbTable.h"
+#include "Editctrl.h"
 
 
 class ViewADcontinuous : public ViewDbTable

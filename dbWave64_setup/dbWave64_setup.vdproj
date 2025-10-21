@@ -823,7 +823,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:dbwave64"
         "ProductCode" = "8:{14F13175-FB99-4467-B371-7D3981A444DD}"
-        "PackageCode" = "8:{78F4C98A-A332-4C75-B326-2985771E5124}"
+        "PackageCode" = "8:{09D0AF77-53B8-4367-B1CE-90156B834F5A}"
         "UpgradeCode" = "8:{D8105B62-6A94-4394-AEC8-FA03B7F75814}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -943,30 +943,30 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_239A272CC5B7406FA5DEFBC98FE625F8"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_6B129739CC0F4CC0A3D64AA9EA759E7C"
             {
-            "Name" = "8:dbwave64"
+            "Name" = "8:dbWave64"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_1A2565BB09C0441A80223B6EAD140C9E"
-            "Folder" = "8:_67CCB7A62C01430DB3FF631206F2818A"
+            "Target" = "8:_689BBB3E64C24556A24A6D628CAAE51A"
+            "Folder" = "8:_B15F431F191541F5B3B57F62532A564E"
             "WorkingFolder" = "8:_70F132C1888A4AF4B738A437859A06A1"
             "Icon" = "8:_FB2D6569CEC9472C91FC43FFC4F43A91"
             "Feature" = "8:"
             }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_79914073EC0D4B2B8D543A0545486924"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_FF19C9D5E367486F85033DC11E7FFAFC"
             {
-            "Name" = "8:dbwave64"
+            "Name" = "8:dbWave64"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_1A2565BB09C0441A80223B6EAD140C9E"
-            "Folder" = "8:_B15F431F191541F5B3B57F62532A564E"
+            "Target" = "8:_689BBB3E64C24556A24A6D628CAAE51A"
+            "Folder" = "8:_67CCB7A62C01430DB3FF631206F2818A"
             "WorkingFolder" = "8:_70F132C1888A4AF4B738A437859A06A1"
             "Icon" = "8:_FB2D6569CEC9472C91FC43FFC4F43A91"
             "Feature" = "8:"
@@ -1372,7 +1372,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_1A2565BB09C0441A80223B6EAD140C9E"
             {
-            "SourcePath" = "8:..\\dbWave64\\Release\\dbWave64.exe"
+            "SourcePath" = "8:..\\dbWave64\\Debug\\dbWave64.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_70F132C1888A4AF4B738A437859A06A1"
@@ -1428,7 +1428,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_689BBB3E64C24556A24A6D628CAAE51A"
             {
-            "SourcePath" = "8:..\\dbWave64\\Release\\dbWave64.exe"
+            "SourcePath" = "8:..\\dbWave64\\Debug\\dbWave64.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_70F132C1888A4AF4B738A437859A06A1"

@@ -109,6 +109,7 @@ protected:
 	void	set_record_wave_format(const source_data_struct* record) const;
 	boolean import_file_single(const CString& cs_filename, long& m_id, int i_record, const CStringArray& cs_array, int n_columns,
 	                           boolean b_header);
+public:
 	CString get_full_path_name_without_extension() const;
 
 	static number_id_to_text headers_[];

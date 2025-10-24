@@ -1,0 +1,21 @@
+{
+  // Prevent trailing whitespace issues when working with multiple editors
+  "[markdown]": {
+    "files.trimTrailingWhitespace": false,
+    "files.insertFinalNewline": false,
+    "files.trimFinalNewlines": false
+  },
+  "[cpp]": {
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true
+  },
+  "[c]": {
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true
+  },
+  // General editor settings
+  "files.eol": "\r\n"
+}
+
+
+

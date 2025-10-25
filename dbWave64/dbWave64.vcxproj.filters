@@ -348,12 +348,6 @@
     <ClCompile Include="StdAfx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StretchControls.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="subfileitem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Tag.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -623,6 +617,12 @@
     </ClCompile>
     <ClCompile Include="ViewDB\ExportOptions.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\StretchControls.cpp">
+      <Filter>Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="data_file\subfileitem.cpp">
+      <Filter>data_files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -945,12 +945,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StdAfx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StretchControls.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="subfileitem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Tag.h">
@@ -1315,6 +1309,12 @@
     </ClInclude>
     <ClInclude Include="ViewDB\ExportOptions.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls\StretchControls.h">
+      <Filter>Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="data_file\subfileitem.h">
+      <Filter>data_files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

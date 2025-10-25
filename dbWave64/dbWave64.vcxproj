@@ -11,6 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Controls\StretchControls.cpp" />
+    <ClCompile Include="data_file\subfileitem.cpp" />
     <ClCompile Include="ViewDB\EmfExportHelper.cpp" />
     <ClCompile Include="ViewDB\ExportPreview.cpp" />
     <ClCompile Include="ViewDB\ExportOptions.cpp" />
@@ -174,8 +176,6 @@
     <ClCompile Include="options_spike_detection_array.cpp" />
     <ClCompile Include="Splash.cpp" />
     <!-- <ClCompile Include="Stage.cpp" /> -->
-    <ClCompile Include="StretchControls.cpp" />
-    <ClCompile Include="subfileitem.cpp" />
     <ClCompile Include="Tag.cpp" />
     <ClCompile Include="Taglist.cpp" />
     <ClCompile Include="TemplateListWnd.cpp" />
@@ -203,6 +203,8 @@
     <ClCompile Include="WaveBuf.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Controls\StretchControls.h" />
+    <ClInclude Include="data_file\subfileitem.h" />
     <ClInclude Include="ViewDB\EmfExportHelper.h" />
     <ClInclude Include="ViewDB\EmfLayoutConstants.h" />
     <ClInclude Include="ViewDB\ExportPreview.h" />
@@ -402,8 +404,6 @@
     <ClInclude Include="options_spike_detection_array.h" />
     <ClInclude Include="Splash.h" />
     <ClInclude Include="StdAfx.h" />
-    <ClInclude Include="StretchControls.h" />
-    <ClInclude Include="subfileitem.h" />
     <ClInclude Include="Tag.h" />
     <ClInclude Include="Taglist.h" />
     <ClInclude Include="targetver.h" />

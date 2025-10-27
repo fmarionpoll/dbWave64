@@ -2,6 +2,9 @@
 // Microsoft Visual C++ generated include file.
 // Used by dbWave.rc
 //
+#define IDR_DBWAVETYPE_CNTR_IP          6
+#define IDD_ABOUTBOX                    100
+#define IDP_OLE_INIT_FAILED             100
 #define IDD_VIEWDBWAVE                  101
 #define IDS_CLASS_VIEW                  102
 #define IDD_VIEWADCONTINUOUS            103
@@ -502,8 +505,10 @@
 #define IDC_COMBO1_REPEAT2              1019
 #define IDC_COMBO_EXPT3                 1020
 #define IDC_NUMBEROFRUNS                1020
+
 #define IDC_NUMBEROFCHANNELS            1021
 #define IDC_SKIPNBYTES                  1022
+
 #define IDC_PRECISION                   1023
 #define IDC_CHANNELNO                   1024
 #define IDC_CHANNELGAIN                 1025

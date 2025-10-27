@@ -3,6 +3,7 @@
 #include "resource.h"
 #include "dbWaveDoc.h"
 #include "DlgImportFiles.h"
+#include <shellapi.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

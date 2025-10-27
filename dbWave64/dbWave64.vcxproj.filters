@@ -351,9 +351,6 @@
     <ClCompile Include="Taglist.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WaveBuf.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Controls\cdxCRot90DC.cpp">
       <Filter>Controls</Filter>
     </ClCompile>
@@ -402,15 +399,6 @@
     <ClCompile Include="GridCtrl\GridURLCell.cpp">
       <Filter>Grid</Filter>
     </ClCompile>
-    <ClCompile Include="Controls\Scale.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Envelope.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="chanlistitem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="dbWaveDoc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -433,12 +421,6 @@
       <Filter>Controls</Filter>
     </ClCompile>
     <ClCompile Include="Controls\ScrollBarEx.cpp">
-      <Filter>Controls</Filter>
-    </ClCompile>
-    <ClCompile Include="Controls\Ruler.cpp">
-      <Filter>Controls</Filter>
-    </ClCompile>
-    <ClCompile Include="Controls\RulerBar.cpp">
       <Filter>Controls</Filter>
     </ClCompile>
     <ClCompile Include="DatabaseUtils.cpp">
@@ -573,6 +555,24 @@
     <ClCompile Include="data_file\subfileitem.cpp">
       <Filter>data_files</Filter>
     </ClCompile>
+    <ClCompile Include="Controls\Ruler.cpp">
+      <Filter>Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\RulerBar.cpp">
+      <Filter>Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="chanlistitem.cpp">
+      <Filter>Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="Envelope.cpp">
+      <Filter>Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\Scale.cpp">
+      <Filter>Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="WaveBuf.cpp">
+      <Filter>data_files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AcqDataDoc.h">
@@ -590,19 +590,10 @@
     <ClInclude Include="ADAcqDataDoc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="chanlistitem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ChildFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ColorNames.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CRange.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CRanges.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CSpkListCtrlTab.h">
@@ -758,9 +749,6 @@
     <ClInclude Include="DlgXYParameters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Envelope.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FilenameCleanupUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -911,9 +899,6 @@
     <ClInclude Include="TemplateWnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WaveBuf.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GridCtrl\MemDC.h">
       <Filter>Controls</Filter>
     </ClInclude>
@@ -1019,9 +1004,6 @@
     <ClInclude Include="CPivotTables.h">
       <Filter>excel</Filter>
     </ClInclude>
-    <ClInclude Include="Controls\Scale.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Excel\excel9.h">
       <Filter>excel</Filter>
     </ClInclude>
@@ -1032,12 +1014,6 @@
       <Filter>Grid</Filter>
     </ClInclude>
     <ClInclude Include="Controls\QuadStateTree.h">
-      <Filter>Controls</Filter>
-    </ClInclude>
-    <ClInclude Include="Controls\Ruler.h">
-      <Filter>Controls</Filter>
-    </ClInclude>
-    <ClInclude Include="Controls\RulerBar.h">
       <Filter>Controls</Filter>
     </ClInclude>
     <ClInclude Include="Controls\ScrollBarEx.h">
@@ -1207,6 +1183,36 @@
     </ClInclude>
     <ClInclude Include="data_file\subfileitem.h">
       <Filter>data_files</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\PanelFilter\PaneldbFilterToolBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\PanelProperties\PaneldbPropertiesToolBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls\Ruler.h">
+      <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls\RulerBar.h">
+      <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="chanlistitem.h">
+      <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="CRanges.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="CRange.h">
+      <Filter>excel</Filter>
+    </ClInclude>
+    <ClInclude Include="Envelope.h">
+      <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="WaveBuf.h">
+      <Filter>data_files</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls\Scale.h">
+      <Filter>Chart</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -528,7 +528,7 @@
     <OutDir>.\Debug\</OutDir>
     <IntDir>.\Debug\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)\include\office;$(ProjectDir)\include\CED\win32;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ViewDB;$(ProjectDir)Grid;$(ProjectDir)excel;$(ProjectDir)data_files;$(ProjectDir)Controls;$(ProjectDir)Chart;$(ProjectDir)include\office;$(ProjectDir)include\CED\win32;$(IncludePath)</IncludePath>
     <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
@@ -536,7 +536,7 @@
     <OutDir>.\Release\</OutDir>
     <IntDir>.\Release\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)\include\office;$(ProjectDir)\include\CED\win32;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ViewDB;$(ProjectDir)Grid;$(ProjectDir)excel;$(ProjectDir)data_files;$(ProjectDir)Controls;$(ProjectDir)Chart;$(ProjectDir)include\office;$(ProjectDir)include\CED\win32;$(IncludePath)</IncludePath>
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

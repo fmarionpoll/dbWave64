@@ -573,6 +573,9 @@
     <ClCompile Include="WaveBuf.cpp">
       <Filter>data_files</Filter>
     </ClCompile>
+    <ClCompile Include="DlgAcquisitionStub.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AcqDataDoc.h">
@@ -1213,6 +1216,9 @@
     </ClInclude>
     <ClInclude Include="Controls\Scale.h">
       <Filter>Chart</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgAcquisitionStub.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

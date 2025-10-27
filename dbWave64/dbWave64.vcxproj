@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="Controls\StretchControls.cpp" />
     <ClCompile Include="data_file\subfileitem.cpp" />
+    <ClCompile Include="DlgAcquisitionStub.cpp" />
     <ClCompile Include="ViewDB\EmfExportHelper.cpp" />
     <ClCompile Include="ViewDB\ExportPreview.cpp" />
     <ClCompile Include="ViewDB\ExportOptions.cpp" />
@@ -189,6 +190,7 @@
   <ItemGroup>
     <ClInclude Include="Controls\StretchControls.h" />
     <ClInclude Include="data_file\subfileitem.h" />
+    <ClInclude Include="DlgAcquisitionStub.h" />
     <ClInclude Include="ViewDB\EmfExportHelper.h" />
     <ClInclude Include="ViewDB\EmfLayoutConstants.h" />
     <ClInclude Include="ViewDB\ExportPreview.h" />

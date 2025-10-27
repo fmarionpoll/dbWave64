@@ -16,7 +16,7 @@ IMPLEMENT_DYNAMIC(DlgAcquisitionStub, CDialogEx)
 DlgAcquisitionStub::DlgAcquisitionStub()
 	: CDialogEx(IDD_VIEWADCONTINUOUS)
 {
-	m_bAutoDelete = TRUE;
+	//m_bAutoDelete = TRUE;
 }
 
 void DlgAcquisitionStub::Show(CWnd* p_parent)

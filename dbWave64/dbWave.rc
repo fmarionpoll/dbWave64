@@ -3156,7 +3156,7 @@ BEGIN
     ID_EXPORT_VIEW_AS_PNG   "Exprot view as a PNG file"
 END
 
-END
+#endif    // English (United States) resources
 
 
 /////////////////////////////////////////////////////////////////////////////

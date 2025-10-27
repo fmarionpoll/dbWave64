@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "AcqWaveChanArray.h"
-#include <Olxdadefs.h>
+#include "options_input.h"
+
 
 class options_import final : public CObject
 {

@@ -14,14 +14,6 @@ public:
 	int m_cursor_state = 0;
 	int m_n_status = 0;
 
-	// Acquisition session state (mailbox approach)
-	CString m_session_dir_;
-	CString m_session_id_;
-	UINT_PTR m_notify_timer_id_ { 0 };
-	DWORD m_poll_interval_ms_ { 1000 };
-	BOOL m_monitor_active_ { FALSE };
-	HANDLE m_data_acq_process_handle_ { NULL };
-
 #ifdef _DEBUG
 	void AssertValid() const override;
 	void Dump(CDumpContext& dc) const override;
@@ -37,17 +29,6 @@ protected:
 	BOOL export_to_excel_and_build_pivot(int option);
 	static void build_excel_pivot(void* po_app, void* p_odata_sheet, CString cs_source_data_address, CString cs_name_sheet,
 	                              short xl_consolidation_function, int col2);
-
-	// Acquisition session helpers
-	BOOL start_acquisition_session();
-	void stop_acquisition_session(BOOL due_to_end_message);
-	void poll_session_notifications();
-	BOOL import_directory_silently(const CString& dir);
-	static CString generate_session_id();
-	static CString default_session_base_path();
-	static CString build_session_folder(const CString& base_path, const CString& session_id);
-	static BOOL ensure_directory_exists_recursive(const CString& path);
-	static CString find_or_prompt_data_acq_exe();
 
 protected:
 	afx_msg void on_view_cursor_mode_normal();

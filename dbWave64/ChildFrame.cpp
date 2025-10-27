@@ -34,6 +34,8 @@
 
 #include "ChildFrame.h"
 
+#include "DlgAcquisitionStub.h"
+
 #include <algorithm>
 
 #include "DlgBrowseFile.h"
@@ -42,7 +44,6 @@
 #include "DlgLoadSaveOptions.h"
 #include "DlgPrintMargins.h"
 #include "FilenameCleanupUtils.h"
-#include "ViewADcontinuous.h"
 #include "ViewDB/Data/ViewData.h"
 #include "ViewDB/SpikeDetect/ViewSpikeDetect.h"
 #include "ViewDB/SpikeHist/ViewSpikeHist.h"
@@ -53,185 +54,6 @@
 #include <ShlObj.h>
 #include <atlpath.h>
 #include <random>
-
-// --- Acquisition session mailbox helpers ---
-CString CChildFrame::generate_session_id()
-{
-    GUID g{};
-    if (SUCCEEDED(CoCreateGuid(&g)))
-    {
-        CString s;
-        s.Format(_T("%08lX%04hX%04hX%04hX%04hX%08lX"),
-                 g.Data1, g.Data2, g.Data3,
-                 (g.Data4[0] << 8) | g.Data4[1],
-                 (g.Data4[2] << 8) | g.Data4[3],
-                 (g.Data4[4] << 24) | (g.Data4[5] << 16) | (g.Data4[6] << 8) | g.Data4[7]);
-        return s;
-    }
-    SYSTEMTIME st{}; GetSystemTime(&st);
-    CString s; s.Format(_T("%04u%02u%02u%02u%02u%02u%03u"), st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
-    return s;
-}
-
-CString CChildFrame::default_session_base_path()
-{
-    CString base = static_cast<CdbWaveApp*>(AfxGetApp())->get_my_documents_my_dbwave_path();
-    if (base.IsEmpty()) return base;
-    int pos = base.ReverseFind(_T('\\'));
-    if (pos >= 0) base = base.Left(pos);
-    base += _T("\\dbwave\\acquisition");
-    CTime now = CTime::GetCurrentTime();
-    CString year; year.Format(_T("\\%04d"), now.GetYear());
-    CString day; day.Format(_T("\\%04d-%02d-%02d"), now.GetYear(), now.GetMonth(), now.GetDay());
-    return base + year + day;
-}
-
-CString CChildFrame::build_session_folder(const CString& base_path, const CString& session_id)
-{
-    CString path = base_path;
-    if (!path.IsEmpty() && path[path.GetLength()-1] != _T('\\')) path += _T("\\");
-    path += _T("session-") + session_id;
-    return path;
-}
-
-BOOL CChildFrame::ensure_directory_exists_recursive(const CString& path)
-{
-    if (path.IsEmpty()) return FALSE;
-    const auto hr = SHCreateDirectoryEx(nullptr, path, nullptr);
-    return (hr == ERROR_SUCCESS || hr == ERROR_ALREADY_EXISTS);
-}
-
-CString CChildFrame::find_or_prompt_data_acq_exe()
-{
-    CString exe;
-    CWinApp* app = AfxGetApp();
-    exe = app->GetProfileString(_T("dataAcq"), _T("exePath"));
-    if (!exe.IsEmpty() && CdbWaveDoc::file_exists(exe))
-        return exe;
-    CFileDialog dlg(TRUE, _T("exe"), nullptr, OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST, _T("Executables (*.exe)|*.exe|All Files (*.*)|*.*||"));
-    dlg.m_ofn.lpstrTitle = _T("Select dataAcq executable");
-    if (dlg.DoModal() == IDOK)
-    {
-        exe = dlg.GetPathName();
-        app->WriteProfileString(_T("dataAcq"), _T("exePath"), exe);
-    }
-    return exe;
-}
-
-BOOL CChildFrame::import_directory_silently(const CString& dir)
-{
-    CdbWaveDoc* p_doc = CdbWaveDoc::get_active_mdi_document();
-    if (p_doc == nullptr) return FALSE;
-    CFileFind finder;
-    CString pattern = dir; if (!pattern.IsEmpty() && pattern[pattern.GetLength()-1] != _T('\\')) pattern += _T("\\");
-    pattern += _T("*.*");
-    CStringArray files;
-    BOOL bWorking = finder.FindFile(pattern);
-    while (bWorking)
-    {
-        bWorking = finder.FindNextFile();
-        if (finder.IsDots() || finder.IsDirectory()) continue;
-        const auto name = finder.GetFilePath();
-        if (CdbWaveDoc::is_extension_recognized_as_data_file(name))
-            files.Add(name);
-    }
-    finder.Close();
-    if (files.GetSize() == 0) return TRUE;
-    p_doc->import_file_list(files);
-    p_doc->UpdateAllViews(nullptr, HINT_REQUERY, nullptr);
-    return TRUE;
-}
-
-BOOL CChildFrame::start_acquisition_session()
-{
-    if (m_monitor_active_) return TRUE;
-    const CString base = default_session_base_path();
-    m_session_id_ = generate_session_id();
-    m_session_dir_ = build_session_folder(base, m_session_id_);
-    if (!ensure_directory_exists_recursive(m_session_dir_))
-    {
-        AfxMessageBox(_T("Failed to create session folder."), MB_ICONERROR);
-        return FALSE;
-    }
-    const CString exe = find_or_prompt_data_acq_exe();
-    if (exe.IsEmpty()) return FALSE;
-    CString cmd;
-    cmd.Format(_T("\"%s\" --session %s --session_dir \"%s\""), exe.GetString(), m_session_id_.GetString(), m_session_dir_.GetString());
-    STARTUPINFO si{}; si.cb = sizeof(si);
-    PROCESS_INFORMATION pi{};
-    CString workdir = m_session_dir_;
-    BOOL ok = CreateProcess(nullptr, cmd.GetBuffer(), nullptr, nullptr, FALSE, 0, nullptr, workdir, &si, &pi);
-    cmd.ReleaseBuffer();
-    if (!ok)
-    {
-        AfxMessageBox(_T("Failed to launch dataAcq."), MB_ICONERROR);
-        return FALSE;
-    }
-    m_data_acq_process_handle_ = pi.hProcess;
-    CloseHandle(pi.hThread);
-    m_notify_timer_id_ = SetTimer(0xDBA1, m_poll_interval_ms_, nullptr);
-    m_monitor_active_ = TRUE;
-    return TRUE;
-}
-
-void CChildFrame::stop_acquisition_session(BOOL /*due_to_end_message*/)
-{
-    if (m_notify_timer_id_ != 0)
-    {
-        KillTimer(m_notify_timer_id_);
-        m_notify_timer_id_ = 0;
-    }
-    if (m_data_acq_process_handle_ != NULL)
-    {
-        CloseHandle(m_data_acq_process_handle_);
-        m_data_acq_process_handle_ = NULL;
-    }
-    m_monitor_active_ = FALSE;
-}
-
-void CChildFrame::poll_session_notifications()
-{
-    if (!m_monitor_active_ || m_session_dir_.IsEmpty()) return;
-    CFileFind finder;
-    CString pattern = m_session_dir_;
-    if (!pattern.IsEmpty() && pattern[pattern.GetLength()-1] != _T('\\')) pattern += _T("\\");
-    pattern += _T("*.notify");
-    CStringArray notify_paths;
-    BOOL bWorking = finder.FindFile(pattern);
-    while (bWorking)
-    {
-        bWorking = finder.FindNextFile();
-        if (finder.IsDots() || finder.IsDirectory()) continue;
-        notify_paths.Add(finder.GetFilePath());
-    }
-    finder.Close();
-    if (notify_paths.GetSize() > 0)
-    {
-        import_directory_silently(m_session_dir_);
-        for (INT_PTR i = 0; i < notify_paths.GetSize(); ++i)
-        {
-            CFile::Remove(notify_paths[i]);
-        }
-    }
-    if (m_data_acq_process_handle_ != NULL)
-    {
-        DWORD code = STILL_ACTIVE;
-        if (GetExitCodeProcess(m_data_acq_process_handle_, &code) && code != STILL_ACTIVE)
-        {
-            import_directory_silently(m_session_dir_);
-            stop_acquisition_session(TRUE);
-        }
-    }
-}
-
-void CChildFrame::OnTimer(UINT_PTR n_id_event)
-{
-    if (n_id_event == m_notify_timer_id_)
-    {
-        poll_session_notifications();
-    }
-    CMDIChildWndEx::OnTimer(n_id_event);
-}
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -252,7 +74,6 @@ BEGIN_MESSAGE_MAP(CChildFrame, CMDIChildWndEx)
 	ON_COMMAND(ID_OPTIONS_LOAD_SAVE_OPTIONS, &CChildFrame::on_options_load_save_options)
 	ON_MESSAGE(WM_MYMESSAGE, &CChildFrame::on_my_message)
 	ON_WM_CREATE()
-	ON_WM_TIMER()
 
 	ON_COMMAND_RANGE(ID_VIEW_DATABASE, ID_VIEW_ACQUIRE_DATA, &CChildFrame::replace_view_index) 
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_DATABASE, ID_VIEW_ACQUIRE_DATA, &CChildFrame::on_update_view_menu)
@@ -568,17 +389,8 @@ void CChildFrame::replace_view_index(UINT n_id)
 			replace_view(RUNTIME_CLASS(ViewSpikeHist), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_spike_view);
 		break;
 	case ID_VIEW_ACQUIRE_DATA:
-		// Launch external data acquisition tool and start notification monitor
-		if (start_acquisition_session())
-		{
-			b_active_panes = FALSE;
-		}
-		else
-		{
-			// Fallback to legacy in-process view if session launch failed
-			replace_view(RUNTIME_CLASS(ViewADcontinuous), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_data_view);
-			b_active_panes = FALSE;
-		}
+		DlgAcquisitionStub::Show(this);
+		b_active_panes = FALSE;
 		break;
 
 	default:
@@ -619,7 +431,7 @@ void CChildFrame::on_update_view_menu(CCmdUI * p_cmd_ui)
 		break;
 
 	case ID_VIEW_ACQUIRE_DATA:
-		flag = p_app->m_ad_card_found;
+		flag = TRUE;
 		break;
 
 	default:
@@ -1377,4 +1189,3 @@ void CChildFrame::on_tools_cleanup_filenames()
 		p_db_wave_doc->UpdateAllViews(nullptr, HINT_REQUERY, nullptr);
 	}
 }
-

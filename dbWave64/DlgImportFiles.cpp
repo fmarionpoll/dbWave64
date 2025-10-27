@@ -10,7 +10,7 @@
 #include "data_file/dataheader_Atlab.H"
 #include "dbWaveDoc.h"
 //#include "data_acquisition/DlgADExperiment.h"
-#include "DlgADInputParms.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

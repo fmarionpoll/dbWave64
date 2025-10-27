@@ -1,7 +1,29 @@
 ﻿#pragma once
-#include <Olxdadefs.h>
 #include "AcqWaveChanArray.h"
 #include "AcqWaveFormat.h"
+
+/* for OLDRV_SETCHANNELTYPE         */
+#define OLx_CHNT_SINGLEENDED         0
+#define OLx_CHNT_DIFFERENTIAL        1
+
+/* for Encoding property            */
+#define OLx_ENC_BINARY               0
+#define OLx_ENC_2SCOMP                1
+
+/* for trigger property             */
+#define OLx_TRG_SOFT                 0
+#define OLx_TRG_EXTERN               1
+#define OLx_TRG_THRESHPOS            2
+#define OLx_TRG_THRESHNEG            3
+#define OLx_TRG_ANALOGEVENT          4
+#define OLx_TRG_DIGITALEVENT         5
+#define OLx_TRG_TIMEREVENT           6
+#define OLx_TRG_EXTRA                7
+
+/* for ClockSource property         */
+#define OLx_CLK_INTERNAL             0
+#define OLx_CLK_EXTERNAL             1
+#define OLx_CLK_EXTRA                2
 
 
 class options_input final : public CObject

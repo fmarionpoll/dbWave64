@@ -8,7 +8,6 @@
 #include "ViewDB/Data/ViewData.h"
 #include "ViewDB/Spikes/ViewSpikes.h"
 #include "ViewDB/ListRecords/ViewRecordsList.h"
-#include "data_acquisition/ViewADcontinuous.h"
 #include "ViewText/ViewNotedoc.h"
 #include "dbWaveDoc.h"
 #include "NoteDoc.h"
@@ -136,17 +135,6 @@ BOOL CdbWaveApp::InitInstance()
 	m_data_view_template->SetContainerInfo(IDR_DBWAVETYPE_CNTR_IP);
 	AddDocTemplate(m_data_view_template);
 	h_menu_data_view = m_data_view_template->m_hMenuShared;
-
-	// ---------------------------------------------
-	// continuous A/D view with data translation card
-	//m_ad_view_template = new CdbMultiDocTemplate(IDR_DBDATATYPE,
-	//                                            RUNTIME_CLASS(CdbWaveDoc),
-	//                                            RUNTIME_CLASS(CChildFrame), // multi-file MDI child frame
-	//                                            RUNTIME_CLASS(ViewADcontinuous)); // AD view
-	//ASSERT(m_ad_view_template != NULL);
-	//m_ad_view_template->SetContainerInfo(IDR_DBWAVETYPE_CNTR_IP);
-	//AddDocTemplate(m_ad_view_template);
-	//h_menu_acq_view = m_ad_view_template->m_hMenuShared;
 
 	// ---------------------------------------------
 	m_spike_view_template = new CdbMultiDocTemplate(IDR_DBSPIKETYPE,

@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "resource.h"
 #include "DlgImportGenericData.h"
-
+#include "options_input.h"
 #include <algorithm>
 
 #ifdef _DEBUG

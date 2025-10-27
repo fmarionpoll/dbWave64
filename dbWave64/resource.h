@@ -2,9 +2,6 @@
 // Microsoft Visual C++ generated include file.
 // Used by dbWave.rc
 //
-#define IDR_DBWAVETYPE_CNTR_IP          6
-#define IDD_ABOUTBOX                    100
-#define IDP_OLE_INIT_FAILED             100
 #define IDD_VIEWDBWAVE                  101
 #define IDS_CLASS_VIEW                  102
 #define IDD_VIEWADCONTINUOUS            103
@@ -21,6 +18,11 @@
 #define IDS_FILEDESCRIP                 114
 #define IDS_OUTLOOKBAR                  115
 #define IDS_ACQDATA_SWEEPDURATIONLOW    116
+#define IDC_ACQ_STUB_MESSAGE            500
+#define IDC_ACQ_STUB_HINT               501
+#define IDC_ACQ_STUB_LAUNCH             502
+#define IDC_ACQ_STUB_IMPORT             503
+#define IDC_ACQ_STUB_FOOTER             504
 #define IDR_HELP_MENU                   117
 #define IDR_POPUP_EDIT                  118
 #define IDS_ACQDATA_SAVEYESNO           119

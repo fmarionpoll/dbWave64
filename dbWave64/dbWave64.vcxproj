@@ -29,22 +29,6 @@
     <ClCompile Include="Chart\ChartWnd.cpp" />
     <ClCompile Include="Controls\EditCtrl.cpp" />
     <ClCompile Include="DatabaseUtils.cpp" />
-    <ClCompile Include="data_acquisition\CyberAmp.cpp" />
-    <ClCompile Include="data_acquisition\DataTranslation_AD.cpp" />
-    <ClCompile Include="data_acquisition\DataTranslation_DA.cpp" />
-    <ClCompile Include="data_acquisition\DlgADExperiment.cpp" />
-    <ClCompile Include="data_acquisition\DlgADInputParms.cpp" />
-    <ClCompile Include="data_acquisition\DlgADIntervals.cpp" />
-    <ClCompile Include="data_acquisition\DlgDAChannels.cpp" />
-    <ClCompile Include="data_acquisition\DlgDAOutputsParms.cpp" />
-    <ClCompile Include="data_acquisition\DlgDataTranslationBoard.cpp" />
-    <ClCompile Include="data_acquisition\DlgEditDAMseq.cpp" />
-    <ClCompile Include="data_acquisition\dtacq32.cpp" />
-    <ClCompile Include="data_acquisition\dtplot32.cpp" />
-    <ClCompile Include="data_acquisition\USBPxxPARAMETERS.cpp" />
-    <ClCompile Include="data_acquisition\USBPxxS1.cpp" />
-    <ClCompile Include="data_acquisition\USBPxxS1Ctl.cpp" />
-    <ClCompile Include="data_acquisition\ViewAdcontinuous.cpp" />
     <ClCompile Include="data_file\datafile_ASD.cpp" />
     <ClCompile Include="data_file\datafile_Atlab.cpp" />
     <ClCompile Include="data_file\datafile_Awave.cpp" />
@@ -231,22 +215,6 @@
     <ClInclude Include="Controls\cdxCRotBevelLine.h" />
     <ClInclude Include="Controls\EditCtrl.h" />
     <ClInclude Include="DatabaseUtils.h" />
-    <ClInclude Include="data_acquisition\CDTBoardParameters.h" />
-    <ClInclude Include="data_acquisition\CyberAmp.h" />
-    <ClInclude Include="data_acquisition\DataTranslation_AD.h" />
-    <ClInclude Include="data_acquisition\DataTranslation_DA.h" />
-    <ClInclude Include="data_acquisition\DlgADExperiment.h" />
-    <ClInclude Include="data_acquisition\DlgADInputParms.h" />
-    <ClInclude Include="data_acquisition\DlgADIntervals.h" />
-    <ClInclude Include="data_acquisition\DlgDAChannels.h" />
-    <ClInclude Include="data_acquisition\DlgDAOutputsParms.h" />
-    <ClInclude Include="data_acquisition\DlgEditDAMseq.h" />
-    <ClInclude Include="data_acquisition\dtacq32.h" />
-    <ClInclude Include="data_acquisition\dtplot32.h" />
-    <ClInclude Include="data_acquisition\USBPxxPARAMETERS.h" />
-    <ClInclude Include="data_acquisition\USBPxxS1.h" />
-    <ClInclude Include="data_acquisition\USBPxxS1Ctl.h" />
-    <ClInclude Include="data_acquisition\ViewADcontinuous.h" />
     <ClInclude Include="data_file\datafile_ASD.h" />
     <ClInclude Include="data_file\datafile_Atlab.h" />
     <ClInclude Include="data_file\datafile_Awave.h" />
@@ -333,7 +301,6 @@
     <ClInclude Include="DlgSpikeEdit.h" />
     <ClInclude Include="DlgTransferFiles.h" />
     <ClInclude Include="DlgXYParameters.h" />
-    <ClInclude Include="data_acquisition\DlgDataTranslationBoard.h" />
     <ClInclude Include="Envelope.h" />
     <ClInclude Include="Excel\excel9.h" />
     <ClInclude Include="FilenameCleanupUtils.h" />
@@ -561,7 +528,7 @@
     <OutDir>.\Debug\</OutDir>
     <IntDir>.\Debug\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)\include\Data Translation;$(ProjectDir)\include\Alligator\win32;$(ProjectDir)\include\CED\win32;$(ProjectDir)\include\office;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\include\office;$(ProjectDir)\include\CED\win32;$(IncludePath)</IncludePath>
     <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
@@ -569,7 +536,7 @@
     <OutDir>.\Release\</OutDir>
     <IntDir>.\Release\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\fred\source\repos\dbwave64\dbWave64\include\office;C:\Users\fred\source\repos\dbwave64\dbWave64\include\CED\win32;C:\Users\fred\source\repos\dbwave64\dbWave64\include\Alligator\win32;C:\Users\fred\source\repos\dbwave64\dbWave64\include\DataTranslation;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\include\office;$(ProjectDir)\include\CED\win32;$(IncludePath)</IncludePath>
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -583,7 +550,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\data_acquisition;$(ProjectDir)\Controls;$(ProjectDir)\GridCtrl;$(ProjectDir)\Excel;$(ProjectDir)\include\DataTranslation;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\Controls;$(ProjectDir)\GridCtrl;$(ProjectDir)\Excel;$(ProjectDir)\include\CED\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -602,10 +569,10 @@
       <Culture>0x0000</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>olmem32.lib;oldaapi32.lib;ceds64int.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ceds64int.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>.\Debug/dbWave64.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>$(ProjectDir)include\DataTranslation;$(ProjectDir)include\CED\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)include\CED\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>.\Debug/dbWave64.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -632,7 +599,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\data_acquisition;$(ProjectDir)\Controls;$(ProjectDir)\GridCtrl;$(ProjectDir)\Excel;$(ProjectDir)\include\DataTranslation;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\Controls;$(ProjectDir)\GridCtrl;$(ProjectDir)\Excel;$(ProjectDir)\include\CED\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -651,10 +618,10 @@
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>olmem32.lib;oldaapi32.lib;ceds64int.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ceds64int.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>.\Release/dbWave64.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>$(ProjectDir)include\DataTranslation;$(ProjectDir)include\CED\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)include\CED\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ProgramDatabaseFile>.\Release/dbWave64.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>

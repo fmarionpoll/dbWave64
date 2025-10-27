@@ -4,8 +4,7 @@
 #include "StdAfx.h"
 #include "dataheader_Atlab.H"
 #include "datafile_mcid.h"
-
-#include <Olxdadefs.h>
+#include "options_input.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

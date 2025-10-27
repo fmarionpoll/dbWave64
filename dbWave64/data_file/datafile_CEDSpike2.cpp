@@ -2,7 +2,7 @@
 #include "datafile_CEDSpike2.h"
 #include "dataheader_Atlab.H"
 #include "ceds64int.h"
-#include <Olxdadefs.h>
+#include "options_input.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

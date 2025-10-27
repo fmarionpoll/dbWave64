@@ -22,9 +22,6 @@
     <Filter Include="data_files">
       <UniqueIdentifier>{500b396b-084a-4962-8044-83226269edf6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="data_acquisition">
-      <UniqueIdentifier>{a0adc36c-523d-4f57-8985-d3579a79e9f6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Chart">
       <UniqueIdentifier>{e82a5829-f735-443a-8991-d898d91f8328}</UniqueIdentifier>
     </Filter>
@@ -497,54 +494,6 @@
     </ClCompile>
     <ClCompile Include="data_file\datafile_X.cpp">
       <Filter>data_files</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\CyberAmp.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\DataTranslation_AD.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\DataTranslation_DA.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\DlgADExperiment.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\DlgADInputParms.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\DlgADIntervals.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\DlgDAChannels.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\DlgDAOutputsParms.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\DlgEditDAMseq.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\dtacq32.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\dtplot32.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\USBPxxPARAMETERS.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\USBPxxS1.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\USBPxxS1Ctl.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\ViewAdcontinuous.cpp">
-      <Filter>data_acquisition</Filter>
-    </ClCompile>
-    <ClCompile Include="data_acquisition\DlgDataTranslationBoard.cpp">
-      <Filter>data_acquisition</Filter>
     </ClCompile>
     <ClCompile Include="ViewDB\PanelFilter\PaneldbFilter.cpp">
       <Filter>ViewDB\PanelFilter</Filter>
@@ -1172,61 +1121,7 @@
     <ClInclude Include="Excel\ImportExcelDefinitions.h">
       <Filter>excel</Filter>
     </ClInclude>
-    <ClInclude Include="data_acquisition\CDTBoardParameters.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\CyberAmp.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\DataTranslation_AD.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\DataTranslation_DA.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\DlgADExperiment.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\DlgADInputParms.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\DlgADIntervals.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\DlgDAChannels.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\DlgDAOutputsParms.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\DlgDataTranslationBoard.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\DlgEditDAMseq.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\dtacq32.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\dtplot32.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\USBPxxPARAMETERS.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\USBPxxS1.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\USBPxxS1Ctl.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
-    <ClInclude Include="data_acquisition\ViewADcontinuous.h">
-      <Filter>data_acquisition</Filter>
-    </ClInclude>
     <ClInclude Include="ViewDB\PanelFilter\PaneldbFilter.h">
-      <Filter>ViewDB\PanelFilter</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewDB\PanelFilter\PaneldbFilterToolBar.h">
       <Filter>ViewDB\PanelFilter</Filter>
     </ClInclude>
     <ClInclude Include="ViewDB\ListRecords\Adapters.h">
@@ -1254,9 +1149,6 @@
       <Filter>ViewDB\Data</Filter>
     </ClInclude>
     <ClInclude Include="ViewDB\PanelProperties\PaneldbProperties.h">
-      <Filter>ViewDB\PanelProperties</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewDB\PanelProperties\PaneldbPropertiesToolBar.h">
       <Filter>ViewDB\PanelProperties</Filter>
     </ClInclude>
     <ClInclude Include="ViewDB\SpikeSort\ViewSpikeSort.h">

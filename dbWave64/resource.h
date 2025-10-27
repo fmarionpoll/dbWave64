@@ -214,9 +214,7 @@
 #define IDD_DA_CHANNELS                 244
 #define IDD_DACHANNELS                  244
 #define IDD_DA_NOISE                    247
-#define IDD_DANOISE                     247
 #define IDD_DA_MSEQ                     248
-#define IDD_DAMSEQ                      248
 #define IDC_ADINTERVALS                 252
 #define IDC_ADCHANNELS                  253
 #define IDB_BITMAP3                     255

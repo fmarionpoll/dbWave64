@@ -151,7 +151,6 @@ BOOL CdbWaveApp::InitInstance()
 													RUNTIME_CLASS(CdbWaveDoc),
 													RUNTIME_CLASS(CChildFrame), // multi-file MDI child frame
 													RUNTIME_CLASS(ViewADcontinuous)); // AD view
-												ASSERT(m_ad_view_template != NULL);
 	m_ad_view_template->SetContainerInfo(IDR_DBWAVETYPE_CNTR_IP);
 	AddDocTemplate(m_ad_view_template);
 	h_menu_acq_view = m_ad_view_template->m_hMenuShared;
@@ -163,9 +162,6 @@ BOOL CdbWaveApp::InitInstance()
 	                                              RUNTIME_CLASS(ViewNoteDoc));
 	m_note_view_template->SetContainerInfo(IDR_DBWAVETYPE_CNTR_IP);
 	AddDocTemplate(m_note_view_template);
-
-
-
 
 
 	// create main MDI Frame window

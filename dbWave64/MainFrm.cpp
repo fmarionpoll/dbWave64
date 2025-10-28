@@ -143,8 +143,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// set the visual manager and style based on persisted value
 	OnApplicationLook(the_app.app_look);
 
-	// Enable enhanced windows management dialog
-	EnableWindowsDialog(ID_WINDOW_MANAGER, ID_WINDOW_MANAGER, TRUE);
+	// Enable enhanced windows management dialog (guarded)
+	//if (::FindResource(AfxGetResourceHandle(), MAKEINTRESOURCE(ID_WINDOW_MANAGER), RT_DIALOG) != nullptr)
+	//{
+		EnableWindowsDialog(ID_WINDOW_MANAGER, ID_WINDOW_MANAGER, TRUE);
+	//}
 
 	//// Enable toolbar and docking window menu replacement
 	//EnablePaneMenu(TRUE, ID_VIEW_CUSTOMIZE, strCustomize, ID_VIEW_TOOLBAR);

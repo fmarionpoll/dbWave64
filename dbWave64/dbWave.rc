@@ -1153,12 +1153,7 @@ IDD_VIEWADCONTINUOUS DIALOGEX 0, 0, 389, 207
 STYLE DS_SETFONT | WS_CHILD
 FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
-    LTEXT           "External data acquisition",IDC_STATIC,7,7,144,10,SS_NOPREFIX
-    LTEXT           "dbWave no longer embeds the hardware acquisition panel. Use your preferred acquisition tool to create .dat files, then import them here.",IDC_ACQ_STUB_MESSAGE,7,24,370,44,SS_NOPREFIX | SS_LEFT,WS_EX_TRANSPARENT
-    LTEXT           "You can launch the external program from the button below. New files dropped into the monitored folder can be imported afterwards.",IDC_ACQ_STUB_HINT,7,72,370,30,SS_NOPREFIX | SS_LEFT,WS_EX_TRANSPARENT
-    PUSHBUTTON      "Launch external acquisition...",IDC_ACQ_STUB_LAUNCH,7,110,160,14
-    PUSHBUTTON      "Import recently acquired files...",IDC_ACQ_STUB_IMPORT,7,130,160,14
-    LTEXT           "(Mailbox monitoring will be added in a future update)",IDC_ACQ_STUB_FOOTER,7,162,260,10,SS_NOPREFIX | SS_LEFT,WS_EX_TRANSPARENT
+    LTEXT           "Acquisition view placeholder",IDC_STATIC,10,10,200,10
 END
 
 IDD_VIEWBROWSE DIALOGEX 0, 0, 494, 30

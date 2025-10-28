@@ -194,6 +194,7 @@ BEGIN
     CONTROL         "&Accept any data format",IDC_CHECKOTHERFORMATS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,105,89,10
     CONTROL         "",IDC_MFCEDITBROWSE1,"MfcEditBrowse",WS_BORDER | WS_TABSTOP | 0x80,7,18,170,14
 END
+
 IDD_VIEWDATA DIALOGEX 0, 0, 286, 164
 STYLE DS_SETFONT | WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_BORDER
 FONT 8, "MS Sans Serif", 0, 0, 0x1
@@ -382,6 +383,7 @@ BEGIN
     PUSHBUTTON      "&Delete",IDC_BUTTON3,118,116,50,14
     PUSHBUTTON      "&Delete all",IDC_BUTTON4,196,22,50,24
 END
+
 IDD_PROPPAGE3 DIALOG 0, 0, 215, 106
 STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Horizontal cursors"
@@ -572,6 +574,7 @@ BEGIN
     LTEXT           "*",IDC_PAGEHEIGHT,90,7,22,8
     CONTROL         "",IDC_RECT1,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,5,21,157,130
 END
+
 IDD_PRINTPAGEMARGINS DIALOG 150, 130, 147, 95
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 CAPTION "Page margins"
@@ -755,6 +758,7 @@ BEGIN
     PUSHBUTTON      "<<",IDC_LEFTSHIFT,15,45,13,16
     PUSHBUTTON      ">>",IDC_RIGHTSHIFT,30,45,13,16
 END
+
 IDD_VIEWSPIKES DIALOGEX 0, 0, 396, 182
 STYLE DS_SETFONT | WS_CHILD
 FONT 8, "MS Sans Serif", 0, 0, 0x1
@@ -941,6 +945,7 @@ BEGIN
     GROUPBOX        "Sample",IDC_STATIC,130,59,96,87
     PUSHBUTTON      "Background color",IDC_BUTTON3,7,104,61,14
 END
+
 IDD_XYPARAMETERS DIALOGEX 50, 50, 203, 102
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 CAPTION "Display parameters"
@@ -1119,6 +1124,7 @@ BEGIN
                     "Button",BS_AUTORADIOBUTTON | BS_TOP | BS_MULTILINE,7,39,89,19
     EDITTEXT        IDC_EDIT2,126,39,51,14,ES_AUTOHSCROLL
 END
+
 IDD_EXPORTDATAFILE DIALOGEX 0, 0, 289, 142
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Export data file"
@@ -1294,6 +1300,7 @@ BEGIN
     LTEXT           "class ",IDC_STATIC,7,8,18,8
     EDITTEXT        IDC_EDIT1,37,7,35,13,ES_AUTOHSCROLL
 END
+
 IDD_IMPORTOPTIONS DIALOGEX 0, 0, 197, 68
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Import options..."
@@ -1489,6 +1496,7 @@ BEGIN
     IDD_ABCISSA, DIALOG
     BEGIN
     END
+
     IDD_BROWSEFILE, DIALOG
     BEGIN
         LEFTMARGIN, 5
@@ -1687,85 +1695,6 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 37
     END
-    IDD_DUPLICATEFOUND, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 303
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 124
-    END
-
-    IDD_OPTIONSOVERWRITEFILE, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 198
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 44
-    END
-
-    IDD_DA_NOISE, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 239
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 141
-    END
-
-    IDD_DA_MSEQ, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 218
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 63
-    END
-
-    IDD_ERASEFILE, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 309
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 90
-    END
-
-    IDD_DA_OUTPUTPARMS, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 217
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 91
-    END
-
-    IDD_DA_CHANNELS, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 264
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 208
-    END
-
-    IDD_IMPORTFILES, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 309
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 109
-    END
-
-    IDD_FILE_NEW1, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 143
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 59
-    END
-
-    IDD_TRANSFERFILES, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 250
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 57
-    END
 
     IDD_IMPORTOPTIONS, DIALOG
     BEGIN
@@ -1888,6 +1817,67 @@ BEGIN
 0x6f68, 0x7275, 0x0073, 
     0
 END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_TABCONTROL          BITMAP                  "res\\tabcontrol.bmp"
+
+IDB_TABCONTROLDIM       BITMAP                  "res\\tabcontrol_dim.bmp"
+
+IDB_STIMON              BITMAP                  "res\\stimON.bmp"
+
+IDB_STIMOFF             BITMAP                  "res\\stimOFF.bmp"
+
+IDB_ZOOMIN              BITMAP                  "res\\zoomin.bmp"
+
+IDB_ZOOMOUT             BITMAP                  "res\\zoomout.bmp"
+
+IDB_CHECK               BITMAP                  "res\\check.bmp"
+
+IDB_CHECK32             BITMAP                  "res\\check32.bmp"
+
+IDB_CHECKNO             BITMAP                  "res\\checkno.bmp"
+
+IDB_CHECKNO32           BITMAP                  "res\\checkno32.bmp"
+
+IDB_SPLASH              BITMAP                  "res\\dbwave_07dec2012.bmp"
+
+IDR_MAINFRAME           BITMAP                  "res\\Toolbar_main.bmp"
+
+IDR_PROJECTTYPE         BITMAP                  "res\\toolbar_proj.bmp"
+
+IDR_DBDATATYPE          BITMAP                  "res\\toolbar_dat.bmp"
+
+IDR_DBSPIKETYPE         BITMAP                  "res\\toolbar_spk.bmp"
+
+IDR_SORT                BITMAP                  "res\\sort.bmp"
+
+IDR_PROPERTIES          BITMAP                  "res\\properties.bmp"
+
+IDR_MENU_IMAGES         BITMAP                  "res\\menuimages.bmp"
+
+IDR_MAINFRAME_256       BITMAP                  "res\\Toolbar256.bmp"
+
+IDR_EXPLORER            BITMAP                  "res\\explorer.bmp"
+
+IDB_MENU_IMAGES_24      BITMAP                  "res\\menuimages_hc.bmp"
+
+IDB_FILE_VIEW           BITMAP                  "res\\fileview.bmp"
+
+IDB_FILE_VIEW_24        BITMAP                  "res\\fileview_hc.bmp"
+
+IDB_EXPLORER            BITMAP                  "res\\explorer.bmp"
+
+IDB_EXPLORER_24         BITMAP                  "res\\explorer_hc.bmp"
+
+IDB_PROPERTIES_HC       BITMAP                  "res\\properties_hc.bmp"
+
+IDB_PROPERTIES          BITMAP                  "res\\properties.bmp"
+
 IDB_BUTTONS             BITMAP                  "res\\buttons.bmp"
 
 IDB_DATABASELARGE       BITMAP                  "res\\Databaselarge.bmp"
@@ -1941,8 +1931,8 @@ IDR_SPIKE_CLASS_PROPERTIES BITMAP                  "res\\properti.bmp"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,2025,10,21
- PRODUCTVERSION 4,2025,10,21
+ FILEVERSION 4,2025,10,25
+ PRODUCTVERSION 4,2025,10,25
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1959,12 +1949,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "AgroParisTech -IDEEV- EGCE UMR 9191 (CNRS-Paris Saclay-IRD)"
             VALUE "FileDescription", "Database-oriented  data acquisition and analysis for extracellular electrophysiology"
-            VALUE "FileVersion", "4.2025.10.21"
+            VALUE "FileVersion", "4.2025.10.25"
             VALUE "InternalName", "dbWave64"
             VALUE "LegalCopyright", "Copyright (C) 2022-2028"
             VALUE "OriginalFilename", "dbWave64.exe"
             VALUE "ProductName", " dbWave Application"
-            VALUE "ProductVersion", "4.2025.10.21"
+            VALUE "ProductVersion", "4.2025.10.25"
         END
     END
     BLOCK "VarFileInfo"
@@ -2087,6 +2077,7 @@ BEGIN
         MENUITEM "&About dbWave...",            ID_APP_ABOUT
     END
 END
+
 IDR_PROJECTTYPE MENU
 BEGIN
     POPUP "&File"
@@ -2453,6 +2444,7 @@ BEGIN
         MENUITEM "&About dbWave...",            ID_APP_ABOUT
     END
 END
+
 IDR_DBWAVETYPE MENU
 BEGIN
     POPUP "&File"
@@ -2639,6 +2631,7 @@ BEGIN
     MENUITEM "Office 2007 (&Aqua Style)",   ID_VIEW_APPLOOK_OFF_2007_AQUA
     MENUITEM "Win&dows 7",                  ID_VIEW_APPLOOK_WINDOWS_7
 END
+
 IDR_DBDATATYPE2 MENU
 BEGIN
     POPUP "&File"
@@ -2837,9 +2830,465 @@ BEGIN
     VK_ADD,         ID_RECORD_NEXT,         VIRTKEY, CONTROL, NOINVERT
     VK_SUBTRACT,    ID_RECORD_PREV,         VIRTKEY, CONTROL, NOINVERT
     VK_ESCAPE,      ID_RECORD_REFRESH,      VIRTKEY, NOINVERT
+END
+
+IDR_DBDATATYPE ACCELERATORS
+BEGIN
+    VK_ESCAPE,      ID_CANCEL_EDIT_CNTR,    VIRTKEY, NOINVERT
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
+    VK_HOME,        ID_FORMAT_FIRST_FRAME,  VIRTKEY, NOINVERT
+    VK_END,         ID_FORMAT_LAST_FRAME,   VIRTKEY, NOINVERT
+    VK_NEXT,        ID_FORMAT_NEXT_FRAME,   VIRTKEY, NOINVERT
+    VK_PRIOR,       ID_FORMAT_PREVIOUS_FRAME, VIRTKEY, NOINVERT
+    VK_F1,          ID_HELP,                VIRTKEY, NOINVERT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+    "A",            ID_RECORD_ADD,          VIRTKEY, CONTROL, NOINVERT
+    "D",            ID_RECORD_DELETE_CURRENT, VIRTKEY, CONTROL, NOINVERT
+    "E",            ID_RECORD_EDIT_MODE,    VIRTKEY, CONTROL, NOINVERT
+    "F",            ID_RECORD_FILTER_MODE,  VIRTKEY, CONTROL, NOINVERT
+    VK_HOME,        ID_RECORD_FIRST,        VIRTKEY, CONTROL, NOINVERT
+    "G",            ID_RECORD_GOTO_RECORD,  VIRTKEY, CONTROL, NOINVERT
+    VK_END,         ID_RECORD_LAST,         VIRTKEY, CONTROL, NOINVERT
+    VK_DOWN,        ID_RECORD_NEXT,         VIRTKEY, CONTROL, NOINVERT
+    VK_NEXT,        ID_RECORD_PAGE_DOWN,    VIRTKEY, NOINVERT
+    VK_PRIOR,       ID_RECORD_PAGE_UP,      VIRTKEY, NOINVERT
+    VK_UP,          ID_RECORD_PREV,         VIRTKEY, CONTROL, NOINVERT
+    VK_ESCAPE,      ID_RECORD_REFRESH,      VIRTKEY, NOINVERT
+    VK_LEFT,        ID_RECORD_SHIFT_LEFT,   VIRTKEY, CONTROL, NOINVERT
+    "I",            ID_RECORD_SHIFT_RIGHT,  VIRTKEY, CONTROL, NOINVERT
+    VK_RIGHT,       ID_RECORD_SHIFT_RIGHT,  VIRTKEY, CONTROL, NOINVERT
+    "B",            ID_VIEW_DATABASE,       VIRTKEY, CONTROL, NOINVERT
+    VK_TAB,         ID_VIEW_NEXTVIEW,       VIRTKEY, CONTROL, NOINVERT
+    VK_TAB,         ID_VIEW_PREVIOUSVIEW,   VIRTKEY, SHIFT, CONTROL, NOINVERT
+    VK_RETURN,      ID_VIEW_SWAP_PREVIOUS_VIEW, VIRTKEY, CONTROL, NOINVERT
     VK_F1,          ID_CONTEXT_HELP,        VIRTKEY, SHIFT, NOINVERT
 END
 
+IDR_DBWAVETYPE ACCELERATORS
+BEGIN
+    VK_ESCAPE,      ID_CANCEL_EDIT_CNTR,    VIRTKEY, NOINVERT
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
+    VK_HOME,        ID_FORMAT_FIRST_FRAME,  VIRTKEY, NOINVERT
+    VK_END,         ID_FORMAT_LAST_FRAME,   VIRTKEY, NOINVERT
+    VK_NEXT,        ID_FORMAT_NEXT_FRAME,   VIRTKEY, NOINVERT
+    VK_PRIOR,       ID_FORMAT_PREVIOUS_FRAME, VIRTKEY, NOINVERT
+    VK_F1,          ID_HELP,                VIRTKEY, NOINVERT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+    "A",            ID_RECORD_ADD,          VIRTKEY, CONTROL, NOINVERT
+    "D",            ID_RECORD_DELETE_CURRENT, VIRTKEY, CONTROL, NOINVERT
+    "E",            ID_RECORD_EDIT_MODE,    VIRTKEY, CONTROL, NOINVERT
+    "F",            ID_RECORD_FILTER_MODE,  VIRTKEY, CONTROL, NOINVERT
+    VK_HOME,        ID_RECORD_FIRST,        VIRTKEY, CONTROL, NOINVERT
+    "G",            ID_RECORD_GOTO_RECORD,  VIRTKEY, CONTROL, NOINVERT
+    VK_END,         ID_RECORD_LAST,         VIRTKEY, CONTROL, NOINVERT
+    VK_DOWN,        ID_RECORD_NEXT,         VIRTKEY, CONTROL, NOINVERT
+    VK_NEXT,        ID_RECORD_PAGE_DOWN,    VIRTKEY, NOINVERT
+    VK_PRIOR,       ID_RECORD_PAGE_UP,      VIRTKEY, NOINVERT
+    VK_UP,          ID_RECORD_PREV,         VIRTKEY, CONTROL, NOINVERT
+    VK_ESCAPE,      ID_RECORD_REFRESH,      VIRTKEY, NOINVERT
+    VK_LEFT,        ID_RECORD_SHIFT_LEFT,   VIRTKEY, CONTROL, NOINVERT
+    "I",            ID_RECORD_SHIFT_RIGHT,  VIRTKEY, CONTROL, NOINVERT
+    VK_RIGHT,       ID_RECORD_SHIFT_RIGHT,  VIRTKEY, CONTROL, NOINVERT
+    "B",            ID_VIEW_DATABASE,       VIRTKEY, CONTROL, NOINVERT
+    VK_TAB,         ID_VIEW_NEXTVIEW,       VIRTKEY, CONTROL, NOINVERT
+    VK_TAB,         ID_VIEW_PREVIOUSVIEW,   VIRTKEY, SHIFT, CONTROL, NOINVERT
+    VK_RETURN,      ID_VIEW_SWAP_PREVIOUS_VIEW, VIRTKEY, CONTROL, NOINVERT
+    VK_F1,          ID_CONTEXT_HELP,        VIRTKEY, SHIFT, NOINVERT
+END
+
+IDR_DBSPIKETYPE ACCELERATORS
+BEGIN
+    VK_ESCAPE,      ID_CANCEL_EDIT_CNTR,    VIRTKEY, NOINVERT
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
+    VK_HOME,        ID_FORMAT_FIRST_FRAME,  VIRTKEY, NOINVERT
+    VK_END,         ID_FORMAT_LAST_FRAME,   VIRTKEY, NOINVERT
+    VK_NEXT,        ID_FORMAT_NEXT_FRAME,   VIRTKEY, NOINVERT
+    VK_PRIOR,       ID_FORMAT_PREVIOUS_FRAME, VIRTKEY, NOINVERT
+    VK_F1,          ID_HELP,                VIRTKEY, NOINVERT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+    "A",            ID_RECORD_ADD,          VIRTKEY, CONTROL, NOINVERT
+    "D",            ID_RECORD_DELETE_CURRENT, VIRTKEY, CONTROL, NOINVERT
+    "E",            ID_RECORD_EDIT_MODE,    VIRTKEY, CONTROL, NOINVERT
+    "F",            ID_RECORD_FILTER_MODE,  VIRTKEY, CONTROL, NOINVERT
+    VK_HOME,        ID_RECORD_FIRST,        VIRTKEY, CONTROL, NOINVERT
+    "G",            ID_RECORD_GOTO_RECORD,  VIRTKEY, CONTROL, NOINVERT
+    VK_END,         ID_RECORD_LAST,         VIRTKEY, CONTROL, NOINVERT
+    VK_DOWN,        ID_RECORD_NEXT,         VIRTKEY, CONTROL, NOINVERT
+    VK_NEXT,        ID_RECORD_PAGE_DOWN,    VIRTKEY, NOINVERT
+    VK_PRIOR,       ID_RECORD_PAGE_UP,      VIRTKEY, NOINVERT
+    VK_UP,          ID_RECORD_PREV,         VIRTKEY, CONTROL, NOINVERT
+    VK_ESCAPE,      ID_RECORD_REFRESH,      VIRTKEY, NOINVERT
+    VK_LEFT,        ID_RECORD_SHIFT_LEFT,   VIRTKEY, CONTROL, NOINVERT
+    "I",            ID_RECORD_SHIFT_RIGHT,  VIRTKEY, CONTROL, NOINVERT
+    VK_RIGHT,       ID_RECORD_SHIFT_RIGHT,  VIRTKEY, CONTROL, NOINVERT
+    "B",            ID_VIEW_DATABASE,       VIRTKEY, CONTROL, NOINVERT
+    VK_TAB,         ID_VIEW_NEXTVIEW,       VIRTKEY, CONTROL, NOINVERT
+    VK_TAB,         ID_VIEW_PREVIOUSVIEW,   VIRTKEY, SHIFT, CONTROL, NOINVERT
+    VK_RETURN,      ID_VIEW_SWAP_PREVIOUS_VIEW, VIRTKEY, CONTROL, NOINVERT
+    VK_F1,          ID_CONTEXT_HELP,        VIRTKEY, SHIFT, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR 15, 16
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    SEPARATOR
+    BUTTON      ID_RECORD_FIRST
+    BUTTON      ID_RECORD_PREV
+    BUTTON      ID_RECORD_NEXT
+    BUTTON      ID_RECORD_LAST
+    SEPARATOR
+    BUTTON      ID_CONTEXT_HELP
+    BUTTON      ID_APP_ABOUT
+END
+
+IDR_PROJECTTYPE TOOLBAR 16, 15
+BEGIN
+    BUTTON      57600
+    BUTTON      57601
+    BUTTON      57603
+    SEPARATOR
+    BUTTON      57634
+    BUTTON      57637
+    SEPARATOR
+    BUTTON      57607
+    SEPARATOR
+    BUTTON      32791
+    BUTTON      32832
+    SEPARATOR
+    BUTTON      57664
+END
+
+IDR_DBDATATYPE TOOLBAR 16, 15
+BEGIN
+    BUTTON      ID_VIEW_CURSOR_MODE_NORMAL
+    BUTTON      ID_VIEW_CURSOR_MODE_ZOOMIN
+    SEPARATOR
+    BUTTON      ID_FORMAT_VIEW_ALL_DATA_ON_ABSCISSA
+    BUTTON      ID_FORMAT_CENTER_CURVE
+    BUTTON      ID_FORMAT_GAIN_ADJUST
+    BUTTON      ID_FORMAT_SPLIT_CURVES
+    SEPARATOR
+    BUTTON      ID_TOOLS_MEASURE_MODE
+END
+
+IDR_DBSPIKETYPE TOOLBAR 16, 15
+BEGIN
+    BUTTON      ID_VIEW_CURSOR_MODE_NORMAL
+    BUTTON      ID_VIEW_CURSOR_MODE_ZOOMIN
+    BUTTON      ID_VIEW_CURSOR_MODE_MEASURE
+    SEPARATOR
+    BUTTON      ID_FORMAT_VIEW_ALL_DATA_ON_ABSCISSA
+    BUTTON      ID_FORMAT_CENTER_CURVE
+    BUTTON      ID_FORMAT_GAIN_ADJUST
+    BUTTON      ID_ADJUST_SPIKES_ALONG_X
+END
+
+IDR_SORT TOOLBAR 16, 15
+BEGIN
+    BUTTON      ID_SORT_MENU
+    BUTTON      ID_NEW_FOLDER
+END
+
+IDR_PROPERTIES TOOLBAR 16, 15
+BEGIN
+    BUTTON      ID_EXPAND_ALL
+    BUTTON      ID_SORT_PROPERTIES
+    BUTTON      IDC_UPDATE_INFOS
+    BUTTON      IDC_EDIT_INFOS
+END
+
+IDR_MENU_IMAGES TOOLBAR 16, 15
+BEGIN
+    BUTTON      ID_WINDOW_MANAGER
+    SEPARATOR
+    BUTTON      ID_WINDOW_CASCADE
+    BUTTON      ID_WINDOW_TILE_HORZ
+    BUTTON      ID_TOOLS_MACRO
+    BUTTON      ID_SORTING_SORT_ALPHABETIC
+    BUTTON      ID_SORTING_SORT_BY_TYPE
+    BUTTON      ID_SORTING_SORT_BY_ACCESS
+    BUTTON      ID_SORTING_GROUP_BY_TYPE
+END
+
+IDR_MAINFRAME_256 TOOLBAR 16, 15
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    SEPARATOR
+    BUTTON      ID_RECORD_FIRST
+    BUTTON      ID_RECORD_PREV
+    BUTTON      ID_RECORD_NEXT
+    BUTTON      ID_RECORD_LAST
+    SEPARATOR
+    BUTTON      ID_APP_ABOUT
+    BUTTON      ID_CONTEXT_HELP
+END
+
+IDR_EXPLORER TOOLBAR 16, 15
+BEGIN
+    BUTTON      ID_UPDATE
+    BUTTON      ID_APPLY_FILTER
+    SEPARATOR
+    BUTTON      ID_RECORD_SORT
+    SEPARATOR
+    BUTTON      ID_BUTTON_PREVIOUS
+    BUTTON      ID_BUTTON_NEXT
+END
+
+IDR_SPIKE_CLASS_PROPERTIES TOOLBAR 16, 15
+BEGIN
+    BUTTON      ID_EXPAND_ALL
+    BUTTON      ID_SORT_PROPERTIES
+    BUTTON      IDC_UPDATE_INFOS
+    BUTTON      IDC_EDIT_INFOS
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_CZOOM               CURSOR                  "RES\\CZOOM.CUR"
+
+IDC_CCROSS              CURSOR                  "res\\cursor1.cur"
+
+IDC_SPLITHORIZONTAL     CURSOR                  "res\\splith.cur"
+
+IDC_SPLITVERTICAL       CURSOR                  "res\\splitv.cur"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_EDITRECORD AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DATASERIESFORMAT AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_VIEWDBWAVE AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_VIEWSPKDETECTION AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_VIEWSPKSORT1 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_VIEWSPKTEMPLATES AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_VIEWSPKTIMESERIES AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_VIEWSPIKES AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_VIEWBROWSE AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_AD_EXPERIMENT AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_FINDFILES AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_VIEWPANELEFT3 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DBEDITRECORDFIELD AFX_DIALOG_LAYOUT
+BEGIN
+    0,
+    100, 0, 0, 0,
+    100, 0, 0, 0,
+    0, 0, 100, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 100, 0,
+    0, 0, 100, 0,
+    0, 0, 100, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 100, 0,
+    0, 0, 100, 0,
+    0, 0, 0, 0,
+    100, 100, 0, 0,
+    0, 0, 0, 0,
+    100, 0, 0, 0
+END
+
+IDD_EDITLIST AFX_DIALOG_LAYOUT
+BEGIN
+    0,
+    0, 0, 100, 100,
+    100, 100, 0, 0,
+    0, 100, 100, 0,
+    100, 100, 0, 0,
+    100, 0, 0, 0,
+    100, 0, 0, 0,
+    100, 100, 0, 0
+END
+
+IDD_DA_OUTPUTPARMS AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DA_CHANNELS AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_VIEWADCONTINUOUS AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DTBOARD AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DA_MSEQ AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_EDITSTIMARRAY AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_VIEWDATA AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_AD_INPUTPARMS AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_PROPPAGE2 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_BROWSEFILE AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_EXPORTSPIKEINFOS AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_IMPORTOPTIONS AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_OPTIONSOVERWRITEFILE AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_OPTIONSDELETEDATFILE AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_ABOUTBOX AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -2857,6 +3306,130 @@ IDR_RIBBON              RT_RIBBON_XML           "res\\ribbon1.mfcribbon-ms"
 
 STRINGTABLE
 BEGIN
+    IDP_OLE_INIT_FAILED     "OLE initialization failed.  Make sure that the OLE libraries are the correct version."
+    IDS_CLASS_VIEW          "Top panel view"
+    IDS_LNVERR01            "(LNV) Request failed:\n Add virtual display channel"
+    IDS_LNVERR02            "(LNV) Request failed: add virtual display channel\nTransform not available or doc buffer not allocatedl"
+    IDS_LNVERR03            "(LNV) DoesCursorHitCurve:\noperation unavailable yet at this resolution\ndisplay curve with a lower resolution"
+    IDS_AWAVEERR01          "Unable to allocate buffer to receive multi-selection"
+    IDS_CANNOT_ACCESS_CLIPBOARD "ERROR: Cannot access the Clipboard!"
+    IDS_TOOMANYFILES        "Too many data files are open..."
+    IDS_DIRECTORYFAILED     "Create directory failed!"
+END
+
+STRINGTABLE
+BEGIN
+    IDP_PROGRESS_CAPTION    "Operation in progress ..."
+    IDS_FILEDESCRIP         "dbWave database (*.mdb;*.accdb)|*.mdb;*.accdb|Acq. data (*.dat;*.asd;*.mcid;*.smr;*.smrx)|*.dat;*.asd;*.mcid;*.smr;*.smrx|Spikes (*.spk)|*.spk|Text (*.txt)|*.txt|Project (*.prj)|*.prj|"
+    IDS_OUTLOOKBAR          "Outlook bar"
+    IDS_ACQDATA_SWEEPDURATIONLOW 
+                            "Warning:\nsweep duration is too short\nchoose larger value"
+    IDS_ACQDATA_SAVEYESNO   "Save acquired data into a data file?"
+    IDS_ACQDATA_NOCARDFOUND "No data acquisition card found.Check DTOpenLayer driver in the Control Panel"
+    IDS_ACQDATA_TRIGGERERROR "Trigger error: acquisition stopped"
+    IDS_ACQDATA_OVERRUN     "Input overrun error: acquisition stopped"
+    IDS_DAC_TRIGGERERROR    "DAC trigger error: acquisition stopped"
+    IDS_DAC_OVERRUN         "DAC overrun error: acquisition stopped"
+    IDS_ACQDATA_TOOFAST     "Acquisition stopped, rate too fast for current operations"
+    IDR_MAINFRAME           "dbWave"
+    IDR_DBWAVETYPE          "\ndbWave Data types\nDatabase\ndbWave files (*.dat; *.spk;*.mdb;*.accdb)\n.mdb\ndbWave.Document\ndbWave file\nnoneforMac\nNone for Mac"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_PROPSHT_CAPTION     "Property Sheet"
+    IDS_DAC_TOOFAST         "DAC rate too fast: acquisition stopped"
+    IDR_PROJECTTYPE         "\nPROJECT\nProject\nList of files(*.prj;*.txt)\n.prj\ndbWaveFileType3\ndbWave_project\nprojI\nprojI Files\n\n"
+    IDS_WRITEPROTECT        "This file is READ_ONLY"
+    IDR_DBDATATYPE          """\nDATA\nAcquisition data\nData Files(*.dat;*.asd;*.smr,*.smrx)\n.dat\ndbWaveFileType1\ndbWave_data_acquisition \ndatI\ndati Files\n\n"
+    IDR_DBSPIKETYPE         "\nSPIKES\nSpike data\nSpike Files*(.spk)\n.spk\ndbWaveFileType2\ndbWave_spike \nSPIKI\nspki Files\n\n"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_APP_TITLE       "dbWave"
+    AFX_IDS_IDLEMESSAGE     "For Help, press F1"
+    AFX_IDS_HELPMODEMESSAGE2 "Select an object on which to get Help"
+END
+
+STRINGTABLE
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+    ID_FILE_PAGE_SETUP      "Change the printing options\nPage Setup"
+    ID_FILE_PRINT_SETUP     "Change the printer and printing options\nPrint Setup"
+    ID_FILE_PRINT           "Print the active document\nPrint"
+    ID_FILE_PRINT_PREVIEW   "Display full pages\nPrint Preview"
+    57610                   "Update the container to show any changes\nUpdate"
+    57611                   "Save a copy of the active document with a new name\nSave Copy"
+END
+
+STRINGTABLE
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+    ID_HELP_INDEX           "Opens Help\nHelp Topics"
+    ID_HELP_FINDER          "List Help topics\nHelp Topics"
+    ID_HELP_USING           "Display instructions about how to use help\nHelp"
+    ID_CONTEXT_HELP         "Display help for clicked on buttons, menus and windows\nHelp"
+    ID_HELP                 "Display help for current task or command\nHelp"
+END
+
+STRINGTABLE
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE
+BEGIN
+    ID_WINDOW_NEW           "Open another window for the active document\nNew Window"
+    ID_WINDOW_ARRANGE       "Arrange icons at the bottom of the window\nArrange Icons"
+    ID_WINDOW_CASCADE       "Arrange windows so they overlap\nCascade Windows"
+    ID_WINDOW_TILE_HORZ     "Arrange windows as non-overlapping tiles\nTile Windows"
+    ID_WINDOW_TILE_VERT     "Arrange windows as non-overlapping tiles\nTile Windows"
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
     ID_EDIT_FIND            "Find the specified text\nFind"
     ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
     ID_EDIT_PASTE_LINK      "Insert Clipboard contents and a link to its source\nPaste Link"
@@ -2870,6 +3443,7 @@ END
 
 STRINGTABLE
 BEGIN
+    59392                   "Show or hide the toolbar\nToggle ToolBar"
     ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
 END
 
@@ -3048,6 +3622,7 @@ BEGIN
     ID_TOOLS_MEASURE        "Measure parameters from data according to mode selected"
     ID_RECORD_GOTO_RECORD   "Go to record at a given position...\nGoto record"
 END
+
 STRINGTABLE
 BEGIN
     ID_VIEW_PREVIOUSVIEW    "View previous display mode"
@@ -3158,13 +3733,10 @@ BEGIN
 END
 
 #endif    // English (United States) resources
-
-
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-//
 // French (France) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
@@ -3236,3 +3808,4 @@ LANGUAGE 9, 1
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
+

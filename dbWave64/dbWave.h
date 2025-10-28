@@ -42,13 +42,13 @@ public:
 	CdbMultiDocTemplate* m_note_view_template  {nullptr};
 	CdbMultiDocTemplate* m_data_view_template  {nullptr};
 	CdbMultiDocTemplate* m_spike_view_template  {nullptr};
+	CdbMultiDocTemplate* m_ad_view_template{ nullptr };
 
 	HMENU h_menu_db_view{};
-	HMENU h_menu_db_view2{};
-
 	HMENU h_menu_data_view{};
 	HMENU h_menu_spike_view{};
 	HMENU h_menu_browse_view{};
+	HMENU h_menu_acq_view{};
 
 	// Implementation
 	CStringArray m_cs_parameter_files;

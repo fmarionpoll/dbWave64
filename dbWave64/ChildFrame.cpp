@@ -55,6 +55,8 @@
 #include <atlpath.h>
 #include <random>
 
+#include "ViewADcontinuous.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -389,8 +391,11 @@ void CChildFrame::replace_view_index(UINT n_id)
 			replace_view(RUNTIME_CLASS(ViewSpikeHist), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_spike_view);
 		break;
 	case ID_VIEW_ACQUIRE_DATA:
-		DlgAcquisitionStub::Show(this);
+		//DlgAcquisitionStub::Show(this);
+		//b_active_panes = FALSE;
+		replace_view(RUNTIME_CLASS(ViewADcontinuous), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_data_view);
 		b_active_panes = FALSE;
+		return;
 		break;
 
 	default:
@@ -404,9 +409,7 @@ void CChildFrame::replace_view_index(UINT n_id)
 	m_view_on = n_id;
 
 	// update all views
-	auto doc_type = 1;
-	if (n_id < ID_VIEW_SPIKE_DISPLAY || n_id == ID_VIEW_ACQUIRE_DATA)
-		doc_type = 0;
+	const auto doc_type = (n_id < ID_VIEW_SPIKE_DISPLAY || n_id == ID_VIEW_ACQUIRE_DATA) ? 1 : 0;
 	p_db_wave_doc->UpdateAllViews(nullptr, MAKELPARAM(HINT_REPLACE_VIEW, doc_type), nullptr);
 }
 
@@ -431,7 +434,7 @@ void CChildFrame::on_update_view_menu(CCmdUI * p_cmd_ui)
 		break;
 
 	case ID_VIEW_ACQUIRE_DATA:
-		flag = TRUE;
+		flag = FALSE; //flag = p_app->m_ad_card_found;
 		break;
 
 	default:

@@ -2217,7 +2217,6 @@ BEGIN
         MENUITEM "Spike s&orting (amplitude)",  ID_VIEW_SPIKE_SORTING_AMPLITUDE
         MENUITEM "Spike sorting (t&emplates)",  ID_VIEW_SPIKE_SORTING_TEMPLATES
         MENUITEM "Spike time se&ries",          ID_VIEW_SPIKE_TIME_SERIES
-        MENUITEM "Ac&quire data",               ID_VIEW_ACQUIRE_DATA
         MENUITEM SEPARATOR
         POPUP "&Cursor mode..."
         BEGIN
@@ -2367,7 +2366,6 @@ BEGIN
         MENUITEM "Spike s&orting (amplitude)",  ID_VIEW_SPIKE_SORTING_AMPLITUDE
         MENUITEM "Spike sorting (&templates)",  ID_VIEW_SPIKE_SORTING_TEMPLATES
         MENUITEM "Spike time se&ries",          ID_VIEW_SPIKE_TIME_SERIES
-        MENUITEM "&Acquire data",               ID_VIEW_ACQUIRE_DATA
         MENUITEM SEPARATOR
         POPUP "&Cursor mode..."
         BEGIN
@@ -2508,7 +2506,6 @@ BEGIN
         MENUITEM "Spike s&orting (amplitude)",  ID_VIEW_SPIKE_SORTING_AMPLITUDE
         MENUITEM "Spike sorting (templates)",   ID_VIEW_SPIKE_SORTING_TEMPLATES
         MENUITEM "Spike time se&ries",          ID_VIEW_SPIKE_TIME_SERIES
-        MENUITEM "Ac&quire data",               ID_VIEW_ACQUIRE_DATA
         MENUITEM SEPARATOR
         MENUITEM "Shift view to the left\tCtrl Arrow Left", ID_RECORD_SHIFT_LEFT
         MENUITEM "Shift view to right\tCtrl Arrow Right", ID_RECORD_SHIFT_RIGHT
@@ -2691,7 +2688,6 @@ BEGIN
         MENUITEM "Spike s&orting (amplitude)",  ID_VIEW_SPIKE_SORTING_AMPLITUDE
         MENUITEM "Spike sorting (t&emplates)",  ID_VIEW_SPIKE_SORTING_TEMPLATES
         MENUITEM "Spike time se&ries",          ID_VIEW_SPIKE_TIME_SERIES
-        MENUITEM "Ac&quire data",               ID_VIEW_ACQUIRE_DATA
         MENUITEM SEPARATOR
         POPUP "&Cursor mode..."
         BEGIN
@@ -2844,6 +2840,21 @@ BEGIN
     VK_F1,          ID_CONTEXT_HELP,        VIRTKEY, SHIFT, NOINVERT
 END
 
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Ribbon
+//
+
+IDR_RIBBON              RT_RIBBON_XML           "res\\ribbon1.mfcribbon-ms"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
 STRINGTABLE
 BEGIN
     ID_EDIT_FIND            "Find the specified text\nFind"
@@ -2950,7 +2961,6 @@ BEGIN
     ID_VIEW_SPIKE_SORTING_TEMPLATES "Sort spikes using templates"
     ID_VIEW_SPIKE_TIME_SERIES 
                             "Display peristimulus histograms, spike interval hist, and autocorrelations"
-    ID_VIEW_ACQUIRE_DATA    "Acquire data with A/D card - display and save as file"
 END
 
 STRINGTABLE

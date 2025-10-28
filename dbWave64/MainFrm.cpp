@@ -7,6 +7,7 @@
 #endif
 #include "ColorNames.h"
 #include "ViewDB/ViewDbTable.h"
+#include "dbWaveDoc.h"
 #include "dbWave.h"
 #include "dbWave_constants.h"
 
@@ -144,10 +145,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	OnApplicationLook(the_app.app_look);
 
 	// Enable enhanced windows management dialog (guarded)
-	//if (::FindResource(AfxGetResourceHandle(), MAKEINTRESOURCE(ID_WINDOW_MANAGER), RT_DIALOG) != nullptr)
-	//{
+	if (::FindResource(AfxGetResourceHandle(), MAKEINTRESOURCE(ID_WINDOW_MANAGER), RT_DIALOG) != nullptr)
+	{
 		EnableWindowsDialog(ID_WINDOW_MANAGER, ID_WINDOW_MANAGER, TRUE);
-	//}
+	}
 
 	//// Enable toolbar and docking window menu replacement
 	//EnablePaneMenu(TRUE, ID_VIEW_CUSTOMIZE, strCustomize, ID_VIEW_TOOLBAR);
@@ -271,7 +272,7 @@ BOOL CMainFrame::create_outlook_bar()
 			{ID_VIEW_SPIKE_SORTING_AMPLITUDE,IDS_BTTNSORT, dw_style, 4},
 			{ID_VIEW_SPIKE_SORTING_TEMPLATES,IDS_BTTNTEMPLATES, dw_style, 5},
 			{ID_VIEW_SPIKE_TIME_SERIES, IDS_BTTNTIMESERIES, dw_style, 6},
-			{ID_VIEW_ACQUIRE_DATA, IDS_BTTNACQDATA, dw_style, 7}
+			{ID_VIEW_DATABASE, IDS_BTTNACQDATA, dw_style, 7}
 		};
 
 	// Create first page:

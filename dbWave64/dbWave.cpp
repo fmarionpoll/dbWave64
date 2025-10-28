@@ -13,7 +13,7 @@
 #include "NoteDoc.h"
 #include "Splash.h"
 #include "DlgAbout.h"
-#include "ViewADcontinuous.h"
+
 
 
 #ifdef _DEBUG
@@ -68,7 +68,6 @@ void DisplayDaoException(CDaoException* e, int i_id = 0)
 
 CdbWaveApp::CdbWaveApp()  noexcept
 {
-
 	// support Restart Manager
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_ALL_ASPECTS;
 	EnableHtmlHelp();
@@ -146,14 +145,14 @@ BOOL CdbWaveApp::InitInstance()
 	AddDocTemplate(m_spike_view_template);
 	h_menu_spike_view = m_spike_view_template->m_hMenuShared;
 
-	// continuous A/D view with data translation card
-	m_ad_view_template = new CdbMultiDocTemplate(IDR_DBDATATYPE,
-													RUNTIME_CLASS(CdbWaveDoc),
-													RUNTIME_CLASS(CChildFrame), // multi-file MDI child frame
-													RUNTIME_CLASS(ViewADcontinuous)); // AD view
-	m_ad_view_template->SetContainerInfo(IDR_DBWAVETYPE_CNTR_IP);
-	AddDocTemplate(m_ad_view_template);
-	h_menu_acq_view = m_ad_view_template->m_hMenuShared;
+	//// continuous A/D view with data translation card
+	//m_ad_view_template = new CdbMultiDocTemplate(IDR_DBDATATYPE,
+	//												RUNTIME_CLASS(CdbWaveDoc),
+	//												RUNTIME_CLASS(CChildFrame), // multi-file MDI child frame
+	//												RUNTIME_CLASS(ViewADcontinuous)); // AD view
+	//m_ad_view_template->SetContainerInfo(IDR_DBWAVETYPE_CNTR_IP);
+	//AddDocTemplate(m_ad_view_template);
+	//h_menu_acq_view = m_ad_view_template->m_hMenuShared;
 
 	// ---------------------------------------------
 	m_note_view_template = new CdbMultiDocTemplate(IDR_PROJECTTYPE,

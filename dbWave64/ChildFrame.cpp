@@ -55,7 +55,7 @@
 #include <atlpath.h>
 #include <random>
 
-#include "ViewADcontinuous.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -77,8 +77,8 @@ BEGIN_MESSAGE_MAP(CChildFrame, CMDIChildWndEx)
 	ON_MESSAGE(WM_MYMESSAGE, &CChildFrame::on_my_message)
 	ON_WM_CREATE()
 
-	ON_COMMAND_RANGE(ID_VIEW_DATABASE, ID_VIEW_ACQUIRE_DATA, &CChildFrame::replace_view_index) 
-	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_DATABASE, ID_VIEW_ACQUIRE_DATA, &CChildFrame::on_update_view_menu)
+	ON_COMMAND_RANGE(ID_VIEW_DATABASE, ID_VIEW_SPIKE_TIME_SERIES, &CChildFrame::replace_view_index)
+	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_DATABASE, ID_VIEW_SPIKE_TIME_SERIES, &CChildFrame::on_update_view_menu)
 
 	ON_COMMAND(ID_TOOLS_EXPORT_DATA_COMMENTS, &CChildFrame::on_tools_export_data_comments)
 	ON_COMMAND(ID_TOOLS_EXPORT_DATA_AS_TEXT, &CChildFrame::on_tools_export_data_as_text)
@@ -390,13 +390,13 @@ void CChildFrame::replace_view_index(UINT n_id)
 		if (!p_db_wave_doc->db_get_current_spk_file_name(TRUE).IsEmpty())
 			replace_view(RUNTIME_CLASS(ViewSpikeHist), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_spike_view);
 		break;
-	case ID_VIEW_ACQUIRE_DATA:
-		//DlgAcquisitionStub::Show(this);
-		//b_active_panes = FALSE;
-		replace_view(RUNTIME_CLASS(ViewADcontinuous), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_data_view);
-		b_active_panes = FALSE;
-		return;
-		break;
+	//case ID_VIEW_ACQUIRE_DATA:
+	//	//DlgAcquisitionStub::Show(this);
+	//	//b_active_panes = FALSE;
+	//	replace_view(RUNTIME_CLASS(ViewADcontinuous), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_data_view);
+	//	b_active_panes = FALSE;
+	//	return;
+	//	break;
 
 	default:
 		n_id = 0;
@@ -409,7 +409,7 @@ void CChildFrame::replace_view_index(UINT n_id)
 	m_view_on = n_id;
 
 	// update all views
-	const auto doc_type = (n_id < ID_VIEW_SPIKE_DISPLAY || n_id == ID_VIEW_ACQUIRE_DATA) ? 1 : 0;
+	const auto doc_type = (n_id < ID_VIEW_SPIKE_DISPLAY || n_id == ID_VIEW_SPIKE_TIME_SERIES) ? 1 : 0;
 	p_db_wave_doc->UpdateAllViews(nullptr, MAKELPARAM(HINT_REPLACE_VIEW, doc_type), nullptr);
 }
 
@@ -430,12 +430,13 @@ void CChildFrame::on_update_view_menu(CCmdUI * p_cmd_ui)
 	case ID_VIEW_SPIKE_TIME_SERIES:
 		flag = (flag
 			&& !p_db_wave_doc->db_get_current_spk_file_name(TRUE).IsEmpty()
-			&& m_view_on != ID_VIEW_ACQUIRE_DATA);
+			//&& m_view_on != ID_VIEW_ACQUIRE_DATA
+			);
 		break;
 
-	case ID_VIEW_ACQUIRE_DATA:
-		flag = FALSE; //flag = p_app->m_ad_card_found;
-		break;
+	//case ID_VIEW_ACQUIRE_DATA:
+	//	flag = FALSE; //flag = p_app->m_ad_card_found;
+	//	break;
 
 	default:
 		flag = (flag && !p_db_wave_doc->db_get_current_dat_file_name().IsEmpty());
@@ -1014,7 +1015,7 @@ void CChildFrame::build_excel_pivot(void* po_app, void* p_odata_sheet, CString c
 
 void CChildFrame::on_record_add()
 {
-	replace_view_index(ID_VIEW_ACQUIRE_DATA);
+	//replace_view_index(ID_VIEW_ACQUIRE_DATA);
 }
 
 void CChildFrame::on_tools_import_data_files()

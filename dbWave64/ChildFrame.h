@@ -76,7 +76,7 @@ public:
 	afx_msg void on_tools_garbage();
 	afx_msg void on_tools_compact_database();
 	afx_msg void on_tools_cleanup_filenames();
-	afx_msg void OnTimer(UINT_PTR n_id_event);
+	afx_msg void OnTimer(UINT_PTR n_id_event); 
 
 	DECLARE_MESSAGE_MAP()
 };

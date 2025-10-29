@@ -20,7 +20,6 @@
     <ClCompile Include="ADAcqDataDoc.cpp" />
     <ClCompile Include="chanlistitem.cpp" />
     <ClCompile Include="Chart\ChartData.cpp" />
-    <ClCompile Include="Chart\ChartDataAD.cpp" />
     <ClCompile Include="Chart\ChartSpike.cpp" />
     <ClCompile Include="Chart\ChartSpikeBar.cpp" />
     <ClCompile Include="Chart\ChartSpikeHist.cpp" />
@@ -204,7 +203,6 @@
     <ClInclude Include="AlgorithmUtils.h" />
     <ClInclude Include="chanlistitem.h" />
     <ClInclude Include="Chart\ChartData.h" />
-    <ClInclude Include="Chart\ChartDataAD.h" />
     <ClInclude Include="Chart\ChartSpike.h" />
     <ClInclude Include="Chart\ChartSpikeBar.h" />
     <ClInclude Include="Chart\ChartSpikeHist.h" />

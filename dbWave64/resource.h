@@ -26,6 +26,14 @@
 #define IDC_ACQ_STUB_LAUNCH             502
 #define IDC_ACQ_STUB_IMPORT             503
 #define IDC_ACQ_STUB_FOOTER             504
+#define IDC_MAILBOX_DIR_EDIT             1548
+#define IDC_MAILBOX_BROWSE_BUTTON       1549
+#define IDC_MAILBOX_FILE_EDIT           1550
+#define IDC_MAILBOX_INTERVAL_EDIT       1551
+#define IDC_MAILBOX_INTERVAL_SPIN       1552
+#define IDC_MAILBOX_START_BUTTON        1553
+#define IDC_MAILBOX_STOP_BUTTON         1554
+#define IDC_MAILBOX_STATUS_STATIC       1555
 #define IDR_HELP_MENU                   117
 #define IDR_POPUP_EDIT                  118
 #define IDS_ACQDATA_SAVEYESNO           119
@@ -1018,7 +1026,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        580
 #define _APS_NEXT_COMMAND_VALUE         33076
-#define _APS_NEXT_CONTROL_VALUE         1548
+#define _APS_NEXT_CONTROL_VALUE         1556
 #define _APS_NEXT_SYMED_VALUE           555
 #endif
 #endif

@@ -272,7 +272,7 @@ BOOL CMainFrame::create_outlook_bar()
 			{ID_VIEW_SPIKE_SORTING_AMPLITUDE,IDS_BTTNSORT, dw_style, 4},
 			{ID_VIEW_SPIKE_SORTING_TEMPLATES,IDS_BTTNTEMPLATES, dw_style, 5},
 			{ID_VIEW_SPIKE_TIME_SERIES, IDS_BTTNTIMESERIES, dw_style, 6},
-			{ID_VIEW_DATABASE, IDS_BTTNACQDATA, dw_style, 7}
+			{ID_VIEW_ACQDAT, IDS_BTTNACQDATA, dw_style, 7}
 		};
 
 	// Create first page:

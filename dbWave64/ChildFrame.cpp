@@ -78,8 +78,8 @@ BEGIN_MESSAGE_MAP(CChildFrame, CMDIChildWndEx)
 	ON_MESSAGE(WM_MYMESSAGE, &CChildFrame::on_my_message)
 	ON_WM_CREATE()
 
-	ON_COMMAND_RANGE(ID_VIEW_DATABASE, ID_VIEW_SPIKE_TIME_SERIES, &CChildFrame::replace_view_index)
-	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_DATABASE, ID_VIEW_SPIKE_TIME_SERIES, &CChildFrame::on_update_view_menu)
+	ON_COMMAND_RANGE(ID_VIEW_DATABASE, ID_VIEW_ACQDAT, &CChildFrame::replace_view_index)
+	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_DATABASE, ID_VIEW_ACQDAT, &CChildFrame::on_update_view_menu)
 
 	ON_COMMAND(ID_TOOLS_EXPORT_DATA_COMMENTS, &CChildFrame::on_tools_export_data_comments)
 	ON_COMMAND(ID_TOOLS_EXPORT_DATA_AS_TEXT, &CChildFrame::on_tools_export_data_as_text)
@@ -406,7 +406,7 @@ void CChildFrame::replace_view_index(UINT n_id)
 	m_view_on = n_id;
 
 	// update all views
-	const auto doc_type = (n_id < ID_VIEW_SPIKE_DISPLAY || n_id == ID_VIEW_SPIKE_TIME_SERIES) ? 1 : 0;
+	const auto doc_type = (n_id < ID_VIEW_SPIKE_DISPLAY || n_id == ID_VIEW_ACQDAT) ? 1 : 0;
 	p_db_wave_doc->UpdateAllViews(nullptr, MAKELPARAM(HINT_REPLACE_VIEW, doc_type), nullptr);
 }
 
@@ -431,9 +431,9 @@ void CChildFrame::on_update_view_menu(CCmdUI * p_cmd_ui)
 			);
 		break;
 
-	//case ID_VIEW_ACQUIRE_DATA:
-	//	flag = FALSE; //flag = p_app->m_ad_card_found;
-	//	break;
+	case ID_VIEW_ACQDAT:
+		flag = TRUE; //flag = p_app->m_ad_card_found;
+		break;
 
 	default:
 		flag = (flag && !p_db_wave_doc->db_get_current_dat_file_name().IsEmpty());

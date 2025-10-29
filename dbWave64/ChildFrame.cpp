@@ -55,6 +55,7 @@
 #include <atlpath.h>
 #include <random>
 
+#include "ViewAcqDat.h"
 
 
 #ifdef _DEBUG
@@ -390,13 +391,9 @@ void CChildFrame::replace_view_index(UINT n_id)
 		if (!p_db_wave_doc->db_get_current_spk_file_name(TRUE).IsEmpty())
 			replace_view(RUNTIME_CLASS(ViewSpikeHist), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_spike_view);
 		break;
-	//case ID_VIEW_ACQUIRE_DATA:
-	//	//DlgAcquisitionStub::Show(this);
-	//	//b_active_panes = FALSE;
-	//	replace_view(RUNTIME_CLASS(ViewADcontinuous), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_data_view);
-	//	b_active_panes = FALSE;
-	//	return;
-	//	break;
+	case ID_VIEW_ACQDAT:
+		replace_view(RUNTIME_CLASS(CViewAcqDat), static_cast<CdbWaveApp*>(AfxGetApp())->h_menu_data_view);
+		break;
 
 	default:
 		n_id = 0;

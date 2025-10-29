@@ -6,7 +6,7 @@
 #include "SpikeListTabCtrl.h"
 #include "dbTableMain.h"
 #include "options_print.h"
-#include "StretchControls.h"
+#include "Controls/StretchControls.h"
 #include "Chart/ChartWnd.h"
 #include "ViewDB/TableDataService.h"
 #include "ViewDB/TablePrintRenderer.h"

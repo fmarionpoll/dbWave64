@@ -5,9 +5,10 @@
 #include <winspool.h>
 #include "MainFrm.h"
 #include "ChildFrame.h"
-#include "ViewDB/Data/ViewData.h"
-#include "ViewDB/Spikes/ViewSpikes.h"
-#include "ViewDB/ListRecords/ViewRecordsList.h"
+#include "Data/ViewData.h"
+#include "Spikes/ViewSpikes.h"
+#include "ListRecords/ViewRecordsList.h"
+#include "ViewAcqDat.h"
 #include "ViewText/ViewNotedoc.h"
 #include "dbWaveDoc.h"
 #include "NoteDoc.h"
@@ -145,14 +146,14 @@ BOOL CdbWaveApp::InitInstance()
 	AddDocTemplate(m_spike_view_template);
 	h_menu_spike_view = m_spike_view_template->m_hMenuShared;
 
-	//// continuous A/D view with data translation card
-	//m_ad_view_template = new CdbMultiDocTemplate(IDR_DBDATATYPE,
-	//												RUNTIME_CLASS(CdbWaveDoc),
-	//												RUNTIME_CLASS(CChildFrame), // multi-file MDI child frame
-	//												RUNTIME_CLASS(ViewADcontinuous)); // AD view
-	//m_ad_view_template->SetContainerInfo(IDR_DBWAVETYPE_CNTR_IP);
-	//AddDocTemplate(m_ad_view_template);
-	//h_menu_acq_view = m_ad_view_template->m_hMenuShared;
+	// continuous A/D view with data translation card
+	m_ad_view_template = new CdbMultiDocTemplate(IDR_DBDATATYPE,
+													RUNTIME_CLASS(CdbWaveDoc),
+													RUNTIME_CLASS(CChildFrame), 
+													RUNTIME_CLASS(CViewAcqDat)); // AD view
+	m_ad_view_template->SetContainerInfo(IDR_DBWAVETYPE_CNTR_IP);
+	AddDocTemplate(m_ad_view_template);
+	h_menu_acq_view = m_ad_view_template->m_hMenuShared;
 
 	// ---------------------------------------------
 	m_note_view_template = new CdbMultiDocTemplate(IDR_PROJECTTYPE,

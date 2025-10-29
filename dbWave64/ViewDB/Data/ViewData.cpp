@@ -15,7 +15,6 @@
 #include "ViewDB/Data/ViewData.h"
 
 #include "NiceUnit.h"
-#include "DlgCopyAs.h"
 #include "DlgDataSeries.h"
 #include "DlgDataSeriesFormat.h"
 #include "DlgDataViewAbscissa.h"

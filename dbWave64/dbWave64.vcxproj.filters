@@ -576,6 +576,9 @@
     <ClCompile Include="DlgAcquisitionStub.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ViewDB\ViewAcqDat.cpp">
+      <Filter>ViewDB</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AcqDataDoc.h">
@@ -1219,6 +1222,9 @@
     </ClInclude>
     <ClInclude Include="DlgAcquisitionStub.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDB\ViewAcqDat.h">
+      <Filter>ViewDB</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

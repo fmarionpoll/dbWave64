@@ -22,3 +22,5 @@
 - In the updated acquisition view, select a mailbox folder/file, start polling, and verify AcqDat64 drops are imported and the mailbox file cleared.
 - Confirm state persistence across runs and resilience to malformed mailbox lines.
 
+
+

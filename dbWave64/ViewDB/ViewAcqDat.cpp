@@ -1,5 +1,3 @@
-
-
 #include "stdafx.h"
 #include "ViewAcqDat.h"
 
@@ -9,6 +7,7 @@
 
 #include <algorithm>
 #include <Shlwapi.h>
+using namespace std;
 
 #pragma comment(lib, "Shlwapi.lib")
 
@@ -17,7 +16,11 @@
 #endif
 
 
-
+template<typename T>
+static constexpr T clamp_ct(const T& v, const T& lo, const T& hi) noexcept
+{
+	return (v < lo) ? lo : ((v > hi) ? hi : v);
+}
 
 IMPLEMENT_DYNCREATE(CViewAcqDat, ViewDbTable)
 
@@ -182,7 +185,7 @@ void CViewAcqDat::OnStartMailboxPolling()
 	if (mailbox_filename_.IsEmpty())
 		mailbox_filename_ = _T("mailbox.txt");
 
-	poll_interval_secs_ = std::clamp(poll_interval_secs_, k_min_poll_interval_, k_max_poll_interval_);
+	poll_interval_secs_ = clamp_ct(poll_interval_secs_, k_min_poll_interval_, k_max_poll_interval_);
 	UpdateData(FALSE);
 
 	if (mailbox_directory_.IsEmpty())
@@ -241,7 +244,7 @@ void CViewAcqDat::load_settings()
 	mailbox_filename_ = registry.GetProfileString(_T("Mailbox"), _T("File"), _T("mailbox.txt"));
 	mailbox_filename_.Trim();
 	poll_interval_secs_ = registry.GetProfileInt(_T("Mailbox"), _T("PollIntervalSeconds"), k_min_poll_interval_);
-	poll_interval_secs_ = std::clamp(poll_interval_secs_, k_min_poll_interval_, k_max_poll_interval_);
+	poll_interval_secs_ = clamp_ct(poll_interval_secs_, k_min_poll_interval_, k_max_poll_interval_);
 }
 
 void CViewAcqDat::save_settings() const
